@@ -1,0 +1,71 @@
+<script>
+    // Add to Image on change
+    if (document.getElementById('postPreviewImage')) {
+        document.getElementById('postPreviewImage').src = window.URL.createObjectURL(fileInput.files[0]);
+    }
+
+    // Add to scripts
+    const postPreviewButton = document.querySelector('#PostPreviewButton');
+    const postPreview = document.querySelector('#PostPreview');
+
+    const articleTitle = document.querySelector('#article_title');
+    const articleContent = document.getElementsByClassName('ck-content');
+
+    function postPreviewer() {
+        postPreview.style.display = 'block';
+        postPreview.querySelector('h3').innerHTML = articleTitle.value;
+        postPreview.querySelector('.content').innerHTML = articleContent[0].innerHTML;
+        location.href = '#PostPreviewAnchor';
+    }
+
+    postPreviewButton.addEventListener('click', postPreviewer);
+
+</script>
+
+{#    Preview Button    #}
+
+<a id="PostPreviewButton" href="javascript:void(0)" class="btn btn-secondary">
+    Предпросмотр
+</a>
+
+{#    Preview Block     #}
+
+<div class="md-post" id="PostPreview" style="margin-top: 24px; margin-bottom: 10px; display: none">
+
+    <div id="PostPreviewAnchor" style="position: relative; top: -78px;"></div>
+
+    <div class="md-box md-content-padding">
+
+        <div class="post-info">
+
+                <span class="avatar back-picture bp-24" style="background-image: url('{{ vich_uploader_asset(app.user.profile) }}')">
+                </span>
+
+            <a class="username" href="{{ path('user_profile', {'username': app.user.username }) }}">
+                {{ app.user.username }}
+            </a>
+
+            <span class="date">
+                    {{ 'now' | format_datetime('medium', 'none', '', 'UTC') }}
+                    в
+                    {{ 'now' | date(' H:i') }}
+                </span>
+
+        </div>
+
+        <h3></h3>
+
+        <div class="post-categories">
+            <a class="articles-color" href="javascript:void(0)">
+                Categorie
+            </a>
+        </div>
+
+        <img id="postPreviewImage" class="post-image" src="" alt="- фотография отсутствует -" style="color: red" width="100%">
+
+        <p class="content mt-2">
+        </p>
+
+    </div>
+
+</div>

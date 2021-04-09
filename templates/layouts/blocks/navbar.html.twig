@@ -1,0 +1,117 @@
+<nav class="md-nav sticky-top">
+
+    <div class="container">
+
+        <a id="sideNavOpener" href="javascript:void(0)">
+            <i class="fas fa-bars"></i>
+            {% if app.user and notifyIndicator(app.user) %}
+                <span class="notifier"></span>
+            {% endif %}
+        </a>
+
+        <a class="md-nav-logo" href="{{ path('app_home') }}">
+            <img src="{{ asset('/assets/images/logotype.png') }}" alt="Shovdan Yist">
+        </a>
+
+        {% if app.user %}
+
+            <a class="mobile-navbar-item" href="javascript:void(0)" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="fas fa-feather-alt"></i>
+            </a>
+
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink" style="margin-top: 7px">
+                <a class="dropdown-item" href="{{ path('post_add') }}"><i class="fas fa-heading"></i> {{ 'write.article' | trans }}</a>
+            </div>
+
+        {% else %}
+
+            <a class="btn btn-white navbar-login-mobile" style="box-shadow: unset;position: absolute; right: 9px; top: 9px;" href="{{ path('app_login') }}">
+                <i class="fas fa-user-circle"></i>
+                <span>{{ 'log.in' | trans }}</span>
+            </a>
+
+        {% endif %}
+
+        <div class="md-nav-menu">
+
+            <ul>
+
+{#                <li class="md-nav-item">#}
+{#                    <a href="{{ path('music_index') }}" class="md-nav-link"><i class="fas fa-music"></i> {{ 'music' | trans }}</a>#}
+{#                </li>#}
+
+                {% if app.user %}
+
+                    <li class="md-nav-item dropdown float-right">
+
+                        <a class="md-nav-link" data-toggle="dropdown" href="#" id="download">
+
+                            <div class="md-user-navbar-username">
+                                {{ app.user.username }}
+                            </div>
+
+                            <div class="back-picture bp-35" style="margin: 9px;background-image: url('{% if app.user.profile.avatar != 'avatar.jpg' %}{{ vich_uploader_asset(app.user.profile) }}{% else %}{{ asset('assets/images/avatar.jpg') }}{% endif %}')">
+                            </div>
+
+                            <span class="md-navbar-arrow"><i class="fas fa-chevron-down"></i></span>
+
+                        </a>
+
+                        <div class="dropdown-menu dropdown-menu-right">
+
+                            <a class="dropdown-item" href="{{ path('user_profile', {'username':app.user.username}) }}">
+                                <i class="fas fa-user"></i>
+                                {{ 'my.page' | trans }}
+                            </a>
+
+                            <a class="dropdown-item" href="{{ path('post_add') }}">
+                                <i class="fas fa-heading"></i>
+                                {{ 'write.article' | trans }}
+                            </a>
+
+                            {% if is_granted('ROLE_ADMIN') %}
+
+                                <span class="dropdown-divider"></span>
+
+                                <a class="dropdown-item" href="{{ path('dash_index') }}">
+                                    <i class="fas fa-tools"></i>
+                                    {{ 'manager' | trans }}
+                                </a>
+
+                            {% endif %}
+
+                            <span class="dropdown-divider"></span>
+
+                            <a class="dropdown-item" href="{{ path('app_logout') }}" onclick="return confirm('{{ 'are.you.sure.to.log.out' | trans }}')">
+                                <i class="fas fa-power-off"></i>
+                                {{ 'log.out' | trans }}
+                            </a>
+
+                        </div>
+
+                    </li>
+
+                {% endif %}
+
+            </ul>
+
+            {% if not app.user %}
+
+                <ul class="float-right" style="position: relative;top: 8px">
+
+                    <li>
+                        <a class="btn btn-white" style="box-shadow: unset" href="{{ path('app_login') }}">
+                            <i class="fas fa-user-circle"></i>
+                            {{ 'log.in' | trans }}
+                        </a>
+                    </li>
+
+                </ul>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+</nav>

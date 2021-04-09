@@ -1,0 +1,15 @@
+{% extends 'dashboard/base.html.twig' %}
+
+{% block title %}{{ 'category.adding' | trans }}{% endblock %}
+
+{% block body %}
+
+    <h1>{{ 'category.adding' | trans }}</h1>
+
+    {{ include('dashboard/category/_form.html.twig') }}
+
+{% endblock %}
+
+{% block scripts %}
+    {{ chosen(5) }}
+{% endblock %}

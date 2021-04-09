@@ -1,0 +1,11 @@
+{% extends 'dashboard/base.html.twig' %}
+
+{% block title %}{{ 'activity.adding' | trans }}{% endblock %}
+
+{% block body %}
+
+    <h1>{{ 'activity.adding' | trans }}</h1>
+
+    {{ include('dashboard/activity/_form.html.twig') }}
+
+{% endblock %}

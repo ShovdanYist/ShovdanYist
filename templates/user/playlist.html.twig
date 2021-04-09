@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ 'playlist.of' | trans({'username':user.username}) }}{% endblock %}
+
+{% block description %}В ShovdanYist вы найдете тексты всех чеченских песен, их переводы, а также сможете скачать их или добавлять в свой плейлист.{% endblock %}
+
+{% block keywords %}{% if not app.user %}{{ 'playlist.of' | trans | lower }} {{ user.username }}{% endif %}, тексты чеченских песен, чеченские песни, под гитару, переводы чеченских песен, музыка{% endblock %}
+
+{% block main_top %}
+    {{ breadcrumb({
+        (path('user_profile', {'username': user.username} )) : (user.username),
+        'active' : ('playlist' | trans),
+    }) }}
+{% endblock %}
+
+{% block body %}
+
+    {% for key,music in playlist %}
+
+        {{ player(music,false,true) }}
+
+    {% else %}
+
+        {% if user.username == app.user.username %}
+            {{ 'not.songs.in.your.playlist' | trans }}
+        {% else %}
+            {{ 'user.has.not.songs.in.playlist' | trans({'username':user.username}) }}
+        {% endif %}
+
+    {% endfor %}
+
+    {{ paginator.display() }}
+
+{% endblock %}
+
+{% block scripts %}
+    {{ autoplay() }}
+{% endblock %}

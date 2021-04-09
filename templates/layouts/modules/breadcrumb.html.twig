@@ -1,0 +1,71 @@
+<div class="md-box md-breadcrumb">
+
+    <div class="md-breadcrumb-nav">
+
+        <ol>
+
+            {% for link,title in links %}
+
+                {% if link != 'active' %}
+                    <li class="breadcrumb-item"><a href="{{ link }}">{{ title }}</a></li>
+                {% else %}
+                    <li class="breadcrumb-item active">{{ title }}</li>
+                {% endif %}
+
+            {% endfor %}
+
+        </ol>
+
+    </div>
+
+    {% if entity %}
+
+        {% if name == 'post' %}
+
+            {% if is_granted('ROLE_MODER') or entity.author == app.user %}
+
+                <button type="button" class="btn md-dot-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="right: 12px;top: 8px">
+                    <i class="fas fa-ellipsis-h"></i>
+                </button>
+
+                <div class="dropdown-menu dropdown-menu-right">
+
+                    <a href="{{ path('post_edit', {'slug':entity.slug}) }}" class="dropdown-item">
+                        <i class="fa fa-edit"></i> {{ 'edit' | trans }}
+                    </a>
+
+                    <form method="post" action="{{ path('post_delete', {'id': entity.id}) }}" onsubmit="return confirm('{{ 'are.you.sure.to.delete' | trans }}');">
+                        <input type="hidden" name="_method" value="DELETE">
+                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ entity.id) }}">
+                        <button class="dropdown-item">
+                            <i class="fas fa-trash-alt"></i> {{ 'delete' | trans }}
+                        </button>
+                    </form>
+
+                </div>
+
+            {% endif %}
+
+        {% elseif name == 'music' %}
+
+            {% if is_granted('ROLE_ADMIN') %}
+
+                <button type="button" class="btn md-dot-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="right: 12px;top: 8px">
+                    <i class="fas fa-ellipsis-h"></i>
+                </button>
+
+                <div class="dropdown-menu dropdown-menu-right">
+
+                    <a href="{{ path('dash_music_edit', {'id':entity.id}) }}" class="dropdown-item" target="_blank">
+                        <i class="fa fa-edit"></i> {{ 'edit' | trans }}
+                    </a>
+
+                </div>
+
+            {% endif %}
+
+        {% endif %}
+
+    {% endif %}
+
+</div>

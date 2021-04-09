@@ -1,0 +1,132 @@
+<?php
+
+namespace App\Twig;
+
+use App\Entity\Music;
+use App\Entity\People;
+use App\Entity\User;
+use App\Repository\BookmarkRepository;
+use App\Repository\MusicRepository;
+use App\Repository\NotificationRepository;
+use App\Repository\PostRepository;
+use App\Repository\UserMusicRepository;
+use Symfony\Component\Security\Core\Security;
+use Symfony\Contracts\Translation\TranslatorInterface;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFunction;
+
+class CounterExtension extends AbstractExtension
+{
+    private $musicRepo;
+    private $userMusicRepo;
+    private $notifyRepo;
+    private $translator;
+    private $bookmarks;
+    private $postRepo;
+    private $security;
+
+    public function __construct(MusicRepository $musicRepository, PostRepository $postRepo, BookmarkRepository $bookmarks, UserMusicRepository $userMusicRepo, NotificationRepository $notifyRepo, TranslatorInterface $translator, Security $security)
+    {
+        $this->musicRepo = $musicRepository;
+        $this->postRepo = $postRepo;
+        $this->userMusicRepo = $userMusicRepo;
+        $this->bookmarks = $bookmarks;
+        $this->notifyRepo = $notifyRepo;
+        $this->translator = $translator;
+        $this->security = $security;
+    }
+
+    public function getFunctions()
+    {
+        return [
+            new TwigFunction('featuring', [$this, 'artistFeaturing'], ['is_safe' => ['html']]),
+            new TwigFunction('featuringsCount', [$this, 'featuringsCount'], ['is_safe' => ['html']]),
+            new TwigFunction('songsCount', [$this, 'songsCount'], ['is_safe' => ['html']]),
+            new TwigFunction('userContainMusic', [$this, 'userContainMusic'], ['is_safe' => ['html']]),
+            new TwigFunction('userContainPost', [$this, 'userContainPost'], ['is_safe' => ['html']]),
+            new TwigFunction('notifyCount', [$this, 'notifyCount'], ['is_safe' => ['html']]),
+            new TwigFunction('moderationCount', [$this, 'moderationCount'], ['is_safe' => ['html']]),
+            new TwigFunction('notifyIndicator', [$this, 'notifyIndicator'], ['is_safe' => ['html']]),
+        ];
+    }
+
+    public function artistFeaturing(Music $song, $delimiter = '')
+    {
+        $featuring = $song->getFeaturing();
+        $result = [];
+
+        foreach ($featuring as $artist) {
+            array_push($result,$artist->getFullName());
+        }
+
+        sort($result);
+        $result = implode($delimiter,$result);
+        $template = '(' . $this->translator->trans('feat') . ' %s)';
+
+        if ($featuring->isEmpty()){
+            $template = null;
+        }
+
+        return sprintf($template, $result);
+    }
+
+    public function featuringsCount(People $singer)
+    {
+        $featurings = count($this->musicRepo->findFeaturingCount($singer));
+        ($featurings == 1) ? $word = $this->translator->trans('featuring_singular') : $word = $this->translator->trans('featuring_plural');
+        $template = '<span class="badge badge-secondary">%s %s</span>';
+
+        if ($featurings == 0){
+            return null;
+        }
+
+        return sprintf(
+            $template,
+            $featurings,
+            $word
+        );
+    }
+
+    public function songsCount(People $singer)
+    {
+        $songs = $this->musicRepo->count(['artist' => $singer,'status' => true]);
+        ($songs == 1) ? $word = $this->translator->trans('song') : (($songs < 5) ? $word = $this->translator->trans('two_songs') : $word = $this->translator->trans('songs'));
+        $template = '<span class="badge badge-info">%s %s</span>';
+
+        return sprintf(
+            $template,
+            $songs,
+            $word
+        );
+    }
+
+    public function userContainMusic($user, $song)
+    {
+        return $this->userMusicRepo->findOneBy(['user' => $user, 'music' => $song]);
+    }
+
+    public function userContainPost($user, $post)
+    {
+        return $this->bookmarks->findOneBy(['user' => $user, 'post' => $post]);
+    }
+
+    public function notifyCount($user)
+    {
+        return $this->notifyRepo->count(['receiver' => $user, 'seen' => false]);
+    }
+
+    public function moderationCount()
+    {
+        return $this->postRepo->count(['status' => null]);
+    }
+
+    public function notifyIndicator(User $user): int
+    {
+        if ($this->security->isGranted('ROLE_MODER')){
+            $result = $this->moderationCount() + $this->notifyCount($user);
+        } else {
+            $result = $this->notifyCount($user);
+        }
+        return $result;
+    }
+}

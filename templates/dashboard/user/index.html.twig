@@ -1,0 +1,83 @@
+{% extends 'dashboard/base.html.twig' %}
+
+{% block title %}{{ 'users' | trans }}{% endblock %}
+
+{% block main_top %}
+
+    <div class="container dash-crud-header">
+
+        <h1>{{ 'users' | trans }}</h1>
+
+        <a class="btn btn-info float-right" href="{{ path('dash_user_new') }}">
+            <i class="fa fa-plus" aria-hidden="true"></i>
+            <span class="mobile-txt-hider">{{ 'add.user' | trans }}</span>
+        </a>
+
+    </div>
+
+{% endblock %}
+
+{% block body %}
+
+    <table class="table table-striped table-middle-alignede">
+
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>{{ 'form.avatar' | trans }}</th>
+                <th>{{ 'first.name' | trans }}</th>
+                <th>{{ 'role' | trans }}</th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+        {% for user in users %}
+
+            <tr>
+
+                <td>{{ user.id }}</td>
+
+                <td>
+                    <div class="back-picture bp-50" style="background-image: url('{% if user.profile.avatar != 'avatar.jpg' %}{{ vich_uploader_asset(user.profile) }}{% else %}{{ asset('assets/images/avatar.jpg') }}{% endif %}')"></div>
+                </td>
+
+                <td>
+                    {{ user.username }}
+
+                    {% if user.profile.verified %}
+                        <i class="fas fa-check-circle text-info"></i>
+                    {% endif %}
+
+                    {{ crudActions(user, 'user') }}
+                </td>
+
+                <td>
+                    <span class="badge badge-{% if user.roles.0 == 'ROLE_ADMIN' %}primary{% elseif user.roles.0 == 'ROLE_MODER' %}info{% elseif user.roles.0 == 'ROLE_AUTHOR' %}success{% else %}secondary{% endif %}">
+                        {% if user.roles.0 == 'ROLE_ADMIN' %}
+                            Ad<span class="mobile-txt-hider">ministrator</span>
+                        {% elseif user.roles.0 == 'ROLE_MODER' %}
+                            Mo<span class="mobile-txt-hider">derator</span>
+                        {% elseif user.roles.0 == 'ROLE_AUTHOR' %}
+                            Au<span class="mobile-txt-hider">thor</span>
+                        {% else %}
+                            Us<span class="mobile-txt-hider">er</span>
+                        {% endif %}
+                    </span>
+                </td>
+
+            </tr>
+
+        {% else %}
+
+            <tr>
+                <td colspan="5">{{ 'no.records.found' | trans }}</td>
+            </tr>
+
+        {% endfor %}
+
+        </tbody>
+
+    </table>
+
+{% endblock %}

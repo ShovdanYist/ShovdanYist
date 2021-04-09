@@ -1,0 +1,88 @@
+{% extends 'dashboard/base.html.twig' %}
+
+{% block title %}{{ 'music' | trans }}{% endblock %}
+
+{% block main_top %}
+
+    <div class="container dash-crud-header">
+
+        <h1>{{ person.fullName }}</h1>
+
+        <a class="btn btn-info float-right mb-3" href="{{ path('dash_music_new', {'person':person.id}) }}">
+            <i class="fa fa-plus" aria-hidden="true"></i>
+            <span class="mobile-txt-hider">{{ 'add.music' | trans }}</span>
+        </a>
+
+        <a class="btn btn-outline-success float-right mb-3" href="{{ path('dash_music_index') }}">
+            <i class="fas fa-pen"></i>
+            <span class="mobile-txt-hider">{{ 'published' | trans }}</span>
+        </a>
+
+    </div>
+
+{% endblock %}
+
+{% block body %}
+
+    <div class="scrollable-table">
+
+        <table class="table table-striped table-middle-aligned">
+
+            <thead>
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">{{ 'title' | trans }}</th>
+                <th scope="col">{{ 'artist' | trans }}</th>
+                <th scope="col">{{ 'status' | trans }}</th>
+            </tr>
+            </thead>
+
+            <tbody>
+
+            {% for music in person.musics %}
+
+                <tr>
+
+                    <td>{{ music.id }}</td>
+
+                    <td>
+                        <a href="{{ path('dash_music_edit', {'id': music.id}) }}">
+                            {{ music.title }}
+                        </a>
+                        {% if music.featured %} <i class="fas fa-star text-warning"></i> {% endif %}
+
+                        {{ crudActions(music, 'music') }}
+
+                        <br><span class="small text-muted">{{ music.slug }}</span>
+                    </td>
+
+                    <td>
+                        {% if music.artist %}
+                            {{ music.artist.fullName }}
+                        {% endif %}
+                        <span class="small text-muted">
+                            <br>{{ featuring( music, ',<br>' ) }}
+                        </span>
+                    </td>
+
+                    <td>
+                        {{ music.status ? '<span class="badge badge-pill badge-success">on</span>' : '<span class="badge badge-pill badge-danger">off</span>' }}
+                    </td>
+
+                </tr>
+
+            {% else %}
+
+                <tr>
+                    <td colspan="9">{{ 'music.not.found' | trans }}</td>
+                </tr>
+
+            {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+{% endblock %}

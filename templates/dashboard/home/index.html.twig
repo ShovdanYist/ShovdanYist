@@ -1,0 +1,77 @@
+{% extends 'dashboard/base.html.twig' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block main_top %}
+
+    <div class="container dash-crud-header">
+
+        <h1>{{ 'dashboard' | trans }}</h1>
+
+    </div>
+
+{% endblock %}
+
+{% block body %}
+
+    <h2>{{ 'statistics' | trans }}</h2>
+
+    <div class="scrollable-table">
+
+        <table class="table table-striped table-center md-table-carved">
+
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">{{ 'sections' | trans }}</th>
+                    <th scope="col"><i class="fas fa-tasks"></i></th>
+                    <th scope="col"><i class="fas fa-check"></i></th>
+                    <th scope="col">{{ 'total' | trans }}</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                {% for stat in post %}
+
+                    <tr>
+                        <th scope="row">{{ stat.name | trans }}</th>
+
+                        <td>
+                            {% if stat.moderation != 0 %}
+                                <a href="{% if stat.name == 'music' %}{{ path('dash_music_moderation' ) }}{% else %}{% endif %}">
+                                    <span class="badge badge-pill badge-danger">
+                                        {{ stat.moderation }}
+                                    </span>
+                                </a>
+                            {% else %}
+                                -
+                            {% endif %}
+                        </td>
+
+                        <td>
+                            {% if stat.published != 0 %}
+                                <span class="badge badge-pill badge-success">
+                                {{ stat.published }}
+                            </span>
+                            {% else %}
+                                -
+                            {% endif %}
+                        </td>
+
+                        <td>
+                            <span class="badge badge-pill badge-primary">
+                                {{ stat.total }}
+                            </span>
+                        </td>
+
+                    </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+{% endblock %}

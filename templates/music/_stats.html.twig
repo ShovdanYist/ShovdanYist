@@ -1,0 +1,80 @@
+{% if not song.theme.empty or not song.genre.empty or not song.featuring.empty or song.releaseDate %}
+
+    <div class="md-song-stats">
+
+        {% if not song.theme.empty %}
+
+            <strong>{{ 'theme' | trans }}</strong>
+            {% for theme in song.theme %}
+                <span class="badge badge-info badge-a">
+                    <a href="{{ path('theme_show', {'slug': theme.slug}) }}">
+                        {{ theme.title }}
+                    </a>
+                </span>
+            {% endfor %}
+
+        {% endif %}
+
+        {% if not song.genre.empty %}
+
+            <strong>{{ 'genre' | trans }}</strong>
+            {% for genre in song.genre %}
+                <span class="badge badge-info badge-a">
+                    <a href="{{ path('genre_show', {'slug': genre.slug}) }}">
+                        {{ genre.title }}
+                    </a>
+                </span>
+            {% endfor %}
+
+        {% endif %}
+
+        {% if song.releaseDate %}
+            <strong>{{ 'release.date' | trans }}</strong>
+            <span class="badge badge-primary">
+                {{ song.releaseDate ? song.releaseDate | format_datetime('medium', 'none', '', 'UTC') }}
+            </span>
+        {% endif %}
+
+        {% if not song.featuring.empty %}
+
+            <strong>{{ 'featuring' | trans }}</strong>
+
+            {% for singer in song.featuring %}
+                <span class="badge badge-primary badge-a">
+                    <a class="md-feat-stat" href="{{ path('music_singer', { slug: singer.slug }) }}">
+                        {{ singer.fullName }}
+                    </a>
+                </span>
+            {% endfor %}
+
+        {% endif %}
+
+    </div>
+
+{% endif %}
+
+<div class="md-article-info">
+
+    <div>
+
+        {# TODO: date configuration in song #}
+
+        {% if song.publicationDate %}
+            <strong>{{ 'publication.date' | trans }}</strong><br>
+            {{ song.publicationDate ? song.publicationDate | format_datetime('medium', 'none', '', 'UTC') }}
+{#            {{ song.publicationDate ? song.publicationDate | format_datetime('medium', 'none', '', 'UTC') }}#}
+{#            {{ song.publicationDate ? song.publicationDate | format_datetime(pattern="hh 'oclock' a, zzzz") }}#}
+        {% endif %}
+
+{#        {% if song.author %}#}
+{#            <br><strong>{{ 'author' | trans }}</strong><br>#}
+{#            <a href="{{ path('user_profile', {'username': song.author.username }) }}">#}
+{#                <span class="avatar back-picture bp-24 mr-1" style="background-image: url('{{ vich_uploader_asset(song.author.profile) }}')">#}
+{#                </span>#}
+{#                <strong>{{ song.author.username }}</strong>#}
+{#            </a>#}
+{#        {% endif %}#}
+
+    </div>
+
+</div>

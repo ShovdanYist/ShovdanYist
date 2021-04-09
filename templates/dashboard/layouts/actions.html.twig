@@ -1,0 +1,33 @@
+<button type="button" class="btn md-dot-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    <i class="fas fa-ellipsis-h"></i>
+</button>
+
+<div class="dropdown-menu">
+
+    {% if user == true %}
+
+        <a href="{{ path('dash_user_edit_profile', {'id': entity.id}) }}" class="dropdown-item">
+            <i class="fas fa-user" aria-hidden="true"></i> {{ 'edit' | trans }}
+        </a>
+
+        <a href="{{ path('dash_user_edit_privacy', {'id': entity.id}) }}" class="dropdown-item">
+            <i class="fas fa-shield-alt" aria-hidden="true"></i> {{ 'settings' | trans }}
+        </a>
+
+    {% else %}
+
+        <a href="{{ path('dash_' ~ name ~ '_edit', {'id': entity.id}) }}" class="dropdown-item">
+            <i class="fa fa-edit" aria-hidden="true"></i> {{ 'edit' | trans }}
+        </a>
+
+    {% endif %}
+
+    <form method="post" action="{{ path('dash_' ~ name ~ '_delete', {'id': entity.id}) }}" onsubmit="return confirm('{{ 'are.you.sure.to.delete' | trans }}');">
+        <input type="hidden" name="_method" value="DELETE">
+        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ entity.id) }}">
+        <button class="dropdown-item">
+            <i class="fas fa-trash-alt"></i> {{ 'delete' | trans }}
+        </button>
+    </form>
+
+</div>

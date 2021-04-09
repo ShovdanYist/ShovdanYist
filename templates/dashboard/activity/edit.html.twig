@@ -1,0 +1,11 @@
+{% extends 'dashboard/base.html.twig' %}
+
+{% block title %}{{ 'activity.editing' | trans }}{% endblock %}
+
+{% block body %}
+
+    <h1>{{ 'activity.editing' | trans }}</h1>
+
+    {{ include('dashboard/activity/_form.html.twig', {'button_label': 'update' | trans }) }}
+
+{% endblock %}

@@ -1,0 +1,54 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Profile editing{% endblock %}
+
+{% block body %}
+
+
+    <h1 class="border-heading">
+        {{ 'profile.editing' | trans }}
+    </h1>
+
+
+    {{ form_start(form) }}
+
+        <div class="row label-icons-form md-edit-form">
+
+            <div class="col-12 md-edit-form-block">
+
+                <div id="output-content" style="background-image: url('{% if app.user.profile.avatar != 'avatar.jpg' %}{{ vich_uploader_asset(app.user.profile) }}{% else %}{{ asset('assets/images/avatar.jpg') }}{% endif %}')">
+                </div>
+
+                {{ form_row(form.avatarFile) }}
+                {{ form_row(form.avatarDelete) }}
+                {{ form_row(form.fullname) }}
+                {{ form_row(form.about) }}
+                {{ form_row(form.url) }}
+
+                <div class="md-form-gender md-form-unmargin">
+                    {{ form_row(form.gender) }}
+                </div>
+
+                <div class="mt-3">
+
+                    <button class="btn btn-primary">
+                        {{ 'save' | trans }}
+                    </button>
+
+                    <a class="btn btn-link float-right" href="{{ path('user_profile', {'username' : user.username }) }}">
+                        {{ 'cancel' | trans }}
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    {{ form_end(form) }}
+
+{% endblock %}
+
+{% block scripts %}
+    {{ ckeditor() }}
+{% endblock %}

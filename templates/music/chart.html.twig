@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ info.title }}{% endblock %}
+
+{% block description %}{{ info.description }}, а также тексты всех чеченских песен, биографии, и многое другое.{% endblock %}
+
+{% block keywords %}чеченские {{ info.h1 | lower }}, тексты чеченских песен, под гитару, переводы чеченских песен, музыка{% endblock %}
+
+{% block main_top %}
+    {{ breadcrumb({
+        (path('app_home')) : ('home.page' | trans),
+        (path('music_index')) : ('music' | trans),
+        'active' : (info.h1),
+    }) }}
+{% endblock %}
+
+{% block body %}
+
+    <h1>{{ info.h1 }}</h1>
+
+    {% for key,song in songs %}
+        {{ player(song) }}
+    {% else %}
+        {{ 'no.records.found' | trans }}
+    {% endfor %}
+
+    {{ paginator.display }}
+
+{% endblock %}
+
+{% block scripts %}
+    {{ autoplay() }}
+{% endblock %}

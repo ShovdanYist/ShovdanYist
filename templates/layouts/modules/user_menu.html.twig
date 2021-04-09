@@ -1,0 +1,160 @@
+{% if app.user %}
+
+    {% set user = app.user %}
+
+    <div class="md-box sidebar sticky-top">
+
+        <div class="md-user-sidebar-profile">
+
+            <div class="back-picture bp-45" style="background-image: url('{% if app.user.profile.avatar != 'avatar.jpg' %}{{ vich_uploader_asset(app.user.profile) }}{% else %}{{ asset('assets/images/avatar.jpg') }}{% endif %}')">
+            </div>
+
+            <div class="md-user-sidebar-username">
+                <span class="md-username">
+                    <a href="{{ path('user_profile', {'username' : user.username }) }}">
+                        {{ user.username }}
+                    </a>
+                </span>
+
+                {% if user.profile.verified %}
+                    <span class="md-verified">
+                        <i class="fas fa-check-circle text-info"></i>
+                    </span>
+                {% endif %}
+            </div>
+
+        </div>
+
+        <div class="md-menu">
+
+            <ul>
+
+                <li class="md-menu-item">
+                    <a href="{{ path('app_home') }}">
+                        <span>
+                            <i class="fas fa-heading"></i>
+                        </span>
+                        {{ 'articles' | trans }}
+                    </a>
+                </li>
+
+                <li class="md-menu-item">
+                    <a href="{{ path('music_index') }}">
+                        <span>
+                            <i class="fas fa-music"></i>
+                        </span>
+                        {{ 'music' | trans }}
+                    </a>
+                </li>
+
+                <li class="md-menu-item">
+                    <a href="{{ path('user_notifications') }}">
+                        <span>
+                            <i class="fas fa-bell"></i>
+                        </span>
+                        {{ 'notifications' | trans }}
+                        {% if notifyCount(app.user) != 0 %}
+                            <span class="badge badge-pill badge-danger float-right mt-1">
+                                {% if notifyCount(app.user) > 99 %}
+                                    99+
+                                {% else %}
+                                    {{ notifyCount(app.user) }}
+                                {% endif %}
+                            </span>
+                        {% endif %}
+                    </a>
+                </li>
+
+                <li class="md-menu-item">
+                    <a href="{{ path('user_playlist', {'username': app.user.username}) }}">
+                        <span>
+                            <i class="fas fa-headphones"></i>
+                        </span>
+                        {{ 'playlist' | trans }}
+                    </a>
+                </li>
+
+                <li class="md-menu-item">
+                    <a href="{{ path('user_bookmarks') }}">
+                        <span>
+                            <i class="fas fa-bookmark"></i>
+                        </span>
+                        {{ 'bookmarks' | trans }}
+                    </a>
+                </li>
+
+                {% if is_granted('ROLE_MODER') %}
+                    <li class="md-menu-item">
+                        <a href="{{ path('post_moderation') }}">
+                        <span>
+                            <i class="fas fa-tasks"></i>
+                        </span>
+                            {{ 'moderation' | trans }}
+                            {% if moderationCount() != 0 %}
+                                <span class="badge badge-pill badge-danger float-right mt-1">
+                                {% if moderationCount() > 99 %}
+                                    99+
+                                {% else %}
+                                    {{ moderationCount() }}
+                                {% endif %}
+                            </span>
+                            {% endif %}
+                        </a>
+                    </li>
+                {% endif %}
+
+            </ul>
+
+        </div>
+
+    </div>
+
+{% else %}
+
+    <div class="md-box sidebar sticky-top">
+        <div class="md-menu">
+
+            <ul>
+
+                <li class="md-menu-item">
+                    <a href="{{ path('app_home') }}">
+                        <span>
+                            <i class="fas fa-home"></i>
+                        </span>
+                        {{ 'home.page' | trans }}
+                    </a>
+                </li>
+
+                <li class="md-menu-item">
+                    <a href="{{ path('music_index') }}">
+                        <span>
+                            <i class="fas fa-music"></i>
+                        </span>
+                        {{ 'music' | trans }}
+                    </a>
+                </li>
+
+                <li class="md-menu-item">
+                    <a href="{{ path('music_chart', {'chart':'trends'}) }}">
+                        <span>
+                            <i class="fas fa-fire-alt"></i>
+                        </span>
+                        {{ 'trends' | trans }}
+                    </a>
+                </li>
+
+                <li class="md-menu-item">
+                    <a href="{{ path('music_chart', {'chart':'novelty'}) }}">
+                        <span>
+                            <i class="fas fa-certificate"></i>
+                        </span>
+                        {{ 'novelty' | trans }}
+                    </a>
+                </li>
+
+            </ul>
+
+        </div>
+    </div>
+
+{% endif %}

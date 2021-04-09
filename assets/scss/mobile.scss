@@ -1,0 +1,287 @@
+@media only screen and (max-width: 992px) {
+  .cke_button__emojipanel {
+    display: none !important;
+  }
+  .border-heading {
+    text-align: center;
+    padding-bottom: 14px !important;
+  }
+  .front main, main {
+    max-width: 100% !important;
+  }
+  main {
+    width: 100%;
+    flex: unset !important;
+  }
+  .mobile-navbar-item {
+    display: block !important;
+  }
+  .container {
+    max-width: calc(100% - 30px);
+  }
+  .sidebar-a, .sidebar-b {
+    display: none;
+  }
+  .md-box.md-main-box-col-2 {
+    display: flex !important;
+  }
+  .md-one-singer {
+    margin-bottom: 20px !important;
+  }
+  .md-song-feat {
+    top: -12px !important;
+  }
+  .md-singer-card {
+    padding-bottom: 20px !important;
+    margin-bottom: 20px !important;
+  }
+  .md-nav-menu {
+    display: none;
+  }
+  .md-nav-logo, .md-nav-item {
+    display: table;
+    margin: 0 auto;
+    float: unset !important;
+  }
+  #sideNavOpener {
+    display: block !important;
+  }
+  .navbar-login-mobile {
+    display: unset !important;
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  .dash-crud-header {
+    border-radius: unset !important;
+  }
+  h1, .h1 {
+    font-size: 24px !important;
+    line-height: 30px !important;
+    margin-bottom: 12px !important;
+    margin-top: -4px !important;
+  }
+  h2, .h2 {
+    font-size: 22px !important;
+    line-height: 26px !important;
+    margin-top: -4px !important;
+  }
+
+  h3, .h3 {
+    line-height: 22px !important;
+    font-size: 20px !important;
+  }
+  .md-singer-card h3 {
+    font-size: 24px !important;
+    float: left;
+    margin-right: 8px;
+  }
+  .md-song-player {
+    width: 100%;
+  }
+  .md-song-feat {
+    top: -8px !important;
+  }
+  .container {
+    max-width: unset;
+  }
+  .md-content-padding {
+    padding: 16px !important;
+  }
+  .md-one-singer {
+    margin-bottom: 15px !important;
+  }
+  .md-singer-card {
+    padding-bottom: 18px !important;
+    margin-bottom: 18px !important;
+  }
+  .md-chart-box {
+    max-width: 100% !important;
+    flex: unset;
+    width: 100%;
+    margin-bottom: 15px;
+  }
+  .md-chart-boxes {
+    margin-top: 10px;
+  }
+  .md-verified-profile {
+    font-size: 20px !important;
+    top: unset !important;
+  }
+  .md-profile .md-dot-btn {
+    top: 2px !important;
+  }
+  .label-icons-form {
+    flex-direction: column;
+  }
+  .label-icons-form .col-9, .label-icons-form .col-3 {
+    max-width: 100%;
+  }
+  .label-icons-form .col-3 {
+    margin: 15px 0 0;
+  }
+  .label-icons-form .col-3 .btn {
+    float: left;
+    margin: 0 10px 0 0 !important;
+    width: unset;
+    padding: 6px 10px;
+  }
+  .label-icons-form .col-3 .btn:last-child {
+    margin-right: unset !important;
+  }
+  .alert {
+    right: 12px !important;
+    left: 12px !important;
+    bottom: 12px !important;
+    text-align: center;
+  }
+  .md-profile-header {
+    height: 38px !important;
+    margin-bottom: 16px !important;
+  }
+  .error-content {
+    height: 240px !important;
+  }
+  .post-actions {
+    margin-top: 10px !important;
+  }
+  #postImgOutput {
+    width: unset !important;
+  }
+  .md-pages-table-3 table {
+    min-width: 600px;
+  }
+  .md-pages-table-3::after {
+    background: -moz-linear-gradient(right, #fff 0%, rgba(255, 255, 255, 0) 100%);
+    position: absolute;
+    height: 300px;
+    content: '';
+    width: 30px;
+    right: 0;
+    top: 0;
+    display: block;
+  }
+}
+
+@media only screen and (max-width: 576px) {
+  .md-singer-cards .md-singer-card {
+    margin-bottom: 16px !important;
+  }
+  .md-singer-cards .md-singer-body h3 {
+    margin-bottom: 5px;
+  }
+  .md-singer-cards .md-singer-body {
+    margin-top: unset;
+    margin-bottom: 10px;
+  }
+  .md-singer-cards .md-singer-block {
+    flex-direction: column !important;
+  }
+  th {
+    font-size: 14px;
+  }
+  .md-singer-body {
+    margin-top: 12px;
+    width: 100%;
+  }
+  .md-profile .md-username {
+    margin-right: auto;
+    margin-left: auto;
+    text-align: center;
+  }
+  .notify-message-user {
+    max-width: 250px;
+  }
+  .md-comment-reply-user.font-weight-bold {
+    max-width: 240px;
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .md-comment-replied .md-comment-username {
+    display: block;
+    max-width: 200px;
+  }
+  .md-user-music-nav ul {
+    white-space: nowrap;
+    display: flex;
+    overflow: auto;
+  }
+  .md-user-music-nav {
+    display: block;
+    margin-right: -15px;
+    margin-left: -15px;
+  }
+  .md-user-music-nav ul:before, .md-user-music-nav ul:after {
+    content: '';
+    position: absolute;
+    width: 21px;
+    height: 40px;
+    display: block;
+    z-index: 10;
+  }
+  .md-user-music-nav ul:before {
+    background: -moz-linear-gradient(left, rgb(255, 255, 255) 0%, rgba(255,255,255,0) 100%);
+    z-index: 10;
+  }
+  .md-user-music-nav ul:after {
+    background: -moz-linear-gradient(right, rgb(255, 255, 255) 0%, rgba(255,255,255,0) 100%);
+    right: 0;
+  }
+  .md-user-music-nav ul li:first-child {
+    margin-left: 20px !important;
+  }
+  .md-user-music-nav ul li:last-child {
+    padding-right: 20px !important;
+  }
+  .md-song-player {
+    width: 100% !important;
+  }
+  .mobile-txt-hider {
+    display: none;
+  }
+}
+
+@media only screen and (max-width: 400px) {
+  .notify-message-user {
+    max-width: 200px;
+  }
+  .md-comment-reply-user.font-weight-bold {
+    max-width: 210px;
+  }
+  .md-comment-replied .md-comment-username {
+    max-width: 165px;
+  }
+  .md-nav-logo img {
+    margin: 5px 0 !important;
+  }
+}
+
+@media only screen and (max-width: 370px) {
+  th span {
+    display: none;
+  }
+  .notify-message-user {
+    max-width: 170px;
+  }
+  .md-comment-reply-user.font-weight-bold {
+    max-width: 160px;
+  }
+  .md-comment-replied .md-comment-username {
+    max-width: 110px;
+  }
+  .navbar-login-mobile span {
+    display: none;
+  }
+}
+
+// If more than 768px
+
+@media only screen and (min-width: 768px) {
+  body .chosen {
+    height: 41px !important;
+  }
+  .chosen option {
+    display: none;
+  }
+}

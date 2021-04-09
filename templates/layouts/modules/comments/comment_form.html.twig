@@ -1,0 +1,54 @@
+{% if app.user %}
+
+    {{ form_start(commentForm, {action: path('comment_new', {'type': name,'id': entity.id})}) }}
+
+    <div class="md-comment-write">
+
+        <div class="md-comment-writer">
+            <span class="back-picture bp-45" style="margin-right: 14px;background-image: url('{% if app.user.profile.avatar != 'avatar.jpg' %}{{ vich_uploader_asset(app.user.profile) }}{% else %}{{ asset('assets/images/avatar.jpg') }}{% endif %}')">
+            </span>
+        </div>
+
+        <div class="md-comment-input">
+
+            <small class="md-comment-reply-area">
+                <span class="float-left mr-1">{{ 'form.reply.for' | trans }}</span>
+                <span class="md-comment-reply-user font-weight-bold"></span>{{ 'form.reply.for_2' | trans }}
+                <span class="md-replying-delete"><i class="fas fa-times"></i></span>
+            </small>
+            {{ form_errors(commentForm.message) }}
+            {{ form_widget(commentForm.message) }}
+
+        </div>
+
+        <div class="md-comment-send">
+
+            <button class="btn">
+                <i class="fas fa-paper-plane"></i>
+            </button>
+
+        </div>
+
+    </div>
+
+    {{ form_end(commentForm) }}
+
+{% else %}
+
+    <div class="md-comment-guest">
+
+        <a class="btn btn-info mr-1" href="{{ path('app_login') }}">
+            {{ 'log.in' | trans }}
+        </a>
+
+        {{ 'or' | trans }}
+
+        <a class="btn btn-success ml-1 mr-1" href="{{ path('app_register') }}">
+            {{ 'sign.up' | trans }}
+        </a>
+
+        {{ 'to.leave.a.comment' | trans }}
+
+    </div>
+
+{% endif %}

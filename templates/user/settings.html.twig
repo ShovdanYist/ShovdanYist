@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ 'settings' | trans }}{% endblock %}
+
+{% block body %}
+
+    <h1 class="border-heading">
+        {{ 'settings' | trans }}
+    </h1>
+
+    {{ form_start(form) }}
+
+        <div class="row label-icons-form">
+
+            <div class="col-12">
+
+                {{ form_row(form.username) }}
+                {{ form_row(form.email) }}
+
+                <button class="btn btn-primary">
+                    {{ 'save' | trans }}
+                </button>
+
+                <a class="btn btn-link float-right" href="{{ path('user_profile', {'username': app.user.username}) }}">
+                    {{ 'cancel' | trans }}
+                </a>
+
+            </div>
+
+        </div>
+
+    {{ form_end(form) }}
+
+{% endblock %}
+
+{% block main_bottom %}
+
+    <div class="mx-5 my-3 text-center">
+        {{ 'you.also.can' | trans }} <a href="{{ path('user_reset') }}">{{ 'reset.password' | trans | lower }}</a> {{ 'or' | trans }} <a href="{{ path('user_delete_account') }}">{{ 'delete.account' | trans | lower }}.</a>
+    </div>
+
+{% endblock %}

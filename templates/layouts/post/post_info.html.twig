@@ -1,0 +1,24 @@
+<div class="post-info">
+
+    {% if post.anonymous %}
+        <span class="avatar back-picture bp-24" style="background-image: url('{{ asset('assets/images/avatar.jpg') }}')">
+        </span>
+        <a class="username">
+            anonyme
+        </a>
+    {% else %}
+        <span class="avatar back-picture bp-24" style="background-image: url('{% if post.author.profile.avatar != 'avatar.jpg' %}{{ vich_uploader_asset(post.author.profile) }}{% else %}{{ asset('assets/images/avatar.jpg') }}{% endif %}')">
+        </span>
+
+        <a class="username" href="{{ path('user_profile', {'username': post.author.username }) }}">
+            {{ post.author.username }}
+        </a>
+    {% endif %}
+
+    <span class="date">
+    {{ post.publishedAt ? post.publishedAt | format_datetime('medium', 'none', '', 'UTC') }}
+    в
+    {{ post.publishedAt ? post.publishedAt | date(' H:i') }}
+    </span>
+
+</div>

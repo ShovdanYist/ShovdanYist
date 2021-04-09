@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ 'account.recovery' | trans }}{% endblock %}
+
+{% block body %}
+
+    <h1>{{ 'account.recovery' | trans }}</h1>
+
+    {{form_start(form)}}
+
+        {{form_row(form.email)}}
+        <button class="btn btn-primary mt-1" type="submit">{{ 'send' | trans }}</button>
+
+    {{form_end(form)}}
+
+{% endblock %}

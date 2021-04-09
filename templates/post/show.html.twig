@@ -1,0 +1,66 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ post.title }}{% endblock %}
+
+{% block pageclass %}{% if is_granted('ROLE_MODER') or app.user == post.author %} moder-or-author{% endif %}{% endblock %}
+
+{% block main_top %}
+
+    {{ breadcrumb({
+        (path('app_home')) : ('home.page' | trans),
+        'active' : (post.title),
+    }, post) }}
+
+    {% if post.status is null %}
+        <div class="md-alert md-alert-warning md-box-mb">
+            <i class="fas fa-exclamation-triangle"></i>
+            Статья на модерации
+        </div>
+    {% elseif post.status == false %}
+        <div class="md-alert md-alert-danger md-box-mb">
+            <i class="fas fa-ban"></i>
+            Статья отклонена
+        </div>
+    {% endif %}
+
+{% endblock %}
+
+{% block body %}
+
+    <article>
+
+        {{ postInfo(post) }}
+
+        <h1 class="mb-0">{{ post.title }}</h1>
+
+        {{ postCategories(post) }}
+
+        {{ postImage(post) }}
+
+        {% for song in post.songs %}
+            {{ player(song,null,null,null,vich_uploader_asset(post)) }}
+        {% endfor %}
+
+        {% if post.description %}
+            {{ post.description }}.<p>&nbsp;</p>
+        {% endif %}
+
+        <div class="ckeditor-content md-article">
+            {{ post.content | raw }}
+        </div>
+
+        {% if post.status == true %}
+            {{ postActions(post,false) }}
+        {% endif %}
+
+    </article>
+
+{% endblock %}
+
+{% block main_bottom %}
+
+    {% if post.status == true %}
+        {{ comments(post,page,{'slug':post.slug}) }}
+    {% endif %}
+
+{% endblock %}

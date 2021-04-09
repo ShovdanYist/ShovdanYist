@@ -1,0 +1,15 @@
+{% extends 'dashboard/base.html.twig' %}
+
+{% block title %}{{ 'settings' | trans }}{% endblock %}
+
+{% block body %}
+
+    <h1>{{ 'settings' | trans }}</h1>
+
+    {{ include('dashboard/user/_form.html.twig', {'button_label': 'update' | trans}) }}
+
+{% endblock %}
+
+{% block scripts %}
+    {{ chosen() }}
+{% endblock %}

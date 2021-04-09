@@ -1,0 +1,16 @@
+{% extends 'dashboard/base.html.twig' %}
+
+{% block title %}{{ 'music.adding' | trans }}{% endblock %}
+
+{% block body %}
+
+    <h1>{{ 'music.adding' | trans }}</h1>
+
+    {{ include('dashboard/music/_form.html.twig') }}
+
+{% endblock %}
+
+{% block scripts %}
+    {{ ckeditor() }}
+    {{ chosen(10) }}
+{% endblock %}

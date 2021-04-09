@@ -1,0 +1,8 @@
+<div class="post-categories">
+    {% for category in post.categories %}
+        <a class="{{ post.section }}-color" href="{{ path( 'post_category', {'slug':category.slug}) }}">
+            {{ category.title }}
+        </a>
+        {% if not loop.last %}<span style="color: #bfbfbf">-</span>{% endif %}
+    {% endfor %}
+</div>

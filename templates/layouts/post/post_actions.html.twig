@@ -1,0 +1,40 @@
+<div class="post-actions">
+
+{#    <span class="stat">#}
+{#        <a href="#">#}
+{#            {% set num = random(0,1) %}#}
+
+{#            {% if num == 0 %}#}
+{#                <i class="far fa-heart" style="font-size: 24px; top: -2px; position: relative"></i>#}
+{#            {% else %}#}
+{#                <i class="fas fa-heart" style="color: #d54b43;font-size: 24px; top: -2px; position: relative"></i>#}
+{#            {% endif %}#}
+
+{#            <span class="count">{{ random(94, 234) }}</span>#}
+{#        </a>#}
+{#    </span>#}
+
+    {% if comments %}
+        <span class="stat">
+            <a href="{{ path( 'post_show', {'slug': post.slug}) }}#comments">
+                <i class="far fa-comment-alt" style="font-size: 22px;"></i>
+                <span class="count">{{ post.comments.count }}</span>
+            </a>
+        </span>
+    {% endif %}
+
+    <span class="stat float-right m-0">
+
+        {% if app.user %}
+            <a class="bookmark-toggle bk-toggle{% if userContainPost(app.user, post) %} added{% endif %}" href="{{ path('post_bookmarker', {'slug': post.slug}) }}">
+                <span class="bookmark-icon"></span>
+            </a>
+        {% else %}
+            <a class="bk-toggle" href="javascript:void(0)" style="cursor: pointer;padding-top: 5px;top: -5px;position: relative" data-toggle="tooltip" title="Добавлять посты в закладки можно только после авторизации">
+                <span class="bookmark-icon"></span>
+            </a>
+        {% endif %}
+
+    </span>
+
+</div>

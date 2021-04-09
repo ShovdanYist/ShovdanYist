@@ -1,0 +1,51 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ 'artists.for.letter' | trans({'%letter%': letter | capitalize}) }}
+{% endblock %}
+
+{% block main_top %}
+    {{ breadcrumb({
+        (path('app_home')) : ('home.page' | trans),
+        (path('music_index')) : ('music' | trans),
+        'active' : (letter | capitalize),
+    }) }}
+{% endblock %}
+
+{% block body %}
+
+    <div class="md-cards-group md-singer-cards">
+
+        {% for singer in singers %}
+
+            {% set songs = singer.musics.count %}
+
+            <div class="md-singer-card">
+
+                <div class="md-singer-block">
+
+                    <div class="md-singer-body">
+
+                        <h3 class="my-0"><a href="{{ path('music_singer', {slug: singer.slug}) }}">{{ singer.fullName }}</a></h3>
+
+                        <p class="text-lowercase">
+                            {{ songsCount(singer) }}
+                        </p>
+
+                    </div>
+
+                    <div class="md-singer-image" style="background-image: url('{{ vich_uploader_asset(singer) }}')"></div>
+
+                </div>
+
+            </div>
+
+        {% else %}
+
+            {{ 'artists.for.letter.not.found' | trans({'%letter%': letter | capitalize}) }}
+
+        {% endfor %}
+
+    </div>
+
+{% endblock %}

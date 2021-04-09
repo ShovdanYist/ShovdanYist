@@ -1,0 +1,33 @@
+{% if user == app.user or is_granted('ROLE_ADMIN') %}
+
+    <button type="button" class="btn md-dot-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <i class="fas fa-ellipsis-h"></i>
+    </button>
+
+    <div class="dropdown-menu dropdown-menu-right">
+
+        {% if not is_granted('ROLE_ADMIN') or user == app.user %}
+
+            <a href="{{ path('user_edit') }}" class="dropdown-item">
+                <i class="fas fa-user-edit"></i> {{ 'edit' | trans }}
+            </a>
+
+            <a href="{{ path('user_settings') }}" class="dropdown-item">
+                <i class="fas fa-cog"></i> {{ 'settings' | trans }}
+            </a>
+
+        {% else %}
+
+            <a href="{{ path('dash_user_edit_profile', {'id': user.id}) }}" class="dropdown-item" target="_blank">
+                <i class="fas fa-user-edit"></i> {{ 'edit' | trans }}
+            </a>
+
+            <a href="{{ path('dash_user_edit_privacy', {'id': user.id}) }}" class="dropdown-item" target="_blank">
+                <i class="fas fa-cog"></i> {{ 'settings' | trans }}
+            </a>
+
+        {% endif %}
+
+    </div>
+
+{% endif %}

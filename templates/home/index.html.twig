@@ -1,0 +1,77 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ 'home.page' | trans }}{% endblock %}
+
+{% block pageclass %}two-sidebars{% endblock %}
+
+{% block main_top %}
+
+    <div class="md-box d-lg-none" style="margin-bottom: 12px">
+
+        <a class="btn text-muted" style="width: 100%" data-toggle="collapse" data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false">
+            {{ 'categories' | trans }} <i class="fas fa-chevron-down" style="font-size: 12px"></i>
+        </a>
+
+        <div class="collapse" id="navbarToggleExternalContent">
+            <div class="p-2 text-center" style="padding-top: 0 !important;">
+                <li class="md-menu-item md-lined-menu active">
+                    <a style="padding-left: 8px" href="{{ path('app_home') }}">
+                        {{ 'all' | trans }}
+                    </a>
+                </li>
+                {% for item in categories() %}
+                    <li class="md-menu-item md-lined-menu">
+                        <a style="padding-left: 10px" href="{{ path('post_category', {'slug':item.slug}) }}">
+                            {{ item.title }}
+                        </a>
+                    </li>
+                {% endfor %}
+            </div>
+        </div>
+
+    </div>
+{% endblock %}
+
+{% block main %}
+
+    {% for post in posts %}
+        {{ postView(post) }}
+    {% endfor %}
+
+    {{ paginator.display(true) }}
+
+{% endblock %}
+
+{% block sidebar_b %}
+
+    <div class="sidebar-b">
+        <div class="md-box sticky-top" style="padding: 12px">
+            <div class="text-muted mb-2 pl-2">{{ 'categories' | trans }}</div>
+
+            <div class="md-menu">
+
+                <ul>
+                    <li class="md-menu-item md-lined-menu active">
+                        <a style="padding-left: 8px" href="{{ path('app_home') }}">
+                            {{ 'all' | trans }}
+                        </a>
+                    </li>
+                    {% for item in categories() %}
+                        <li class="md-menu-item md-lined-menu">
+                            <a style="padding-left: 8px" href="{{ path('post_category', {'slug':item.slug}) }}">
+                                {{ item.title }}
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+
+            </div>
+
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block scripts %}
+    {{ autoplay() }}
+{% endblock %}

@@ -1,0 +1,82 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ user.username }} | Профиль{% endblock %}
+
+{% block description %}Страница пользователя {{ user.username }} на сайте ShovdanYist, здесь вы найдете тексты всех чеченских песен, их переводы, а также сможете скачать их или добавлять в свой плейлист.{% endblock %}
+
+{% block keywords %}профиль {{ user.username }}, тексты чеченских песен, чеченские песни, под гитару, переводы чеченских песен, музыка{% endblock %}
+
+{% block body %}
+
+    <div class="md-profile">
+
+        <span class="md-profile-header">
+
+            <h1 class="md-username">
+
+                {{ user.username }}
+
+                {% if profile.verified == true %}
+                    <span class="md-verified-profile">
+                        <i class="fas fa-check-circle text-info"></i>
+                    </span>
+                {% endif %}
+
+            </h1>
+
+            {% include 'user/_actions.html.twig' %}
+
+        </span>
+
+        <div class="md-profile-block">
+
+            <div class="back-picture bp-130" style="margin-right: 16px;background-image: url('{% if user.profile.avatar != 'avatar.jpg' %}{{ vich_uploader_asset(profile) }}{% else %}{{ asset('assets/images/avatar.jpg') }}{% endif %}')">
+            </div>
+
+            <div class="md-profile-info">
+
+                <span class="md-fullname">{{ profile.fullname }}</span>
+
+                <div class="md-bio">
+                    {{ profile.about | raw }}
+                </div>
+
+                <span class="md-link">
+                    <a href="{{ profile.url }}" target="_blank">{{ profile.url | replace({'http://': '', 'https://': '', 'http://www.': '', 'https://www.': ''}) }}</a>
+                </span>
+
+            </div>
+
+        </div>
+
+        <table class="table table-hover mt-3">
+
+            <tbody>
+
+            {% for post in posts %}
+
+                <tr>
+
+                    <td>
+                        <a style="font-weight: 500" href="{{ path('post_show', {'slug' : post.slug}) }}">{{ post.title }}</a>
+                    </td>
+
+                    {% if app.user == user or is_granted('ROLE_MODER') %}
+                        <td>
+                            {{ postStatus(post) }}
+                        </td>
+                    {% endif %}
+
+                </tr>
+
+            {% endfor %}
+
+            </tbody>
+
+        </table>
+
+        {{ paginator.display() }}
+
+    </div>
+
+{% endblock %}

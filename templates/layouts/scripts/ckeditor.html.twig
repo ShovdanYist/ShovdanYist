@@ -1,0 +1,73 @@
+{% if type == 'user' %}
+
+    <script src="{{ asset('/assets/ckeditor/user/ckeditor.js') }}">CKEDITOR.replace( 'ckeditor');</script>
+
+{% elseif type == 'author' %}
+
+    <script src="{{ asset('/assets/ckeditor5/build/ckeditor.js') }}"></script>
+{#    <script src="{{ asset('/assets/ckeditor5/build/translations/ru.js') }}"></script>#}
+    <script src="{{ asset('/assets/ckeditor5/build/translations/en-gb.js') }}"></script>
+
+    <script>
+        ClassicEditor
+            .create( document.querySelector( '.ckeditor' ), {
+                language: '{{ app.request.locale }}',
+                toolbar: [
+                    'heading', 'bold', 'italic', 'underline',
+                    'strikethrough', 'blockQuote'
+                ],
+
+                heading: {
+                    options: [
+                        { model: 'paragraph', title: 'Основной текст', class: 'ck-main-text' },
+                        { model: 'heading5', view: 'h5', title: 'Заглавие', class: 'ck-sub-title' },
+                        { model: 'heading6', view: 'h6', title: 'Описание', class: 'ck-sub-description' },
+                    ]
+                },
+
+                image: {
+                    upload: {
+                        panel: {
+                            items: [ 'insertImageViaUrl' ]
+                        }
+                    },
+
+                    styles: [
+                        'alignLeft', 'alignCenter', 'alignRight'
+                    ],
+
+                    resizeUnit: "%",
+                    resizeOptions: [
+                        {
+                            name: 'imageResize:original',
+                            value: null,
+                            icon: 'original'
+                        },
+                        {
+                            name: 'imageResize:50',
+                            value: '50',
+                            icon: 'medium'
+                        },
+                        {
+                            name: 'imageResize:75',
+                            value: '75',
+                            icon: 'large'
+                        }
+                    ],
+
+                    toolbar: [
+                        'imageStyle:alignLeft', 'imageStyle:alignCenter', 'imageStyle:alignRight',
+                        '|',
+                        'imageResize',
+                        '|',
+                        'imageTextAlternative'
+                    ]
+                }
+            }
+            )
+            .catch( error => {
+                console.error( error );
+            } );
+    </script>
+
+{% endif %}

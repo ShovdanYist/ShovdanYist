@@ -1,0 +1,11 @@
+{% extends 'dashboard/base.html.twig' %}
+
+{% block title %}{{ 'person.adding' | trans }}{% endblock %}
+
+{% block body %}
+
+    <h1>{{ 'person.adding' | trans }}</h1>
+
+    {{ include('dashboard/people/_form.html.twig') }}
+
+{% endblock %}

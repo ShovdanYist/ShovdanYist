@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Чеченские песни{% endblock %}
+
+{% block description %}В ShovdanYist вы найдете тексты всех чеченских песен, их переводы, а также сможете скачать их или добавлять в свой плейлист.{% endblock %}
+
+{% block keywords %}тексты чеченских песен, чеченские песни, под гитару, переводы чеченских песен, музыка{% endblock %}
+
+{% block main_top %}
+    {{ breadcrumb({
+        (path('app_home')) : ('home.page' | trans),
+        'active' : ('music' | trans),
+    }) }}
+{% endblock %}
+
+{% block main %}
+
+    <div class="md-chart-boxes row-cols-1 row-cols-md-2">
+
+        {{ chartBox('trends') }}
+        {{ chartBox('novelty') }}
+        {{ chartBox('lasts') }}
+        {{ chartBox('random') }}
+
+    </div>
+
+    <div class="md-box md-gt-box">
+
+        {{ listing('genres', 'primary') }}
+        <hr>
+        {{ listing('themes', 'info') }}
+
+    </div>
+
+{% endblock %}
+
+{% block scripts %}
+    {{ autoplay() }}
+{% endblock %}

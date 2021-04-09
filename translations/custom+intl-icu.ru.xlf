@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="ru" target-language="ru" datatype="plaintext" original="file.ext">
+    <header>
+      <tool tool-id="symfony" tool-name="Symfony"/>
+    </header>
+    <body>
+      <trans-unit id="mxa0TQ4" resname="documents">
+        <source>documents</source>
+        <target>Документы</target>
+      </trans-unit>
+      <trans-unit id="KtinBJ1" resname="it">
+        <source>it</source>
+        <target>IT</target>
+      </trans-unit>
+      <trans-unit id="3kFexwY" resname="day-from-сhechens-history">
+        <source>day-from-сhechens-history</source>
+        <target>День из истории чеченцев</target>
+      </trans-unit>
+      <trans-unit id="kpJgrZu" resname="auto">
+        <source>auto</source>
+        <target>Авто</target>
+      </trans-unit>
+      <trans-unit id="gr2B6ks" resname="cooking">
+        <source>cooking</source>
+        <target>Кулинарие</target>
+      </trans-unit>
+      <trans-unit id="8ZR.ef3" resname="culture">
+        <source>culture</source>
+        <target>Культура</target>
+      </trans-unit>
+      <trans-unit id="gPGJmE5" resname="music">
+        <source>music</source>
+        <target>Музыка</target>
+      </trans-unit>
+      <trans-unit id="OEGpJHJ" resname="entrepreneurship">
+        <source>entrepreneurship</source>
+        <target>Предпринимательство</target>
+      </trans-unit>
+      <trans-unit id="AglELhF" resname="travel">
+        <source>travel</source>
+        <target>Путишествие</target>
+      </trans-unit>
+      <trans-unit id="E50Uthy" resname="religion">
+        <source>religion</source>
+        <target>Религия</target>
+      </trans-unit>
+      <trans-unit id="7EUHhuJ" resname="sport">
+        <source>sport</source>
+        <target>Спорт</target>
+      </trans-unit>
+      <trans-unit id="zDFwjd0" resname="sewing">
+        <source>sewing</source>
+        <target>Шитье</target>
+      </trans-unit>
+      <trans-unit id="f.gxRxS" resname="politics">
+        <source>politics</source>
+        <target>Политика</target>
+      </trans-unit>
+      <trans-unit id="gXL51Gc" resname="heroes">
+        <source>heroes</source>
+        <target>Герои</target>
+      </trans-unit>
+      <trans-unit id="otjapCg" resname="war">
+        <source>war</source>
+        <target>Война</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ 'home.page' | trans }}{% endblock %}
+
+{% block main_top %}
+    {{ breadcrumb({
+        (path('user_profile', {'username': app.user.username} )) : (app.user.username),
+        'active' : ('moderation' | trans),
+    }) }}
+{% endblock %}
+
+{% block main %}
+
+    {% for post in posts %}
+        {{ postView(post,'moderation') }}
+    {% else%}
+        <div class="md-box md-content-padding">Пока нет постов на модерации</div>
+    {% endfor %}
+
+    {{ paginator.display() }}
+
+{% endblock %}

@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ 'password.resetting' | trans }}{% endblock %}
+
+{% block body %}
+
+    <h1 class="border-heading">
+        {{ 'password.resetting' | trans }}
+    </h1>
+
+    {{ form_start(form) }}
+
+        <div class="row label-icons-form">
+
+            <div class="col-12">
+
+                {{ form_row(form.current) }}
+                {{ form_row(form.new) }}
+
+                <button class="btn btn-primary">
+                    {{ 'change' | trans }}
+                </button>
+
+                <a class="btn btn-link float-right" href="{{ path('user_profile', {'username': app.user.username}) }}">
+                    {{ 'cancel' | trans }}
+                </a>
+
+            </div>
+
+        </div>
+
+    {{ form_end(form) }}
+
+{% endblock %}

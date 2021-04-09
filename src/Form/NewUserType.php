@@ -1,0 +1,67 @@
+<?php
+
+namespace App\Form;
+
+use App\Entity\User;
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Contracts\Translation\TranslatorInterface;
+
+class NewUserType extends AbstractType
+{
+    private $translator;
+
+    public function __construct(TranslatorInterface $translator)
+    {
+        $this->translator = $translator;
+    }
+
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
+        $builder
+            ->add('username', TextType::class, [
+                'label' => 'username'
+            ])
+            ->add('email', EmailType::class, [
+                'label' => 'form.email',
+                'attr' => [
+                    'value' => 'example' . rand(99,9999) . '@shovdanyist.com'
+                ]
+            ])
+            ->add('password', PasswordType::class, [
+                'label' => 'password',
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'Пароль не введен',
+                    ])
+                ]
+            ])
+            ->add('roles', ChoiceType::class, [
+                'label' => 'roles',
+                'choices' => [
+                    'Пользователь' => 'ROLE_USER',
+                    'Автор' => 'ROLE_AUTHOR',
+                    'Модератор' => 'ROLE_MODER',
+                    'Администратор' => 'ROLE_ADMIN',
+                ],
+                'multiple' => true,
+                'attr' => [
+                    'data-placeholder' => $this->translator->trans('select.roles')
+                ]
+            ])
+        ;
+    }
+
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults([
+            'data_class' => User::class,
+        ]);
+    }
+}
