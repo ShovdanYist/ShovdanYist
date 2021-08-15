@@ -19,7 +19,7 @@
 
                 <div class="notify-sender-user">
                     <a href="{{ path('user_profile', {'username': notification.comment.author.username}) }}">
-                        <span class="md-avatar md-avatar-50" style="background-image: url('{% if notification.comment.author.profile.avatar != 'avatar.jpg' %}{{ vich_uploader_asset(notification.comment.author.profile) }}{% else %}{{ asset('assets/images/avatar.jpg') }}{% endif %}')"></span>
+                        <span class="md-avatar md-avatar-50" style="background-image: url('{% if notification.comment.author.profile.avatar != 'avatar.jpg' %}{{ vich_uploader_asset(notification.comment.author.profile) | imagine_filter('thumbnail') }}{% else %}{{ asset('assets/images/avatar.jpg') | imagine_filter('thumbnail') }}{% endif %}')"></span>
                     </a>
                 </div>
 
@@ -60,12 +60,12 @@
                 <div class="notify-picture">
                     {% if notification.comment.music %}
                         <a href="{{ path('music_song', {'slug': notification.comment.music.slug}) }}">
-                            <span class="back-picture bp-50" style="border-radius: 3px;margin-right: 14px;background-image: url('{{ vich_uploader_asset(notification.comment.music.artist) }}')">
+                            <span class="back-picture bp-50" style="border-radius: 3px;margin-right: 14px;background-image: url('{{ vich_uploader_asset(notification.comment.music.artist) | imagine_filter('thumbnail') }}')">
                             </span>
                         </a>
                     {% else %}
                         <a href="{{ path( 'post_show', {'slug': notification.comment.post.slug}) }}">
-                            <span class="back-picture bp-50" style="border-radius: 3px;margin-right: 14px;background-image: url(' {% if notification.comment.post.image %}{{ vich_uploader_asset(notification.comment.post) }}{% else %}{{ asset('assets/images/question.jpg') }}{% endif %}')">
+                            <span class="back-picture bp-50" style="border-radius: 3px;margin-right: 14px;background-image: url(' {% if notification.comment.post.image %}{{ vich_uploader_asset(notification.comment.post) | imagine_filter('thumbnail') }}{% else %}{{ asset('assets/images/question.jpg') }}{% endif %}')">
                             </span>
                         </a>
                     {% endif %}
@@ -109,7 +109,7 @@
 
                 <div class="notify-picture">
                     <a href="{{ path( 'post_show', {'slug': notification.post.slug}) }}">
-                        <span class="back-picture bp-50" style="border-radius: 3px;margin-right: 14px;background-image: url('{% if notification.post.image %}{{ vich_uploader_asset(notification.post) }}{% else %}{{ asset('assets/images/question.jpg') }}{% endif %}')">
+                        <span class="back-picture bp-50" style="border-radius: 3px;margin-right: 14px;background-image: url('{% if notification.post.image %}{{ vich_uploader_asset(notification.post) | imagine_filter('thumbnail') }}{% else %}{{ asset('assets/images/question.jpg') | imagine_filter('thumbnail') }}{% endif %}')">
                         </span>
                     </a>
                 </div>
@@ -150,7 +150,7 @@
 
                 <div class="notify-picture">
                     <a href="{{ path( 'post_show', {'slug': notification.post.slug}) }}">
-                        <span class="back-picture bp-50" style="border-radius: 3px;margin-right: 14px;background-image: url('{% if notification.post.image %}{{ vich_uploader_asset(notification.post) }}{% else %}{{ asset('assets/images/question.jpg') }}{% endif %}')">
+                        <span class="back-picture bp-50" style="border-radius: 3px;margin-right: 14px;background-image: url('{% if notification.post.image %}{{ vich_uploader_asset(notification.post) | imagine_filter('thumbnail') }}{% else %}{{ asset('assets/images/question.jpg') | imagine_filter('thumbnail') }}{% endif %}')">
                         </span>
                     </a>
                 </div>

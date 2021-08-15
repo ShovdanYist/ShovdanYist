@@ -25,7 +25,7 @@
 
         <div class="md-singer-block">
 
-            <div class="md-singer-image" style="background-image: url('{{ vich_uploader_asset(singer) }}')"></div>
+            <div class="md-singer-image" style="background-image: url('{{ vich_uploader_asset(singer) | imagine_filter('avatar') }}')"></div>
 
             <div class="md-singer-body">
 

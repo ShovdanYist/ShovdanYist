@@ -6,7 +6,7 @@
 
         <div class="md-user-sidebar-profile">
 
-            <div class="back-picture bp-45" style="background-image: url('{% if app.user.profile.avatar != 'avatar.jpg' %}{{ vich_uploader_asset(app.user.profile) }}{% else %}{{ asset('assets/images/avatar.jpg') }}{% endif %}')">
+            <div class="back-picture bp-45" style="background-image: url('{% if app.user.profile.avatar != 'avatar.jpg' %}{{ vich_uploader_asset(app.user.profile) | imagine_filter('thumbnail') }}{% else %}{{ asset('assets/images/avatar.jpg') | imagine_filter('thumbnail') }}{% endif %}')">
             </div>
 
             <div class="md-user-sidebar-username">

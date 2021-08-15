@@ -16,7 +16,7 @@
 
             <div class="col-12 md-edit-form-block">
 
-                <div id="output-content" style="background-image: url('{% if app.user.profile.avatar != 'avatar.jpg' %}{{ vich_uploader_asset(app.user.profile) }}{% else %}{{ asset('assets/images/avatar.jpg') }}{% endif %}')">
+                <div id="output-content" style="background-image: url('{% if app.user.profile.avatar != 'avatar.jpg' %}{{ vich_uploader_asset(app.user.profile) | imagine_filter('avatar') }}{% else %}{{ asset('assets/images/avatar.jpg') }}{% endif %}')">
                 </div>
 
                 {{ form_row(form.avatarFile) }}

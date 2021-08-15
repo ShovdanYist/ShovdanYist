@@ -12,7 +12,7 @@
 
             <div class="col-12">
 
-                <img class="post-image" id="postImgOutput" src="{{ vich_uploader_asset(post) }}" alt="">
+                <img class="post-image" id="postImgOutput" src="{{ vich_uploader_asset(post) | imagine_filter('post') }}" alt="">
 
                 <div style="margin-top: -6px">
                     {{ form_row(form.imageFile) }}

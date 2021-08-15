@@ -7,7 +7,7 @@
             anonyme
         </a>
     {% else %}
-        <span class="avatar back-picture bp-24" style="background-image: url('{% if post.author.profile.avatar != 'avatar.jpg' %}{{ vich_uploader_asset(post.author.profile) }}{% else %}{{ asset('assets/images/avatar.jpg') }}{% endif %}')">
+        <span class="avatar back-picture bp-24" style="background-image: url('{% if post.author.profile.avatar != 'avatar.jpg' %}{{ vich_uploader_asset(post.author.profile) | imagine_filter('thumbnail') }}{% else %}{{ asset('assets/images/avatar.jpg') | imagine_filter('thumbnail') }}{% endif %}')">
         </span>
 
         <a class="username" href="{{ path('user_profile', {'username': post.author.username }) }}">

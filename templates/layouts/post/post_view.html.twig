@@ -8,7 +8,7 @@
         {{ postImage(post) }}
 
         {% for song in post.songs %}
-            {{ player(song,null,null,null,vich_uploader_asset(post)) }}
+            {{ player(song,null,null,null,vich_uploader_asset(post) | imagine_filter('thumbnail')) }}
         {% endfor %}
 
         {{ postDescription(post) }}

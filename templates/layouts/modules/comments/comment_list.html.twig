@@ -5,7 +5,7 @@
         <div class="md-comment">
 
             <a href="{{ path('user_profile', {username: comment.author.username}) }}">
-                <span class="back-picture bp-45" style="margin-right: 14px;background-image: url('{% if comment.author.profile.avatar != 'avatar.jpg' %}{{ vich_uploader_asset(comment.author.profile) }}{% else %}{{ asset('assets/images/avatar.jpg') }}{% endif %}')">
+                <span class="back-picture bp-45" style="margin-right: 14px;background-image: url('{% if comment.author.profile.avatar != 'avatar.jpg' %}{{ vich_uploader_asset(comment.author.profile) | imagine_filter('thumbnail') }}{% else %}{{ asset('assets/images/avatar.jpg') | imagine_filter('thumbnail') }}{% endif %}')">
                 </span>
             </a>
 
