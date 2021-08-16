@@ -901,6 +901,10 @@
         <source>additional</source>
         <target>Дополнительно</target>
       </trans-unit>
+      <trans-unit id="4df7rP5" resname="email.confirmation">
+        <source>email.confirmation</source>
+        <target>Подтверждение электронной почты</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

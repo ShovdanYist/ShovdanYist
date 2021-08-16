@@ -333,7 +333,7 @@ blockquote, .ck.ck-content blockquote {
 // Navbar
 
 .md-nav {
-  background: url("/assets/images/container-border.png") repeat-x scroll 0 100% / auto 1px rgba(30, 30, 30, 0.95);
+  background: url("https://shovdanyist.com/assets/images/container-border.png") repeat-x scroll 0 100% / auto 1px rgba(30, 30, 30, 0.95);
   margin-bottom: 15px;
   z-index: 1100;
   height: 55px;
@@ -1207,6 +1207,12 @@ td {
   border: 1px solid #ffceaa;
   background-color: #fff2e9;
   color: #f2ab77;
+}
+
+.md-alert-warning a {
+  color: #6ab4e1;
+  font-weight: 500;
+  text-decoration: underline;
 }
 
 .md-alert-danger {

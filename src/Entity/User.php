@@ -107,6 +107,11 @@ class User implements UserInterface
      */
     private $bookmarks;
 
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $status;
+
     public function __construct()
     {
         $this->musics = new ArrayCollection();
@@ -466,6 +471,18 @@ class User implements UserInterface
                 $bookmark->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getStatus(): ?bool
+    {
+        return $this->status;
+    }
+
+    public function setStatus(?bool $status): self
+    {
+        $this->status = $status;
 
         return $this;
     }

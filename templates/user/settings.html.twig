@@ -18,7 +18,11 @@
                 {{ form_row(form.email) }}
 
                 <button class="btn btn-primary">
-                    {{ 'save' | trans }}
+                    {% if app.user.status is null %}
+                        Отправить снова
+                    {% else %}
+                        {{ 'save' | trans }}
+                    {% endif %}
                 </button>
 
                 <a class="btn btn-link float-right" href="{{ path('user_profile', {'username': app.user.username}) }}">

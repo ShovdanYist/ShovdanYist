@@ -12,6 +12,7 @@ use App\Form\ProfileType;
 use App\Repository\NotificationRepository;
 use App\Repository\UserRepository;
 use App\Service\Constraints;
+use App\Service\Mailer;
 use App\Service\Paginator;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -21,6 +22,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\Security\Csrf\TokenGenerator\TokenGeneratorInterface;
 use Vich\UploaderBundle\Handler\UploadHandler;
 
 /**
@@ -98,7 +100,7 @@ class UserController extends CustomAbstractController
      * @param Constraints $constraints
      * @return Response
      */
-    public function settings(Request $request, UserRepository $repo, Constraints $constraints): Response
+    public function settings(Request $request, UserRepository $repo, Constraints $constraints, Mailer $mailer, TokenGeneratorInterface $tokenGenerator): Response
     {
         $user = $repo->findOneBy(['username' => $this->getUser()->getUsername()]);
         $form = $this->createFormBuilder($user)
@@ -107,8 +109,15 @@ class UserController extends CustomAbstractController
                 'attr' => ['value' => $user->getUsername()],
                 'mapped' => false
             ])
-            ->add('email', EmailType::class, ['label' => $this->trans('form.email')])
+            ->add('email', EmailType::class, [
+                'label' => $this->trans('form.email'),
+                'help' => 'Если не подтверждена, то проверьте свою электронную почту и перейдите по отправленной ссылке'
+            ])
             ->getForm();
+
+        if ($this->user()->getStatus() == null) {
+            $form->get('email')->addError(new FormError('Электронная почта не подтверждена'));
+        }
 
         $form->handleRequest($request);
 
@@ -116,6 +125,16 @@ class UserController extends CustomAbstractController
             $verification = $constraints->username($form->get('username')->getData());
 
             if ($verification['status'] == true) {
+
+                if ($this->user()->getStatus() == null) {
+                    $user->setToken($tokenGenerator->generateToken());
+                    $mailer->setTo($form->get('email')->getData())
+                        ->setSubject($this->trans('Подтверждение почты на сайте ShovdanYist'))
+                        ->setTemplate('layouts/mailer/email_confirmation.html.twig')
+                        ->setVariables(['user' => $user])
+                        ->notify();
+                }
+
                 $user->setUsername($form->get('username')->getData());
                 $em = $this->getDoctrine()->getManager();
                 $em->flush();

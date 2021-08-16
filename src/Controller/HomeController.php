@@ -94,7 +94,7 @@ class HomeController extends CustomAbstractController
      * @param Mailer $mailer
      * @return Response
      */
-    public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder, GuardAuthenticatorHandler $guardHandler, UserAuthenticator $authenticator, Mailer $mailer): Response
+    public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder, GuardAuthenticatorHandler $guardHandler, UserAuthenticator $authenticator, Mailer $mailer, TokenGeneratorInterface $tokenGenerator): Response
     {
         if ($this->getUser()) {
             return $this->redirectToRoute('app_home');
@@ -116,6 +116,7 @@ class HomeController extends CustomAbstractController
             $profile = new Profile();
             $user->setProfile($profile);
             $user->setRoles(["ROLE_USER"]);
+            $user->setToken($tokenGenerator->generateToken());
             $user->getProfile()->setGender($form->get('gender')->getData());
             $user->getProfile()->setAvatar('avatar.jpg');
 
@@ -237,6 +238,31 @@ class HomeController extends CustomAbstractController
 
         return $this->render('home/new_password.html.twig', [
             'form' => $form->createView()
+        ]);
+    }
+
+    /**
+     * @Route("/emailValidation/{id}/{token}", name="email_validation")
+     * @param User $user
+     * @param $token
+     * @return Response
+     */
+    public function emailValidation(User $user, $token): Response
+    {
+        if ($user->getToken() == $token) {
+            $result = null;
+            $user->setToken(null);
+            $user->setStatus(true);
+            $em = $this->getDoctrine()->getManager();
+            $em->flush();
+        } elseif ($user->getStatus() == null && $user->getToken() != $token) {
+            $result = false;
+        } else {
+            $result = true;
+        }
+
+        return $this->render('home/email_validation.html.twig', [
+            'result' => $result
         ]);
     }
 }
