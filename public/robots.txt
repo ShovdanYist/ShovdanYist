@@ -1,0 +1,4 @@
+User-Agent: *
+Disallow: *
+
+Sitemap: https://shovdanyist.com/sitemap.xml

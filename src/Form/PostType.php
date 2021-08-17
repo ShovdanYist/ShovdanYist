@@ -8,6 +8,7 @@ use App\Entity\Post;
 use App\Repository\MusicRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -96,6 +97,12 @@ class PostType extends AbstractType
                 'label' => 'event.date',
                 'required' => false,
                 'widget' => 'single_text'
+            ])
+            ->add('moderation', CheckboxType::class, [
+                'label' => 'send.for.moderation',
+                'help' => 'send.for.moderation.help',
+                'required' => false,
+                'label_attr' => ['class' => 'switch-custom']
             ])
         ;
 

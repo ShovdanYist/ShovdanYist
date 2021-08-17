@@ -199,8 +199,8 @@ class UserController extends CustomAbstractController
     {
         $user = $userRepo->findOneBy(['username' => $this->getUser()->getUsername()]);
 
-        if ($notifyRepo->count(['receiver' => $user]) > 30) {
-            $notifications = $notifyRepo->findBy(['receiver' => $user], ['id' => 'DESC'], null, 30);
+        if ($notifyRepo->count(['receiver' => $user]) > 100) {
+            $notifications = $notifyRepo->findBy(['receiver' => $user], ['id' => 'DESC'], null, 100);
             foreach ($notifications as $notification) {
                 $user->removeNotification($notification);
             }

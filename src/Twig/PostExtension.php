@@ -102,23 +102,23 @@ class PostExtension extends AbstractExtension
 
     public function postStatus(Post $post)
     {
-        if ($post->getStatus() === null) {
-            $badge = 'warning';
-            $message = 'на модерации';
-        } elseif ($post->getStatus() === false) {
-            $badge = 'danger';
-            $message = 'отклонен';
+        if (!$post->getModeration()) {
+            $badge = 'info';
         } else {
-            $badge = 'success';
-            $message = 'опубликован';
+            if ($post->getStatus() === null) {
+                $badge = 'warning';
+            } elseif ($post->getStatus() === false) {
+                $badge = 'danger';
+            } else {
+                $badge = 'success';
+            }
         }
 
-        $template = '<span class="badge badge-pill badge-%s">%s</span>';
+        $template = '<i class="fas fa-circle text-%s"></i>';
 
         return sprintf(
             $template,
-            $badge,
-            $message
+            $badge
         );
     }
 }

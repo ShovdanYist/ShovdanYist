@@ -123,6 +123,16 @@ class Post
      */
     private $notifications;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $moderation;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $views;
+
     public function __construct()
     {
         $this->songs = new ArrayCollection();
@@ -457,6 +467,30 @@ class Post
                 $notification->setPost(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getModeration(): ?bool
+    {
+        return $this->moderation;
+    }
+
+    public function setModeration(bool $moderation): self
+    {
+        $this->moderation = $moderation;
+
+        return $this;
+    }
+
+    public function getViews(): ?int
+    {
+        return $this->views;
+    }
+
+    public function setViews(int $views): self
+    {
+        $this->views = $views;
 
         return $this;
     }

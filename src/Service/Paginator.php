@@ -24,7 +24,7 @@ class Paginator
     {
         $this->manager  = $manager;
         $this->twig     = $twig;
-        $this->request    = $request;
+        $this->request  = $request;
     }
 
     public function display($box = false)

@@ -110,14 +110,14 @@ class CounterExtension extends AbstractExtension
         return $this->bookmarks->findOneBy(['user' => $user, 'post' => $post]);
     }
 
-    public function notifyCount($user)
+    public function notifyCount($user): int
     {
         return $this->notifyRepo->count(['receiver' => $user, 'seen' => false]);
     }
 
-    public function moderationCount()
+    public function moderationCount(): int
     {
-        return $this->postRepo->count(['status' => null]);
+        return $this->postRepo->count(['status' => null, 'moderation' => true]);
     }
 
     public function notifyIndicator(User $user): int

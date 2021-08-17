@@ -58,14 +58,20 @@
                 <tr>
 
                     <td>
+                        {% if app.user == user or is_granted('ROLE_MODER') %}
+                            <span style="font-size: 8px;top: -2px;position: relative;margin-right: 5px;">
+                                {{ postStatus(post) }}
+                            </span>
+                        {% endif %}
+
                         <a style="font-weight: 500" href="{{ path('post_show', {'slug' : post.slug}) }}">{{ post.title }}</a>
                     </td>
 
-                    {% if app.user == user or is_granted('ROLE_MODER') %}
-                        <td>
-                            {{ postStatus(post) }}
-                        </td>
-                    {% endif %}
+                    <td class="post-profile-views">
+                        <span class="post-views">
+                            <i class="fas fa-eye"></i> {{ post.views }}
+                        </span>
+                    </td>
 
                 </tr>
 

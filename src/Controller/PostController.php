@@ -12,6 +12,7 @@ use App\Form\PostType;
 use App\Repository\UserRepository;
 use App\Service\Paginator;
 use DateTime;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -59,7 +60,7 @@ class PostController extends CustomAbstractController
     public function add(Request $request): Response
     {
         $post = new Post();
-        $form = $this->createForm(PostType::class, $post,['playlist' => ($this->isGranted('ROLE_MODER')) ? false : true]);
+        $form = $this->createForm(PostType::class, $post,['playlist' => !$this->isGranted('ROLE_MODER')]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -90,7 +91,7 @@ class PostController extends CustomAbstractController
         $paginator
             ->setClass(Post::class)
             ->setOrder(['publishedAt' => 'ASC'])
-            ->setCriteria(['status' => null])
+            ->setCriteria(['status' => null, 'moderation' => true])
             ->setLimit(10)
             ->setPage($page)
         ;
@@ -168,6 +169,12 @@ class PostController extends CustomAbstractController
             throw $this->createNotFoundException();
         }
 
+        if ($this->user() !== $post->getAuthor()) {
+            $post->setViews($post->getViews() + 1);
+            $em = $this->getDoctrine()->getManager();
+            $em->flush();
+        }
+
         return $this->render('post/show.html.twig', [
             'post' => $post,
             'page' => $page
@@ -199,8 +206,16 @@ class PostController extends CustomAbstractController
         $form = $this->createForm(PostType::class, $post, $options);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+//        if (!$post->getModeration()) {
+//            $form->add('moderation', CheckboxType::class, [
+//                'label' => 'send.for.moderation',
+//                'help' => 'send.for.moderation.help',
+//                'required' => false,
+//                'label_attr' => ['class' => 'switch-custom']
+//            ]);
+//        }
 
+        if ($form->isSubmitted() && $form->isValid()) {
             if ($post->getStatus() !== null && !$this->isGranted('ROLE_MODER')) {
                 $post->setPublishedAt(new DateTime('now'));
                 $post->setStatus(null);

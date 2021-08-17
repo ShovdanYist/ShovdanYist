@@ -905,6 +905,14 @@
         <source>email.confirmation</source>
         <target>Подтверждение электронной почты</target>
       </trans-unit>
+      <trans-unit id="oIltSaJ" resname="send.for.moderation">
+        <source>send.for.moderation</source>
+        <target>Отправить на модерацию</target>
+      </trans-unit>
+      <trans-unit id="o1l7Sao" resname="send.for.moderation.help">
+        <source>send.for.moderation.help</source>
+        <target>Если не отметите этот пункт, то статья сохранится как черновик и вы сможете отправить её позже</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

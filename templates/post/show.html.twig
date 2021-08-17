@@ -11,16 +11,27 @@
         'active' : (post.title),
     }, post) }}
 
-    {% if post.status is null %}
-        <div class="md-alert md-alert-warning md-box-mb">
-            <i class="fas fa-exclamation-triangle"></i>
-            Статья на модерации
+    {% if post.moderation == true %}
+
+        {% if post.status is null %}
+            <div class="md-alert md-alert-warning md-box-mb">
+                <i class="fas fa-exclamation-triangle"></i>
+                Статья на модерации
+            </div>
+        {% elseif post.status == false %}
+            <div class="md-alert md-alert-danger md-box-mb">
+                <i class="fas fa-ban"></i>
+                Статья отклонена
+            </div>
+        {% endif %}
+
+    {% elseif post.moderation == false %}
+
+        <div class="md-alert md-alert-info md-box-mb">
+            <i class="fas fa-user-edit"></i>
+            Черновик
         </div>
-    {% elseif post.status == false %}
-        <div class="md-alert md-alert-danger md-box-mb">
-            <i class="fas fa-ban"></i>
-            Статья отклонена
-        </div>
+
     {% endif %}
 
 {% endblock %}
