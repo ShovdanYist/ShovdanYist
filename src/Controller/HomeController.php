@@ -40,7 +40,7 @@ class HomeController extends CustomAbstractController
         $paginator
             ->setClass(Post::class)
             ->setOrder(['publishedAt' => 'DESC'])
-            ->setCriteria(['status' => true])
+            ->setCriteria(['status' => true, 'moderation' => true])
             ->setLimit(10)
             ->setPage($page)
         ;

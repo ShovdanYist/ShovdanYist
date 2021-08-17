@@ -206,15 +206,6 @@ class PostController extends CustomAbstractController
         $form = $this->createForm(PostType::class, $post, $options);
         $form->handleRequest($request);
 
-//        if (!$post->getModeration()) {
-//            $form->add('moderation', CheckboxType::class, [
-//                'label' => 'send.for.moderation',
-//                'help' => 'send.for.moderation.help',
-//                'required' => false,
-//                'label_attr' => ['class' => 'switch-custom']
-//            ]);
-//        }
-
         if ($form->isSubmitted() && $form->isValid()) {
             if ($post->getStatus() !== null && !$this->isGranted('ROLE_MODER')) {
                 $post->setPublishedAt(new DateTime('now'));
