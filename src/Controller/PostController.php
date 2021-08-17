@@ -117,6 +117,10 @@ class PostController extends CustomAbstractController
         $post->setPublishedAt(new DateTime('now'));
         $post->setUpdatedAt(new DateTime('now'));
 
+        foreach ($post->getCategories() as $category) {
+            $category->setUpdatedAt(new \DateTime('now'));
+        }
+
         foreach ($post->getNotifications() as $value) {
             $value->setStatus(true);
         }

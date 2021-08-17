@@ -98,6 +98,8 @@ class UserController extends CustomAbstractController
      * @param Request $request
      * @param UserRepository $repo
      * @param Constraints $constraints
+     * @param Mailer $mailer
+     * @param TokenGeneratorInterface $tokenGenerator
      * @return Response
      */
     public function settings(Request $request, UserRepository $repo, Constraints $constraints, Mailer $mailer, TokenGeneratorInterface $tokenGenerator): Response

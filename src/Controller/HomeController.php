@@ -92,6 +92,7 @@ class HomeController extends CustomAbstractController
      * @param GuardAuthenticatorHandler $guardHandler
      * @param UserAuthenticator $authenticator
      * @param Mailer $mailer
+     * @param TokenGeneratorInterface $tokenGenerator
      * @return Response
      */
     public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder, GuardAuthenticatorHandler $guardHandler, UserAuthenticator $authenticator, Mailer $mailer, TokenGeneratorInterface $tokenGenerator): Response

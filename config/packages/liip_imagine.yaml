@@ -8,6 +8,7 @@ liip_imagine:
         avatar:
             quality: 80
             filters:
+                auto_rotate: ~
                 thumbnail:
                     size: [260, 260]
                     mode: outbound
@@ -15,6 +16,7 @@ liip_imagine:
         thumbnail:
             quality: 80
             filters:
+                auto_rotate: ~
                 thumbnail:
                     size: [100, 100]
                     mode: outbound
@@ -22,5 +24,6 @@ liip_imagine:
         post:
             quality: 80
             filters:
+                auto_rotate: ~
                 relative_resize:
                     heighten: 850

@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\CategoryRepository;
+use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -10,6 +11,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass=CategoryRepository::class)
+ * @ORM\HasLifecycleCallbacks()
  * @UniqueEntity("title")
  * @UniqueEntity("slug")
  */
@@ -37,9 +39,23 @@ class Category
      */
     private $posts;
 
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $updatedAt;
+
     public function __construct()
     {
         $this->posts = new ArrayCollection();
+    }
+
+    /**
+     * Initialise une date de publiction automatique
+     * @ORM\PrePersist()
+     */
+    public function initializePublicationDate()
+    {
+        $this->updatedAt = new DateTime('now');
     }
 
     public function getId(): ?int
@@ -95,6 +111,18 @@ class Category
             $this->posts->removeElement($post);
             $post->removeCategory($this);
         }
+
+        return $this;
+    }
+
+    public function getUpdatedAt(): ?\DateTimeInterface
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt(?\DateTimeInterface $updatedAt): self
+    {
+        $this->updatedAt = $updatedAt;
 
         return $this;
     }
