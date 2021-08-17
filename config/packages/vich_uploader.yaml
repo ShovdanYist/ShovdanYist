@@ -5,23 +5,17 @@ vich_uploader:
         people_images:
             uri_prefix: /uploads/images/people
             upload_destination: '%kernel.project_dir%/public/uploads/images/people'
-            namer:
-                service: Vich\UploaderBundle\Naming\PropertyNamer
-                options: { property: 'slug'}
+            namer: Vich\UploaderBundle\Naming\SmartUniqueNamer
 
         genre_images:
             uri_prefix: /uploads/images/genre
             upload_destination: '%kernel.project_dir%/public/uploads/images/genre'
-            namer:
-                service: Vich\UploaderBundle\Naming\PropertyNamer
-                options: { property: 'slug'}
+            namer: Vich\UploaderBundle\Naming\SmartUniqueNamer
 
         theme_images:
             uri_prefix: /uploads/images/theme
             upload_destination: '%kernel.project_dir%/public/uploads/images/theme'
-            namer:
-                service: Vich\UploaderBundle\Naming\PropertyNamer
-                options: { property: 'slug'}
+            namer: Vich\UploaderBundle\Naming\SmartUniqueNamer
 
         artist_musics:
             uri_prefix: /uploads/audio/music
@@ -33,9 +27,7 @@ vich_uploader:
         user_avatars:
             uri_prefix: /uploads/images/avatars
             upload_destination: '%kernel.project_dir%/public/uploads/images/avatars'
-            namer:
-                service: Vich\UploaderBundle\Naming\PropertyNamer
-                options: { property: 'username'}
+            namer: Vich\UploaderBundle\Naming\SmartUniqueNamer
 
         post_images:
             uri_prefix: /uploads/images/posts
