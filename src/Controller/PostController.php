@@ -169,7 +169,7 @@ class PostController extends CustomAbstractController
             throw $this->createNotFoundException();
         }
 
-        if ($this->user() !== $post->getAuthor()) {
+        if ($this->isGranted('IS_AUTHENTICATED_FULLY') && $this->user() !== $post->getAuthor()) {
             $post->setViews($post->getViews() + 1);
             $em = $this->getDoctrine()->getManager();
             $em->flush();
