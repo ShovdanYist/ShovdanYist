@@ -66,6 +66,7 @@ class PostController extends CustomAbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $post->setAuthor($this->user());
             $post->setSection('articles');
+            $post->setViews(0);
 
             $em = $this->getDoctrine()->getManager();
             $em->persist($post);
