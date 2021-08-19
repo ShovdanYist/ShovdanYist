@@ -166,20 +166,21 @@ class PostController extends CustomAbstractController
      */
     public function show(Post $post, $page): Response
     {
-        if (!$this->isGranted('IS_AUTHENTICATED_FULLY') && $post->getStatus() != true && !$this->isGranted('ROLE_MODER') || $post->getStatus() != true && $post->getAuthor() !== $this->user() && !$this->isGranted('ROLE_MODER')) {
-            throw $this->createNotFoundException();
+        if ($post->getAuthor() === $this->getUser() || $this->isGranted('ROLE_MODER') || $post->getStatus() === true) {
+
+            if ($this->isGranted('IS_AUTHENTICATED_FULLY') && $this->user() !== $post->getAuthor() && !$this->isGranted('ROLE_MODER')) {
+                $post->setViews($post->getViews() + 1);
+                $em = $this->getDoctrine()->getManager();
+                $em->flush();
+            }
+
+            return $this->render('post/show.html.twig', [
+                'post' => $post,
+                'page' => $page
+            ]);
         }
 
-        if ($this->isGranted('IS_AUTHENTICATED_FULLY') && $this->user() !== $post->getAuthor()) {
-            $post->setViews($post->getViews() + 1);
-            $em = $this->getDoctrine()->getManager();
-            $em->flush();
-        }
-
-        return $this->render('post/show.html.twig', [
-            'post' => $post,
-            'page' => $page
-        ]);
+        throw $this->createNotFoundException();
     }
 
     /**

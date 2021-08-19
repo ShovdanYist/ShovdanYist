@@ -263,6 +263,7 @@ class HomeController extends CustomAbstractController
         }
 
         return $this->render('home/email_validation.html.twig', [
+            'user' => $user,
             'result' => $result
         ]);
     }

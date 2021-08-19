@@ -9,6 +9,7 @@
         {{ 'profile.editing' | trans }}
     </h1>
 
+    {% if not user.status == 0 %}
 
     {{ form_start(form) }}
 
@@ -62,6 +63,14 @@
         </div>
 
     {{ form_end(form) }}
+
+    {% else %}
+
+        <div class="md-comment-guest md-alert md-alert-danger md-box-mb mb-0">
+            <i class="fas fa-ban"></i> Вы заблокированы и не можете редактировать свою страницу
+        </div>
+
+    {% endif %}
 
 {% endblock %}
 
