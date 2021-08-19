@@ -3,12 +3,14 @@
 namespace App\Controller;
 
 use App\CustomAbstracts\CustomAbstractController;
+use App\Entity\EmailAddress;
 use App\Entity\Music;
 use App\Entity\Notification;
 use App\Entity\Post;
 use App\Entity\User;
 use App\Form\ResetPasswordType;
 use App\Form\ProfileType;
+use App\Repository\EmailAddressRepository;
 use App\Repository\NotificationRepository;
 use App\Repository\UserRepository;
 use App\Service\Constraints;
@@ -117,7 +119,7 @@ class UserController extends CustomAbstractController
             ])
             ->getForm();
 
-        if ($this->user()->getStatus() == null) {
+        if ($user->getEmail() != $user->getConfirmedEmail()) {
             $form->get('email')->addError(new FormError('Электронная почта не подтверждена'));
         }
 
@@ -127,14 +129,19 @@ class UserController extends CustomAbstractController
             $verification = $constraints->username($form->get('username')->getData());
 
             if ($verification['status'] == true) {
-
-                if ($this->user()->getStatus() == null) {
+                if ($user->getEmail() != $user->getConfirmedEmail()) {
                     $user->setToken($tokenGenerator->generateToken());
                     $mailer->setTo($form->get('email')->getData())
                         ->setSubject($this->trans('Подтверждение почты на сайте ShovdanYist'))
                         ->setTemplate('layouts/mailer/email_confirmation.html.twig')
                         ->setVariables(['user' => $user])
                         ->notify();
+
+                    if ($user->getConfirmedEmail() && $user->getStatus() !== false) {
+                        $user->setStatus(null);
+                    }
+                } elseif ($user->getEmail() == $user->getConfirmedEmail() && $user->getStatus() === null) {
+                    $user->setStatus(true);
                 }
 
                 $user->setUsername($form->get('username')->getData());
@@ -276,6 +283,48 @@ class UserController extends CustomAbstractController
         return $this->render('user/bookmarks.html.twig', [
             'posts' => $paginator->getData(),
             'paginator' => $paginator
+        ]);
+    }
+
+    /**
+     * @Route("/blockingUser/{id}", name="blocking_user", methods={"GET","POST"})
+     * @param User $user
+     * @param EmailAddressRepository $emails
+     * @return Response
+     */
+    public function blocking(User $user, EmailAddressRepository $emails): Response
+    {
+        $email = $emails->findOneBy(['address' => $user->getConfirmedEmail()]);
+        $email->setStatus(false);
+        $user->setStatus(false);
+        $em = $this->getDoctrine()->getManager();
+        $em->flush();
+
+        $this->addFlash('danger', 'Пользователь '. $user->getUsername() . ' заблокирован');
+
+        return $this->redirectToRoute('user_profile', [
+            'username' => $user->getUsername()
+        ]);
+    }
+
+    /**
+     * @Route("/unblockingUser/{id}", name="unblocking_user", methods={"GET","POST"})
+     * @param User $user
+     * @param EmailAddressRepository $emails
+     * @return Response
+     */
+    public function unblocking(User $user, EmailAddressRepository $emails): Response
+    {
+        $email = $emails->findOneBy(['address' => $user->getConfirmedEmail()]);
+        $email->setStatus(true);
+        $user->setStatus(true);
+        $em = $this->getDoctrine()->getManager();
+        $em->flush();
+
+        $this->addFlash('success', 'Пользователь '. $user->getUsername() . ' разблоктрован');
+
+        return $this->redirectToRoute('user_profile', [
+            'username' => $user->getUsername()
         ]);
     }
 

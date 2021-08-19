@@ -26,6 +26,20 @@
                 <i class="fas fa-cog"></i> {{ 'settings' | trans }}
             </a>
 
+            {% if user.status != false %}
+
+                <a href="{{ path('user_blocking_user', {'id': user.id}) }}" class="dropdown-item">
+                    <i class="fas fa-user-times"></i> {{ 'block' | trans }}
+                </a>
+
+            {% else %}
+
+                <a href="{{ path('user_unblocking_user', {'id': user.id}) }}" class="dropdown-item">
+                    <i class="fas fa-user-check"></i> {{ 'unblock' | trans }}
+                </a>
+
+            {% endif %}
+
         {% endif %}
 
     </div>

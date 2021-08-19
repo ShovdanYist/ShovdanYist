@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\CustomAbstracts\CustomAbstractController;
+use App\Entity\EmailAddress;
 use App\Entity\Post;
 use App\Entity\Profile;
 use App\Entity\User;
@@ -13,6 +14,7 @@ use App\Service\Mailer;
 use App\Service\Paginator;
 use App\Validator\Constraints\MailExists;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
@@ -105,7 +107,19 @@ class HomeController extends CustomAbstractController
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
 
+//        if ($this->getDoctrine()->getRepository(EmailAddress::class)->findOneBy(['address' => $form->get('email')->getData()])->getStatus() === false) {
+//            $form->get('email')->addError(new FormError('Указанная электронная почта в черном списке'));
+//        }
+
         if ($form->isSubmitted() && $form->isValid()) {
+
+//            $form->get('email')->addError(new FormError('Указанная электронная почта в черном списке'));
+
+//            dd($this->getDoctrine()->getRepository(EmailAddress::class)->findOneBy(['address' => $form->get('email')->getData()])->getStatus());
+//
+//            if ($this->getDoctrine()->getRepository(EmailAddress::class)->findOneBy(['address' => $form->get('email')->getData()])->getStatus() === false) {
+//                $form->addError(new FormError('Указанная электронная почта в черном списке'));
+//            }
 
             $user->setPassword(
                 $passwordEncoder->encodePassword(
@@ -199,7 +213,7 @@ class HomeController extends CustomAbstractController
         $now = new \DateTime();
         $interval = $now->getTimestamp() - $passwordRequestedAt->getTimestamp();
         $daySeconds = 60 * 10;
-        return $interval > $daySeconds ? false : true;
+        return !($interval > $daySeconds);
     }
 
     /**
@@ -251,20 +265,26 @@ class HomeController extends CustomAbstractController
     public function emailValidation(User $user, $token): Response
     {
         if ($user->getToken() == $token) {
-            $result = null;
             $user->setToken(null);
-            $user->setStatus(true);
+            if ($user->getStatus() !== false) {
+                $user->setStatus(true);
+            }
+            $user->setConfirmedEmail($user->getEmail());
             $em = $this->getDoctrine()->getManager();
+
+            if (!$this->getDoctrine()->getRepository(EmailAddress::class)->findOneBy(['address' => $user->getEmail()])) {
+                $email = new EmailAddress();
+                $email->setGender($user->getProfile()->getGender());
+                $email->setAddress($user->getEmail());
+                $email->setStatus($user->getStatus());
+                $em->persist($email);
+            }
+
             $em->flush();
-        } elseif ($user->getStatus() == null && $user->getToken() != $token) {
-            $result = false;
-        } else {
-            $result = true;
         }
 
         return $this->render('home/email_validation.html.twig', [
-            'user' => $user,
-            'result' => $result
+            'user' => $user
         ]);
     }
 }

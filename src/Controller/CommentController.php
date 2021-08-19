@@ -98,14 +98,14 @@ class CommentController extends CustomAbstractController
      */
     public function commentDelete(Request $request, Comment $comment): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$comment->getId(), $request->request->get('_token')) && $comment->getAuthor() == $this->getUser()) {
+        if ($this->isCsrfTokenValid('delete'.$comment->getId(), $request->request->get('_token')) && $comment->getAuthor() == $this->getUser() || $this->isGranted('ROLE_ADMIN')) {
             $em = $this->getDoctrine()->getManager();
             foreach ($comment->getNotifications() as $notification) {
                 $em->remove($notification);
             }
             $em->remove($comment);
             $em->flush();
-            $this->addFlash('danger', $this->trans('flash.comment.deleted'));
+            $this->addFlash('success', $this->trans('flash.comment.deleted'));
         } else {
             $this->addFlash('danger', $this->trans('flash.comment.deleting.error'));
         }

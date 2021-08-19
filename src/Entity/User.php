@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Validator\Constraints\BlockedEmail;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -14,6 +15,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
  * @ORM\HasLifecycleCallbacks()
  * @UniqueEntity("username", message="forn.username.already.exists")
+ * @BlockedEmail("email")
  * @UniqueEntity("email", message="forn.email.already.exists")
  */
 class User implements UserInterface
@@ -111,6 +113,11 @@ class User implements UserInterface
      * @ORM\Column(type="boolean", nullable=true)
      */
     private $status;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $confirmedEmail;
 
     public function __construct()
     {
@@ -483,6 +490,18 @@ class User implements UserInterface
     public function setStatus(?bool $status): self
     {
         $this->status = $status;
+
+        return $this;
+    }
+
+    public function getConfirmedEmail(): ?string
+    {
+        return $this->confirmedEmail;
+    }
+
+    public function setConfirmedEmail(?string $confirmedEmail): self
+    {
+        $this->confirmedEmail = $confirmedEmail;
 
         return $this;
     }

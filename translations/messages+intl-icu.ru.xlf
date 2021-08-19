@@ -15,7 +15,7 @@
       </trans-unit>
       <trans-unit id="dLSYz9I" resname="flash.comment.deleted">
         <source>flash.comment.deleted</source>
-        <target>Комментарий успешно удален</target>
+        <target>Комментарий удален</target>
       </trans-unit>
       <trans-unit id="4cT1PMq" resname="flash.comment.deleting.error">
         <source>flash.comment.deleting.error</source>
@@ -348,6 +348,14 @@
       <trans-unit id="zeD7Dew" resname="settings">
         <source>settings</source>
         <target>Настройки</target>
+      </trans-unit>
+      <trans-unit id="loDp1ew" resname="block">
+        <source>block</source>
+        <target>Заблокировать</target>
+      </trans-unit>
+      <trans-unit id="wd1drew" resname="unblock">
+        <source>unblock</source>
+        <target>Разблокировать</target>
       </trans-unit>
       <trans-unit id="wMt_vm_" resname="reset.password">
         <source>reset.password</source>

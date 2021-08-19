@@ -9,7 +9,7 @@
         {{ 'profile.editing' | trans }}
     </h1>
 
-    {% if not user.status == 0 %}
+    {% if not user.status == 0 or user.status is null %}
 
     {{ form_start(form) }}
 

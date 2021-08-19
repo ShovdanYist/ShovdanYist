@@ -469,6 +469,10 @@
         <source>no.account.with.such.email</source>
         <target>Аккаунт с такой почтой не найден</target>
       </trans-unit>
+      <trans-unit id="x8silNp" resname="email.in.blacklist">
+        <source>email.in.blacklist</source>
+        <target>Указанная почта в черном списке</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>
