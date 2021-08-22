@@ -1,5 +1,15 @@
 {% extends 'base.html.twig' %}
 
+{% block og_title %}{{ user.username }} | Профиль{% endblock %}
+
+{% block og_image %}{% if user.profile.avatar != 'avatar.jpg' %}{{ vich_uploader_asset(profile) }}{% else %}{{ asset('assets/images/avatar.jpg') }}{% endif %}{% endblock %}
+
+{% block og_type %}
+    <meta property="og:type" content="profile">
+    <meta property="profile:username" content="{{ user.username }}">
+    <meta property="profile:gender" content="{{ user.profile.gender ? 'female' : 'male' }}">
+{% endblock %}
+
 {% block title %}{{ user.username }} | Профиль{% endblock %}
 
 {% block description %}Страница пользователя {{ user.username }} на сайте ShovdanYist, здесь вы найдете тексты всех чеченских песен, их переводы, а также сможете скачать их или добавлять в свой плейлист.{% endblock %}

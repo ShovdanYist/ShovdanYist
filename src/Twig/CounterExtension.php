@@ -61,7 +61,7 @@ class CounterExtension extends AbstractExtension
 
         sort($result);
         $result = implode($delimiter,$result);
-        $template = '(' . $this->translator->trans('feat') . ' %s)';
+        $template = ' (' . $this->translator->trans('feat') . ' %s)';
 
         if ($featuring->isEmpty()){
             $template = null;

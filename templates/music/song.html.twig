@@ -1,6 +1,12 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{ song.artist.fullName }} - {{ song.title }} | Текст песни {{ featuring( song, ', ' ) }} {% if page and page > 1 %}| Страница {{ page }}{% endif %}{% endblock %}
+{% block og_title %}{{ song.artist.fullName }} - {{ song.title }}{{ featuring( song, ', ' ) }} | Текст песни{% endblock %}
+
+{% block og_image %}{{ vich_uploader_asset(song.artist) }}{% endblock %}
+
+{% block og_type %}<meta property="og:type" content="music.song">{% endblock %}
+
+{% block title %}{{ song.artist.fullName }} - {{ song.title }}{{ featuring( song, ', ' ) }} | Текст песни{% if page and page > 1 %} | Страница {{ page }}{% endif %}{% endblock %}
 
 {% block description %}В ShovdanYist вы можете cкачать песню {{ song.artist.fullName }} - {{ song.title }}{% if featuring( song, ', ' ) %} {% endif %}{{ featuring( song, ', ' ) }}, найти тексты чеченских песен, переводы чеченских песен, а также создавать свой собственный плейлист.{% endblock %}
 

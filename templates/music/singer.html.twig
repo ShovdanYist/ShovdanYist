@@ -1,10 +1,20 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{ singer.fullName }} | Дискография{% endblock %}
+{% block og_title %}{{ singer.fullName }} | Биография, Дискография{% endblock %}
 
-{% block description %}В ShovdanYist вы сможете найти биографию и все песни исполнителя {{ singer.fullName }}, а также все тексты чеченских песен и их переводы.{% endblock %}
+{% block og_image %}{{ vich_uploader_asset(singer) }}{% endblock %}
 
-{% block keywords %}{{ singer.fullName | lower }} биография, {{ singer.fullName | lower }} все песни, тексты чеченских песен, переводы чеченских песен, под гитару, чеченская музыка{% endblock %}
+{% block og_type %}
+    <meta property="og:type" content="profile">
+    <meta property="profile:first_name" content="{{ singer.firstname }}">
+    <meta property="profile:last_name" content="{{ singer.lastname }}">
+{% endblock %}
+
+{% block title %}{{ singer.fullName }} | Биография, Дискография{% endblock %}
+
+{% block description %}В ShovdanYist вы сможете найти биографию, дискографию и все песни исполнителя {{ singer.fullName }}, а также все тексты чеченских песен и их переводы.{% endblock %}
+
+{% block keywords %}{{ singer.fullName | lower }} биография, {{ singer.fullName | lower }} дискография, {{ singer.fullName | lower }} все песни, тексты чеченских песен, переводы чеченских песен, под гитару, чеченская музыка{% endblock %}
 
 {% block main_top %}
 
