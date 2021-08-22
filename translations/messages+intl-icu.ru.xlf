@@ -185,9 +185,9 @@
         <source>novelty</source>
         <target>Новинки</target>
       </trans-unit>
-      <trans-unit id="pEGxX_m" resname="random">
-        <source>random</source>
-        <target>Случайные</target>
+      <trans-unit id="pEGxX_m" resname="discussed">
+        <source>discussed</source>
+        <target>Самые обсуждаемые</target>
       </trans-unit>
       <trans-unit id="gPGJmE5" resname="music">
         <source>music</source>

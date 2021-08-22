@@ -14,7 +14,6 @@ use App\Service\Mailer;
 use App\Service\Paginator;
 use App\Validator\Constraints\MailExists;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
-use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
@@ -107,19 +106,7 @@ class HomeController extends CustomAbstractController
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
 
-//        if ($this->getDoctrine()->getRepository(EmailAddress::class)->findOneBy(['address' => $form->get('email')->getData()])->getStatus() === false) {
-//            $form->get('email')->addError(new FormError('Указанная электронная почта в черном списке'));
-//        }
-
         if ($form->isSubmitted() && $form->isValid()) {
-
-//            $form->get('email')->addError(new FormError('Указанная электронная почта в черном списке'));
-
-//            dd($this->getDoctrine()->getRepository(EmailAddress::class)->findOneBy(['address' => $form->get('email')->getData()])->getStatus());
-//
-//            if ($this->getDoctrine()->getRepository(EmailAddress::class)->findOneBy(['address' => $form->get('email')->getData()])->getStatus() === false) {
-//                $form->addError(new FormError('Указанная электронная почта в черном списке'));
-//            }
 
             $user->setPassword(
                 $passwordEncoder->encodePassword(

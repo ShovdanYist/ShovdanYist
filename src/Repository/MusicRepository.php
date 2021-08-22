@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Music;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\ORM\Query\Expr;
 
 /**
  * @method Music|null find($id, $lockMode = null, $lockVersion = null)
@@ -64,13 +65,36 @@ class MusicRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    public function findByDiscussed($criteria, $orderBy = ['id' => 'DESC'], $limit = 10, $offset = 0)
+    {
+        $date = (new \DateTime('now'))->modify('-3 day')->format('Y-m-d');
+
+        $qb = $this->createQueryBuilder('m');
+
+        $qb ->leftJoin('m.comments','c',Expr\Join::WITH,'c.publishedAt > \'' . $date . '\'')
+            ->groupBy('m')
+            ->orderBy('COUNT(c.id)','DESC')
+        ;
+
+        foreach ($criteria as $property => $value) {
+            $qb ->andWhere('m.'. $property .' = :' . $property . '')
+                ->setParameter($property,$value)
+            ;
+        }
+
+        $qb ->setMaxResults($limit)
+            ->setFirstResult($offset);
+
+        return $qb->getQuery()->getResult();
+    }
+
     public function findByGenre($criteria, $orderBy = ['id' => 'DESC'], $limit = 10, $offset = 0)
     {
         $qb = $this->createQueryBuilder('m');
 
         foreach ($criteria as $property => $value) {
             if ($property == 'genre') {
-                $qb ->leftJoin('m.theme', 'g')
+                $qb ->leftJoin('m.genre', 'g')
                     ->where('g = :' . $property . '')
                     ->andWhere('m.status = true')
                     ->setParameter($property,$value)

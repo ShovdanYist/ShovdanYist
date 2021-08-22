@@ -41,13 +41,13 @@ class MusicController extends CustomAbstractController
         $paginator->setClass(Music::class)->setParameters(['chart' => $chart])->setLimit(20)->setPage($page);
 
         if ($chart == 'trends') {
-            $paginator->setOrder(['editingDate' => 'DESC'])->setCriteria(['status' => true, 'featured' => true])->setType('chart');
+            $paginator->setOrder(['editingDate' => 'DESC'])->setCriteria(['status' => true, 'featured' => true]);
         } elseif ($chart == 'lasts') {
-            $paginator->setOrder(['publicationDate' => 'DESC'])->setCriteria(['status' => true])->setType('chart');
+            $paginator->setOrder(['publicationDate' => 'DESC'])->setCriteria(['status' => true]);
         } elseif ($chart == 'novelty') {
-            $paginator->setOrder(['releaseDate' => 'DESC'])->setCriteria(['status' => true])->setType('chart');
-        } elseif ($chart == 'random') {
-            $paginator->setType('random');
+            $paginator->setOrder(['releaseDate' => 'DESC'])->setCriteria(['status' => true]);
+        } elseif ($chart == 'discussed') {
+            $paginator->setOrder(['releaseDate' => 'DESC'])->setCriteria(['status' => true])->setMethod('findByDiscussed');
         } else {
             throw $this->createNotFoundException();
         }

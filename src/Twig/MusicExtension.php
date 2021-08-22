@@ -98,8 +98,8 @@ class MusicExtension extends AbstractExtension
             $songs = $this->music->findBy(['status' => true], ['releaseDate' => 'DESC'],5);
         } elseif ($chart == 'lasts') {
             $songs = $this->music->findBy(['status' => true], ['publicationDate' => 'DESC'],5);
-        } elseif ($chart == 'random') {
-            $songs = $this->music->findRandom(5);
+        } elseif ($chart == 'discussed') {
+            $songs = $this->music->findByDiscussed(['status' => true],['publicationDate' => 'DESC'],5);
         }
 
         return $twig->render('layouts/modules/chart_box.html.twig', [

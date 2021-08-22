@@ -1,106 +1,31 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <title>Восстановление пароля на сайте ShovdanYist</title>
-    <style type="text/css">
-        .md-notification-template {
-            font-family: -apple-system,BlinkMacSystemFont,Roboto,Open Sans,Helvetica Neue,"Noto Sans Armenian","Noto Sans Bengali","Noto Sans Cherokee","Noto Sans Devanagari","Noto Sans Ethiopic","Noto Sans Georgian","Noto Sans Hebrew","Noto Sans Kannada","Noto Sans Khmer","Noto Sans Lao","Noto Sans Osmanya","Noto Sans Tamil","Noto Sans Telugu","Noto Sans Thai",sans-serif;
-            width: 100%;
-            padding-top: 30px;
-            background-color: #fff;
-            border-radius: 5px;
-            box-sizing: border-box;
-        }
+{% extends 'layouts/mailer/base.html.twig' %}
 
-        .md-notify-box {
-            width: 500px;
-            margin: 0 auto;
-            padding: 20px;
-            border-radius: 5px;
-            box-shadow: 0 1px 0 0 #d7d8db,0 0 0 1px #e3e4e8;
-        }
+{% block body %}
 
-        .md-notify-box img {
-            width: 280px;
-            margin: 0 auto;
-            display: table;
-        }
+    Здравствуйте <b>{{ user.username }}</b>,
 
-        .btn {
-            padding: 10px;
-            border-radius: 3px;
-            color: #fff;
-            text-decoration: unset;
-        }
+    <br><br>
 
-        .btn-blue {
-            background-color: #3498db;
-        }
+    Вы успешно зарегистрировались на сайте ShovdanYist, теперь вы можете зайти используя свое имя пользователя и пароль
 
-        .btn:hover {
-            opacity: 0.9;
-        }
+    <br><br>
 
-        table {
-            margin: 0 auto;
-            padding-top: 10px;
-        }
+    Некоторые функции сайта такие как добавление аватара и комментариев будут недоступны, пока вы не подтвердите свою электронную почту
 
-        table a {
-            color: #fff !important;
-            text-decoration: unset;
-        }
-        .md-email-info {
-            font-size: 12px;
-            color: #999;
-            padding-top: 14px;
-            margin-bottom: unset;
-        }
-        .md-email-info a {
-            text-decoration: unset;
-        }
-    </style>
-</head>
+    <br><br>
 
-<body>
+    Для этого нажмите на следующую кнопку:
 
-<div class="md-notification-template">
+    <br><br>
 
-    <div class="md-notify-box">
-
-        <img src="https://shovdanyist.com/assets/images/logotype.png" alt="ShovdanYist Logotype">
-
-        <br><br>
-        Здравствуйте <b>{{ user.username }}</b>,
-        <br><br>
-        Вы успешно зарегистрировались на сайте ShovdanYist, теперь вы можете зайти используя свое имя пользователя и пароль.
-        <br><br>
-        Некоторые функции сайта такие как добавление аватара и комментариев будут недоступны, пока вы не подтвердите свою электронную почту.
-        <br><br>
-        Для этого нажмите на следующую кнопку:
-        <br><br>
-
-        <table>
-            <tbody>
+    <table>
+        <tbody>
             <tr>
                 <td class="btn btn-blue">
                     <a href="https://shovdanyist.com{{ path('app_email_validation',{'id':user.id,'token':user.token}) }}">Подтвердить почту</a>
                 </td>
             </tr>
-            </tbody>
-        </table>
+        </tbody>
+    </table>
 
-        <p class="md-email-info">
-            © ShovdanYist Inc. 32 bd Gambetta, Nice, AMCA 06000
-            <br><br>
-            Это сообщение отправлено на <b>{{ user.email }}</b> для пользователя <a href="https://shovdanyist.com{{ path('user_profile', {'username': user.username}) }}">{{ user.username }}</a>.
-        </p>
-
-    </div>
-
-</div>
-
-</body>
-
-</html>
+{% endblock %}
