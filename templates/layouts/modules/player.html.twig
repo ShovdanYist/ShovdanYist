@@ -42,6 +42,6 @@
 
     {% endif %}
 
-    <audio preload="none" class="player-audio" src="{{ vich_uploader_asset(song) }}" type="audio/mp3" controls="controls"></audio>
+    <audio preload="none" title="{{ song.artist.fullName }} - {{ song.title }}{{ featuring( song, ', ' ) }}" class="player-audio" src="{{ vich_uploader_asset(song) }}" type="audio/mp3" controls="controls"></audio>
 
 </div>
