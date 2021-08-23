@@ -1,0 +1,231 @@
+flash.comment.added: 'Комментарий успешно добавлен'
+flash.comment.adding.error: 'Ошибка при добавлении пароля'
+flash.comment.deleted: 'Комментарий удален'
+flash.comment.deleting.error: 'Ошибка при удалении комментария'
+mailer.shovdanyist.signup: 'Регистрация на сайте ShovdanYist'
+form.email: 'Электронная почта'
+form.email.help: 'Введите электронную почту которая привязана к вашему аккаунту'
+mailer.shovdanyist.account.recovery: 'Восстановление аккаунта ShovdanYist'
+flash.recovery.email.sent.successful: 'Письмо для восстановления аккаунта успешно отправлен на вашу почту'
+password.recovery.link.timeout: 'Время ссылки восстановления аккаунта истек'
+flash.password.successful.recovered: 'Пароль успешно восстановлен'
+add.to.playlist: 'Добавить в плейлист'
+flash.removed.from.playlist: 'Песня удалена из плейлиста'
+remove.from.playlist: 'Удалить из плейлиста'
+profile.changes.saved: 'Изменения профиля сохранены'
+form.username: 'Имя пользователя'
+flash.password.changed: 'Пароль изменен'
+current.password.incorrect: 'Старый пароль введён неправильно'
+write.comment: 'Написать комментарий..'
+form.confirm.password: 'Подтвердить пароль'
+form.confirm.password.help: 'Введите повторно новый пароль чтобы не ошибиться'
+form.new.password: 'Новый пароль'
+form.avatar: Аватар
+form.delete.avatar: 'Удалить аватар'
+form.full.name: 'Полное имя'
+form.about.me: 'О себе'
+form.website: Сайт
+form.gender: Пол
+form.gender.male: Мужской
+form.gender.female: Женский
+form.username_help: 'Авторизация будет выполняться с помощью имени пользователя'
+form.password: Пароль
+accept: Принять
+agree.terms: 'Пользовательское соглашение'
+form.current.password: 'Старый пароль'
+form.password.max.length.message: 'Пароль может состоять максимум из 40-ка символов'
+feat: с
+featuring_singular: Совместая
+featuring_plural: Совместных
+song: Песня
+two_songs: Песни
+songs: Песен
+trends: Тренды
+lasts: 'Последние добавленные'
+novelty: Новинки
+discussed: 'Самые обсуждаемые'
+music: Музыка
+see.all: 'Посмотреть всё'
+genres: Жанры
+themes: Темы
+download.song: 'Скачать песню'
+theme: Тема
+genre: Жанр
+release.date: 'Дата релиза'
+featuring: Совместно
+publication.date: 'Дата публикации'
+author: Автор
+artists.for.letter.not.found: 'Исполнителей на букву "{ letter }" не найдено'
+artists.for.letter: 'Исполнители на букву "{ letter }"'
+birth.date: 'Дата рождения'
+title: Название
+year: Год
+views: Просмотры
+no.records.found: 'Записей не найдено'
+account.recovery: 'Восстановление аккаунта'
+send: Отправить
+sign.up: Регистрация
+log.in: Войти
+not.registered.yet: 'Еще не зарегистрированы?'
+already.registered: 'Вы уже зарегистрированны?'
+username: 'Имя пользователя'
+password: Пароль
+forgot.your.password: 'Забыли пароль?'
+profile.editing: 'Редактирование страницы'
+save: Сохранить
+cancel: Отмена
+notifications: Уведомлении
+replied.you.with.comment.male: 'Ответил вам'
+replied.you.with.comment.female: 'Ответила вам'
+you.have.no.notifications: 'У вас нет уведомлений'
+account.deleting: 'Удаление аккаунта'
+account.deleting.warning.message: 'Все данные связанные с вашим аккаунтом будут безвозвратно удалены.'
+are.you.sure.to.delete.account: 'Вы уверены что хотите удалить свой аккаунт навсегда?'
+delete.account: 'Удалить свой аккаунт'
+edit: Редактировать
+settings: Настройки
+block: Заблокировать
+unblock: Разблокировать
+reset.password: 'Изменить свой пароль'
+playlist.of: 'Плейлист {username}'
+not.songs.in.your.playlist: 'У вас нет песен в плейлисте'
+user.has.not.songs.in.playlist: 'У пользователя {username} нет песен в плейлисте'
+manager: Менеджер
+my.page: 'Моя страница'
+log.out: Выйти
+reply.for: 'Ответ для'
+reply: Ответить
+comments: Комментарии
+or: или
+to.leave.a.comment: 'чтобы оставлять комментарии'
+sure.to.delete.comment: 'Вы уверены что хотите удалить комментарий?'
+delete: Удалить
+password.recovery: 'Восстановление пароля'
+flash.registration.successful.completed: 'Регистрация успешно завершена'
+flash.added.to.playlist: 'Песня добавлена в плейлист'
+reply.for_2: ' '
+form.reply.for: 'Ответ для'
+form.reply.for_2: ' '
+password.resetting: 'Изменение пароля'
+you.also.can: 'Вы также можете'
+flash.password.is.wrong: 'Введен неверный пароль'
+enter.password: 'Введите пароль'
+forn.username.must.be.between: 'Имя пользователя может содержать только от 8-ми до 28-ми символов'
+forn.username.can.consist.symbols: 'Имя пользователя может состоять только из латинских букв, цифр, символов . и _'
+forn.username.already.exists: 'Уже существует аккаунт с именем пользователя'
+browse: Выбрать
+change: Изменить
+error404: 'Ошибка 404'
+error500: 'Ошибка 500'
+such.page.not.exist: 'Такой страницы не существует'
+back.to.home: 'Вернуться на главную'
+something.wrong.in.this.page: 'На сервере произошла непредвиденная ошибка, пожалуйста сообщите об этом нашей администрации'
+all.rights.reserved: 'Все права защищены'
+home.page: Главная
+category: Категория
+categories: Категории
+at: В
+image: Изображение
+description: Описание
+anonymous: Анонимно
+add: Добавить
+reject: Отклонить
+nothing.found.for: 'Ничего не найдено по запросу:'
+select.categories: 'Выберите категории'
+select.roles: 'Выберите роли'
+heading: Заголовок
+select.music: 'Выберите музыку'
+music.help: 'Выберите музыку из своего плейлиста'
+event.date.help: 'Не забудьте указать, если речь идет о знаковой дате'
+article.adding: 'Добавление поста'
+become.an.author: 'Стать автором'
+article.editing: 'Изменение поста'
+article: Статья
+articles: Посты
+sections: Секции
+select.sections: 'Выберите секции'
+event.date: 'Дата события'
+feed: Лента
+playlist: Плейлист
+article.has.been.added: 'Статья успешно отправлена, и будет добавлена после подтверждения администрацией'
+form.password.is.empty: 'Поле пароля не может быть пустым'
+form.password.not.same: 'Пароли не идентичны'
+form.password.min.length.message: 'Пароль должен состоять минимум из {{ limit }}-ти символов'
+slug: Алиас
+lyrics: 'Текст песни'
+featured: Избранное
+featureds: Избранные
+activated: Опубликовано
+artist: Артист
+first.name: Имя
+last.name: Фамилия
+biography: Биография
+activity: Деятельность
+content: Содержание
+users: Пользователи
+people: Люди
+lists: Списки
+activities: Деятельности
+add.music: 'Добавить музыку'
+editing.date: 'Дата изменения'
+music.not.found: 'Музыка не найдена'
+music.editing: 'Изменение музыки'
+music.adding: 'Добавление музыки'
+save.and.close: 'Сохранить и закрыть'
+select.featuring: 'Выберите совместных'
+select.genres: 'Выберите жанры'
+select.themes: 'Выберите темы'
+article.add: 'Добавить пост'
+section: Секция
+update: Обновить
+add.user: 'Добавить пользователя'
+role: Роль
+roles: Роли
+verified: '✓ Проверенный'
+user.adding: 'Добавление пользователя'
+person.editing: 'Изменение человека'
+person.adding: 'Добавление человека'
+add.person: 'Добавить человека'
+add.category: 'Добавить категорию'
+category.editing: 'Изменение категории'
+category.adding: 'Добавление категории'
+activity.editing: 'Изменение деятельности'
+activity.adding: 'Добавление деятельности'
+add.activity: 'Добавить деятельность'
+genre.editing: 'Изменение жанра'
+genre.adding: 'Добавление жанра'
+theme.editing: 'Изменение темы'
+theme.adding: 'Добавление темы'
+add.theme: 'Добавить тему'
+add.genre: 'Добавить жанр'
+are.you.sure.to.delete: 'Вы уверены что хотите удалить этот элемент?'
+statistics: Статистика
+dashboard: 'Панель управления'
+in.moderation: 'На модерации'
+published: Опубликованные
+total: Всего
+status: Статус
+add.to.bookmarks: 'Добавить в закладки'
+remove.from.bookmarks: 'Удалить из закладок'
+flash.removed.from.bookmarks: 'Пост удален из закладок'
+flash.added.to.bookmarks: 'Пост добавлен в закладки'
+bookmarks: Закладки
+moderation: Модерация
+are.you.sure.to.log.out: 'Вы уверены что хотите выйти?'
+are.you.sure.to.publish.it: 'Вы уверены что хотите опубликовать?'
+are.you.sure.to.change.it: 'Вы уверены что хотите изменить?'
+publish: Опубликовать
+are.you.sure.to.reject.it: 'Вы уверены что хотите отклонить публикацию?'
+remember.me: 'Запомнить меня'
+all: Все
+write.article: 'Написать статью'
+you.have.not.bookmarks: 'У вас нет закладок'
+additional: Дополнительно
+email.confirmation: 'Подтверждение электронной почты'
+send.for.moderation: 'Отправить на модерацию'
+send.for.moderation.help: 'Если не отметите этот пункт, то статья сохранится как черновик и вы сможете отправить её позже'
+'Подтверждение почты на сайте ShovdanYist': '__Подтверждение почты на сайте ShovdanYist'
+tags: Теги
+add.tag: Добавить тег
+tag.adding: Добавление тега
+tag.editing: Изменить тег

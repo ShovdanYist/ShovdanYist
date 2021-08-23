@@ -1,0 +1,22 @@
+{{ form_start(form) }}
+
+    <div class="row label-icons-form">
+
+        <div class="col-12">
+
+            {{ form_row(form.title) }}
+            {{ form_row(form.slug) }}
+
+            <button class="btn btn-primary">
+                {{ button_label | default('add') | trans }}
+            </button>
+
+            <a class="btn btn-link float-right" href="{{ path('dash_tag_index') }}">
+                {{ 'cancel' | trans }}
+            </a>
+
+        </div>
+
+    </div>
+
+{{ form_end(form) }}

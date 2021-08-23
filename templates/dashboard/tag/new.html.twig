@@ -1,0 +1,11 @@
+{% extends 'dashboard/base.html.twig' %}
+
+{% block title %}{{ 'tag.adding' | trans }}{% endblock %}
+
+{% block body %}
+
+    <h1>{{ 'tag.adding' | trans }}</h1>
+
+    {{ include('dashboard/tag/_form.html.twig') }}
+
+{% endblock %}
