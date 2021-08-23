@@ -140,6 +140,11 @@ class Music
      */
     private $notifications;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=Tag::class, inversedBy="musics")
+     */
+    private $tags;
+
     public function __construct()
     {
         $this->genre = new ArrayCollection();
@@ -149,9 +154,10 @@ class Music
         $this->userMusics = new ArrayCollection();
         $this->articles = new ArrayCollection();
         $this->notifications = new ArrayCollection();
+        $this->tags = new ArrayCollection();
     }
 
-    public function getFullTitle()
+    public function getFullTitle(): string
     {
         ($this->artist) ? $fullName = $this->artist->getFullName() . ' - ' : $fullName = '';
         return $fullName . $this->getTitle();
@@ -553,6 +559,32 @@ class Music
             if ($notification->getSong() === $this) {
                 $notification->setSong(null);
             }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Tag[]
+     */
+    public function getTags(): Collection
+    {
+        return $this->tags;
+    }
+
+    public function addTag(Tag $tag): self
+    {
+        if (!$this->tags->contains($tag)) {
+            $this->tags[] = $tag;
+        }
+
+        return $this;
+    }
+
+    public function removeTag(Tag $tag): self
+    {
+        if ($this->tags->contains($tag)) {
+            $this->tags->removeElement($tag);
         }
 
         return $this;

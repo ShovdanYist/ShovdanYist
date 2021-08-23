@@ -2,6 +2,19 @@
 
     <div class="md-song-stats">
 
+        {% if not song.tags.empty %}
+
+            <strong>{{ 'tags' | trans }}</strong>
+            {% for tag in song.tags %}
+                <span class="badge badge-info badge-a">
+                    <a href="{{ path('theme_show', {'slug': tag.slug}) }}">
+                        {{ tag.title }}
+                    </a>
+                </span>
+            {% endfor %}
+
+        {% endif %}
+
         {% if not song.theme.empty %}
 
             <strong>{{ 'theme' | trans }}</strong>

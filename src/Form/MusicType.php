@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Entity\Genre;
 use App\Entity\Music;
 use App\Entity\People;
+use App\Entity\Tag;
 use App\Entity\Theme;
 use App\Repository\PeopleRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -105,6 +106,18 @@ class MusicType extends AbstractType
                 'label_attr' => ['class' => 'checkbox-custom'],
                 'attr' => [
                     'data-placeholder' => $this->translator->trans('select.themes'),
+                    'class' => 'chosen'
+                ]
+            ])
+            ->add('tags', EntityType::class, [
+                'label' => 'tags',
+                'class' => Tag::class,
+                'required' => false,
+                'multiple' => true,
+                'choice_label' => 'title',
+                'label_attr' => ['class' => 'checkbox-custom'],
+                'attr' => [
+                    'data-placeholder' => $this->translator->trans('select.tags'),
                     'class' => 'chosen'
                 ]
             ])

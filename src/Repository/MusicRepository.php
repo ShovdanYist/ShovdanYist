@@ -88,6 +88,34 @@ class MusicRepository extends ServiceEntityRepository
         return $qb->getQuery()->getResult();
     }
 
+    public function findByTag($criteria, $orderBy = ['id' => 'DESC'], $limit = 10, $offset = 0)
+    {
+        $qb = $this->createQueryBuilder('m');
+
+        foreach ($criteria as $property => $value) {
+            if ($property == 'tag') {
+                $qb ->leftJoin('m.tags', 't')
+                    ->where('t = :' . $property . '')
+                    ->andWhere('m.status = true')
+                    ->setParameter($property,$value)
+                ;
+            } else {
+                $qb ->andWhere('m.'. $property .' = :' . $property . '')
+                    ->setParameter($property,$value)
+                ;
+            }
+        }
+
+        foreach ($orderBy as $key => $value) {
+            $qb->orderBy('m.'.$key,$value);
+        }
+
+        $qb ->setMaxResults($limit)
+            ->setFirstResult($offset);
+
+        return $qb->getQuery()->getResult();
+    }
+
     public function findByGenre($criteria, $orderBy = ['id' => 'DESC'], $limit = 10, $offset = 0)
     {
         $qb = $this->createQueryBuilder('m');

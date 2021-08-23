@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\CustomAbstracts\CustomAbstractController;
 use App\Entity\Genre;
 use App\Entity\Music;
+use App\Entity\Tag;
 use App\Entity\Theme;
 use App\Entity\UserMusic;
 use App\Repository\MusicRepository;
@@ -66,6 +67,40 @@ class MusicController extends CustomAbstractController
             'title' => $title,
             'h1' => $this->trans($chart),
             'description' => $description
+        ];
+
+        return $this->render('music/chart.html.twig', [
+            'songs' => $paginator->getData(),
+            'paginator' => $paginator,
+            'info' => $info
+        ]);
+    }
+
+    /**
+     * @Route("/tag/{slug}/{page<\d+>?1}", name="tag_show", methods={"GET"})
+     * @param Tag $tag
+     * @param $page
+     * @param Paginator $paginator
+     * @return Response
+     */
+    public function tag(Tag $tag, $page, Paginator $paginator): Response
+    {
+        $paginator
+            ->setParameters(['slug' => $tag->getSlug()])
+            ->setCriteria(['tag' => $tag])
+            ->setMethod('findByTag')
+            ->setOrder(['title' => 'DESC'])
+            ->setClass(Music::class)
+            ->setType('tag')
+            ->setLimit(20)
+            ->setPage($page);
+
+        ($page > 1) ? $page = ' | Страница ' . $page : $page = '';
+
+        $info = [
+            'title' => $tag->getTitle() . ' | Чеченские песни жанра ' . mb_strtolower($tag->getTitle()) . $page,
+            'h1' => 'Песни жанра ' . mb_strtolower($tag->getTitle()),
+            'description' => 'Чеченские песни жанра ' . mb_strtolower($tag->getTitle())
         ];
 
         return $this->render('music/chart.html.twig', [

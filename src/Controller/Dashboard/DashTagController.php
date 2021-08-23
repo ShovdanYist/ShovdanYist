@@ -11,12 +11,12 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/dashboard/tag", name="dash_tag_")
+ * @Route("/dashboard", name="dash_tag_")
  */
 class DashTagController extends AbstractController
 {
     /**
-     * @Route("/", name="index", methods={"GET"})
+     * @Route("/tags", name="index", methods={"GET"})
      * @param TagRepository $tagRepository
      * @return Response
      */
@@ -28,7 +28,7 @@ class DashTagController extends AbstractController
     }
 
     /**
-     * @Route("/new", name="new", methods={"GET","POST"})
+     * @Route("/tag/new", name="new", methods={"GET","POST"})
      * @param Request $request
      * @return Response
      */
@@ -53,7 +53,7 @@ class DashTagController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="edit", methods={"GET","POST"})
+     * @Route("/tag/{id}/edit", name="edit", methods={"GET","POST"})
      * @param Request $request
      * @param Tag $tag
      * @return Response
@@ -76,7 +76,7 @@ class DashTagController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="delete", methods={"DELETE"})
+     * @Route("/tag/{id}", name="delete", methods={"DELETE"})
      * @param Request $request
      * @param Tag $tag
      * @return Response
