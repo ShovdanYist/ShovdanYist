@@ -8,7 +8,7 @@ use App\Entity\User;
 use App\Repository\BookmarkRepository;
 use App\Repository\MusicRepository;
 use App\Repository\NotificationRepository;
-use App\Repository\PostRepository;
+use App\Repository\ArticleRepository;
 use App\Repository\UserMusicRepository;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -22,13 +22,13 @@ class CounterExtension extends AbstractExtension
     private $notifyRepo;
     private $translator;
     private $bookmarks;
-    private $postRepo;
+    private $articleRepo;
     private $security;
 
-    public function __construct(MusicRepository $musicRepository, PostRepository $postRepo, BookmarkRepository $bookmarks, UserMusicRepository $userMusicRepo, NotificationRepository $notifyRepo, TranslatorInterface $translator, Security $security)
+    public function __construct(MusicRepository $musicRepository, ArticleRepository $articleRepo, BookmarkRepository $bookmarks, UserMusicRepository $userMusicRepo, NotificationRepository $notifyRepo, TranslatorInterface $translator, Security $security)
     {
         $this->musicRepo = $musicRepository;
-        $this->postRepo = $postRepo;
+        $this->articleRepo = $articleRepo;
         $this->userMusicRepo = $userMusicRepo;
         $this->bookmarks = $bookmarks;
         $this->notifyRepo = $notifyRepo;
@@ -43,7 +43,7 @@ class CounterExtension extends AbstractExtension
             new TwigFunction('featuringsCount', [$this, 'featuringsCount'], ['is_safe' => ['html']]),
             new TwigFunction('songsCount', [$this, 'songsCount'], ['is_safe' => ['html']]),
             new TwigFunction('userContainMusic', [$this, 'userContainMusic'], ['is_safe' => ['html']]),
-            new TwigFunction('userContainPost', [$this, 'userContainPost'], ['is_safe' => ['html']]),
+            new TwigFunction('userContainArticle', [$this, 'userContainArticle'], ['is_safe' => ['html']]),
             new TwigFunction('notifyCount', [$this, 'notifyCount'], ['is_safe' => ['html']]),
             new TwigFunction('moderationCount', [$this, 'moderationCount'], ['is_safe' => ['html']]),
             new TwigFunction('notifyIndicator', [$this, 'notifyIndicator'], ['is_safe' => ['html']]),
@@ -105,9 +105,9 @@ class CounterExtension extends AbstractExtension
         return $this->userMusicRepo->findOneBy(['user' => $user, 'music' => $song]);
     }
 
-    public function userContainPost($user, $post)
+    public function userContainArticle($user, $article)
     {
-        return $this->bookmarks->findOneBy(['user' => $user, 'post' => $post]);
+        return $this->bookmarks->findOneBy(['user' => $user, 'article' => $article]);
     }
 
     public function notifyCount($user): int
@@ -117,7 +117,7 @@ class CounterExtension extends AbstractExtension
 
     public function moderationCount(): int
     {
-        return $this->postRepo->count(['status' => null, 'moderation' => true]);
+        return $this->articleRepo->count(['status' => null, 'moderation' => true]);
     }
 
     public function notifyIndicator(User $user): int

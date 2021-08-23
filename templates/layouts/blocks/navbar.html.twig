@@ -20,7 +20,7 @@
             </a>
 
             <div class="dropdown-menu" aria-labelledby="dropdownMenuLink" style="margin-top: 7px">
-                <a class="dropdown-item" href="{{ path('post_add') }}"><i class="fas fa-heading"></i> {{ 'write.article' | trans }}</a>
+                <a class="dropdown-item" href="{{ path('article_add') }}"><i class="fas fa-heading"></i> {{ 'write.article' | trans }}</a>
             </div>
 
         {% else %}
@@ -64,7 +64,7 @@
                                 {{ 'my.page' | trans }}
                             </a>
 
-                            <a class="dropdown-item" href="{{ path('post_add') }}">
+                            <a class="dropdown-item" href="{{ path('article_add') }}">
                                 <i class="fas fa-heading"></i>
                                 {{ 'write.article' | trans }}
                             </a>

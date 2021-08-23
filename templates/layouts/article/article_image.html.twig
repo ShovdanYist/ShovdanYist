@@ -1,0 +1,3 @@
+{% if article.image %}
+    <img class="article-image" width="100%" src="{{ vich_uploader_asset(article) | imagine_filter('article') }}" alt="{{ article.title }}">
+{% endif %}

@@ -6,24 +6,23 @@ use App\CustomAbstracts\CustomAbstractController;
 use App\Entity\Bookmark;
 use App\Entity\Category;
 use App\Entity\Notification;
-use App\Entity\Post;
+use App\Entity\Article;
 use App\Form\NotificationType;
-use App\Form\PostType;
+use App\Form\ArticleType;
 use App\Repository\UserRepository;
 use App\Service\Paginator;
 use DateTime;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route(name="post_")
- * Class PostController
+ * @Route(name="article_")
+ * Class ArticleController
  * @package App\Controller
  */
-class PostController extends CustomAbstractController
+class ArticleController extends CustomAbstractController
 {
     /**
      * @Route("/category/{slug}/{page<\d+>?1}", name="category")
@@ -38,51 +37,51 @@ class PostController extends CustomAbstractController
             ->setCriteria(['status' => true, 'category' => $category])
             ->setParameters(['slug' => $category->getSlug()])
             ->setOrder(['publishedAt' => 'DESC'])
-            ->setMethod('findPosts')
-            ->setClass(Post::class)
-            ->setType('post')
+            ->setMethod('findArticles')
+            ->setClass(Article::class)
+            ->setType('article')
             ->setLimit(10)
             ->setPage($page)
         ;
 
-        return $this->render('post/category.html.twig', [
-            'posts' => $paginator->getData(),
+        return $this->render('article/category.html.twig', [
+            'articles' => $paginator->getData(),
             'paginator' => $paginator,
             'category' => $category
         ]);
     }
 
     /**
-     * @Route("/post/add", name="add")
+     * @Route("/article/add", name="add")
      * @param Request $request
      * @return Response
      */
     public function add(Request $request): Response
     {
-        $post = new Post();
-        $form = $this->createForm(PostType::class, $post,['playlist' => !$this->isGranted('ROLE_MODER')]);
+        $article = new Article();
+        $form = $this->createForm(ArticleType::class, $article,['playlist' => !$this->isGranted('ROLE_MODER')]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $post->setAuthor($this->user());
-            $post->setSection('articles');
-            $post->setViews(0);
+            $article->setAuthor($this->user());
+            $article->setSection('articles');
+            $article->setViews(0);
 
             $em = $this->getDoctrine()->getManager();
-            $em->persist($post);
+            $em->persist($article);
             $em->flush();
 
-            return $this->redirectToRoute('post_show', ['slug' => $post->getSlug()]);
+            return $this->redirectToRoute('article_show', ['slug' => $article->getSlug()]);
         }
 
-        return $this->render('post/new.html.twig', [
+        return $this->render('article/new.html.twig', [
             'form' => $form->createView(),
-            'post' => $post
+            'article' => $article
         ]);
     }
 
     /**
-     * @Route("/post/moderation/{page<\d+>?1}", name="moderation", methods={"GET"})
+     * @Route("/article/moderation/{page<\d+>?1}", name="moderation", methods={"GET"})
      * @param $page
      * @param Paginator $paginator
      * @return Response
@@ -90,40 +89,40 @@ class PostController extends CustomAbstractController
     public function moderation($page, Paginator $paginator): Response
     {
         $paginator
-            ->setClass(Post::class)
+            ->setClass(Article::class)
             ->setOrder(['publishedAt' => 'ASC'])
             ->setCriteria(['status' => null, 'moderation' => true])
             ->setLimit(10)
             ->setPage($page)
         ;
 
-        return $this->render('post/moderation.html.twig', [
-            'posts' => $paginator->getData(),
+        return $this->render('article/moderation.html.twig', [
+            'articles' => $paginator->getData(),
             'paginator' => $paginator
         ]);
     }
 
     /**
-     * @Route("/post/moderation/publish/{id}", name="moderation_publish")
-     * @param Post $post
+     * @Route("/article/moderation/publish/{id}", name="moderation_publish")
+     * @param Article $article
      * @return Response
      */
-    public function publish(Post $post):Response
+    public function publish(Article $article):Response
     {
         $notification = new Notification();
-        $notification->setReceiver($post->getAuthor());
-        $notification->setType('post_posted');
-        $notification->setPost($post);
+        $notification->setReceiver($article->getAuthor());
+        $notification->setType('article_posted');
+        $notification->setArticle($article);
 
-        $post->setStatus(true);
-        $post->setPublishedAt(new DateTime('now'));
-        $post->setUpdatedAt(new DateTime('now'));
+        $article->setStatus(true);
+        $article->setPublishedAt(new DateTime('now'));
+        $article->setUpdatedAt(new DateTime('now'));
 
-        foreach ($post->getCategories() as $category) {
+        foreach ($article->getCategories() as $category) {
             $category->setUpdatedAt(new \DateTime('now'));
         }
 
-        foreach ($post->getNotifications() as $value) {
+        foreach ($article->getNotifications() as $value) {
             $value->setStatus(true);
         }
 
@@ -131,22 +130,22 @@ class PostController extends CustomAbstractController
         $em->persist($notification);
         $em->flush();
 
-        return $this->redirectToRoute('post_moderation');
+        return $this->redirectToRoute('article_moderation');
     }
 
     /**
-     * @Route("/post/moderation/reject/{id}", name="moderation_reject")
+     * @Route("/article/moderation/reject/{id}", name="moderation_reject")
      * @param Request $request
-     * @param Post $post
+     * @param Article $article
      * @return Response
      */
-    public function reject(Request $request, Post $post): Response
+    public function reject(Request $request, Article $article): Response
     {
         $notification = new Notification();
-        $notification->setReceiver($post->getAuthor());
-        $notification->setType('post_rejected');
-        $notification->setPost($post);
-        $post->setStatus(false);
+        $notification->setReceiver($article->getAuthor());
+        $notification->setType('article_rejected');
+        $notification->setArticle($article);
+        $article->setStatus(false);
 
         $form = $this->createForm(NotificationType::class, $notification);
         $form->handleRequest($request);
@@ -155,27 +154,27 @@ class PostController extends CustomAbstractController
         $em->persist($notification);
         $em->flush();
 
-        return $this->redirectToRoute('post_moderation');
+        return $this->redirectToRoute('article_moderation');
     }
 
     /**
-     * @Route("/post/{slug}/{page<\d+>?1}", name="show")
-     * @param Post $post
+     * @Route("/article/{slug}/{page<\d+>?1}", name="show")
+     * @param Article $article
      * @param $page
      * @return Response
      */
-    public function show(Post $post, $page): Response
+    public function show(Article $article, $page): Response
     {
-        if ($post->getAuthor() === $this->getUser() || $this->isGranted('ROLE_MODER') || $post->getStatus() === true) {
+        if ($article->getAuthor() === $this->getUser() || $this->isGranted('ROLE_MODER') || $article->getStatus() === true) {
 
-            if ($this->isGranted('IS_AUTHENTICATED_FULLY') && $this->user() !== $post->getAuthor() && !$this->isGranted('ROLE_MODER')) {
-                $post->setViews($post->getViews() + 1);
+            if ($this->isGranted('IS_AUTHENTICATED_FULLY') && $this->user() !== $article->getAuthor() && !$this->isGranted('ROLE_MODER')) {
+                $article->setViews($article->getViews() + 1);
                 $em = $this->getDoctrine()->getManager();
                 $em->flush();
             }
 
-            return $this->render('post/show.html.twig', [
-                'post' => $post,
+            return $this->render('article/show.html.twig', [
+                'article' => $article,
                 'page' => $page
             ]);
         }
@@ -184,18 +183,18 @@ class PostController extends CustomAbstractController
     }
 
     /**
-     * @Route("/post/{slug}/edit", name="edit", methods={"GET","POST"})
+     * @Route("/article/{slug}/edit", name="edit", methods={"GET","POST"})
      * @param Request $request
-     * @param Post $post
+     * @param Article $article
      * @return Response
      */
-    public function edit(Request $request, Post $post): Response
+    public function edit(Request $request, Article $article): Response
     {
         /**
          * TODO: Добить
          */
-//        if (!$this->isGranted('IS_AUTHENTICATED_FULLY') || $this->user() !== $post->getAuthor() && !$this->isGranted('ROLE_MODER')) {
-        if ($this->user() !== $post->getAuthor() && !$this->isGranted('ROLE_MODER')) {
+//        if (!$this->isGranted('IS_AUTHENTICATED_FULLY') || $this->user() !== $article->getAuthor() && !$this->isGranted('ROLE_MODER')) {
+        if ($this->user() !== $article->getAuthor() && !$this->isGranted('ROLE_MODER')) {
             throw $this->createNotFoundException();
         }
 
@@ -205,46 +204,46 @@ class PostController extends CustomAbstractController
             $options = ['playlist' => true, 'status' => false];
         }
 
-        $form = $this->createForm(PostType::class, $post, $options);
+        $form = $this->createForm(ArticleType::class, $article, $options);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            if ($post->getStatus() !== null && !$this->isGranted('ROLE_MODER')) {
-                $post->setPublishedAt(new DateTime('now'));
-                $post->setStatus(null);
+            if ($article->getStatus() !== null && !$this->isGranted('ROLE_MODER')) {
+                $article->setPublishedAt(new DateTime('now'));
+                $article->setStatus(null);
             }
 
-            if ($post->getStatus() !== true) {
-                foreach ($post->getNotifications() as $value) {
+            if ($article->getStatus() !== true) {
+                foreach ($article->getNotifications() as $value) {
                     $value->setStatus(false);
                 }
             } else {
-                foreach ($post->getNotifications() as $value) {
+                foreach ($article->getNotifications() as $value) {
                     $value->setStatus(true);
                 }
             }
 
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('post_show', ['slug' => $post->getSlug()]);
+            return $this->redirectToRoute('article_show', ['slug' => $article->getSlug()]);
         }
 
-        return $this->render('post/edit.html.twig', [
-            'post' => $post,
+        return $this->render('article/edit.html.twig', [
+            'article' => $article,
             'form' => $form->createView(),
         ]);
     }
 
     /**
      * @Route("/bookmarker/{slug}", name="bookmarker", methods={"POST", "GET"})
-     * @param Post $post
+     * @param Article $article
      * @param UserRepository $users
      * @return JsonResponse
      */
-    public function bookmarker(Post $post, UserRepository $users): Response
+    public function bookmarker(Article $article, UserRepository $users): Response
     {
         $user = $users->findOneBy(['username' => $this->getUser()->getUsername()]);
-        $contains = $this->getDoctrine()->getRepository(Bookmark::class)->findOneBy(['user' => $user, 'post' => $post]);
+        $contains = $this->getDoctrine()->getRepository(Bookmark::class)->findOneBy(['user' => $user, 'article' => $article]);
         $em = $this->getDoctrine()->getManager();
 
         if ($contains) {
@@ -253,7 +252,7 @@ class PostController extends CustomAbstractController
         } else {
             $bookmark = new Bookmark();
             $bookmark->setUser($user);
-            $bookmark->setPost($post);
+            $bookmark->setArticle($article);
             $em->persist($bookmark);
             $response = ['status' => 'added'];
         }
@@ -266,16 +265,16 @@ class PostController extends CustomAbstractController
     }
 
     /**
-     * @Route("/post/{id}/delete", name="delete", methods={"DELETE"})
+     * @Route("/article/{id}/delete", name="delete", methods={"DELETE"})
      * @param Request $request
-     * @param Post $post
+     * @param Article $article
      * @return Response
      */
-    public function delete(Request $request, Post $post): Response
+    public function delete(Request $request, Article $article): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$post->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete'.$article->getId(), $request->request->get('_token'))) {
             $em = $this->getDoctrine()->getManager();
-            $em->remove($post);
+            $em->remove($article);
             $em->flush();
         }
 

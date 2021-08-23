@@ -601,8 +601,8 @@
         <source>playlist</source>
         <target>Плейлист</target>
       </trans-unit>
-      <trans-unit id=".SLLXl7" resname="post.has.been.added">
-        <source>post.has.been.added</source>
+      <trans-unit id=".SLLXl7" resname="article.has.been.added">
+        <source>article.has.been.added</source>
         <target>Статья успешно отправлена, и будет добавлена после подтверждения администрацией</target>
       </trans-unit>
       <trans-unit id="IezM_mz" resname="form.password.is.empty">
@@ -661,8 +661,8 @@
         <source>content</source>
         <target>Содержание</target>
       </trans-unit>
-      <trans-unit id="pE8bl1F" resname="posts">
-        <source>posts</source>
+      <trans-unit id="pE8bl1F" resname="articles">
+        <source>articles</source>
         <target>Посты</target>
       </trans-unit>
       <trans-unit id="fftM9nd" resname="users">
@@ -717,24 +717,24 @@
         <source>select.themes</source>
         <target>Выберите темы</target>
       </trans-unit>
-      <trans-unit id="hXIreYJ" resname="post.add">
-        <source>post.add</source>
+      <trans-unit id="hXIreYJ" resname="article.add">
+        <source>article.add</source>
         <target>Добавить пост</target>
       </trans-unit>
       <trans-unit id="P7RWI8s" resname="section">
         <source>section</source>
         <target>Секция</target>
       </trans-unit>
-      <trans-unit id="uZmd6a0" resname="post.editing">
-        <source>post.editing</source>
+      <trans-unit id="uZmd6a0" resname="article.editing">
+        <source>article.editing</source>
         <target>Изменение поста</target>
       </trans-unit>
       <trans-unit id="KTcBPyG" resname="update">
         <source>update</source>
         <target>Обновить</target>
       </trans-unit>
-      <trans-unit id="LrxtI.d" resname="post.adding">
-        <source>post.adding</source>
+      <trans-unit id="LrxtI.d" resname="article.adding">
+        <source>article.adding</source>
         <target>Добавление поста</target>
       </trans-unit>
       <trans-unit id="jL_5xLb" resname="add.user">

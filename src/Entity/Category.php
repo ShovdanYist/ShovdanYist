@@ -35,9 +35,9 @@ class Category
     private $slug;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Post::class, mappedBy="categories")
+     * @ORM\ManyToMany(targetEntity=Article::class, mappedBy="categories")
      */
-    private $posts;
+    private $articles;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
@@ -46,7 +46,7 @@ class Category
 
     public function __construct()
     {
-        $this->posts = new ArrayCollection();
+        $this->articles = new ArrayCollection();
     }
 
     /**
@@ -88,28 +88,28 @@ class Category
     }
 
     /**
-     * @return Collection|Post[]
+     * @return Collection|Article[]
      */
-    public function getPosts(): Collection
+    public function getArticles(): Collection
     {
-        return $this->posts;
+        return $this->articles;
     }
 
-    public function addPost(Post $post): self
+    public function addArticle(Article $article): self
     {
-        if (!$this->posts->contains($post)) {
-            $this->posts[] = $post;
-            $post->addCategory($this);
+        if (!$this->articles->contains($article)) {
+            $this->articles[] = $article;
+            $article->addCategory($this);
         }
 
         return $this;
     }
 
-    public function removePost(Post $post): self
+    public function removeArticle(Article $article): self
     {
-        if ($this->posts->contains($post)) {
-            $this->posts->removeElement($post);
-            $post->removeCategory($this);
+        if ($this->articles->contains($article)) {
+            $this->articles->removeElement($article);
+            $article->removeCategory($this);
         }
 
         return $this;

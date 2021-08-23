@@ -2,33 +2,33 @@
 
 namespace App\Repository;
 
-use App\Entity\Post;
+use App\Entity\Article;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @method Post|null find($id, $lockMode = null, $lockVersion = null)
- * @method Post|null findOneBy(array $criteria, array $orderBy = null)
- * @method Post[]    findAll()
- * @method Post[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method Article|null find($id, $lockMode = null, $lockVersion = null)
+ * @method Article|null findOneBy(array $criteria, array $orderBy = null)
+ * @method Article[]    findAll()
+ * @method Article[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class PostRepository extends ServiceEntityRepository
+class ArticleRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, Post::class);
+        parent::__construct($registry, Article::class);
     }
 
     public function findUserBookmarks($criteria, $orderBy = ['id' => 'DESC'], $limit = 10, $offset = 0)
     {
-        $qb = $this->createQueryBuilder('p');
+        $qb = $this->createQueryBuilder('a');
 
         foreach ($criteria as $property => $value) {
             if ($property == 'user') {
                 $qb
-                    ->join('p.bookmarks', 'b')
+                    ->join('a.bookmarks', 'b')
                     ->join('b.user', 'u')
-                    ->where('p.status = true')
+                    ->where('a.status = true')
                     ->andWhere('u = :' . $property . '')
                     ->setParameter($property,$value)
                 ;
@@ -49,25 +49,25 @@ class PostRepository extends ServiceEntityRepository
         return $qb->getQuery()->getResult();
     }
 
-    public function findPosts($criteria = [], $orderBy = ['id' => 'DESC'], $limit = 10, $offset = 0)
+    public function findArticles($criteria = [], $orderBy = ['id' => 'DESC'], $limit = 10, $offset = 0)
     {
-        $qb = $this->createQueryBuilder('p');
+        $qb = $this->createQueryBuilder('a');
 
         foreach ($criteria as $key => $value) {
             if ($key == 'category') {
-                $qb ->join('p.categories', 'c')
+                $qb ->join('a.categories', 'c')
                     ->andWhere('c.slug = :' . $key . '')
                     ->setParameter($key,$value->getSlug())
                 ;
             } else {
-                $qb->andWhere('p.'. $key .' = :' . $key . '')
+                $qb->andWhere('a.'. $key .' = :' . $key . '')
                     ->setParameter($key,$value)
                 ;
             }
         }
 
         foreach ($orderBy as $key => $value) {
-            $qb->orderBy('p.'. $key, $value);
+            $qb->orderBy('a.'. $key, $value);
         }
 
         $qb ->setMaxResults($limit)
@@ -77,15 +77,15 @@ class PostRepository extends ServiceEntityRepository
     }
 
     // /**
-    //  * @return Post[] Returns an array of Post objects
+    //  * @return Article[] Returns an array of Article objects
     //  */
     /*
     public function findByExampleField($value)
     {
-        return $this->createQueryBuilder('n')
-            ->andWhere('n.exampleField = :val')
+        return $this->createQueryBuilder('a')
+            ->andWhere('a.exampleField = :val')
             ->setParameter('val', $value)
-            ->orderBy('n.id', 'ASC')
+            ->orderBy('a.id', 'ASC')
             ->setMaxResults(10)
             ->getQuery()
             ->getResult()
@@ -94,10 +94,10 @@ class PostRepository extends ServiceEntityRepository
     */
 
     /*
-    public function findOneBySomeField($value): ?Post
+    public function findOneBySomeField($value): ?Article
     {
-        return $this->createQueryBuilder('n')
-            ->andWhere('n.exampleField = :val')
+        return $this->createQueryBuilder('a')
+            ->andWhere('a.exampleField = :val')
             ->setParameter('val', $value)
             ->getQuery()
             ->getOneOrNullResult()

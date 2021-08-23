@@ -54,9 +54,9 @@ class Notification
     private $status;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Post::class, inversedBy="notifications")
+     * @ORM\ManyToOne(targetEntity=Article::class, inversedBy="notifications")
      */
-    private $post;
+    private $article;
 
     /**
      * @ORM\ManyToOne(targetEntity=Music::class, inversedBy="notifications")
@@ -162,14 +162,14 @@ class Notification
         return $this;
     }
 
-    public function getPost(): ?Post
+    public function getArticle(): ?Article
     {
-        return $this->post;
+        return $this->article;
     }
 
-    public function setPost(?Post $post): self
+    public function setArticle(?Article $article): self
     {
-        $this->post = $post;
+        $this->article = $article;
 
         return $this;
     }

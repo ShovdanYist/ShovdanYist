@@ -11,21 +11,21 @@
 
 {% block main %}
 
-    {% for post in posts %}
+    {% for article in articles %}
 
-        <div class="md-post">
+        <div class="md-article">
 
-            <div class="md-{{ post.section }}-post md-box md-content-padding">
+            <div class="md-{{ article.section }}-article md-box md-content-padding">
 
-                {{ postInfo(post) }}
-                {{ postTitle(post) }}
-                {{ postCategories(post) }}
-                {{ postImage(post) }}
-                {% for song in post.songs %}
-                    {{ player(song,null,null,null,vich_uploader_asset(post)) }}
+                {{ articleInfo(article) }}
+                {{ articleTitle(article) }}
+                {{ articleCategories(article) }}
+                {{ articleImage(article) }}
+                {% for song in article.songs %}
+                    {{ player(song,null,null,null,vich_uploader_asset(article)) }}
                 {% endfor %}
-                {{ postDescription(post) }}
-                {{ postActions(post) }}
+                {{ articleDescription(article) }}
+                {{ articleActions(article) }}
 
             </div>
 

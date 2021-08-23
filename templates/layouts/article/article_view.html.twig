@@ -1,0 +1,27 @@
+<div class="md-article">
+
+    <div class="md-articles-article md-box md-content-padding">
+
+        {{ articleInfo(article) }}
+        {{ articleTitle(article) }}
+        {{ articleCategories(article) }}
+        {{ articleImage(article) }}
+
+        {% for song in article.songs %}
+            {{ player(song,null,null,null,vich_uploader_asset(article) | imagine_filter('thumbnail')) }}
+        {% endfor %}
+
+        {{ articleDescription(article) }}
+
+        {% if type == 'moderation' %}
+            <div class="mb-2">
+                {{ article.content | raw }}
+            </div>
+            {{ rejectArticle(article) }}
+        {% else %}
+            {{ articleActions(article) }}
+        {% endif %}
+
+    </div>
+
+</div>

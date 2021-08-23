@@ -100,10 +100,6 @@ li {
   display: block;
 }
 
-.md-article {
-  margin-top: 12px;
-}
-
 .footer-logo {
   user-select: none;
 }
@@ -116,6 +112,10 @@ blockquote, .ck.ck-content blockquote {
   padding-left: 12px;
   margin-bottom: 0;
   font-style: unset;
+}
+
+.ckeditor-content {
+  margin-top: 12px;
 }
 
 .ckeditor-content h5, .ckeditor-content h6, .ck.ck-content h5, .ck.ck-content h6 {
@@ -259,7 +259,7 @@ blockquote, .ck.ck-content blockquote {
   margin: unset;
 }
 
-#postImgOutput {
+#articleImgOutput {
   display: block;
   width: 300px;
   margin: 0 auto;
@@ -1587,18 +1587,18 @@ td {
   color: #aaa;
 }
 
-// Post
+// Article
 
-.md-post {
+.md-article {
   margin-bottom: 12px;
   position: relative;
 }
 
-.md-post h3 {
+.md-article h3 {
   margin-bottom: unset;
 }
 
-.md-post .section {
+.md-article .section {
   position: absolute;
   right: 16px;
   top: 0;
@@ -1607,42 +1607,42 @@ td {
   border-radius: 0 0 3px 3px;
 }
 
-.post-categories {
+.article-categories {
   margin-bottom: 8px;
   font-size: 12px;
 }
 
-.post-categories a {
+.article-categories a {
   text-transform: uppercase;
   font-weight: 500;
   font-size: 12px;
 }
 
-.post-info {
+.article-info {
   display: table;
   width: 100%;
   margin-bottom: 16px;
 }
 
-.post-info .avatar {
+.article-info .avatar {
   margin-right: 6px;
 }
 
-.post-info .username {
+.article-info .username {
   font-weight: 600;
 }
 
-.post-info .date {
+.article-info .date {
   font-size: 12px;
   color: #95a5a6;
 }
 
-.post-image {
+.article-image {
   margin-bottom: 8px;
   border-radius: radius(full);
 }
 
-.post-actions {
+.article-actions {
   margin-bottom: -4px;
   position: relative;
   margin-top: 12px;
@@ -1652,39 +1652,39 @@ td {
   width: 100%;
 }
 
-.post-actions .stat {
+.article-actions .stat {
   font-size: 14px;
   float: left;
   margin-right: 10px;
 }
 
-.post-actions .count {
+.article-actions .count {
   margin-left: 6px;
   color: #2c3e50;
 }
 
-.post-actions a {
+.article-actions a {
   height: 22px;
   color: #737f8b;
   display: inline-flex;
 }
 
-.post-actions a:hover {
+.article-actions a:hover {
   color: #2c3e50;
 }
 
-.md-post-status {
+.md-article-status {
   width: 8px;
   height: 8px;
   display: block;
   border-radius: 10px;
 }
 
-.post-profile-views {
+.article-profile-views {
   min-width: 112px;
 }
 
-.post-views {
+.article-views {
   color: #a2a2a2;
 }
 

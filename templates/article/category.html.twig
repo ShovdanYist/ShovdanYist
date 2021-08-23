@@ -26,7 +26,7 @@
                 </li>
                 {% for item in categories() %}
                     <li class="md-menu-item md-lined-menu{% if item.slug == category.slug %} active{% endif %}">
-                        <a style="padding-left: 10px" href="{{ path('post_category', {'slug':item.slug}) }}">
+                        <a style="padding-left: 10px" href="{{ path('article_category', {'slug':item.slug}) }}">
                             {{ item.title }}
                         </a>
                     </li>
@@ -39,8 +39,8 @@
 
 {% block main %}
 
-    {% for post in posts %}
-        {{ postView(post) }}
+    {% for article in articles %}
+        {{ articleView(article) }}
     {% endfor %}
 
     {{ paginator.display(true) }}
@@ -63,7 +63,7 @@
                     </li>
                     {% for item in categories() %}
                         <li class="md-menu-item md-lined-menu{% if item.slug == category.slug %} active{% endif %}">
-                            <a style="padding-left: 8px" href="{{ path('post_category', {'slug':item.slug}) }}">
+                            <a style="padding-left: 8px" href="{{ path('article_category', {'slug':item.slug}) }}">
                                 {{ item.title }}
                             </a>
                         </li>

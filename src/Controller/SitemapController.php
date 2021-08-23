@@ -6,7 +6,7 @@ use App\Entity\Category;
 use App\Entity\Genre;
 use App\Entity\Music;
 use App\Entity\People;
-use App\Entity\Post;
+use App\Entity\Article;
 use App\Entity\Theme;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -63,13 +63,13 @@ class SitemapController extends AbstractController
             ];
         }
 
-        // Adding posts urls
-        foreach ($this->getDoctrine()->getRepository(Post::class)->findBy(['status' => true]) as $post) {
+        // Adding articles urls
+        foreach ($this->getDoctrine()->getRepository(Article::class)->findBy(['status' => true]) as $article) {
             $urls[] = [
-                'loc' => $this->generateUrl('post_show', [
-                    'slug' => $post->getSlug()
+                'loc' => $this->generateUrl('article_show', [
+                    'slug' => $article->getSlug()
                 ]),
-                'lastmod' => $post->getUpdatedAt()->format('Y-m-d')
+                'lastmod' => $article->getUpdatedAt()->format('Y-m-d')
             ];
         }
 
@@ -86,7 +86,7 @@ class SitemapController extends AbstractController
         // Adding categories urls
         foreach ($this->getDoctrine()->getRepository(Category::class)->findAll() as $category) {
             $urls[] = [
-                'loc' => $this->generateUrl('post_category', [
+                'loc' => $this->generateUrl('article_category', [
                     'slug' => $category->getSlug()
                 ]),
                 'lastmod' => $category->getUpdatedAt()->format('Y-m-d')

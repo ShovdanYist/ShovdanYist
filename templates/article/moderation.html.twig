@@ -11,8 +11,8 @@
 
 {% block main %}
 
-    {% for post in posts %}
-        {{ postView(post,'moderation') }}
+    {% for article in articles %}
+        {{ articleView(article,'moderation') }}
     {% else%}
         <div class="md-box md-content-padding">Пока нет постов на модерации</div>
     {% endfor %}

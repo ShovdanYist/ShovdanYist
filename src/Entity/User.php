@@ -100,9 +100,9 @@ class User implements UserInterface
     private $notifications;
 
     /**
-     * @ORM\OneToMany(targetEntity=Post::class, mappedBy="author", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=Article::class, mappedBy="author", orphanRemoval=true)
      */
-    private $posts;
+    private $articles;
 
     /**
      * @ORM\OneToMany(targetEntity=Bookmark::class, mappedBy="user", orphanRemoval=true)
@@ -126,7 +126,7 @@ class User implements UserInterface
         $this->userMusics = new ArrayCollection();
         $this->replies = new ArrayCollection();
         $this->notifications = new ArrayCollection();
-        $this->posts = new ArrayCollection();
+        $this->articles = new ArrayCollection();
         $this->bookmarks = new ArrayCollection();
     }
 
@@ -421,30 +421,30 @@ class User implements UserInterface
     }
 
     /**
-     * @return Collection|Post[]
+     * @return Collection|Article[]
      */
-    public function getPosts(): Collection
+    public function getArticles(): Collection
     {
-        return $this->posts;
+        return $this->articles;
     }
 
-    public function addPost(Post $post): self
+    public function addArticle(Article $article): self
     {
-        if (!$this->posts->contains($post)) {
-            $this->posts[] = $post;
-            $post->setAuthor($this);
+        if (!$this->articles->contains($article)) {
+            $this->articles[] = $article;
+            $article->setAuthor($this);
         }
 
         return $this;
     }
 
-    public function removePost(Post $post): self
+    public function removeArticle(Article $article): self
     {
-        if ($this->posts->contains($post)) {
-            $this->posts->removeElement($post);
+        if ($this->articles->contains($article)) {
+            $this->articles->removeElement($article);
             // set the owning side to null (unless already changed)
-            if ($post->getAuthor() === $this) {
-                $post->setAuthor(null);
+            if ($article->getAuthor() === $this) {
+                $article->setAuthor(null);
             }
         }
 

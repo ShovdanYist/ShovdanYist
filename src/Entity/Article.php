@@ -2,7 +2,7 @@
 
 namespace App\Entity;
 
-use App\Repository\PostRepository;
+use App\Repository\ArticleRepository;
 use Cocur\Slugify\Slugify;
 use DateTime;
 use App\Validator\Constraints as MyAssert;
@@ -14,12 +14,12 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
- * @ORM\Entity(repositoryClass=PostRepository::class)
+ * @ORM\Entity(repositoryClass=ArticleRepository::class)
  * @ORM\HasLifecycleCallbacks()
  * @Vich\Uploadable
  * @MyAssert\UniqueTitleSlug(message="form.title.or.slug.exists")
  */
-class Post
+class Article
 {
     /**
      * @ORM\Id()
@@ -29,7 +29,7 @@ class Post
     private $id;
 
     /**
-     * @Vich\UploadableField(mapping="post_images", fileNameProperty="image")
+     * @Vich\UploadableField(mapping="article_images", fileNameProperty="image")
      * @Assert\File(mimeTypes={"image/jpeg","image/png","image/gif"}, mimeTypesMessage="image.have.to.be.jpg.or.png")
      * @var File|null
      */
@@ -93,33 +93,33 @@ class Post
     private $updatedAt;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Music::class, inversedBy="posts")
+     * @ORM\ManyToMany(targetEntity=Music::class, inversedBy="articles")
      */
     private $songs;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Category::class, inversedBy="posts")
+     * @ORM\ManyToMany(targetEntity=Category::class, inversedBy="articles")
      */
     private $categories;
 
     /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="posts")
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="articles")
      * @ORM\JoinColumn(nullable=false)
      */
     private $author;
 
     /**
-     * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="post", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="article", orphanRemoval=true)
      */
     private $comments;
 
     /**
-     * @ORM\OneToMany(targetEntity=Bookmark::class, mappedBy="post", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=Bookmark::class, mappedBy="article", orphanRemoval=true)
      */
     private $bookmarks;
 
     /**
-     * @ORM\OneToMany(targetEntity=Notification::class, mappedBy="post", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=Notification::class, mappedBy="article", orphanRemoval=true)
      */
     private $notifications;
 
@@ -390,7 +390,7 @@ class Post
     {
         if (!$this->comments->contains($comment)) {
             $this->comments[] = $comment;
-            $comment->setPost($this);
+            $comment->setArticle($this);
         }
 
         return $this;
@@ -401,8 +401,8 @@ class Post
         if ($this->comments->contains($comment)) {
             $this->comments->removeElement($comment);
             // set the owning side to null (unless already changed)
-            if ($comment->getPost() === $this) {
-                $comment->setPost(null);
+            if ($comment->getArticle() === $this) {
+                $comment->setArticle(null);
             }
         }
 
@@ -421,7 +421,7 @@ class Post
     {
         if (!$this->bookmarks->contains($bookmark)) {
             $this->bookmarks[] = $bookmark;
-            $bookmark->setPost($this);
+            $bookmark->setArticle($this);
         }
 
         return $this;
@@ -432,8 +432,8 @@ class Post
         if ($this->bookmarks->contains($bookmark)) {
             $this->bookmarks->removeElement($bookmark);
             // set the owning side to null (unless already changed)
-            if ($bookmark->getPost() === $this) {
-                $bookmark->setPost(null);
+            if ($bookmark->getArticle() === $this) {
+                $bookmark->setArticle(null);
             }
         }
 
@@ -452,7 +452,7 @@ class Post
     {
         if (!$this->notifications->contains($notification)) {
             $this->notifications[] = $notification;
-            $notification->setPost($this);
+            $notification->setArticle($this);
         }
 
         return $this;
@@ -463,8 +463,8 @@ class Post
         if ($this->notifications->contains($notification)) {
             $this->notifications->removeElement($notification);
             // set the owning side to null (unless already changed)
-            if ($notification->getPost() === $this) {
-                $notification->setPost(null);
+            if ($notification->getArticle() === $this) {
+                $notification->setArticle(null);
             }
         }
 

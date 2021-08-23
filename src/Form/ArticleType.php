@@ -4,7 +4,7 @@ namespace App\Form;
 
 use App\Entity\Category;
 use App\Entity\Music;
-use App\Entity\Post;
+use App\Entity\Article;
 use App\Repository\MusicRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -20,7 +20,7 @@ use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Vich\UploaderBundle\Form\Type\VichImageType;
 
-class PostType extends AbstractType
+class ArticleType extends AbstractType
 {
     private $translator;
     private $musics;
@@ -123,7 +123,7 @@ class PostType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => Post::class,
+            'data_class' => Article::class,
             'playlist' => null,
             'status' => null
         ]);

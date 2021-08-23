@@ -3,10 +3,9 @@
 namespace App\Controller;
 
 use App\CustomAbstracts\CustomAbstractController;
-use App\Entity\EmailAddress;
 use App\Entity\Music;
 use App\Entity\Notification;
-use App\Entity\Post;
+use App\Entity\Article;
 use App\Entity\User;
 use App\Form\ResetPasswordType;
 use App\Form\ProfileType;
@@ -50,7 +49,7 @@ class UserController extends CustomAbstractController
         }
 
         $paginator
-            ->setClass(Post::class)
+            ->setClass(Article::class)
             ->setOrder(['publishedAt' => 'DESC'])
             ->setCriteria($criteria)
             ->setParameters(['username' => $user->getUsername()])
@@ -61,7 +60,7 @@ class UserController extends CustomAbstractController
         return $this->render('user/profile.html.twig', [
             'user' => $user,
             'profile' => $user->getProfile(),
-            'posts' => $paginator->getData(),
+            'articles' => $paginator->getData(),
             'paginator' => $paginator
         ]);
     }
@@ -274,14 +273,14 @@ class UserController extends CustomAbstractController
             ->setMethod('findUserBookmarks')
             ->setOrder(['addedAt' => 'DESC'])
             ->setCriteria(['user' => $user])
-            ->setClass(Post::class)
+            ->setClass(Article::class)
             ->setType('bookmark')
             ->setLimit(10)
             ->setPage($page)
         ;
 
         return $this->render('user/bookmarks.html.twig', [
-            'posts' => $paginator->getData(),
+            'articles' => $paginator->getData(),
             'paginator' => $paginator
         ]);
     }

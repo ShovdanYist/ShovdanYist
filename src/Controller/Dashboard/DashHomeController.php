@@ -5,7 +5,7 @@ namespace App\Controller\Dashboard;
 
 use App\Entity\Music;
 use App\Entity\People;
-use App\Entity\Post;
+use App\Entity\Article;
 use App\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -24,12 +24,12 @@ class DashHomeController extends AbstractController
      */
     public function index(): Response
     {
-        $posts = $this->getDoctrine()->getRepository(Post::class);
+        $articles = $this->getDoctrine()->getRepository(Article::class);
         $musics = $this->getDoctrine()->getRepository(Music::class);
         $users = $this->getDoctrine()->getRepository(User::class);
         $people = $this->getDoctrine()->getRepository(People::class);
 
-        $post = [
+        $article = [
             'users' => [
                 'name' => 'users',
                 'moderation' => null,
@@ -38,9 +38,9 @@ class DashHomeController extends AbstractController
             ],
             'articles' => [
                 'name' => 'articles',
-                'moderation' => $posts->count(['status' => false]),
-                'published' => $posts->count(['status' => true]),
-                'total' => $posts->count([])
+                'moderation' => $articles->count(['status' => false]),
+                'published' => $articles->count(['status' => true]),
+                'total' => $articles->count([])
             ],
             'music' => [
                 'name' => 'music',
@@ -57,7 +57,7 @@ class DashHomeController extends AbstractController
         ];
 
         return $this->render('dashboard/home/index.html.twig', [
-            'post' => $post
+            'article' => $article
         ]);
     }
 }

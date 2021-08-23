@@ -12,10 +12,10 @@
 
             <div class="col-12">
 
-                {% if vich_uploader_asset(post) %}
-                    <img class="post-image" id="postImgOutput" src="{{ vich_uploader_asset(post) | imagine_filter('post') }}" alt="">
+                {% if vich_uploader_asset(article) %}
+                    <img class="article-image" id="articleImgOutput" src="{{ vich_uploader_asset(article) | imagine_filter('article') }}" alt="">
                 {% else %}
-                    <img class="post-image" id="postImgOutput" src="{{ vich_uploader_asset(post) }}" alt="">
+                    <img class="article-image" id="articleImgOutput" src="{{ vich_uploader_asset(article) }}" alt="">
                 {% endif %}
 
                 <div style="margin-top: -6px">
@@ -54,7 +54,7 @@
                         {{ 'change' | trans }}
                     </button>
 
-                    <a class="btn btn-link float-right" href="{{ path('post_show',{'slug':post.slug}) }}">
+                    <a class="btn btn-link float-right" href="{{ path('article_show',{'slug':article.slug}) }}">
                         {{ 'cancel' | trans }}
                     </a>
 

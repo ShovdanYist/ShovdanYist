@@ -26,10 +26,10 @@ class Bookmark
     private $user;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Post::class, inversedBy="bookmarks")
+     * @ORM\ManyToOne(targetEntity=Article::class, inversedBy="bookmarks")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $post;
+    private $article;
 
     /**
      * @ORM\Column(type="datetime")
@@ -61,14 +61,14 @@ class Bookmark
         return $this;
     }
 
-    public function getPost(): ?Post
+    public function getarticle(): ?Article
     {
-        return $this->post;
+        return $this->article;
     }
 
-    public function setPost(?Post $post): self
+    public function setArticle(?Article $article): self
     {
-        $this->post = $post;
+        $this->article = $article;
 
         return $this;
     }

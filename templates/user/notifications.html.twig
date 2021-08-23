@@ -42,7 +42,7 @@
                                 {{ notification.comment.message }}
                             </a>
                         {% else %}
-                            <a class="notify-message-link" href="{{ path( 'post_show', {'slug': notification.comment.post.slug}) }}">
+                            <a class="notify-message-link" href="{{ path( 'article_show', {'slug': notification.comment.article.slug}) }}">
                                 {{ notification.comment.message }}
                             </a>
                         {% endif %}
@@ -64,8 +64,8 @@
                             </span>
                         </a>
                     {% else %}
-                        <a href="{{ path( 'post_show', {'slug': notification.comment.post.slug}) }}">
-                            <span class="back-picture bp-50" style="border-radius: 3px;margin-right: 14px;background-image: url(' {% if notification.comment.post.image %}{{ vich_uploader_asset(notification.comment.post) | imagine_filter('thumbnail') }}{% else %}{{ asset('assets/images/question.jpg') }}{% endif %}')">
+                        <a href="{{ path( 'article_show', {'slug': notification.comment.article.slug}) }}">
+                            <span class="back-picture bp-50" style="border-radius: 3px;margin-right: 14px;background-image: url(' {% if notification.comment.article.image %}{{ vich_uploader_asset(notification.comment.article) | imagine_filter('thumbnail') }}{% else %}{{ asset('assets/images/question.jpg') }}{% endif %}')">
                             </span>
                         </a>
                     {% endif %}
@@ -73,7 +73,7 @@
 
             </div>
 
-        {% elseif notification.type == 'post_rejected' %}
+        {% elseif notification.type == 'article_rejected' %}
 
             <div class="md-notification md-comment-notification">
 
@@ -92,7 +92,7 @@
                         </a>
 
                         Администрация сайта отклонила вашу публикацию
-                        <a href="{{ path( 'post_show', {'slug': notification.post.slug}) }}">{{ notification.post.title }}</a>
+                        <a href="{{ path( 'article_show', {'slug': notification.article.slug}) }}">{{ notification.article.title }}</a>
                         по следующей причине:
 
                         <span style="font-weight: 400">{{ notification.message }}</span>
@@ -108,15 +108,15 @@
                 </div>
 
                 <div class="notify-picture">
-                    <a href="{{ path( 'post_show', {'slug': notification.post.slug}) }}">
-                        <span class="back-picture bp-50" style="border-radius: 3px;margin-right: 14px;background-image: url('{% if notification.post.image %}{{ vich_uploader_asset(notification.post) | imagine_filter('thumbnail') }}{% else %}{{ asset('assets/images/question.jpg') | imagine_filter('thumbnail') }}{% endif %}')">
+                    <a href="{{ path( 'article_show', {'slug': notification.article.slug}) }}">
+                        <span class="back-picture bp-50" style="border-radius: 3px;margin-right: 14px;background-image: url('{% if notification.article.image %}{{ vich_uploader_asset(notification.article) | imagine_filter('thumbnail') }}{% else %}{{ asset('assets/images/question.jpg') | imagine_filter('thumbnail') }}{% endif %}')">
                         </span>
                     </a>
                 </div>
 
             </div>
 
-        {% elseif notification.type == 'post_posted' %}
+        {% elseif notification.type == 'article_posted' %}
 
             <div class="md-notification md-comment-notification">
 
@@ -135,7 +135,7 @@
                         </a>
 
                         Ваш пост
-                        <a href="{{ path( 'post_show', {'slug': notification.post.slug}) }}">{{ notification.post.title }}</a>
+                        <a href="{{ path( 'article_show', {'slug': notification.article.slug}) }}">{{ notification.article.title }}</a>
                         опубликован
 
                         <br>
@@ -149,8 +149,8 @@
                 </div>
 
                 <div class="notify-picture">
-                    <a href="{{ path( 'post_show', {'slug': notification.post.slug}) }}">
-                        <span class="back-picture bp-50" style="border-radius: 3px;margin-right: 14px;background-image: url('{% if notification.post.image %}{{ vich_uploader_asset(notification.post) | imagine_filter('thumbnail') }}{% else %}{{ asset('assets/images/question.jpg') | imagine_filter('thumbnail') }}{% endif %}')">
+                    <a href="{{ path( 'article_show', {'slug': notification.article.slug}) }}">
+                        <span class="back-picture bp-50" style="border-radius: 3px;margin-right: 14px;background-image: url('{% if notification.article.image %}{{ vich_uploader_asset(notification.article) | imagine_filter('thumbnail') }}{% else %}{{ asset('assets/images/question.jpg') | imagine_filter('thumbnail') }}{% endif %}')">
                         </span>
                     </a>
                 </div>

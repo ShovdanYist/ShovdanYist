@@ -6,7 +6,7 @@ use App\CustomAbstracts\CustomAbstractController;
 use App\Entity\Comment;
 use App\Entity\Music;
 use App\Entity\Notification;
-use App\Entity\Post;
+use App\Entity\Article;
 use App\Form\CommentType;
 use App\Repository\UserRepository;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -29,7 +29,7 @@ class CommentController extends CustomAbstractController
         if ($type == 'music') {
             $entity = $this->getDoctrine()->getRepository(Music::class)->findOneBy(['id' => $id]);
         } else {
-            $entity = $this->getDoctrine()->getRepository(Post::class)->findOneBy(['id' => $id]);
+            $entity = $this->getDoctrine()->getRepository(Article::class)->findOneBy(['id' => $id]);
         }
 
         $user = $userRepo->findOneBy(['username' => $this->getUser()->getUsername()]);
@@ -54,7 +54,7 @@ class CommentController extends CustomAbstractController
                 if ($type == 'music') {
                     $notification->setSong($entity);
                 } else {
-                    $notification->setPost($entity);
+                    $notification->setArticle($entity);
                 }
 
                 $em->persist($notification);
@@ -71,7 +71,7 @@ class CommentController extends CustomAbstractController
                     'slug' => $entity->getSlug()
                 ]);
             } else {
-                return $this->redirectToRoute('post_show', [
+                return $this->redirectToRoute('article_show', [
                     'slug' => $entity->getSlug()
                 ]);
             }
@@ -84,7 +84,7 @@ class CommentController extends CustomAbstractController
                 'slug' => $entity->getSlug()
             ]);
         } else {
-            return $this->redirectToRoute('post_show', [
+            return $this->redirectToRoute('article_show', [
                 'slug' => $entity->getSlug(),
             ]);
         }
@@ -115,8 +115,8 @@ class CommentController extends CustomAbstractController
                 'slug' => $comment->getMusic()->getSlug()
             ]);
         } else {
-            return $this->redirectToRoute('post_show', [
-                'slug' => $comment->getPost()->getSlug()
+            return $this->redirectToRoute('article_show', [
+                'slug' => $comment->getArticle()->getSlug()
             ]);
         }
     }
