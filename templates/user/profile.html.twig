@@ -38,9 +38,21 @@
 
         </span>
 
+        {% if user.profile.avatar != 'avatar.jpg' %}
+
+            {% if '.gif' in profile.avatar %}
+                {% set avatar_link = vich_uploader_asset(profile) %}
+            {% else%}
+                {% set avatar_link = vich_uploader_asset(profile) | imagine_filter('avatar') %}
+            {% endif %}
+
+        {% else %}
+            {% set avatar_link = asset('assets/images/avatar.jpg') %}
+        {% endif %}
+
         <div class="md-profile-block">
 
-            <div class="back-picture bp-130" style="margin-right: 16px;background-image: url('{% if user.profile.avatar != 'avatar.jpg' %}{{ vich_uploader_asset(profile) | imagine_filter('avatar') }}{% else %}{{ asset('assets/images/avatar.jpg') }}{% endif %}')">
+            <div class="back-picture bp-130" style="margin-right: 16px;background-image: url('{{ avatar_link }}')">
             </div>
 
             <div class="md-profile-info">
