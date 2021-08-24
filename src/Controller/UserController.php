@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\CustomAbstracts\CustomAbstractController;
+use App\Entity\EmailAddress;
 use App\Entity\Music;
 use App\Entity\Notification;
 use App\Entity\Article;
@@ -58,10 +59,11 @@ class UserController extends CustomAbstractController
         ;
 
         return $this->render('user/profile.html.twig', [
-            'user' => $user,
-            'profile' => $user->getProfile(),
+            'invitees' => $this->getDoctrine()->getRepository(User::class)->count(['invitedBy' => $user, 'status' => true]),
             'articles' => $paginator->getData(),
-            'paginator' => $paginator
+            'paginator' => $paginator,
+            'profile' => $user->getProfile(),
+            'user' => $user,
         ]);
     }
 
@@ -83,6 +85,11 @@ class UserController extends CustomAbstractController
                 $handler->remove($user->getProfile(),'avatarFile');
                 $user->getProfile()->setAvatar('avatar.jpg');
             }
+
+            if ($user->getProfile()->getBirthday() !== $this->getDoctrine()->getRepository(EmailAddress::class)->findOneBy(['address' => $user->getConfirmedEmail()])->getBirthday()) {
+                $this->getDoctrine()->getRepository(EmailAddress::class)->findOneBy(['address' => $user->getConfirmedEmail()])->setBirthday($user->getProfile()->getBirthday());
+            }
+
             $this->getDoctrine()->getManager()->flush();
             $this->addFlash('success', $this->trans('profile.changes.saved'));
             return $this->redirectToRoute('user_profile', ['username' => $user->getUsername()]);

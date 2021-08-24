@@ -119,6 +119,21 @@ class User implements UserInterface
      */
     private $confirmedEmail;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="invitees")
+     */
+    private $invitedBy;
+
+    /**
+     * @ORM\OneToMany(targetEntity=User::class, mappedBy="invitedBy")
+     */
+    private $invitees;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $registeredAt;
+
     public function __construct()
     {
         $this->musics = new ArrayCollection();
@@ -128,6 +143,7 @@ class User implements UserInterface
         $this->notifications = new ArrayCollection();
         $this->articles = new ArrayCollection();
         $this->bookmarks = new ArrayCollection();
+        $this->invitees = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -502,6 +518,61 @@ class User implements UserInterface
     public function setConfirmedEmail(?string $confirmedEmail): self
     {
         $this->confirmedEmail = $confirmedEmail;
+
+        return $this;
+    }
+
+    public function getInvitedBy(): ?self
+    {
+        return $this->invitedBy;
+    }
+
+    public function setInvitedBy(?self $invitedBy): self
+    {
+        $this->invitedBy = $invitedBy;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|self[]
+     */
+    public function getInvitees(): Collection
+    {
+        return $this->invitees;
+    }
+
+    public function addInvitee(self $invitee): self
+    {
+        if (!$this->invitees->contains($invitee)) {
+            $this->invitees[] = $invitee;
+            $invitee->setInvitedBy($this);
+        }
+
+        return $this;
+    }
+
+    public function removeInvitee(self $invitee): self
+    {
+        if ($this->invitees->contains($invitee)) {
+            $this->invitees->removeElement($invitee);
+            // set the owning side to null (unless already changed)
+            if ($invitee->getInvitedBy() === $this) {
+                $invitee->setInvitedBy(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getRegisteredAt(): ?\DateTimeInterface
+    {
+        return $this->registeredAt;
+    }
+
+    public function setRegisteredAt(\DateTimeInterface $registeredAt): self
+    {
+        $this->registeredAt = $registeredAt;
 
         return $this;
     }

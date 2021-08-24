@@ -6,6 +6,7 @@ use App\Entity\Profile;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
@@ -69,6 +70,10 @@ class ProfileType extends AbstractType
                         'message' => 'form.gender.required.message'
                     ])
                 ]
+            ])
+            ->add('birthday', DateType::class, [
+                'label' => 'birthday',
+                'widget' => 'single_text'
             ])
         ;
     }

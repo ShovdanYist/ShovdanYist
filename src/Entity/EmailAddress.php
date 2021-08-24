@@ -32,6 +32,11 @@ class EmailAddress
      */
     private $gender;
 
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $birthday;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -69,6 +74,18 @@ class EmailAddress
     public function setGender(bool $gender): self
     {
         $this->gender = $gender;
+
+        return $this;
+    }
+
+    public function getBirthday(): ?\DateTimeInterface
+    {
+        return $this->birthday;
+    }
+
+    public function setBirthday(?\DateTimeInterface $birthday): self
+    {
+        $this->birthday = $birthday;
 
         return $this;
     }

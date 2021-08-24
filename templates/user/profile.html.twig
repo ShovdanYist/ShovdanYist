@@ -103,6 +103,10 @@
 
         </table>
 
+        {% if is_granted('ROLE_MODER') %}
+            <b>Количество приглашенных:</b> {{ invitees }}
+        {% endif %}
+
         {{ paginator.display() }}
 
     </div>

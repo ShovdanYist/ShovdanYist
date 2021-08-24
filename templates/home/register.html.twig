@@ -20,11 +20,24 @@
 
             <div class="md-form-gender">
                 {{ form_row(registrationForm.gender) }}
+                {{ form_row(registrationForm.birthday) }}
             </div>
 
             {{ form_row(registrationForm.email) }}
             {{ form_row(registrationForm.password.first) }}
             {{ form_row(registrationForm.password.second) }}
+
+{#            <div class="form-spoiler">#}
+
+{#                <a class="collapsed" data-toggle="collapse" data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false">#}
+{#                    {{ 'additional' | trans }} <i></i>#}
+{#                </a>#}
+
+{#                <div class="collapse" id="navbarToggleExternalContent">#}
+{#                    {{ form_row(registrationForm.invitedBy) }}#}
+{#                </div>#}
+
+{#            </div>#}
 
 {#            {{ form_errors(registrationForm.agreeTerms) }}#}
 {#            {{ form_widget(registrationForm.agreeTerms) }}#}

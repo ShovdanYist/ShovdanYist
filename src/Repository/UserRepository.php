@@ -42,6 +42,20 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $this->_em->flush();
     }
 
+    public function inviteesCount(User $user)
+    {
+        $date = (new \DateTime('now'))->modify('-3 day')->format('Y-m-d');
+
+        $qb = $this->createQueryBuilder('u');
+
+        $qb->where('u.status = true')
+            ->andWhere('u.invitedBy = :invitedBy')
+            ->setParameter('invitedBy',$user)
+        ;
+
+        return $qb->getQuery()->getResult();
+    }
+
     // /**
     //  * @return User[] Returns an array of User objects
     //  */

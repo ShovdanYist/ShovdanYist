@@ -70,6 +70,11 @@ class Profile implements \Serializable
      */
     private $verified;
 
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $birthday;
+
     public function getUsername(): string
     {
         return $this->getUser()->getUsername();
@@ -217,6 +222,18 @@ class Profile implements \Serializable
     public function setVerified(?bool $verified): self
     {
         $this->verified = $verified;
+
+        return $this;
+    }
+
+    public function getBirthday(): ?\DateTimeInterface
+    {
+        return $this->birthday;
+    }
+
+    public function setBirthday(?\DateTimeInterface $birthday): self
+    {
+        $this->birthday = $birthday;
 
         return $this;
     }

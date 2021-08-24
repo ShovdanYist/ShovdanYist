@@ -120,7 +120,13 @@ class HomeController extends CustomAbstractController
             $user->setRoles(["ROLE_USER"]);
             $user->setToken($tokenGenerator->generateToken());
             $user->getProfile()->setGender($form->get('gender')->getData());
+            $user->getProfile()->setBirthday($form->get('birthday')->getData());
             $user->getProfile()->setAvatar('avatar.jpg');
+            $user->setRegisteredAt(new \DateTime('now'));
+
+//            if ($form->get('invitedBy')->getData() && $this->getDoctrine()->getRepository(User::class)->findOneBy(['username' => $form->get('invitedBy')->getData()])) {
+//                $user->setInvitedBy($this->getDoctrine()->getRepository(User::class)->findOneBy(['username' => $form->get('invitedBy')->getData()]));
+//            }
 
             $em = $this->getDoctrine()->getManager();
             $em->persist($user);
@@ -264,6 +270,7 @@ class HomeController extends CustomAbstractController
                 $email->setGender($user->getProfile()->getGender());
                 $email->setAddress($user->getEmail());
                 $email->setStatus($user->getStatus());
+                $email->setBirthday($user->getProfile()->getBirthday());
                 $em->persist($email);
             }
 
