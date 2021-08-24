@@ -255,6 +255,10 @@ blockquote, .ck.ck-content blockquote {
   margin-right: 10px;
 }
 
+.form-signin .md-form-gender .form-group label {
+  font-weight: 400;
+}
+
 .md-form-unmargin .form-group {
   margin: unset;
 }
@@ -1145,7 +1149,6 @@ td {
 }
 
 .form-signin .form-group label {
-  font-weight: 500;
   margin-bottom: 5px;
 }
 

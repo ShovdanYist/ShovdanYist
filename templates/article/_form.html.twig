@@ -12,7 +12,7 @@
 
             {% else %}
 
-                {% if vich_uploader_asset(article) %}
+                {% if vich_uploader_asset(article) and not '.gif' in article.image %}
                     <img class="article-image" id="articleImgOutput" src="{{ vich_uploader_asset(article) | imagine_filter('article') }}" alt="">
                 {% else %}
                     <img class="article-image" id="articleImgOutput" src="{{ vich_uploader_asset(article) }}" alt="">

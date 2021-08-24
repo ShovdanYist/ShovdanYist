@@ -73,7 +73,12 @@ class RegistrationFormType extends AbstractType
             ->add('birthday', DateType::class, [
                 'label' => 'birthday',
                 'mapped' => false,
-                'widget' => 'single_text'
+                'widget' => 'single_text',
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'birthday.required'
+                    ])
+                ]
             ])
 //            ->add('invitedBy', TextType::class, [
 //                'label' => 'invited.by',

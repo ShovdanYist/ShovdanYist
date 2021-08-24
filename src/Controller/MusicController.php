@@ -37,6 +37,10 @@ class MusicController extends CustomAbstractController
      */
     public function tag(Tag $tag, $page, Paginator $paginator): Response
     {
+        if ($tag->getType() !== 'music') {
+            throw $this->createNotFoundException();
+        }
+
         $paginator
             ->setParameters(['slug' => $tag->getSlug()])
             ->setCriteria(['tag' => $tag])

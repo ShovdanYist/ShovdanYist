@@ -33,6 +33,10 @@ class ArticleController extends CustomAbstractController
      */
     public function category(Tag $tag, $page, Paginator $paginator): Response
     {
+        if ($tag->getType() !== 'article') {
+            throw $this->createNotFoundException();
+        }
+
         $paginator
             ->setCriteria(['status' => true, 'tag' => $tag])
             ->setParameters(['slug' => $tag->getSlug()])

@@ -72,6 +72,7 @@ class Profile implements \Serializable
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
+     * @Assert\NotBlank()
      */
     private $birthday;
 
