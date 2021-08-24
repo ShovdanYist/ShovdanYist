@@ -9,3 +9,8 @@
     {{ include('dashboard/tag/_form.html.twig') }}
 
 {% endblock %}
+
+{% block scripts %}
+    {{ ckeditor() }}
+    {{ chosen(10) }}
+{% endblock %}

@@ -5,9 +5,8 @@ namespace App\Twig;
 use App\Entity\Comment;
 use App\Entity\User;
 use App\Form\CommentType;
-use App\Repository\CategoryRepository;
+use App\Repository\TagRepository;
 use App\Service\Paginator;
-use phpDocumentor\Reflection\Types\True_;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\Form\FormInterface;
 use Twig\Environment;
@@ -16,30 +15,30 @@ use Twig\TwigFunction;
 
 class ModulesExtension extends AbstractExtension
 {
-    private $categories;
+    private $tags;
     private $paginator;
     private $container;
 
-    public function __construct(CategoryRepository $categories, Paginator $paginator, ContainerInterface $container)
+    public function __construct(TagRepository $tags, Paginator $paginator, ContainerInterface $container)
     {
         $this->paginator = $paginator;
         $this->container = $container;
-        $this->categories = $categories;
+        $this->tags = $tags;
     }
 
     public function getFunctions(): array
     {
         return [
-            new TwigFunction('categories', [$this, 'categories'], ['is_safe' => ['html']]),
+            new TwigFunction('tags', [$this, 'tags'], ['is_safe' => ['html']]),
             new TwigFunction('comments', [$this, 'comments'], ['is_safe' => ['html'], 'needs_environment' => true]),
             new TwigFunction('crudActions', [$this, 'crudActions'], ['is_safe' => ['html'], 'needs_environment' => true]),
             new TwigFunction('breadcrumb', [$this, 'breadcrumb'], ['is_safe' => ['html'], 'needs_environment' => true]),
         ];
     }
 
-    public function categories($section = null)
+    public function tags($type = null)
     {
-        return $this->categories->findBySection($section);
+        return $this->tags->findByType($type);
     }
 
     public function createForm(string $type, $data = null, array $options = []): FormInterface

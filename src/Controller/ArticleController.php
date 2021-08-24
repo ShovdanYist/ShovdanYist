@@ -4,9 +4,9 @@ namespace App\Controller;
 
 use App\CustomAbstracts\CustomAbstractController;
 use App\Entity\Bookmark;
-use App\Entity\Category;
 use App\Entity\Notification;
 use App\Entity\Article;
+use App\Entity\Tag;
 use App\Form\NotificationType;
 use App\Form\ArticleType;
 use App\Repository\UserRepository;
@@ -25,17 +25,17 @@ use Symfony\Component\Routing\Annotation\Route;
 class ArticleController extends CustomAbstractController
 {
     /**
-     * @Route("/category/{slug}/{page<\d+>?1}", name="category")
-     * @param Category $category
+     * @Route("/category/{slug}/{page<\d+>?1}", name="tag")
+     * @param Tag $tag
      * @param $page
      * @param Paginator $paginator
      * @return Response
      */
-    public function category(Category $category, $page, Paginator $paginator): Response
+    public function category(Tag $tag, $page, Paginator $paginator): Response
     {
         $paginator
-            ->setCriteria(['status' => true, 'category' => $category])
-            ->setParameters(['slug' => $category->getSlug()])
+            ->setCriteria(['status' => true, 'tag' => $tag])
+            ->setParameters(['slug' => $tag->getSlug()])
             ->setOrder(['publishedAt' => 'DESC'])
             ->setMethod('findArticles')
             ->setClass(Article::class)
@@ -44,10 +44,10 @@ class ArticleController extends CustomAbstractController
             ->setPage($page)
         ;
 
-        return $this->render('article/category.html.twig', [
+        return $this->render('article/tag.html.twig', [
             'articles' => $paginator->getData(),
             'paginator' => $paginator,
-            'category' => $category
+            'tag' => $tag
         ]);
     }
 
@@ -59,7 +59,7 @@ class ArticleController extends CustomAbstractController
     public function add(Request $request): Response
     {
         $article = new Article();
-        $form = $this->createForm(ArticleType::class, $article,['playlist' => !$this->isGranted('ROLE_MODER')]);
+        $form = $this->createForm(ArticleType::class, $article);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -117,10 +117,6 @@ class ArticleController extends CustomAbstractController
         $article->setStatus(true);
         $article->setPublishedAt(new DateTime('now'));
         $article->setUpdatedAt(new DateTime('now'));
-
-        foreach ($article->getCategories() as $category) {
-            $category->setUpdatedAt(new \DateTime('now'));
-        }
 
         foreach ($article->getNotifications() as $value) {
             $value->setStatus(true);
@@ -198,13 +194,7 @@ class ArticleController extends CustomAbstractController
             throw $this->createNotFoundException();
         }
 
-        if ($this->isGranted('ROLE_MODER')) {
-            $options = ['playlist' => false, 'status' => true];
-        } else {
-            $options = ['playlist' => true, 'status' => false];
-        }
-
-        $form = $this->createForm(ArticleType::class, $article, $options);
+        $form = $this->createForm(ArticleType::class, $article);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

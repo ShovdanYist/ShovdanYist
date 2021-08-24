@@ -2,7 +2,7 @@
 
 {% block og_title %}{{ article.title }}{% endblock %}
 
-{% block og_image %}{{ vich_uploader_asset(article) | imagine_filter('article') }}{% endblock %}
+{% block og_image %}{% if article.image %}{{ vich_uploader_asset(article) | imagine_filter('article') }}{% endif %}{% endblock %}
 
 {% block og_type %}
     <meta property="og:type" content="article">
@@ -55,12 +55,12 @@
 
         <h1 class="mb-0">{{ article.title }}</h1>
 
-        {{ articleCategories(article) }}
+        {{ articleTags(article) }}
 
         {{ articleImage(article) }}
 
         {% for song in article.songs %}
-            {{ player(song,null,null,null,vich_uploader_asset(article) | imagine_filter('thumbnail') ) }}
+            {{ player(song,null,null,null ) }}
         {% endfor %}
 
         {% if article.description %}

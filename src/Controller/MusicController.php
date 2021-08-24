@@ -3,10 +3,8 @@
 namespace App\Controller;
 
 use App\CustomAbstracts\CustomAbstractController;
-use App\Entity\Genre;
 use App\Entity\Music;
 use App\Entity\Tag;
-use App\Entity\Theme;
 use App\Entity\UserMusic;
 use App\Repository\MusicRepository;
 use App\Repository\PeopleRepository;
@@ -28,6 +26,40 @@ class MusicController extends CustomAbstractController
     public function index(): Response
     {
         return $this->render('music/index.html.twig');
+    }
+
+    /**
+     * @Route("/music/tag/{slug}/{page<\d+>?1}", name="tag_show", methods={"GET"})
+     * @param Tag $tag
+     * @param $page
+     * @param Paginator $paginator
+     * @return Response
+     */
+    public function tag(Tag $tag, $page, Paginator $paginator): Response
+    {
+        $paginator
+            ->setParameters(['slug' => $tag->getSlug()])
+            ->setCriteria(['tag' => $tag])
+            ->setMethod('findByTag')
+            ->setOrder(['title' => 'DESC'])
+            ->setClass(Music::class)
+            ->setType('tag')
+            ->setLimit(20)
+            ->setPage($page);
+
+        ($page > 1) ? $page = ' | Страница ' . $page : $page = '';
+
+        $info = [
+            'title' => $tag->getTitle() . ' | Чеченские песни с тегом «' . mb_strtolower($tag->getTitle()) . '»' . $page,
+            'h1' => 'Песни с тегом «' . mb_strtolower($tag->getTitle()) . '»',
+            'description' => 'Чеченские песни жанра «' . mb_strtolower($tag->getTitle()) . '»'
+        ];
+
+        return $this->render('music/chart.html.twig', [
+            'songs' => $paginator->getData(),
+            'paginator' => $paginator,
+            'info' => $info
+        ]);
     }
 
     /**
@@ -67,108 +99,6 @@ class MusicController extends CustomAbstractController
             'title' => $title,
             'h1' => $this->trans($chart),
             'description' => $description
-        ];
-
-        return $this->render('music/chart.html.twig', [
-            'songs' => $paginator->getData(),
-            'paginator' => $paginator,
-            'info' => $info
-        ]);
-    }
-
-    /**
-     * @Route("/tag/{slug}/{page<\d+>?1}", name="tag_show", methods={"GET"})
-     * @param Tag $tag
-     * @param $page
-     * @param Paginator $paginator
-     * @return Response
-     */
-    public function tag(Tag $tag, $page, Paginator $paginator): Response
-    {
-        $paginator
-            ->setParameters(['slug' => $tag->getSlug()])
-            ->setCriteria(['tag' => $tag])
-            ->setMethod('findByTag')
-            ->setOrder(['title' => 'DESC'])
-            ->setClass(Music::class)
-            ->setType('tag')
-            ->setLimit(20)
-            ->setPage($page);
-
-        ($page > 1) ? $page = ' | Страница ' . $page : $page = '';
-
-        $info = [
-            'title' => $tag->getTitle() . ' | Чеченские песни жанра ' . mb_strtolower($tag->getTitle()) . $page,
-            'h1' => 'Песни жанра ' . mb_strtolower($tag->getTitle()),
-            'description' => 'Чеченские песни жанра ' . mb_strtolower($tag->getTitle())
-        ];
-
-        return $this->render('music/chart.html.twig', [
-            'songs' => $paginator->getData(),
-            'paginator' => $paginator,
-            'info' => $info
-        ]);
-    }
-
-    /**
-     * @Route("/genre/{slug}/{page<\d+>?1}", name="genre_show", methods={"GET"})
-     * @param Genre $genre
-     * @param $page
-     * @param Paginator $paginator
-     * @return Response
-     */
-    public function genre(Genre $genre, $page, Paginator $paginator): Response
-    {
-        $paginator
-            ->setParameters(['slug' => $genre->getSlug()])
-            ->setCriteria(['genre' => $genre])
-            ->setMethod('findByGenre')
-            ->setOrder(['title' => 'DESC'])
-            ->setClass(Music::class)
-            ->setType('genre')
-            ->setLimit(20)
-            ->setPage($page);
-
-        ($page > 1) ? $page = ' | Страница ' . $page : $page = '';
-
-        $info = [
-            'title' => $genre->getTitle() . ' | Чеченские песни жанра ' . mb_strtolower($genre->getTitle()) . $page,
-            'h1' => 'Песни жанра ' . mb_strtolower($genre->getTitle()),
-            'description' => 'Чеченские песни жанра ' . mb_strtolower($genre->getTitle())
-        ];
-
-        return $this->render('music/chart.html.twig', [
-            'songs' => $paginator->getData(),
-            'paginator' => $paginator,
-            'info' => $info
-        ]);
-    }
-
-    /**
-     * @Route("/theme/{slug}/{page<\d+>?1}", name="theme_show", methods={"GET"})
-     * @param Theme $theme
-     * @param $page
-     * @param Paginator $paginator
-     * @return Response
-     */
-    public function theme(Theme $theme, $page, Paginator $paginator): Response
-    {
-        $paginator
-            ->setParameters(['slug' => $theme->getSlug()])
-            ->setCriteria(['theme' => $theme])
-            ->setMethod('findByTheme')
-            ->setOrder(['title' => 'DESC'])
-            ->setClass(Music::class)
-            ->setType('theme')
-            ->setLimit(20)
-            ->setPage($page);
-
-        ($page > 1) ? $page = ' | Страница ' . $page : $page = '';
-
-        $info = [
-            'title' => $theme->getTitle() . ' | Чеченские песни на тему ' . mb_strtolower($theme->getTitle()) . $page,
-            'h1' => 'Песни на тему ' . mb_strtolower($theme->getTitle()),
-            'description' => 'Чеченские песни на тему ' . mb_strtolower($theme->getTitle())
         ];
 
         return $this->render('music/chart.html.twig', [

@@ -24,7 +24,7 @@ class ArticleExtension extends AbstractExtension
         return [
             new TwigFunction('articleInfo', [$this, 'articleInfo'], ['is_safe' => ['html'], 'needs_environment' => true]),
             new TwigFunction('articleTitle', [$this, 'articleTitle'], ['is_safe' => ['html'], 'needs_environment' => true]),
-            new TwigFunction('articleCategories', [$this, 'articleCategories'], ['is_safe' => ['html'], 'needs_environment' => true]),
+            new TwigFunction('articleTags', [$this, 'articleTags'], ['is_safe' => ['html'], 'needs_environment' => true]),
             new TwigFunction('articleImage', [$this, 'articleImage'], ['is_safe' => ['html'], 'needs_environment' => true]),
             new TwigFunction('articleDescription', [$this, 'articleDescription'], ['is_safe' => ['html'], 'needs_environment' => true]),
             new TwigFunction('articleActions', [$this, 'articleActions'], ['is_safe' => ['html'], 'needs_environment' => true]),
@@ -63,9 +63,9 @@ class ArticleExtension extends AbstractExtension
         ]);
     }
 
-    public function articleCategories(Environment $twig, $article)
+    public function articleTags(Environment $twig, $article)
     {
-        return $twig->render('layouts/article/article_categories.html.twig', [
+        return $twig->render('layouts/article/article_tags.html.twig', [
             'article' => $article
         ]);
     }

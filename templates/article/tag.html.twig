@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{ 'articles' | trans }}{% endblock %}
+{% block title %}{{ 'articles.from.category' | trans }} «{{ tag.title }}»{% endblock %}
 
 {% block pageclass %}two-sidebars{% endblock %}
 
@@ -8,7 +8,7 @@
 
     {{ breadcrumb({
         (path('app_home')) : ('home.page' | trans),
-        'active' : (category.title),
+        'active' : ('articles.from.category' | trans ~ ' «' ~ tag.title ~ '»'),
     }) }}
 
     <div class="md-box d-lg-none" style="margin-bottom: 12px">
@@ -24,9 +24,9 @@
                         {{ 'all' | trans }}
                     </a>
                 </li>
-                {% for item in categories() %}
-                    <li class="md-menu-item md-lined-menu{% if item.slug == category.slug %} active{% endif %}">
-                        <a style="padding-left: 10px" href="{{ path('article_category', {'slug':item.slug}) }}">
+                {% for item in tags('article') %}
+                    <li class="md-menu-item md-lined-menu{% if item.slug == tag.slug %} active{% endif %}">
+                        <a style="padding-left: 10px" href="{{ path('article_tag', {'slug':item.slug}) }}">
                             {{ item.title }}
                         </a>
                     </li>
@@ -61,9 +61,9 @@
                             {{ 'all' | trans }}
                         </a>
                     </li>
-                    {% for item in categories() %}
-                        <li class="md-menu-item md-lined-menu{% if item.slug == category.slug %} active{% endif %}">
-                            <a style="padding-left: 8px" href="{{ path('article_category', {'slug':item.slug}) }}">
+                    {% for item in tags('article') %}
+                        <li class="md-menu-item md-lined-menu{% if item.slug == tag.slug %} active{% endif %}">
+                            <a style="padding-left: 8px" href="{{ path('article_tag', {'slug':item.slug}) }}">
                                 {{ item.title }}
                             </a>
                         </li>

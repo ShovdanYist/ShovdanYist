@@ -96,16 +96,6 @@ class Music
     private $artist;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Genre", inversedBy="musics")
-     */
-    private $genre;
-
-    /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Theme", inversedBy="musics")
-     */
-    private $theme;
-
-    /**
      * @ORM\ManyToMany(targetEntity="App\Entity\People", inversedBy="featuring")
      */
     private $featuring;
@@ -147,8 +137,6 @@ class Music
 
     public function __construct()
     {
-        $this->genre = new ArrayCollection();
-        $this->theme = new ArrayCollection();
         $this->featuring = new ArrayCollection();
         $this->comments = new ArrayCollection();
         $this->userMusics = new ArrayCollection();
@@ -337,58 +325,6 @@ class Music
     public function setArtist(?People $artist): self
     {
         $this->artist = $artist;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Genre[]
-     */
-    public function getGenre(): Collection
-    {
-        return $this->genre;
-    }
-
-    public function addGenre(Genre $genre): self
-    {
-        if (!$this->genre->contains($genre)) {
-            $this->genre[] = $genre;
-        }
-
-        return $this;
-    }
-
-    public function removeGenre(Genre $genre): self
-    {
-        if ($this->genre->contains($genre)) {
-            $this->genre->removeElement($genre);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Theme[]
-     */
-    public function getTheme(): Collection
-    {
-        return $this->theme;
-    }
-
-    public function addTheme(Theme $theme): self
-    {
-        if (!$this->theme->contains($theme)) {
-            $this->theme[] = $theme;
-        }
-
-        return $this;
-    }
-
-    public function removeTheme(Theme $theme): self
-    {
-        if ($this->theme->contains($theme)) {
-            $this->theme->removeElement($theme);
-        }
 
         return $this;
     }

@@ -85,30 +85,6 @@ class MusicType extends AbstractType
                     'class' => 'chosen'
                 ]
             ])
-            ->add('genre', EntityType::class, [
-                'label' => 'genre',
-                'class' => Genre::class,
-                'required' => false,
-                'multiple' => true,
-                'choice_label' => 'title',
-                'label_attr' => ['class' => 'checkbox-custom'],
-                'attr' => [
-                    'data-placeholder' => $this->translator->trans('select.genres'),
-                    'class' => 'chosen'
-                ]
-            ])
-            ->add('theme', EntityType::class, [
-                'label' => 'theme',
-                'class' => Theme::class,
-                'required' => false,
-                'multiple' => true,
-                'choice_label' => 'title',
-                'label_attr' => ['class' => 'checkbox-custom'],
-                'attr' => [
-                    'data-placeholder' => $this->translator->trans('select.themes'),
-                    'class' => 'chosen'
-                ]
-            ])
             ->add('tags', EntityType::class, [
                 'label' => 'tags',
                 'class' => Tag::class,

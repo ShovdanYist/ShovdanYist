@@ -54,9 +54,9 @@ class ArticleRepository extends ServiceEntityRepository
         $qb = $this->createQueryBuilder('a');
 
         foreach ($criteria as $key => $value) {
-            if ($key == 'category') {
-                $qb ->join('a.categories', 'c')
-                    ->andWhere('c.slug = :' . $key . '')
+            if ($key == 'tag') {
+                $qb ->join('a.tags', 't')
+                    ->andWhere('t.slug = :' . $key . '')
                     ->setParameter($key,$value->getSlug())
                 ;
             } else {

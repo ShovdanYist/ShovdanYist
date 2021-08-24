@@ -1,0 +1,8 @@
+<div class="article-tags">
+    {% for tag in article.tags %}
+        <a class="{{ article.section }}-color" href="{{ path( 'article_tag', {'slug':tag.slug}) }}">
+            {{ tag.title }}
+        </a>
+        {% if not loop.last %}<span style="color: #bfbfbf">-</span>{% endif %}
+    {% endfor %}
+</div>

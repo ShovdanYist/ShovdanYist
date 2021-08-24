@@ -2,10 +2,11 @@
 
 namespace App\Form;
 
-use App\Entity\Category;
 use App\Entity\Music;
 use App\Entity\Article;
+use App\Entity\Tag;
 use App\Repository\MusicRepository;
+use App\Repository\TagRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -15,6 +16,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -25,12 +27,16 @@ class ArticleType extends AbstractType
     private $translator;
     private $musics;
     private $user;
+    private $role;
+    private $tags;
 
-    public function __construct(Security $security, TranslatorInterface $translator, MusicRepository $musics)
+    public function __construct(Security $security,AuthorizationCheckerInterface $authorizationChecker, TranslatorInterface $translator, MusicRepository $musics, TagRepository $tags)
     {
         $this->user = $security->getUser();
+        $this->role = $authorizationChecker;
         $this->translator = $translator;
         $this->musics = $musics;
+        $this->tags = $tags;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -66,12 +72,13 @@ class ArticleType extends AbstractType
                     ])
                 ]
             ])
-            ->add('categories', EntityType::class, [
+            ->add('tags', EntityType::class, [
                 'label' => 'categories',
-                'class' => Category::class,
+                'class' => Tag::class,
                 'multiple' => true,
                 'required' => false,
                 'choice_label' => 'title',
+                'choices' => $this->tags->findBy(['type' => 'article']),
                 'label_attr' => ['class' => 'checkbox-custom'],
                 'attr' => [
                     'data-placeholder' => $this->translator->trans('select.categories'),
@@ -86,7 +93,7 @@ class ArticleType extends AbstractType
                 'multiple' => true,
                 'choice_label' => 'FullTitle',
                 'label_attr' => ['class' => 'checkbox-custom'],
-                'choices' => ($options['playlist']) ? $this->musics->findUserPlaylist(['user'=>$this->user]) : null,
+                'choices' => (!$this->role->isGranted('ROLE_MODER')) ? $this->musics->findUserPlaylist(['user'=>$this->user]) : null,
                 'attr' => [
                     'data-placeholder' => $this->translator->trans('select.music'),
                     'class' => 'chosen'
@@ -106,7 +113,7 @@ class ArticleType extends AbstractType
             ])
         ;
 
-        if ($options['status']) {
+        if ($this->role->isGranted('ROLE_MODER')) {
             $builder
                 ->add('status', ChoiceType::class, [
                     'label' => 'activated',
@@ -123,9 +130,7 @@ class ArticleType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => Article::class,
-            'playlist' => null,
-            'status' => null
+            'data_class' => Article::class
         ]);
     }
 }

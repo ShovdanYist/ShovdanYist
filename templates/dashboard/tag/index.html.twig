@@ -1,6 +1,6 @@
 {% extends 'dashboard/base.html.twig' %}
 
-{% block title %}{{ 'genres' | trans }}{% endblock %}
+{% block title %}{{ 'tags' | trans }}{% endblock %}
 
 {% block main_top %}
 
@@ -24,6 +24,7 @@
             <tr>
                 <th>ID</th>
                 <th>{{ 'title' | trans }}</th>
+                <th>{{ 'type' | trans }}</th>
             </tr>
         </thead>
         <tbody>
@@ -35,6 +36,18 @@
                     {{ tag.title }}
                     {{ crudActions(tag, 'tag') }}
                     <br><span class="small text-muted">{{ tag.slug }}</span>
+                </td>
+
+                <td>
+                    {% if tag.type == 'music' %}
+                        <span class="badge badge-success">
+                            {{ tag.type }}
+                        </span>
+                    {% elseif tag.type == 'article' %}
+                        <span class="badge badge-info">
+                            {{ tag.type }}
+                        </span>
+                    {% endif %}
                 </td>
 
             </tr>

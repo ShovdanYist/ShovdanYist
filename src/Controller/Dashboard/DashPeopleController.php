@@ -23,7 +23,7 @@ class DashPeopleController extends AbstractController
     public function index(PeopleRepository $peopleRepository): Response
     {
         return $this->render('dashboard/people/index.html.twig', [
-            'people' => $peopleRepository->findAll(),
+            'people' => $peopleRepository->findBy([],['firstName' => 'ASC']),
         ]);
     }
 

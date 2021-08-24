@@ -110,14 +110,6 @@ class DashMusicController extends AbstractController
             $user = $repo->findOneBy(['username' => $this->getUser()->getUsername()]);
             $music->setAuthor($user);
 
-            foreach ($form->get('theme')->getData() as $theme) {
-                $theme->setUpdatedAt(new \DateTime('now'));
-            }
-
-            foreach ($form->get('genre')->getData() as $genre) {
-                $genre->setUpdatedAt(new \DateTime('now'));
-            }
-
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($music);
             $entityManager->flush();
@@ -156,14 +148,6 @@ class DashMusicController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
-            foreach ($form->get('theme')->getData() as $theme) {
-                $theme->setUpdatedAt(new \DateTime('now'));
-            }
-
-            foreach ($form->get('genre')->getData() as $genre) {
-                $genre->setUpdatedAt(new \DateTime('now'));
-            }
 
             $this->getDoctrine()->getManager()->flush();
 

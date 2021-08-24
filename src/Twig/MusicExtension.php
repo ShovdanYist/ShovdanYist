@@ -2,11 +2,8 @@
 
 namespace App\Twig;
 
-use App\Entity\Tag;
-use App\Repository\GenreRepository;
 use App\Repository\MusicRepository;
 use App\Repository\TagRepository;
-use App\Repository\ThemeRepository;
 use Cocur\Slugify\Slugify;
 use Twig\Environment;
 use Twig\Extension\AbstractExtension;
@@ -15,9 +12,6 @@ use Twig\TwigFunction;
 class MusicExtension extends AbstractExtension
 {
     private $music;
-    private $genres;
-    private $themes;
-    private $tags;
     private $letters = [
         'a' => 'а',
         'b' => 'б',
@@ -45,12 +39,9 @@ class MusicExtension extends AbstractExtension
         'ya' => 'я'
     ];
 
-    public function __construct(MusicRepository $music, GenreRepository $genres, ThemeRepository $themes, TagRepository $tags)
+    public function __construct(MusicRepository $music)
     {
         $this->music = $music;
-        $this->genres = $genres;
-        $this->themes = $themes;
-        $this->tags = $tags;
     }
 
     public function getFunctions(): array
@@ -77,22 +68,6 @@ class MusicExtension extends AbstractExtension
             'add' => $add,
             'type' => $type,
             'image' => $image
-        ]);
-    }
-
-    public function listing(Environment $twig, $listing, $color)
-    {
-        if ($listing == 'genres') {
-            $entities = $this->genres->findAll();
-        } elseif ($listing == 'themes') {
-            $entities = $this->themes->findAll();
-        }   elseif ($listing == 'tags') {
-            $entities = $this->tags->findAll();
-        }
-        return $twig->render('layouts/modules/listing.html.twig', [
-            'title' => $listing,
-            'entities' => $entities,
-            'color' => $color
         ]);
     }
 

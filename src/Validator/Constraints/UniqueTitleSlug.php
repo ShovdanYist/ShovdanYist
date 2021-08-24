@@ -8,7 +8,7 @@ use Symfony\Component\Validator\Constraint;
 /**
  * @Annotation
  *
- * @author Magomed Deniev <magomed.deniev@gmail.com>
+ * @author Magomed Deniev <magomed@deniev.com>
  */
 class UniqueTitleSlug extends Constraint
 {

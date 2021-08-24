@@ -1,4 +1,4 @@
-{% if not song.theme.empty or not song.genre.empty or not song.featuring.empty or song.releaseDate %}
+{% if not song.tags.empty or not song.featuring.empty or song.releaseDate %}
 
     <div class="md-song-stats">
 
@@ -7,34 +7,8 @@
             <strong>{{ 'tags' | trans }}</strong>
             {% for tag in song.tags %}
                 <span class="badge badge-info badge-a">
-                    <a href="{{ path('theme_show', {'slug': tag.slug}) }}">
+                    <a href="{{ path('tag_show', {'slug': tag.slug}) }}">
                         {{ tag.title }}
-                    </a>
-                </span>
-            {% endfor %}
-
-        {% endif %}
-
-        {% if not song.theme.empty %}
-
-            <strong>{{ 'theme' | trans }}</strong>
-            {% for theme in song.theme %}
-                <span class="badge badge-info badge-a">
-                    <a href="{{ path('theme_show', {'slug': theme.slug}) }}">
-                        {{ theme.title }}
-                    </a>
-                </span>
-            {% endfor %}
-
-        {% endif %}
-
-        {% if not song.genre.empty %}
-
-            <strong>{{ 'genre' | trans }}</strong>
-            {% for genre in song.genre %}
-                <span class="badge badge-info badge-a">
-                    <a href="{{ path('genre_show', {'slug': genre.slug}) }}">
-                        {{ genre.title }}
                     </a>
                 </span>
             {% endfor %}

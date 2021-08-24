@@ -19,9 +19,9 @@
                         {{ 'all' | trans }}
                     </a>
                 </li>
-                {% for item in categories() %}
+                {% for item in tags('article') %}
                     <li class="md-menu-item md-lined-menu">
-                        <a style="padding-left: 10px" href="{{ path('article_category', {'slug':item.slug}) }}">
+                        <a style="padding-left: 10px" href="{{ path('article_tag', {'slug':item.slug}) }}">
                             {{ item.title }}
                         </a>
                     </li>
@@ -56,9 +56,9 @@
                             {{ 'all' | trans }}
                         </a>
                     </li>
-                    {% for item in categories() %}
+                    {% for item in tags('article') %}
                         <li class="md-menu-item md-lined-menu">
-                            <a style="padding-left: 8px" href="{{ path('article_category', {'slug':item.slug}) }}">
+                            <a style="padding-left: 8px" href="{{ path('article_tag', {'slug':item.slug}) }}">
                                 {{ item.title }}
                             </a>
                         </li>

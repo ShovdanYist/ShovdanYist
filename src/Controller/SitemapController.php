@@ -2,12 +2,9 @@
 
 namespace App\Controller;
 
-use App\Entity\Category;
-use App\Entity\Genre;
 use App\Entity\Music;
 use App\Entity\People;
 use App\Entity\Article;
-use App\Entity\Theme;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -80,36 +77,6 @@ class SitemapController extends AbstractController
                     'slug' => $person->getSlug()
                 ]),
                 'lastmod' => $person->getUpdatedAt()->format('Y-m-d')
-            ];
-        }
-
-        // Adding categories urls
-        foreach ($this->getDoctrine()->getRepository(Category::class)->findAll() as $category) {
-            $urls[] = [
-                'loc' => $this->generateUrl('article_category', [
-                    'slug' => $category->getSlug()
-                ]),
-                'lastmod' => $category->getUpdatedAt()->format('Y-m-d')
-            ];
-        }
-
-        // Adding genres urls
-        foreach ($this->getDoctrine()->getRepository(Genre::class)->findAll() as $genre) {
-            $urls[] = [
-                'loc' => $this->generateUrl('genre_show', [
-                    'slug' => $genre->getSlug()
-                ]),
-                'lastmod' => $genre->getUpdatedAt()->format('Y-m-d')
-            ];
-        }
-
-        // Adding themes urls
-        foreach ($this->getDoctrine()->getRepository(Theme::class)->findAll() as $theme) {
-            $urls[] = [
-                'loc' => $this->generateUrl('theme_show', [
-                    'slug' => $theme->getSlug()
-                ]),
-                'lastmod' => $theme->getUpdatedAt()->format('Y-m-d')
             ];
         }
 

@@ -23,7 +23,7 @@ class DashTagController extends AbstractController
     public function index(TagRepository $tagRepository): Response
     {
         return $this->render('dashboard/tag/index.html.twig', [
-            'tags' => $tagRepository->findAll(),
+            'tags' => $tagRepository->findBy([],['title' => 'ASC']),
         ]);
     }
 
