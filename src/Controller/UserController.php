@@ -86,8 +86,10 @@ class UserController extends CustomAbstractController
                 $user->getProfile()->setAvatar('avatar.jpg');
             }
 
-            if ($user->getProfile()->getBirthday() !== $this->getDoctrine()->getRepository(EmailAddress::class)->findOneBy(['address' => $user->getConfirmedEmail()])->getBirthday()) {
-                $this->getDoctrine()->getRepository(EmailAddress::class)->findOneBy(['address' => $user->getConfirmedEmail()])->setBirthday($user->getProfile()->getBirthday());
+            if ($user->getProfile()->getBirthday() && $user->getConfirmedEmail()) {
+                if ($user->getProfile()->getBirthday() !== $this->getDoctrine()->getRepository(EmailAddress::class)->findOneBy(['address' => $user->getConfirmedEmail()])->getBirthday()) {
+                    $this->getDoctrine()->getRepository(EmailAddress::class)->findOneBy(['address' => $user->getConfirmedEmail()])->setBirthday($user->getProfile()->getBirthday());
+                }
             }
 
             $this->getDoctrine()->getManager()->flush();
