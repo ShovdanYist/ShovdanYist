@@ -71,7 +71,7 @@ class PeopleRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('p')
             ->join('p.musics','m')
-            ->where('p.slug like :letter')
+            ->where('p.firstName like :letter')
             ->andWhere('m.status = true')
             ->setParameter('letter', $letter . '%')
             ->orderBy('p.firstName', 'ASC')
@@ -79,7 +79,6 @@ class PeopleRepository extends ServiceEntityRepository
             ->getResult()
             ;
     }
-
 
     /*
     public function findOneBySomeField($value): ?People

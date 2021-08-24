@@ -115,3 +115,5 @@ image.have.to.be.jpg.or.png: 'Изображение должен быть фо�
 audio.have.to.be.jpg.or.png: 'Аудио файл должен быть формата "audio/mpeg", "audio/mp4", "audio/vnd.wav" или "audio/x-aiff", а не {{ type }}'
 no.account.with.such.email: 'Аккаунт с такой почтой не найден'
 email.in.blacklist: 'Указанная почта в черном списке'
+article.image.required: 'Изображение для статьи обязательна'
+article.title.required: 'Заголовок для статьи обязателен'

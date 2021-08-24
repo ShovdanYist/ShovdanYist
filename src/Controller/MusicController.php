@@ -198,7 +198,7 @@ class MusicController extends CustomAbstractController
         }
 
         return $this->render('music/singers.html.twig', [
-            'singers' => $people->findSingerByLetter($letter),
+            'singers' => $people->findSingerByLetter($extension->letters()[$letter]),
             'letter' => $extension->letters()[$letter]
         ]);
     }
