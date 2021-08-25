@@ -9,65 +9,68 @@
     <script src="{{ asset('/assets/ckeditor5/build/translations/en-gb.js') }}"></script>
 
     <script>
-        ClassicEditor
-            .create( document.querySelector( '.ckeditor' ), {
-                language: '{{ app.request.locale }}',
-                toolbar: [
-                    'heading', 'bold', 'italic', 'underline',
-                    'strikethrough', 'blockQuote'
-                ],
+        const allEditors = document.querySelectorAll('.ckeditor');
+        for (let i = 0; i < allEditors.length; ++i) {
+            ClassicEditor
+                .create( allEditors[i], {
+                        language: '{{ app.request.locale }}',
+                        toolbar: [
+                            'heading', 'bold', 'italic', 'underline',
+                            'strikethrough', 'blockQuote'
+                        ],
 
-                heading: {
-                    options: [
-                        { model: 'paragraph', title: 'Основной текст', class: 'ck-main-text' },
-                        { model: 'heading5', view: 'h5', title: 'Заглавие', class: 'ck-sub-title' },
-                        { model: 'heading6', view: 'h6', title: 'Описание', class: 'ck-sub-description' },
-                    ]
-                },
-
-                image: {
-                    upload: {
-                        panel: {
-                            items: [ 'insertImageViaUrl' ]
-                        }
-                    },
-
-                    styles: [
-                        'alignLeft', 'alignCenter', 'alignRight'
-                    ],
-
-                    resizeUnit: "%",
-                    resizeOptions: [
-                        {
-                            name: 'imageResize:original',
-                            value: null,
-                            icon: 'original'
+                        heading: {
+                            options: [
+                                { model: 'paragraph', title: 'Основной текст', class: 'ck-main-text' },
+                                { model: 'heading5', view: 'h5', title: 'Заглавие', class: 'ck-sub-title' },
+                                { model: 'heading6', view: 'h6', title: 'Описание', class: 'ck-sub-description' },
+                            ]
                         },
-                        {
-                            name: 'imageResize:50',
-                            value: '50',
-                            icon: 'medium'
-                        },
-                        {
-                            name: 'imageResize:75',
-                            value: '75',
-                            icon: 'large'
-                        }
-                    ],
 
-                    toolbar: [
-                        'imageStyle:alignLeft', 'imageStyle:alignCenter', 'imageStyle:alignRight',
-                        '|',
-                        'imageResize',
-                        '|',
-                        'imageTextAlternative'
-                    ]
-                }
-            }
-            )
-            .catch( error => {
-                console.error( error );
-            } );
+                        image: {
+                            upload: {
+                                panel: {
+                                    items: [ 'insertImageViaUrl' ]
+                                }
+                            },
+
+                            styles: [
+                                'alignLeft', 'alignCenter', 'alignRight'
+                            ],
+
+                            resizeUnit: "%",
+                            resizeOptions: [
+                                {
+                                    name: 'imageResize:original',
+                                    value: null,
+                                    icon: 'original'
+                                },
+                                {
+                                    name: 'imageResize:50',
+                                    value: '50',
+                                    icon: 'medium'
+                                },
+                                {
+                                    name: 'imageResize:75',
+                                    value: '75',
+                                    icon: 'large'
+                                }
+                            ],
+
+                            toolbar: [
+                                'imageStyle:alignLeft', 'imageStyle:alignCenter', 'imageStyle:alignRight',
+                                '|',
+                                'imageResize',
+                                '|',
+                                'imageTextAlternative'
+                            ]
+                        }
+                    }
+                )
+                .catch( error => {
+                    console.error( error );
+                } );
+        }
     </script>
 
 {% endif %}
