@@ -50,6 +50,14 @@ class MusicType extends AbstractType
                     'rows' => 10
                 ]
             ])
+            ->add('translation', TextareaType::class, [
+                'label' => 'translation',
+                'required' => false,
+                'attr' => [
+                    'class' => 'ckeditor',
+                    'rows' => 10
+                ]
+            ])
             ->add('releaseDate', DateType::class, [
                 'label' => 'release.date',
                 'required' => false,

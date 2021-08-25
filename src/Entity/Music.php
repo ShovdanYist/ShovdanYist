@@ -135,6 +135,11 @@ class Music
      */
     private $tags;
 
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $translation;
+
     public function __construct()
     {
         $this->featuring = new ArrayCollection();
@@ -522,6 +527,18 @@ class Music
         if ($this->tags->contains($tag)) {
             $this->tags->removeElement($tag);
         }
+
+        return $this;
+    }
+
+    public function getTranslation(): ?string
+    {
+        return $this->translation;
+    }
+
+    public function setTranslation(?string $translation): self
+    {
+        $this->translation = $translation;
 
         return $this;
     }

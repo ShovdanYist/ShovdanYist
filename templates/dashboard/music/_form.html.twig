@@ -9,6 +9,19 @@
             {{ form_row(form.title) }}
             {{ form_row(form.audioFile) }}
             {{ form_row(form.lyrics) }}
+
+            <div class="form-spoiler mb-3">
+
+                <a class="collapsed" data-toggle="collapse" data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false">
+                    {{ 'translation' | trans }} <i></i>
+                </a>
+
+                <div class="collapse" id="navbarToggleExternalContent">
+                    {{ form_widget(form.translation) }}
+                </div>
+
+            </div>
+
         </div>
 
         <div class="col-3">
