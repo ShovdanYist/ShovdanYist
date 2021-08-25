@@ -3,7 +3,9 @@
     <div class="row label-icons-form">
 
         <div class="col-9">
-            {{ player(music) }}
+            {% if music.id %}
+                {{ player(music) }}
+            {% endif %}
             {{ form_row(form.title) }}
             {{ form_row(form.audioFile) }}
             {{ form_row(form.lyrics) }}

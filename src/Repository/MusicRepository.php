@@ -65,7 +65,7 @@ class MusicRepository extends ServiceEntityRepository
             ->getResult();
     }
 
-    public function findByDiscussed($criteria, $orderBy = ['id' => 'DESC'], $limit = 10, $offset = 0)
+    public function findByDiscussed($criteria, $orderBy = null, $limit = null, $offset = 0)
     {
         $date = (new \DateTime('now'))->modify('-3 day')->format('Y-m-d');
 

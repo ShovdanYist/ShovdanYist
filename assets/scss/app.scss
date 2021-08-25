@@ -116,6 +116,11 @@ blockquote, .ck.ck-content blockquote {
 
 .ckeditor-content {
   margin-top: 12px;
+  word-break: break-word;
+  -webkit-hyphens: auto;
+  -moz-hyphens: auto;
+  -ms-hyphens: auto;
+  hyphens: auto;
 }
 
 .ckeditor-content h5, .ckeditor-content h6, .ck.ck-content h5, .ck.ck-content h6 {
@@ -815,6 +820,11 @@ td {
 .md-comment-message {
   display: block;
   margin-left: 60px;
+  word-break: break-word;
+  -webkit-hyphens: auto;
+  -moz-hyphens: auto;
+  -ms-hyphens: auto;
+  hyphens: auto;
 }
 .md-comment-info {
   margin-left: 58px;

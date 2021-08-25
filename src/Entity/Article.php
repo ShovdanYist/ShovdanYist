@@ -31,7 +31,6 @@ class Article
     /**
      * @Vich\UploadableField(mapping="article_images", fileNameProperty="image")
      * @Assert\File(mimeTypes={"image/jpeg","image/png","image/gif"}, mimeTypesMessage="image.have.to.be.jpg.or.png")
-     * @Assert\NotBlank(message="article.image.required")
      * @var File|null
      */
     private $imageFile;

@@ -84,7 +84,7 @@ class MusicController extends CustomAbstractController
         } elseif ($chart == 'novelty') {
             $paginator->setOrder(['releaseDate' => 'DESC'])->setCriteria(['status' => true]);
         } elseif ($chart == 'discussed') {
-            $paginator->setOrder(['releaseDate' => 'DESC'])->setCriteria(['status' => true])->setMethod('findByDiscussed');
+            $paginator->setCriteria(['status' => true])->setMethod('findByDiscussed');
         } else {
             throw $this->createNotFoundException();
         }

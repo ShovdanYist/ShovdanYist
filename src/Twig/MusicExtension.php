@@ -14,7 +14,6 @@ class MusicExtension extends AbstractExtension
     private $music;
     private $letters = [
         'a' => 'а',
-        'b' => 'б',
         'v' => 'в',
         'g' => 'г',
         'd' => 'д',
@@ -80,7 +79,7 @@ class MusicExtension extends AbstractExtension
         } elseif ($chart == 'lasts') {
             $songs = $this->music->findBy(['status' => true], ['publicationDate' => 'DESC'],5);
         } elseif ($chart == 'discussed') {
-            $songs = $this->music->findByDiscussed(['status' => true],['publicationDate' => 'DESC'],5);
+            $songs = $this->music->findByDiscussed(['status' => true],[],5);
         }
 
         return $twig->render('layouts/modules/chart_box.html.twig', [
