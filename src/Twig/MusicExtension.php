@@ -17,25 +17,20 @@ class MusicExtension extends AbstractExtension
         'v' => 'в',
         'g' => 'г',
         'd' => 'д',
-        'zh' => 'ж',
         'z' => 'з',
         'i' => 'и',
         'k' => 'к',
         'l' => 'л',
         'm' => 'м',
-        'n' => 'н',
-        'o' => 'о',
         'p' => 'п',
         'r' => 'р',
         's' => 'с',
         't' => 'т',
         'u' => 'у',
-        'f' => 'ф',
         'h' => 'х',
         'sh' => 'ш',
         'e' => 'э',
-        'yu' => 'ю',
-        'ya' => 'я'
+        'yu' => 'ю'
     ];
 
     public function __construct(MusicRepository $music)
