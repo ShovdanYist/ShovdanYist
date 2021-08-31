@@ -8,6 +8,7 @@ use App\Entity\People;
 use App\Entity\Tag;
 use App\Entity\Theme;
 use App\Repository\PeopleRepository;
+use App\Repository\TagRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\AbstractType;
@@ -23,11 +24,13 @@ class MusicType extends AbstractType
 {
     private $people;
     private $translator;
+    private $tags;
 
-    public function __construct(TranslatorInterface $translator, PeopleRepository $peopleRepository)
+    public function __construct(TranslatorInterface $translator, PeopleRepository $peopleRepository, TagRepository $tags)
     {
         $this->translator = $translator;
         $this->people = $peopleRepository;
+        $this->tags = $tags;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -99,6 +102,7 @@ class MusicType extends AbstractType
                 'required' => false,
                 'multiple' => true,
                 'choice_label' => 'title',
+                'choices' => $this->tags->findBy(['type' => 'music']),
                 'label_attr' => ['class' => 'checkbox-custom'],
                 'attr' => [
                     'data-placeholder' => $this->translator->trans('select.tags'),

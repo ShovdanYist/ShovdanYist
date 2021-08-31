@@ -35,14 +35,16 @@
 
         <div class="md-singer-block">
 
-            <div class="md-singer-image" style="background-image: url('{{ vich_uploader_asset(singer) | imagine_filter('avatar') }}')"></div>
+            <div class="md-singer-image" style="background-image: url('{% if singer.picture %}{{ vich_uploader_asset(singer) | imagine_filter('avatar') }}{% else %}{{ asset('assets/images/avatar.jpg') }}{% endif %}')"></div>
 
             <div class="md-singer-body">
 
                 <p class="card-text">
 
-                    <strong>{{ 'birth.date' | trans }}:</strong> {{ singer.birthDay ? singer.birthDay | format_datetime('medium', 'none', '', 'UTC') }}
-                    <br>
+                    {% if singer.birthDay %}
+                        <strong>{{ 'birth.date' | trans }}:</strong> {{ singer.birthDay ? singer.birthDay | format_datetime('medium', 'none', '', 'UTC') }}
+                        <br>
+                    {% endif %}
 
                     {% for profession in singer.activity %}
                         <span class="badge badge-success badge-lower">{{ profession.title }}</span>

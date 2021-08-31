@@ -118,8 +118,13 @@ class UserController extends CustomAbstractController
         $form = $this->createFormBuilder($user)
             ->add('username', TextType::class, [
                 'label' => $this->trans('form.username'),
-                'attr' => ['value' => $user->getUsername()],
-                'mapped' => false
+                'mapped' => false,
+                'attr' => [
+                    'value' => $user->getUsername(),
+                    'class' => 'username-input',
+                    'maxlength' => 28,
+                    'minlength' => 8
+                ],
             ])
             ->add('email', EmailType::class, [
                 'label' => $this->trans('form.email'),
@@ -152,7 +157,7 @@ class UserController extends CustomAbstractController
                     $user->setStatus(true);
                 }
 
-                $user->setUsername($form->get('username')->getData());
+                $user->setUsername(strtolower($form->get('username')->getData()));
                 $em = $this->getDoctrine()->getManager();
                 $em->flush();
 

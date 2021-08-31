@@ -62,3 +62,13 @@ if (document.querySelector('.md-autosizer')) {
 $(".md-alert-autohide").fadeTo(5000, 500).slideUp(500, function(){
     $(".md-alert-autohide").slideUp(500);
 });
+
+// Prevent username symbols
+$('.username-input').on('keypress', function (event) {
+    let regex = new RegExp("^[a-zA-Z0-9._]+$");
+    let key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
+    if (!regex.test(key)) {
+        event.preventDefault();
+        return false;
+    }
+});

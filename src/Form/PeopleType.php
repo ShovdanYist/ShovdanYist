@@ -22,7 +22,8 @@ class PeopleType extends AbstractType
                 'label' => 'first.name'
             ])
             ->add('lastName', TextType::class, [
-                'label' => 'last.name'
+                'label' => 'last.name',
+                'required' => false
             ])
             ->add('birthDay', DateType::class, [
                 'label' => 'birth.date',

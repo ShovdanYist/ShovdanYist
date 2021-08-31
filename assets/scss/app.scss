@@ -1189,6 +1189,24 @@ td {
   max-width: 40%;
 }
 
+.username-input {
+  text-transform: lowercase;
+}
+
+.user-birthday select {
+  flex: 1;
+  margin-right: 10px;
+  -webkit-appearance: none;
+}
+
+.user-birthday select:focus {
+  border-color: #18bc9c !important;
+}
+
+.user-birthday select:last-child {
+  margin: unset;
+}
+
 // Buttons
 
 .btn-white {
@@ -1499,6 +1517,7 @@ td {
   height: 55px;
   border-bottom: 1px solid #373737;
   overflow-x: hidden;
+  overflow-y: hidden;
 }
 
 #sideNav .md-user-sidebar-username {

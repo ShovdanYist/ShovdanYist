@@ -32,6 +32,11 @@ class RegistrationFormType extends AbstractType
                         'minMessage' => 'form.username.min.length.message',
                         'maxMessage' => 'form.username.max.length.message'
                     ])
+                ],
+                'attr' => [
+                    'class' => 'username-input',
+                    'maxlength' => 28,
+                    'minlength' => 8
                 ]
             ])
             ->add('email', EmailType::class, [
@@ -73,11 +78,20 @@ class RegistrationFormType extends AbstractType
             ->add('birthday', DateType::class, [
                 'label' => 'birthday',
                 'mapped' => false,
-                'widget' => 'single_text',
+                'widget' => 'choice',
+                'format' => 'ddMMyyyy',
                 'constraints' => [
                     new NotBlank([
                         'message' => 'birthday.required'
                     ])
+                ],
+                'placeholder' => [
+                    'year' => 'Год',
+                    'month' => 'Месяц',
+                    'day' => 'День',
+                ],
+                'attr' => [
+                    'class' => 'user-birthday'
                 ]
             ])
 //            ->add('invitedBy', TextType::class, [

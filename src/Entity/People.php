@@ -79,7 +79,7 @@ class People
     private $slug;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Music", mappedBy="artist")
+     * @ORM\OneToMany(targetEntity="App\Entity\Music", mappedBy="artist", orphanRemoval=true)
      */
     private $musics;
 

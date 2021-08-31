@@ -1,7 +1,7 @@
 <div class="audio-player text-muted">
 
     <div class="audio-player-image">
-        <div style="background-image: url('{% if image %}{{ image }}{% else %}{{ vich_uploader_asset(song.artist) | imagine_filter('thumbnail') }}{% endif %}')"></div>
+        <div style="background-image: url('{% if image %}{{ image }}{% elseif song.artist.picture %}{{ vich_uploader_asset(song.artist) | imagine_filter('thumbnail') }}{% else %}{{ asset('assets/images/avatar.jpg') }}{% endif %}')"></div>
     </div>
 
     <div class="audio-player-title">
