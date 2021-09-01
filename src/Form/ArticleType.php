@@ -19,7 +19,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Validator\Constraints\Length;
-use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Vich\UploaderBundle\Form\Type\VichImageType;
 
@@ -94,7 +93,7 @@ class ArticleType extends AbstractType
                 'multiple' => true,
                 'choice_label' => 'FullTitle',
                 'label_attr' => ['class' => 'checkbox-custom'],
-                'choices' => (!$this->role->isGranted('ROLE_MODER')) ? $this->musics->findUserPlaylist(['user'=>$this->user]) : null,
+                'choices' => (!$this->role->isGranted('ROLE_ARTICLE_MODERATOR') && !$this->role->isGranted('ROLE_ARTICLE_EDITOR')) ? $this->musics->findUserPlaylist(['user'=>$this->user]) : null,
                 'attr' => [
                     'data-placeholder' => $this->translator->trans('select.music'),
                     'class' => 'chosen'
@@ -107,11 +106,6 @@ class ArticleType extends AbstractType
                 'required' => false,
                 'widget' => 'choice',
                 'format' => 'ddMMMyyyy',
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'birthday.required'
-                    ])
-                ],
                 'placeholder' => [
                     'year' => 'Год',
                     'month' => 'Месяц',
@@ -129,7 +123,7 @@ class ArticleType extends AbstractType
             ])
         ;
 
-        if ($this->role->isGranted('ROLE_MODER')) {
+        if ($this->role->isGranted('ROLE_ARTICLE_MODERATOR')) {
             $builder
                 ->add('status', ChoiceType::class, [
                     'label' => 'activated',

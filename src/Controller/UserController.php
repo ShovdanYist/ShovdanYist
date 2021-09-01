@@ -43,7 +43,7 @@ class UserController extends CustomAbstractController
      */
     public function profile(User $user, $page, Paginator $paginator): Response
     {
-        if ($this->isGranted('IS_AUTHENTICATED_FULLY') && $user === $this->user() || $this->isGranted('ROLE_MODER')) {
+        if ($this->isGranted('IS_AUTHENTICATED_FULLY') && $user === $this->user() || $this->isGranted('ROLE_ARTICLE_MODERATOR')) {
             $criteria = ['author' => $user];
         } else {
             $criteria = ['author' => $user, 'status' => true];
@@ -309,7 +309,11 @@ class UserController extends CustomAbstractController
     public function blocking(User $user, EmailAddressRepository $emails): Response
     {
         $email = $emails->findOneBy(['address' => $user->getConfirmedEmail()]);
-        $email->setStatus(false);
+
+        if ($email) {
+            $email->setStatus(false);
+        }
+
         $user->setStatus(false);
         $em = $this->getDoctrine()->getManager();
         $em->flush();
@@ -330,7 +334,11 @@ class UserController extends CustomAbstractController
     public function unblocking(User $user, EmailAddressRepository $emails): Response
     {
         $email = $emails->findOneBy(['address' => $user->getConfirmedEmail()]);
-        $email->setStatus(true);
+
+        if ($email) {
+            $email->setStatus(true);;
+        }
+
         $user->setStatus(true);
         $em = $this->getDoctrine()->getManager();
         $em->flush();

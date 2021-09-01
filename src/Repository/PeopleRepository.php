@@ -34,7 +34,7 @@ class PeopleRepository extends ServiceEntityRepository
             ->getResult();
     }
 
-    public function findOneActiveSinger($slug)
+    public function findOneActiveVocalist($slug)
     {
         return $this->createQueryBuilder('p')
             ->join('p.musics', 'm')
@@ -47,17 +47,17 @@ class PeopleRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param $singer
+     * @param $vocalist
      * @return mixed
      */
-    public function findAllSingers($singer)
+    public function findAllVocalists($vocalist)
     {
         return $this->createQueryBuilder('p')
             ->join('p.activity', 'a')
             ->join('p.musics', 'm')
-            ->where('a.slug = :singer')
+            ->where('a.slug = :vocalist')
             ->andWhere('m.status = true')
-            ->setParameter('singer', $singer)
+            ->setParameter('vocalist', $vocalist)
             ->getQuery()
             ->getResult()
             ;
@@ -67,7 +67,7 @@ class PeopleRepository extends ServiceEntityRepository
      * @param $letter
      * @return People[] Returns an array of People objects
      */
-    public function findSingerByLetter($letter)
+    public function findVocalistByLetter($letter)
     {
         return $this->createQueryBuilder('p')
             ->join('p.musics','m')

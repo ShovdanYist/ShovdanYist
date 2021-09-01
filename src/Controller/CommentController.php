@@ -98,7 +98,7 @@ class CommentController extends CustomAbstractController
      */
     public function commentDelete(Request $request, Comment $comment): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$comment->getId(), $request->request->get('_token')) && $comment->getAuthor() == $this->getUser() || $this->isGranted('ROLE_ADMIN')) {
+        if ($this->isCsrfTokenValid('delete'.$comment->getId(), $request->request->get('_token')) && $comment->getAuthor() == $this->getUser() || $this->isGranted('ROLE_SONG_COMMENT_REMOVER') && $comment->getMusic() || $this->isGranted('ROLE_ARTICLE_COMMENT_REMOVER') && $comment->getArticle()) {
             $em = $this->getDoctrine()->getManager();
             foreach ($comment->getNotifications() as $notification) {
                 $em->remove($notification);

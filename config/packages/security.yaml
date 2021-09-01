@@ -42,9 +42,21 @@ security:
             # switch_user: true
 
     role_hierarchy:
-        ROLE_AUTHOR: ROLE_USER
-        ROLE_MODER: ROLE_AUTHOR
-        ROLE_ADMIN: ROLE_MODER
+        ROLE_ARTICLE_AUTHOR: ROLE_USER
+        ROLE_ARTICLE_EDITOR: ROLE_USER
+        ROLE_ARTICLE_COMMENT_REMOVER: ROLE_USER
+        ROLE_ARTICLE_MODERATOR: ROLE_USER
+
+        ROLE_SONG_EDITOR: ROLE_USER
+        ROLE_SONG_COMMENT_REMOVER: ROLE_USER
+
+        ROLE_VOCALIST_EDITOR: ROLE_USER
+
+        ROLE_USER_MANAGER: ROLE_USER
+        ROLE_USER_BLOCKER: ROLE_USER
+        ROLE_USER_ANALYST: ROLE_USER
+
+        ROLE_ADMIN: [ROLE_ARTICLE_AUTHOR,ROLE_ARTICLE_EDITOR,ROLE_ARTICLE_COMMENT_REMOVER,ROLE_ARTICLE_MODERATOR,ROLE_SONG_EDITOR,ROLE_SONG_COMMENT_REMOVER,ROLE_VOCALIST_EDITOR,ROLE_USER_MANAGER,ROLE_USER_BLOCKER,ROLE_USER_ANALYST]
 
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
@@ -52,16 +64,19 @@ security:
         # Administrator
          - { path: ^/dashboard, roles: ROLE_ADMIN }
 
-        # Moderator
-         - { path: ^/post/moderation/publish, roles: ROLE_MODER }
-         - { path: ^/post/moderation, roles: ROLE_MODER }
+        # User blocker
+         - { path: ^/blockingUser, roles: ROLE_USER_BLOCKER }
+         - { path: ^/unblockingUser, roles: ROLE_USER_BLOCKER }
 
-        # Author
-         - { path: ^/post/add, roles: ROLE_USER }
+        # Moderator
+         - { path: ^/article/moderation/publish, roles: ROLE_ARTICLE_MODERATOR }
+         - { path: ^/article/moderation/reject, roles: ROLE_ARTICLE_MODERATOR }
+         - { path: ^/article/moderation, roles: ROLE_ARTICLE_MODERATOR }
 
         # Authorized
          - { path: ^/deleteAccount, roles: ROLE_USER }
          - { path: ^/notifications, roles: ROLE_USER }
+         - { path: ^/article/add, roles: ROLE_USER }
          - { path: ^/bookmarks, roles: ROLE_USER }
          - { path: ^/settings, roles: ROLE_USER }
          - { path: ^/reset, roles: ROLE_USER }

@@ -83,19 +83,19 @@
                     </a>
                 </li>
 
-                {% if is_granted('ROLE_MODER') %}
+                {% if is_granted('ROLE_ARTICLE_MODERATOR') %}
                     <li class="md-menu-item">
                         <a href="{{ path('article_moderation') }}">
                         <span>
                             <i class="fas fa-tasks"></i>
                         </span>
                             {{ 'moderation' | trans }}
-                            {% if moderationCount() != 0 %}
+                            {% if articleModerationCount() != 0 %}
                                 <span class="badge badge-pill badge-danger float-right mt-1">
-                                {% if moderationCount() > 99 %}
+                                {% if articleModerationCount() > 99 %}
                                     99+
                                 {% else %}
-                                    {{ moderationCount() }}
+                                    {{ articleModerationCount() }}
                                 {% endif %}
                             </span>
                             {% endif %}

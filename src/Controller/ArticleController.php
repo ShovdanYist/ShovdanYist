@@ -94,7 +94,7 @@ class ArticleController extends CustomAbstractController
     {
         $paginator
             ->setClass(Article::class)
-            ->setOrder(['publishedAt' => 'ASC'])
+            ->setOrder(['updatedAt' => 'ASC'])
             ->setCriteria(['status' => null, 'moderation' => true])
             ->setLimit(10)
             ->setPage($page)
@@ -119,7 +119,11 @@ class ArticleController extends CustomAbstractController
         $notification->setArticle($article);
 
         $article->setStatus(true);
-        $article->setPublishedAt(new DateTime('now'));
+
+        if (!$article->getPublishedAt()) {
+            $article->setPublishedAt(new DateTime('now'));
+        }
+
         $article->setUpdatedAt(new DateTime('now'));
 
         foreach ($article->getNotifications() as $value) {
@@ -165,9 +169,9 @@ class ArticleController extends CustomAbstractController
      */
     public function show(Article $article, $page): Response
     {
-        if ($article->getAuthor() === $this->getUser() || $this->isGranted('ROLE_MODER') || $article->getStatus() === true) {
+        if ($article->getAuthor() === $this->getUser() || $this->isGranted('ROLE_ARTICLE_MODERATOR') || $this->isGranted('ROLE_ARTICLE_EDITOR') && $article->getStatus() || $article->getStatus() === true) {
 
-            if ($this->isGranted('IS_AUTHENTICATED_FULLY') && $this->user() !== $article->getAuthor() && !$this->isGranted('ROLE_MODER')) {
+            if ($this->isGranted('IS_AUTHENTICATED_FULLY') && $this->user() !== $article->getAuthor() && !$this->isGranted('ROLE_ARTICLE_MODERATOR')) {
                 $article->setViews($article->getViews() + 1);
                 $em = $this->getDoctrine()->getManager();
                 $em->flush();
@@ -190,42 +194,40 @@ class ArticleController extends CustomAbstractController
      */
     public function edit(Request $request, Article $article): Response
     {
-        /**
-         * TODO: Добить
-         */
-//        if (!$this->isGranted('IS_AUTHENTICATED_FULLY') || $this->user() !== $article->getAuthor() && !$this->isGranted('ROLE_MODER')) {
-        if ($this->user() !== $article->getAuthor() && !$this->isGranted('ROLE_MODER')) {
+        if ($this->user() === $article->getAuthor() || $this->isGranted('ROLE_ARTICLE_MODERATOR') || $this->isGranted('ROLE_ARTICLE_EDITOR') && $article->getStatus()) {
+
+            $form = $this->createForm(ArticleType::class, $article);
+            $form->handleRequest($request);
+
+            if ($form->isSubmitted() && $form->isValid()) {
+                if ($this->user() === $article->getAuthor() && !$this->isGranted('ROLE_ARTICLE_MODERATOR') || $this->user() === $article->getAuthor() && !$this->isGranted('ROLE_ARTICLE_EDITOR')) {
+                    $article->setUpdatedAt(new DateTime('now'));
+                    $article->setStatus(null);
+                }
+
+                if ($article->getStatus() !== true) {
+                    foreach ($article->getNotifications() as $value) {
+                        $value->setStatus(false);
+                    }
+                } else {
+                    foreach ($article->getNotifications() as $value) {
+                        $value->setStatus(true);
+                    }
+                }
+
+                $this->getDoctrine()->getManager()->flush();
+
+                return $this->redirectToRoute('article_show', ['slug' => $article->getSlug()]);
+            }
+
+            return $this->render('article/edit.html.twig', [
+                'article' => $article,
+                'form' => $form->createView(),
+            ]);
+
+        } else {
             throw $this->createNotFoundException();
         }
-
-        $form = $this->createForm(ArticleType::class, $article);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            if ($article->getStatus() !== null && !$this->isGranted('ROLE_MODER')) {
-                $article->setPublishedAt(new DateTime('now'));
-                $article->setStatus(null);
-            }
-
-            if ($article->getStatus() !== true) {
-                foreach ($article->getNotifications() as $value) {
-                    $value->setStatus(false);
-                }
-            } else {
-                foreach ($article->getNotifications() as $value) {
-                    $value->setStatus(true);
-                }
-            }
-
-            $this->getDoctrine()->getManager()->flush();
-
-            return $this->redirectToRoute('article_show', ['slug' => $article->getSlug()]);
-        }
-
-        return $this->render('article/edit.html.twig', [
-            'article' => $article,
-            'form' => $form->createView(),
-        ]);
     }
 
     /**
@@ -266,6 +268,10 @@ class ArticleController extends CustomAbstractController
      */
     public function delete(Request $request, Article $article): Response
     {
+        if ($this->user() !== $article->getAuthor() && !$this->isGranted('ROLE_ARTICLE_MODERATOR')) {
+            throw $this->createNotFoundException();
+        }
+
         if ($this->isCsrfTokenValid('delete'.$article->getId(), $request->request->get('_token'))) {
             $em = $this->getDoctrine()->getManager();
             $em->remove($article);

@@ -75,7 +75,7 @@
 
                     <td>
                         {% if music.artist %}
-                            <a style="color: unset" href="{{ path('dash_music_singer',{'slug':music.artist.slug}) }}">
+                            <a style="color: unset" href="{{ path('dash_music_vocalist',{'slug':music.artist.slug}) }}">
                                 {{ music.artist.fullName }}
                             </a>
                         {% endif %}

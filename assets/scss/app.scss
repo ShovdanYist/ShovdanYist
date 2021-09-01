@@ -740,24 +740,24 @@ td {
   border-radius: 100%;
 }
 
-// Singer card
+// Vocalist card
 
-.md-cards-group .md-singer-card:last-child {
+.md-cards-group .md-vocalist-card:last-child {
   margin: unset !important;
   border: unset !important;
   padding: unset !important;
 }
-.md-singer-card {
+.md-vocalist-card {
   width: 100%;
   padding-bottom: 25px;
   margin-bottom: 25px;
   border-bottom: 1px solid rgba(0,0,0,0.1);
 }
-.md-one-singer {
+.md-one-vocalist {
   border: unset;
   padding: unset !important;
 }
-.md-singer-image {
+.md-vocalist-image {
   width: 125px;
   min-width: 125px;
   float: left;
@@ -767,12 +767,12 @@ td {
   border-radius: 3px;
   margin-right: 20px;
 }
-.md-singer-block {
+.md-vocalist-block {
   display: table;
   width: 100%;
   border-radius: 8px 8px 0 0;
 }
-.md-singer-body {
+.md-vocalist-body {
   float: left;
 }
 .md-small-span {
@@ -780,11 +780,11 @@ td {
   display: table;
   padding-bottom: 20px;
 }
-.md-singer-cards .md-singer-block {
+.md-vocalist-cards .md-vocalist-block {
   display: flex;
   flex-direction: row-reverse;
 }
-.md-singer-cards .md-singer-body {
+.md-vocalist-cards .md-vocalist-body {
   width: 100%;
 }
 
@@ -1284,6 +1284,9 @@ td {
 .user-birthday select {
   flex: 1;
   margin-right: 10px;
+}
+
+select {
   -webkit-appearance: none;
 }
 

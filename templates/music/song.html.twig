@@ -19,9 +19,9 @@
     {{ breadcrumb({
         (path('app_home')) : ('home.page' | trans),
         (path('music_index')) : ('music' | trans),
-        (path('music_singers', {letter: slugify(song.artist.fullName | first) })) : (song.artist.fullName | first),
-        (path('music_singer', {slug: song.artist.slug})) : (song.artist.fullName),
-    }, song) }}
+        (path('music_vocalists', {letter: slugify(song.artist.fullName | first) })) : (song.artist.fullName | first),
+        (path('music_vocalist', {slug: song.artist.slug})) : (song.artist.fullName),
+    }, song,'song') }}
 
 {% endblock %}
 

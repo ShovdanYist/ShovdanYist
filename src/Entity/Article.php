@@ -83,7 +83,7 @@ class Article
     private $slug;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime", nullable=true)
      */
     private $publishedAt;
 
@@ -148,7 +148,7 @@ class Article
      */
     public function initializePrePersist()
     {
-        $this->publishedAt = new DateTime('now');
+        $this->updatedAt = new DateTime('now');
     }
 
     /**

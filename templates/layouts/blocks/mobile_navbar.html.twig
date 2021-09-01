@@ -92,7 +92,7 @@
                 </span>
             </a>
 
-            {% if is_granted('ROLE_MODER') %}
+            {% if is_granted('ROLE_ARTICLE_MODERATOR') %}
 
                 <hr>
 
@@ -105,12 +105,12 @@
                         {{ 'moderation' | trans }}
                     </span>
 
-                    {% if moderationCount() != 0 %}
+                    {% if articleModerationCount() != 0 %}
                         <span class="badge badge-pill badge-danger mt-1 dashbar-nav-badge">
-                        {% if moderationCount() > 99 %}
+                        {% if articleModerationCount() > 99 %}
                             99+
                         {% else %}
-                            {{ moderationCount() }}
+                            {{ articleModerationCount() }}
                         {% endif %}
                     </span>
                     {% endif %}

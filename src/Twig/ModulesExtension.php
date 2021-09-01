@@ -78,14 +78,14 @@ class ModulesExtension extends AbstractExtension
         ]);
     }
 
-    public function breadcrumb(Environment $twig, $links, $entity = null)
+    public function breadcrumb(Environment $twig, $links, $entity = null, $name = null)
     {
-        $name = ($entity) ? strtolower((new \ReflectionClass($entity))->getShortName()) : null ;
+//        $name = ($entity) ? strtolower((new \ReflectionClass($entity))->getShortName()) : null ;
 
         return $twig->render('layouts/modules/breadcrumb.html.twig', [
             'links' => $links,
-            'name' => $name,
-            'entity' => $entity
+            'entity' => $entity,
+            'name' => $name
         ]);
     }
 }

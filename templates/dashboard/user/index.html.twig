@@ -26,7 +26,6 @@
                 <th>ID</th>
                 <th>{{ 'form.avatar' | trans }}</th>
                 <th>{{ 'first.name' | trans }}</th>
-                <th>{{ 'role' | trans }}</th>
             </tr>
         </thead>
 
@@ -50,20 +49,6 @@
                     {% endif %}
 
                     {{ crudActions(user, 'user') }}
-                </td>
-
-                <td>
-                    <span class="badge badge-{% if user.roles.0 == 'ROLE_ADMIN' %}primary{% elseif user.roles.0 == 'ROLE_MODER' %}info{% elseif user.roles.0 == 'ROLE_AUTHOR' %}success{% else %}secondary{% endif %}">
-                        {% if user.roles.0 == 'ROLE_ADMIN' %}
-                            Ad<span class="mobile-txt-hider">ministrator</span>
-                        {% elseif user.roles.0 == 'ROLE_MODER' %}
-                            Mo<span class="mobile-txt-hider">derator</span>
-                        {% elseif user.roles.0 == 'ROLE_AUTHOR' %}
-                            Au<span class="mobile-txt-hider">thor</span>
-                        {% else %}
-                            Us<span class="mobile-txt-hider">er</span>
-                        {% endif %}
-                    </span>
                 </td>
 
             </tr>

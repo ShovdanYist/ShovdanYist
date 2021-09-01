@@ -26,10 +26,10 @@
 
             <strong>{{ 'featuring' | trans }}</strong>
 
-            {% for singer in song.featuring %}
+            {% for vocalist in song.featuring %}
                 <span class="badge badge-primary badge-a">
-                    <a class="md-feat-stat" href="{{ path('music_singer', { slug: singer.slug }) }}">
-                        {{ singer.fullName }}
+                    <a class="md-feat-stat" href="{{ path('music_vocalist', { slug: vocalist.slug }) }}">
+                        {{ vocalist.fullName }}
                     </a>
                 </span>
             {% endfor %}

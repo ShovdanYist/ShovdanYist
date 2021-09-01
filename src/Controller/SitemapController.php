@@ -70,10 +70,10 @@ class SitemapController extends AbstractController
             ];
         }
 
-        // Adding singers urls
-        foreach ($this->getDoctrine()->getRepository(People::class)->findAllSingers('vocalist') as $person) {
+        // Adding vocalists urls
+        foreach ($this->getDoctrine()->getRepository(People::class)->findAllVocalists('vocalist') as $person) {
             $urls[] = [
-                'loc' => $this->generateUrl('music_singer', [
+                'loc' => $this->generateUrl('music_vocalist', [
                     'slug' => $person->getSlug()
                 ]),
                 'lastmod' => $person->getUpdatedAt()->format('Y-m-d')

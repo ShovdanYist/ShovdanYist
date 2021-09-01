@@ -45,7 +45,7 @@ class CounterExtension extends AbstractExtension
             new TwigFunction('userContainMusic', [$this, 'userContainMusic'], ['is_safe' => ['html']]),
             new TwigFunction('userContainArticle', [$this, 'userContainArticle'], ['is_safe' => ['html']]),
             new TwigFunction('notifyCount', [$this, 'notifyCount'], ['is_safe' => ['html']]),
-            new TwigFunction('moderationCount', [$this, 'moderationCount'], ['is_safe' => ['html']]),
+            new TwigFunction('articleModerationCount', [$this, 'articleModerationCount'], ['is_safe' => ['html']]),
             new TwigFunction('notifyIndicator', [$this, 'notifyIndicator'], ['is_safe' => ['html']]),
         ];
     }
@@ -70,9 +70,9 @@ class CounterExtension extends AbstractExtension
         return sprintf($template, $result);
     }
 
-    public function featuringsCount(People $singer)
+    public function featuringsCount(People $vocalist)
     {
-        $featurings = count($this->musicRepo->findFeaturingCount($singer));
+        $featurings = count($this->musicRepo->findFeaturingCount($vocalist));
         ($featurings == 1) ? $word = $this->translator->trans('featuring_singular') : $word = $this->translator->trans('featuring_plural');
         $template = '<span class="badge badge-secondary">%s %s</span>';
 
@@ -87,9 +87,9 @@ class CounterExtension extends AbstractExtension
         );
     }
 
-    public function songsCount(People $singer)
+    public function songsCount(People $vocalist)
     {
-        $songs = $this->musicRepo->count(['artist' => $singer,'status' => true]);
+        $songs = $this->musicRepo->count(['artist' => $vocalist,'status' => true]);
         ($songs == 1) ? $word = $this->translator->trans('song') : (($songs < 5) ? $word = $this->translator->trans('two_songs') : $word = $this->translator->trans('songs'));
         $template = '<span class="badge badge-info">%s %s</span>';
 
@@ -115,15 +115,15 @@ class CounterExtension extends AbstractExtension
         return $this->notifyRepo->count(['receiver' => $user, 'seen' => false]);
     }
 
-    public function moderationCount(): int
+    public function articleModerationCount(): int
     {
         return $this->articleRepo->count(['status' => null, 'moderation' => true]);
     }
 
     public function notifyIndicator(User $user): int
     {
-        if ($this->security->isGranted('ROLE_MODER')){
-            $result = $this->moderationCount() + $this->notifyCount($user);
+        if ($this->security->isGranted('ROLE_ARTICLE_MODERATOR')){
+            $result = $this->articleModerationCount() + $this->notifyCount($user);
         } else {
             $result = $this->notifyCount($user);
         }

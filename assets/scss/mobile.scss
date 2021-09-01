@@ -25,13 +25,13 @@
   .md-box.md-main-box-col-2 {
     display: flex !important;
   }
-  .md-one-singer {
+  .md-one-vocalist {
     margin-bottom: 20px !important;
   }
   .md-song-feat {
     top: -12px !important;
   }
-  .md-singer-card {
+  .md-vocalist-card {
     padding-bottom: 20px !important;
     margin-bottom: 20px !important;
   }
@@ -71,7 +71,7 @@
     line-height: 22px !important;
     font-size: 20px !important;
   }
-  .md-singer-card h3 {
+  .md-vocalist-card h3 {
     font-size: 24px !important;
     float: left;
     margin-right: 8px;
@@ -88,10 +88,10 @@
   .md-content-padding {
     padding: 16px !important;
   }
-  .md-one-singer {
+  .md-one-vocalist {
     margin-bottom: 15px !important;
   }
-  .md-singer-card {
+  .md-vocalist-card {
     padding-bottom: 18px !important;
     margin-bottom: 18px !important;
   }
@@ -164,23 +164,23 @@
 }
 
 @media only screen and (max-width: 576px) {
-  .md-singer-cards .md-singer-card {
+  .md-vocalist-cards .md-vocalist-card {
     margin-bottom: 16px !important;
   }
-  .md-singer-cards .md-singer-body h3 {
+  .md-vocalist-cards .md-vocalist-body h3 {
     margin-bottom: 5px;
   }
-  .md-singer-cards .md-singer-body {
+  .md-vocalist-cards .md-vocalist-body {
     margin-top: unset;
     margin-bottom: 10px;
   }
-  .md-singer-cards .md-singer-block {
+  .md-vocalist-cards .md-vocalist-block {
     flex-direction: column !important;
   }
   th {
     font-size: 14px;
   }
-  .md-singer-body {
+  .md-vocalist-body {
     margin-top: 12px;
     width: 100%;
   }

@@ -39,13 +39,19 @@ class UserType extends AbstractType
                 'label' => 'roles',
                 'choices' => [
                     'Пользователь' => 'ROLE_USER',
-                    'Автор' => 'ROLE_AUTHOR',
-                    'Модератор' => 'ROLE_MODER',
+                    'Редактор музыки' => 'ROLE_SONG_EDITOR',
+                    'Удалитель комментариев музыки' => 'ROLE_SONG_COMMENT_REMOVER',
+                    'Удалитель комментариев статей' => 'ROLE_ARTICLE_COMMENT_REMOVER',
+                    'Блокировщик пользователей' => 'ROLE_USER_BLOCKER',
+                    'Редактор статей' => 'ROLE_ARTICLE_EDITOR',
+                    'Модератор статей' => 'ROLE_ARTICLE_MODERATOR',
+                    'Автор статей' => 'ROLE_ARTICLE_AUTHOR',
                     'Администратор' => 'ROLE_ADMIN',
                 ],
                 'multiple' => true,
                 'attr' => [
-                    'data-placeholder' => $this->translator->trans('select.roles')
+                    'data-placeholder' => $this->translator->trans('select.roles'),
+                    'class' => 'chosen'
                 ]
             ])
         ;

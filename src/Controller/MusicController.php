@@ -4,8 +4,11 @@ namespace App\Controller;
 
 use App\CustomAbstracts\CustomAbstractController;
 use App\Entity\Music;
+use App\Entity\People;
 use App\Entity\Tag;
 use App\Entity\UserMusic;
+use App\Form\MusicType;
+use App\Form\PeopleType;
 use App\Repository\MusicRepository;
 use App\Repository\PeopleRepository;
 use App\Repository\UserMusicRepository;
@@ -14,6 +17,9 @@ use App\Service\Paginator;
 use App\Twig\MusicExtension;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NoResultException;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -134,6 +140,39 @@ class MusicController extends CustomAbstractController
     }
 
     /**
+     * @Route("/song/{slug}/edit", name="song_edit", methods={"GET","POST"})
+     * @Security("has_role('ROLE_SONG_EDITOR')")
+     * @param Request $request
+     * @param Music $music
+     * @return Response
+     */
+    public function songEdit(Request $request, Music $music)
+    {
+        $form = $this->createForm(MusicType::class, $music)
+            ->add('save', SubmitType::class);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $this->getDoctrine()->getManager()->flush();
+
+            if ($form->get('save')->isClicked()) {
+                return $this->redirectToRoute('song_edit', [
+                    'slug' => $music->getSlug()
+                ]);
+            }
+
+            return $this->redirectToRoute('music_song',['slug' => $music->getSlug()]);
+        }
+
+        return $this->render('music/song_edit.html.twig', [
+            'music' => $music,
+            'form' => $form->createView(),
+            'person' => $music->getArtist()
+        ]);
+    }
+
+    /**
      * @Route("/playlister/{slug}", name="music_playlister", methods={"POST", "GET"})
      * @param Music $music
      * @param UserRepository $userRepo
@@ -165,44 +204,68 @@ class MusicController extends CustomAbstractController
     }
 
     /**
-     * @Route("/singer/{slug}", name="music_singer", methods={"GET"})
+     * @Route("/vocalist/{slug}", name="music_vocalist", methods={"GET"})
      * @param $slug
      * @param MusicRepository $musicRepo
      * @param PeopleRepository $people
      * @return Response
      */
-    public function singer($slug, MusicRepository $musicRepo, PeopleRepository $people): Response
+    public function vocalist($slug, MusicRepository $musicRepo, PeopleRepository $people): Response
     {
         try {
-            $singer = $people->findOneActiveSinger($slug);
+            $vocalist = $people->findOneActiveVocalist($slug);
         }
         catch (NoResultException $e) {
             throw $this->createNotFoundException();
         }
 
-        $songs = $musicRepo->findBy(['artist' => $singer, 'status' => true], ['releaseDate' => 'DESC']);
+        $songs = $musicRepo->findBy(['artist' => $vocalist, 'status' => true], ['releaseDate' => 'DESC']);
 
-        return $this->render('music/singer.html.twig', [
-            'singer' => $singer,
+        return $this->render('music/vocalist.html.twig', [
+            'vocalist' => $vocalist,
             'songs' => $songs
         ]);
     }
 
     /**
-     * @Route("/singers/{letter}", name="music_singers", methods={"GET"})
+     * @Route("/vocalist/{slug}/edit", name="vocalist_edit", methods={"GET","POST"})
+     * @Security("has_role('ROLE_VOCALIST_EDITOR')")
+     * @param Request $request
+     * @param People $person
+     * @return Response
+     */
+    public function vocalistEdit(Request $request, People $person): Response
+    {
+        $form = $this->createForm(PeopleType::class, $person);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->getDoctrine()->getManager()->flush();
+
+            return $this->redirectToRoute('music_vocalist', ['slug' => $person->getSlug()]);
+        }
+
+        return $this->render('music/vocalist_edit.html.twig', [
+            'person' => $person,
+            'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/vocalists/{letter}", name="music_vocalists", methods={"GET"})
      * @param $letter
      * @param PeopleRepository $people
      * @param MusicExtension $extension
      * @return Response
      */
-    public function singers($letter, PeopleRepository $people, MusicExtension $extension): Response
+    public function vocalists($letter, PeopleRepository $people, MusicExtension $extension): Response
     {
         if (!key_exists($letter,$extension->letters())) {
             throw $this->createNotFoundException();
         }
 
-        return $this->render('music/singers.html.twig', [
-            'singers' => $people->findSingerByLetter($extension->letters()[$letter]),
+        return $this->render('music/vocalists.html.twig', [
+            'vocalists' => $people->findVocalistByLetter($extension->letters()[$letter]),
             'letter' => $extension->letters()[$letter]
         ]);
     }

@@ -46,8 +46,6 @@ class NewUserType extends AbstractType
                 'label' => 'roles',
                 'choices' => [
                     'Пользователь' => 'ROLE_USER',
-                    'Автор' => 'ROLE_AUTHOR',
-                    'Модератор' => 'ROLE_MODER',
                     'Администратор' => 'ROLE_ADMIN',
                 ],
                 'multiple' => true,

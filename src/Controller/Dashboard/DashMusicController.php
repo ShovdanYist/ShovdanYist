@@ -73,14 +73,14 @@ class DashMusicController extends AbstractController
     }
 
     /**
-     * @Route("/singer/{slug}", name="singer", methods={"GET"})
+     * @Route("/vocalist/{slug}", name="vocalist", methods={"GET"})
      * @param People $person
      * @param MusicRepository $musicRepo
      * @return Response
      */
-    public function singer(People $person, MusicRepository $musicRepo)
+    public function vocalist(People $person, MusicRepository $musicRepo)
     {
-        return $this->render('dashboard/music/singer.html.twig', [
+        return $this->render('dashboard/music/vocalist.html.twig', [
             'person' => $person
         ]);
     }

@@ -82,7 +82,7 @@
                 <tr>
 
                     <td>
-                        {% if app.user == user or is_granted('ROLE_MODER') %}
+                        {% if app.user == user or is_granted('ROLE_ARTICLE_MODERATOR') %}
                             <span style="font-size: 8px;top: -2px;position: relative;margin-right: 5px;">
                                 {{ articleStatus(article) }}
                             </span>
@@ -107,8 +107,20 @@
 
         </table>
 
-        {% if is_granted('ROLE_MODER') %}
-            <b>Количество приглашенных:</b> {{ invitees }}
+        {% if is_granted('ROLE_USER_ANALYST') %}
+
+            <div class="form-spoiler m-0">
+
+                <a class="collapsed" data-toggle="collapse" data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false">
+                    {{ 'statistics' | trans }} <i></i>
+                </a>
+
+                <div class="collapse" id="navbarToggleExternalContent">
+                    <b>Количество приглашенных:</b> {{ invitees }}
+                </div>
+
+            </div>
+
         {% endif %}
 
         {{ paginator.display() }}

@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ music.fullTitle }} | {{ 'music.editing' | trans }}{% endblock %}
+
+{% block body %}
+
+    <h1>{{ 'music.editing' | trans }}</h1>
+
+    {{ include('music/_form_song.html.twig') }}
+
+{% endblock %}
+
+{% block scripts %}
+    {{ ckeditor('author') }}
+    {{ chosen(10) }}
+{% endblock %}
