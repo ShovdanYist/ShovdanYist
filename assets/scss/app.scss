@@ -82,6 +82,15 @@ textarea, input, .form-control {
   background-color: unset;
 }
 
+.custom-file-label::after {
+  background: #eff0f5;
+}
+
+.custom-file-label {
+  border-radius: 6px;
+  border: 1px solid #dde2e8;
+}
+
 .btn-link:hover {
   background-color: #edf1f4;
   color: #1f5887;
@@ -152,16 +161,25 @@ blockquote, .ck.ck-content blockquote {
 
 // CK Editor
 
-.cke {
-  border: 1px solid #ced4da;
-  border-radius: 3px;
+.cke.cke_chrome {
+  border: 1px solid #dde2e8 !important;
+  border-radius: 6px !important;
 }
-.cke_top {
-  border: 1px solid #ced4da;
-  border-radius: 3px 3px 0 0;
+.cke .cke_top {
+  border-bottom: 1px solid #dde2e8 !important;
+  border-radius: 6px 6px 0 0;
+}
+.cke_button {
+  cursor: pointer !important;
+}
+.cke_button:hover, .cke .cke_button_on:hover, .cke .cke_button_on {
+  background-color: #eff0f5 !important;
 }
 .cke_inner {
-  border-radius: 3px;
+  border-radius: 6px;
+}
+.cke_reset {
+  border-radius: 6px;
 }
 .ckeditor {
   margin-bottom:16px;
@@ -172,15 +190,18 @@ blockquote, .ck.ck-content blockquote {
   padding-bottom: 22px;
 }
 .ck.ck-toolbar {
-  border-top: 1px solid #ced4da !important;
-  border-right: 1px solid #ced4da !important;
-  border-left: 1px solid #ced4da !important;
-  border-radius: 3px 3px 0 0 !important;
+  border-top: 1px solid #dde2e8 !important;
+  border-right: 1px solid #dde2e8 !important;
+  border-left: 1px solid #dde2e8 !important;
+  border-radius: 6px 6px 0 0 !important;
 }
 .ck-rounded-corners .ck.ck-editor__main > .ck-editor__editable, .ck.ck-editor__main > .ck-editor__editable.ck-rounded-corners {
-  border-radius: 0 0 3px 3px !important;
-  border: 1px solid #ced4da !important;
+  border-radius: 0 0 6px 6px !important;
+  border: 1px solid #dde2e8 !important;
   box-shadow: unset !important;
+}
+.cke .cke_button_off, .cke .cke_button_on {
+  border-radius: 4px !important;
 }
 .ck.ck-editor__editable_inline {
   padding: 0 10px !important;
@@ -193,6 +214,55 @@ blockquote, .ck.ck-content blockquote {
 }
 .ck-editor__editable_inline {
   min-height: 194px;
+}
+
+// CK editor for articles
+
+.ck.ck-toolbar {
+  background: #fff !important;
+}
+
+.ck.ck-button.ck-off, .ck.ck-button.ck-on {
+  border-radius: 3px !important;
+  cursor: pointer !important;
+}
+
+.ck.ck-button.ck-on:hover, .ck.ck-button.ck-off:hover, .ck.ck-button.ck-on {
+  background-color: #eff0f5 !important;
+}
+
+.ck.ck-button.ck-off:hover {
+  background: #eff0f5 !important;
+}
+
+.ck.ck-dropdown__button.ck-on {
+  background: #eff0f5 !important;
+  border-radius: 3px !important;
+  cursor: pointer !important;
+}
+
+.ck.ck-dropdown .ck-dropdown__panel.ck-dropdown__panel_s, .ck.ck-dropdown .ck-dropdown__panel.ck-dropdown__panel_se, .ck.ck-dropdown .ck-dropdown__panel.ck-dropdown__panel_sme, .ck.ck-dropdown .ck-dropdown__panel.ck-dropdown__panel_smw, .ck.ck-dropdown .ck-dropdown__panel.ck-dropdown__panel_sw {
+  top: auto !important;
+  bottom: 136% !important;
+  left: -5px !important;
+  border-radius: 6px !important;
+}
+
+.ck.ck-dropdown .ck-dropdown__panel {
+  padding: 6px;
+  border-radius: 3px !important;
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.05) !important;
+  border: 1px solid #dde2e8;
+}
+
+.ck.ck-list__item .ck-button.ck-on {
+  background: #198cf0 !important;
+}
+.ck.ck-list__item .ck-button.ck-on span {
+  color: white !important;
+}
+.ck.ck-list__item .ck-button.ck-on:hover {
+  background: #3295ec !important;
 }
 
 // Background image
@@ -262,6 +332,24 @@ blockquote, .ck.ck-content blockquote {
 
 .form-signin .md-form-gender .form-group label {
   font-weight: 400;
+}
+
+.form-signin input.form-control:focus, .form-signin select.form-control:focus {
+  border-color: #3498db !important;
+}
+
+.form-signin input:autofill, .form-signin input:autofill:hover, .form-signin input:autofill:focus, .form-signin input:autofill:active, .form-signin input:autofill:active:focus {
+  filter: none;
+}
+
+.form-signin input:autofill {
+  background-color: #ebfffb !important;
+  border-color: #92ead9 !important;
+}
+
+.form-signin input:autofill:focus, .form-signin input:autofill:active:focus{
+  background-color: #e0fdf7 !important;
+  border-color: #92ead9 !important;
 }
 
 .md-form-unmargin .form-group {
@@ -481,11 +569,12 @@ blockquote, .ck.ck-content blockquote {
 
 .form-control, .form-control:focus, .form-control:focus-within, .form-control:active, .form-control:active:focus {
   box-shadow: unset !important;
-  border: 1px solid #ced4da !important;
+  border: 1px solid #dde2e8 !important;
   font-family: Lato,Helvetica Neue,Helvetica,Arial,sans-serif;
   font-size: 15px;
   font-weight: normal;
   color: $primary;
+  border-radius: 6px;
 }
 
 // Body
@@ -887,7 +976,7 @@ td {
   color: #444;
   background-color: #eee;
   padding: 5px 10px;
-  border: 1px solid #ced4da;
+  border: 1px solid #dde2e8;
   border-bottom: unset;
   display: none;
 }
@@ -896,7 +985,7 @@ td {
 }
 .md-replying textarea {
   top: unset;
-  border-radius: 0 0 3px 3px;
+  border-radius: 0 0 3px 3px !important;
 }
 .md-replying .md-comment-input {
   top: 4px;
@@ -1145,29 +1234,28 @@ td {
 }
 
 .form-signin header {
-  padding: 4px 15px 4px;
+  padding: 10px 15px 10px;
   border-bottom: 1px solid #eef1f5;
   text-align: center;
   font-size: 20px;
   font-weight: 500;
-  border-top: 3px solid #d2d6db;
-  border-radius: 3px 3px 0 0;
+  border-radius: 6px 6px 0 0;
 }
 
 .form-signin .login {
-  margin: 14px 16px;
+  margin-bottom: 12px;
+  padding: 14px 16px 16px;
 }
 
 .form-signin .form-group label {
   margin-bottom: 5px;
 }
 
-.form-signin .info {
-  background-color: #f3f4f7;
+.form-signin-info {
   color: #5d666d;
   padding: 22px 14px;
   text-align: center;
-  border-radius: 0 0 3px 3px;
+  border-radius: 3px;
 }
 
 .form-signin .info a {
@@ -1197,10 +1285,6 @@ td {
   flex: 1;
   margin-right: 10px;
   -webkit-appearance: none;
-}
-
-.user-birthday select:focus {
-  border-color: #18bc9c !important;
 }
 
 .user-birthday select:last-child {

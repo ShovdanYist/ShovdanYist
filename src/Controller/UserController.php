@@ -78,6 +78,7 @@ class UserController extends CustomAbstractController
     {
         $user = $repo->findOneBy(['username' => $this->getUser()->getUsername()]);
         $form = $this->createForm(ProfileType::class, $user->getProfile());
+//        $form->get('birthday')->setData($user->getProfile()->getBirthday());
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

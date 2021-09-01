@@ -19,6 +19,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Vich\UploaderBundle\Form\Type\VichImageType;
 
@@ -100,10 +101,25 @@ class ArticleType extends AbstractType
                 ]
             ])
             ->add('eventDate', DateType::class, [
-                'help' => 'event.date.help',
                 'label' => 'event.date',
+                'help' => 'event.date.help',
+                'years' => range(date('Y')+100, date('Y')-1000),
                 'required' => false,
-                'widget' => 'single_text'
+                'widget' => 'choice',
+                'format' => 'ddMMMyyyy',
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'birthday.required'
+                    ])
+                ],
+                'placeholder' => [
+                    'year' => 'Год',
+                    'month' => 'Месяц',
+                    'day' => 'День',
+                ],
+                'attr' => [
+                    'class' => 'user-birthday'
+                ]
             ])
             ->add('moderation', CheckboxType::class, [
                 'label' => 'send.for.moderation',

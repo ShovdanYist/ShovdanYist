@@ -81,7 +81,10 @@ class MusicType extends AbstractType
                 'class' => People::class,
                 'choice_label' => 'fullName',
                 'label_attr' => ['class' => 'checkbox-custom'],
-                'choices' => $this->people->findByActivity('vocalist')
+                'choices' => $this->people->findByActivity('vocalist'),
+                'attr' => [
+                    'class' => 'chosen'
+                ]
             ])
             ->add('featuring', EntityType::class, [
                 'label' => 'featuring',

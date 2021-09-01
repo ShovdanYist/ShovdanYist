@@ -2,14 +2,22 @@
 
 {% block title %}{{ 'account.recovery' | trans }}{% endblock %}
 
-{% block body %}
+{% block pageclass %}login-pages register-page{% endblock %}
 
-    <h1>{{ 'account.recovery' | trans }}</h1>
+{% block sidebar_a %}{% endblock %}
 
-    {{form_start(form)}}
+{% block main %}
 
-        {{form_row(form.email)}}
-        <button class="btn btn-primary mt-1" type="submit">{{ 'send' | trans }}</button>
+    {{form_start(form, {'attr': {'class': 'form-signin md-box'}})}}
+
+        <header class="block">{{ 'account.recovery' | trans }}</header>
+
+        <div class="login block">
+
+            {{form_row(form.email)}}
+            <button class="btn btn-info mt-1" type="submit">{{ 'send' | trans }}</button>
+
+        </div>
 
     {{form_end(form)}}
 

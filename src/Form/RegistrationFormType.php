@@ -76,10 +76,11 @@ class RegistrationFormType extends AbstractType
                 ]
             ])
             ->add('birthday', DateType::class, [
-                'label' => 'birthday',
+                'label' => 'birth.date',
+                'years' => range(date('Y')-10, date('Y')-100),
                 'mapped' => false,
                 'widget' => 'choice',
-                'format' => 'ddMMyyyy',
+                'format' => 'ddMMMyyyy',
                 'constraints' => [
                     new NotBlank([
                         'message' => 'birthday.required'

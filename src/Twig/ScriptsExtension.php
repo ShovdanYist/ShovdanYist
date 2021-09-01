@@ -29,7 +29,7 @@ class ScriptsExtension extends AbstractExtension
         ]);
     }
 
-    public function chosen(Environment $twig, $limit = 3, $selector = 'select')
+    public function chosen(Environment $twig, $limit = 3, $selector = '.chosen')
     {
         return $twig->render('layouts/scripts/chosen.html.twig', [
             'limit' => $limit,

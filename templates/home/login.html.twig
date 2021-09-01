@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Вход{% endblock %}
+{% block title %}{{ 'login' | trans }}{% endblock %}
 
 {% block pageclass %}login-pages{% endblock %}
 
@@ -10,7 +10,7 @@
 
     <form class="form-signin md-box" method="post" action="{{ path('app_login') }}">
 
-        <header class="block">{{ 'log.in' | trans }}</header>
+        <header class="block">{{ 'login' | trans }}</header>
 
         <div class="login block">
 
@@ -45,18 +45,6 @@
 
         </div>
 
-        <div class="info block">
-
-            {{ 'not.registered.yet' | trans }}
-
-            <br>
-
-            <a class="btn btn-primary mt-2" href="{{ path('app_register') }}">
-                {{ 'sign.up' | trans }}
-            </a>
-
-        </div>
-
     </form>
 
     {#    Uncomment this section and add a remember_me option below your firewall to activate remember me functionality.#}
@@ -66,5 +54,17 @@
     {#            <input type="checkbox" name="_remember_me"> Remember me#}
     {#        </label>#}
     {#    </div>#}
+
+    <div class="form-signin-info md-box">
+
+        {{ 'not.registered.yet' | trans }}
+
+        <br>
+
+        <a class="btn btn-success mt-2" href="{{ path('app_register') }}">
+            {{ 'sign.up' | trans }}
+        </a>
+
+    </div>
 
 {% endblock %}

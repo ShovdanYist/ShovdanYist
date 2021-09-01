@@ -72,8 +72,23 @@ class ProfileType extends AbstractType
                 ]
             ])
             ->add('birthday', DateType::class, [
-                'label' => 'birthday',
-                'widget' => 'single_text'
+                'label' => 'birth.date',
+                'years' => range(date('Y')-10, date('Y')-100),
+                'widget' => 'choice',
+                'format' => 'ddMMMyyyy',
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'birthday.required'
+                    ])
+                ],
+                'placeholder' => [
+                    'year' => 'Год',
+                    'month' => 'Месяц',
+                    'day' => 'День',
+                ],
+                'attr' => [
+                    'class' => 'user-birthday'
+                ]
             ])
         ;
     }
