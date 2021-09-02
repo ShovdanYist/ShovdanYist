@@ -122,7 +122,7 @@ class CounterExtension extends AbstractExtension
 
     public function notifyIndicator(User $user): int
     {
-        if ($this->security->isGranted('ROLE_ARTICLE_MODERATOR')){
+        if ($this->security->isGranted('ROLE_ARTICLE_APPROVER')){
             $result = $this->articleModerationCount() + $this->notifyCount($user);
         } else {
             $result = $this->notifyCount($user);

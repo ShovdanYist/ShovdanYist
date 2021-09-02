@@ -83,7 +83,7 @@
                     </a>
                 </li>
 
-                {% if is_granted('ROLE_ARTICLE_MODERATOR') %}
+                {% if is_granted('ROLE_ARTICLE_APPROVER') %}
                     <li class="md-menu-item">
                         <a href="{{ path('article_moderation') }}">
                         <span>

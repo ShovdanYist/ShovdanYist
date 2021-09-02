@@ -91,6 +91,10 @@ textarea, input, .form-control {
   border: 1px solid #dde2e8;
 }
 
+.custom-switch .custom-control-input:disabled:checked ~ .custom-control-label::before {
+  border-color: rgba(44, 62, 80, 0);
+}
+
 .btn-link:hover {
   background-color: #edf1f4;
   color: #1f5887;

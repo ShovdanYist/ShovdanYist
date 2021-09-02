@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Права пользователя{% endblock %}
+
+{% block body %}
+
+    <h1 class="border-heading">
+        Права пользователя {{ user.username }}
+    </h1>
+
+    {{ form_start(form) }}
+
+        {{ form_row(form.ROLE_ARTICLE_AUTHOR) }}
+        {{ form_row(form.ROLE_ARTICLE_EDITOR) }}
+        {{ form_row(form.ROLE_ARTICLE_COMMENT_REMOVER) }}
+        {{ form_row(form.ROLE_ARTICLE_APPROVER) }}
+        {{ form_row(form.ROLE_SONG_EDITOR) }}
+        {{ form_row(form.ROLE_SONG_COMMENT_REMOVER) }}
+        {{ form_row(form.ROLE_VOCALIST_EDITOR) }}
+        {{ form_row(form.ROLE_USER_BLOCKER) }}
+        {{ form_row(form.ROLE_USER_ANALYST) }}
+        {{ form_row(form.ROLE_USER_MANAGER) }}
+
+        {% if is_granted('ROLE_OWNER') %}
+            {{ form_row(form.ROLE_ADMINISTRATOR) }}
+        {% endif %}
+
+        <button class="btn btn-primary">
+            {{ 'save' | trans }}
+        </button>
+
+        <a class="btn btn-link float-right" href="{{ path('user_profile', {'username' : user.username }) }}">
+            {{ 'cancel' | trans }}
+        </a>
+
+    {{ form_end(form) }}
+
+{% endblock %}

@@ -92,7 +92,7 @@
                 </span>
             </a>
 
-            {% if is_granted('ROLE_ARTICLE_MODERATOR') %}
+            {% if is_granted('ROLE_ARTICLE_APPROVER') %}
 
                 <hr>
 
@@ -116,7 +116,7 @@
                     {% endif %}
                 </a>
 
-                {% if is_granted('ROLE_ADMIN') %}
+                {% if is_granted('ROLE_OWNER') %}
 
                     <a class="sidenav-link" href="{{ path('dash_index') }}">
 

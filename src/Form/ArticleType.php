@@ -93,7 +93,7 @@ class ArticleType extends AbstractType
                 'multiple' => true,
                 'choice_label' => 'FullTitle',
                 'label_attr' => ['class' => 'checkbox-custom'],
-                'choices' => (!$this->role->isGranted('ROLE_ARTICLE_MODERATOR') && !$this->role->isGranted('ROLE_ARTICLE_EDITOR')) ? $this->musics->findUserPlaylist(['user'=>$this->user]) : null,
+                'choices' => (!$this->role->isGranted('ROLE_ARTICLE_APPROVER') && !$this->role->isGranted('ROLE_ARTICLE_EDITOR')) ? $this->musics->findUserPlaylist(['user'=>$this->user]) : null,
                 'attr' => [
                     'data-placeholder' => $this->translator->trans('select.music'),
                     'class' => 'chosen'
@@ -123,7 +123,7 @@ class ArticleType extends AbstractType
             ])
         ;
 
-        if ($this->role->isGranted('ROLE_ARTICLE_MODERATOR')) {
+        if ($this->role->isGranted('ROLE_ARTICLE_APPROVER')) {
             $builder
                 ->add('status', ChoiceType::class, [
                     'label' => 'activated',

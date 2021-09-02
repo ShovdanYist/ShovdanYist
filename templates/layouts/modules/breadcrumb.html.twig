@@ -22,7 +22,7 @@
 
         {% if name == 'article' %}
 
-            {% if is_granted('ROLE_ARTICLE_MODERATOR') or is_granted('ROLE_ARTICLE_EDITOR') or entity.author == app.user %}
+            {% if is_granted('ROLE_ARTICLE_APPROVER') or is_granted('ROLE_ARTICLE_EDITOR') or entity.author == app.user %}
 
                 <button type="button" class="btn md-dot-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="right: 12px;top: 8px">
                     <i class="fas fa-ellipsis-h"></i>
@@ -34,7 +34,7 @@
                         <i class="fa fa-edit"></i> {{ 'edit' | trans }}
                     </a>
 
-                    {% if is_granted('ROLE_ARTICLE_MODERATOR') %}
+                    {% if is_granted('ROLE_ARTICLE_APPROVER') %}
                         <form method="post" action="{{ path('article_delete', {'id': entity.id}) }}" onsubmit="return confirm('{{ 'are.you.sure.to.delete' | trans }}');">
                             <input type="hidden" name="_method" value="DELETE">
                             <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ entity.id) }}">

@@ -44,9 +44,9 @@ class UserType extends AbstractType
                     'Удалитель комментариев статей' => 'ROLE_ARTICLE_COMMENT_REMOVER',
                     'Блокировщик пользователей' => 'ROLE_USER_BLOCKER',
                     'Редактор статей' => 'ROLE_ARTICLE_EDITOR',
-                    'Модератор статей' => 'ROLE_ARTICLE_MODERATOR',
+                    'Модератор статей' => 'ROLE_ARTICLE_APPROVER',
                     'Автор статей' => 'ROLE_ARTICLE_AUTHOR',
-                    'Администратор' => 'ROLE_ADMIN',
+                    'Владелец' => 'ROLE_OWNER',
                 ],
                 'multiple' => true,
                 'attr' => [

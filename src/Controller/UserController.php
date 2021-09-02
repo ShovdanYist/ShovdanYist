@@ -14,8 +14,11 @@ use App\Repository\EmailAddressRepository;
 use App\Repository\NotificationRepository;
 use App\Repository\UserRepository;
 use App\Service\Constraints;
+use App\Service\Defender;
 use App\Service\Mailer;
 use App\Service\Paginator;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormError;
@@ -43,7 +46,7 @@ class UserController extends CustomAbstractController
      */
     public function profile(User $user, $page, Paginator $paginator): Response
     {
-        if ($this->isGranted('IS_AUTHENTICATED_FULLY') && $user === $this->user() || $this->isGranted('ROLE_ARTICLE_MODERATOR')) {
+        if ($this->isGranted('IS_AUTHENTICATED_FULLY') && $user === $this->user() || $this->isGranted('ROLE_ARTICLE_APPROVER')) {
             $criteria = ['author' => $user];
         } else {
             $criteria = ['author' => $user, 'status' => true];
@@ -78,7 +81,6 @@ class UserController extends CustomAbstractController
     {
         $user = $repo->findOneBy(['username' => $this->getUser()->getUsername()]);
         $form = $this->createForm(ProfileType::class, $user->getProfile());
-//        $form->get('birthday')->setData($user->getProfile()->getBirthday());
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -171,6 +173,88 @@ class UserController extends CustomAbstractController
         return $this->render('user/settings.html.twig', [
             'user' => $user,
             'form' => $form->createView()
+        ]);
+    }
+
+    /**
+     * @Route("/user/{username}/rights", name="rights", methods={"GET", "POST"})
+     * @Security("has_role('ROLE_SUPER_MODERATOR')")
+     * @param Request $request
+     * @param User $user
+     * @param Defender $defender
+     * @return Response
+     */
+    public function rights(Request $request, User $user, Defender $defender): Response
+    {
+        if (!$defender->rightToChangeUserRights($this->user(),$user)) {
+            return $this->redirectToRoute('user_profile', ['username' => $user->getUsername()]);
+        }
+
+        $form = $this->createFormBuilder($user)->getForm();
+
+        foreach ($defender->getRoles() as $role) {
+            if ($defender->isGranted($this->user(),$role)) {
+                $form->add($role, CheckboxType::class,[
+                    'label' => $role,
+                    'mapped' => false,
+                    'required' => false,
+                    'data' => $defender->isGranted($user,$role),
+                    'disabled' => $role === 'ROLE_USER_MANAGER' && !$defender->isGranted($this->user(),'ROLE_ADMINISTRATOR'),
+                    'label_attr' => ['class' => 'switch-custom']
+                ]);
+            } else {
+                $form->add($role, CheckboxType::class,[
+                    'label' => $role,
+                    'mapped' => false,
+                    'required' => false,
+                    'data' => $defender->isGranted($user,$role),
+                    'disabled' => true,
+                    'label_attr' => ['class' => 'switch-custom']
+                ]);
+            }
+        }
+
+        if ($defender->isGranted($this->user(),'ROLE_OWNER')) {
+            $form->add('ROLE_ADMINISTRATOR', CheckboxType::class,[
+                'label' => 'ROLE_ADMINISTRATOR',
+                'mapped' => false,
+                'required' => false,
+                'data' => $defender->isGranted($user,'ROLE_ADMINISTRATOR'),
+                'label_attr' => ['class' => 'switch-custom']
+            ]);
+        }
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $rights = [];
+
+            foreach ($defender->getRoles() as $role) {
+                $status = $form->get($role)->getData();
+                if ($status) {
+                    $rights[] = $role;
+                }
+            }
+
+            if ($defender->isGranted($this->user(),'ROLE_OWNER') && $form->get('ROLE_ADMINISTRATOR')->getData()) {
+                $rights[] = 'ROLE_ADMINISTRATOR';
+            }
+
+            ($rights) ? $user->setRoles($rights) : $user->setRoles(["ROLE_USER"]);
+
+            $em = $this->getDoctrine()->getManager();
+            $em->flush();
+
+            return $this->redirectToRoute('user_profile', [
+                'username' => $user->getUsername()
+            ]);
+        }
+
+        return $this->render('user/rights.html.twig', [
+            'form' => $form->createView(),
+            'user' => $user,
+            'roles' => $defender->getRoles()
         ]);
     }
 
@@ -302,12 +386,18 @@ class UserController extends CustomAbstractController
 
     /**
      * @Route("/blockingUser/{id}", name="blocking_user", methods={"GET","POST"})
+     * @Security("has_role('ROLE_USER_BLOCKER')")
      * @param User $user
      * @param EmailAddressRepository $emails
+     * @param Defender $defender
      * @return Response
      */
-    public function blocking(User $user, EmailAddressRepository $emails): Response
+    public function blocking(User $user, EmailAddressRepository $emails, Defender $defender): Response
     {
+        if ($defender->isGranted($user,'ROLE_ADMINISTRATOR') || $this->user() === $user) {
+            return $this->redirectToRoute('user_profile', ['username' => $user->getUsername()]);
+        }
+
         $email = $emails->findOneBy(['address' => $user->getConfirmedEmail()]);
 
         if ($email) {
@@ -315,6 +405,7 @@ class UserController extends CustomAbstractController
         }
 
         $user->setStatus(false);
+        $user->setRoles(["ROLE_USER"]);
         $em = $this->getDoctrine()->getManager();
         $em->flush();
 
@@ -327,6 +418,7 @@ class UserController extends CustomAbstractController
 
     /**
      * @Route("/unblockingUser/{id}", name="unblocking_user", methods={"GET","POST"})
+     * @Security("has_role('ROLE_USER_BLOCKER')")
      * @param User $user
      * @param EmailAddressRepository $emails
      * @return Response

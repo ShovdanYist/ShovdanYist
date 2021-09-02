@@ -64,7 +64,7 @@
         <tr>
             <th scope="col"><i class="fas fa-closed-captioning"></i> {{ 'title' | trans }}</th>
             <th scope="col"><i class="fa fa-calendar"></i> {{ 'year' | trans }}</th>
-            {% if is_granted('ROLE_ADMIN') %}<th scope="col"><i class="fas fa-eye"></i> {{ 'views' | trans }}</th>{% endif %}
+            {% if is_granted('ROLE_OWNER') %}<th scope="col"><i class="fas fa-eye"></i> {{ 'views' | trans }}</th>{% endif %}
         </tr>
         </thead>
 
@@ -80,7 +80,7 @@
                     </span>
                 </td>
                 <td>{{ song.releaseDate ? song.releaseDate | date("Y") }}</td>
-                {% if is_granted('ROLE_ADMIN') %}<td>{{ song.views }}</td>{% endif %}
+                {% if is_granted('ROLE_OWNER') %}<td>{{ song.views }}</td>{% endif %}
             </tr>
 
         {% endfor %}

@@ -13,7 +13,7 @@
 
 {% block title %}{{ article.title }}{% endblock %}
 
-{% block pageclass %}{% if is_granted('ROLE_ARTICLE_MODERATOR') or is_granted('ROLE_ARTICLE_EDITOR') or app.user == article.author %} moder-or-author{% endif %}{% endblock %}
+{% block pageclass %}{% if is_granted('ROLE_ARTICLE_APPROVER') or is_granted('ROLE_ARTICLE_EDITOR') or app.user == article.author %} moder-or-author{% endif %}{% endblock %}
 
 {% block main_top %}
 

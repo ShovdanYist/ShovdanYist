@@ -1,4 +1,4 @@
-{% if user == app.user or is_granted('ROLE_USER_BLOCKER') or is_granted('ROLE_USER_MANAGER') %}
+{% if user == app.user or is_granted('ROLE_USER_BLOCKER') and not is_role(user,'ROLE_ADMINISTRATOR') or rightToChangeUserRights(app.user,user) %}
 
     <button type="button" class="btn md-dot-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         <i class="fas fa-ellipsis-h"></i>
@@ -18,19 +18,15 @@
 
         {% endif %}
 
-        {% if is_granted('ROLE_USER_MANAGER') and not user == app.user %}
+        {% if rightToChangeUserRights(app.user,user) %}
 
-            <a href="{{ path('dash_user_edit_profile', {'id': user.id}) }}" class="dropdown-item" target="_blank">
-                <i class="fas fa-user-edit"></i> {{ 'edit' | trans }}
-            </a>
-
-            <a href="{{ path('dash_user_edit_privacy', {'id': user.id}) }}" class="dropdown-item" target="_blank">
-                <i class="fas fa-cog"></i> {{ 'settings' | trans }}
+            <a href="{{ path('user_rights', {'username': user.username}) }}" class="dropdown-item">
+                <i class="fas fa-shield-alt"></i> {{ 'rights' | trans }}
             </a>
 
         {% endif %}
 
-        {% if is_granted('ROLE_USER_BLOCKER') and (app.user == user) == false %}
+        {% if is_granted('ROLE_USER_BLOCKER') and (app.user == user) == false and not is_role(user,'ROLE_ADMINISTRATOR') %}
 
             {% if user.status != false %}
 

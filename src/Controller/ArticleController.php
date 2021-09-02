@@ -169,9 +169,9 @@ class ArticleController extends CustomAbstractController
      */
     public function show(Article $article, $page): Response
     {
-        if ($article->getAuthor() === $this->getUser() || $this->isGranted('ROLE_ARTICLE_MODERATOR') || $this->isGranted('ROLE_ARTICLE_EDITOR') && $article->getStatus() || $article->getStatus() === true) {
+        if ($article->getAuthor() === $this->getUser() || $this->isGranted('ROLE_ARTICLE_APPROVER') || $this->isGranted('ROLE_ARTICLE_EDITOR') && $article->getStatus() || $article->getStatus() === true) {
 
-            if ($this->isGranted('IS_AUTHENTICATED_FULLY') && $this->user() !== $article->getAuthor() && !$this->isGranted('ROLE_ARTICLE_MODERATOR')) {
+            if ($this->isGranted('IS_AUTHENTICATED_FULLY') && $this->user() !== $article->getAuthor() && !$this->isGranted('ROLE_ARTICLE_APPROVER')) {
                 $article->setViews($article->getViews() + 1);
                 $em = $this->getDoctrine()->getManager();
                 $em->flush();
@@ -194,13 +194,13 @@ class ArticleController extends CustomAbstractController
      */
     public function edit(Request $request, Article $article): Response
     {
-        if ($this->user() === $article->getAuthor() || $this->isGranted('ROLE_ARTICLE_MODERATOR') || $this->isGranted('ROLE_ARTICLE_EDITOR') && $article->getStatus()) {
+        if ($this->user() === $article->getAuthor() || $this->isGranted('ROLE_ARTICLE_APPROVER') || $this->isGranted('ROLE_ARTICLE_EDITOR') && $article->getStatus()) {
 
             $form = $this->createForm(ArticleType::class, $article);
             $form->handleRequest($request);
 
             if ($form->isSubmitted() && $form->isValid()) {
-                if ($this->user() === $article->getAuthor() && !$this->isGranted('ROLE_ARTICLE_MODERATOR') || $this->user() === $article->getAuthor() && !$this->isGranted('ROLE_ARTICLE_EDITOR')) {
+                if ($this->user() === $article->getAuthor() && !$this->isGranted('ROLE_ARTICLE_APPROVER') || $this->user() === $article->getAuthor() && !$this->isGranted('ROLE_ARTICLE_EDITOR')) {
                     $article->setUpdatedAt(new DateTime('now'));
                     $article->setStatus(null);
                 }
@@ -268,7 +268,7 @@ class ArticleController extends CustomAbstractController
      */
     public function delete(Request $request, Article $article): Response
     {
-        if ($this->user() !== $article->getAuthor() && !$this->isGranted('ROLE_ARTICLE_MODERATOR')) {
+        if ($this->user() !== $article->getAuthor() && !$this->isGranted('ROLE_ARTICLE_APPROVER')) {
             throw $this->createNotFoundException();
         }
 

@@ -42,36 +42,41 @@ security:
             # switch_user: true
 
     role_hierarchy:
-        ROLE_ARTICLE_AUTHOR: ROLE_USER
-        ROLE_ARTICLE_EDITOR: ROLE_USER
-        ROLE_ARTICLE_COMMENT_REMOVER: ROLE_USER
-        ROLE_ARTICLE_MODERATOR: ROLE_USER
+        ROLE_MODERATOR: ROLE_USER
+        ROLE_SUPER_MODERATOR: ROLE_MODERATOR
 
-        ROLE_SONG_EDITOR: ROLE_USER
-        ROLE_SONG_COMMENT_REMOVER: ROLE_USER
+        ROLE_ARTICLE_COMMENT_REMOVER: ROLE_MODERATOR
+        ROLE_ARTICLE_EDITOR: ROLE_MODERATOR
+        ROLE_ARTICLE_AUTHOR: ROLE_MODERATOR
+        ROLE_ARTICLE_APPROVER: ROLE_MODERATOR
 
-        ROLE_VOCALIST_EDITOR: ROLE_USER
+        ROLE_VOCALIST_EDITOR: ROLE_MODERATOR
 
-        ROLE_USER_MANAGER: ROLE_USER
-        ROLE_USER_BLOCKER: ROLE_USER
-        ROLE_USER_ANALYST: ROLE_USER
+        ROLE_SONG_COMMENT_REMOVER: ROLE_MODERATOR
+        ROLE_SONG_EDITOR: ROLE_MODERATOR
 
-        ROLE_ADMIN: [ROLE_ARTICLE_AUTHOR,ROLE_ARTICLE_EDITOR,ROLE_ARTICLE_COMMENT_REMOVER,ROLE_ARTICLE_MODERATOR,ROLE_SONG_EDITOR,ROLE_SONG_COMMENT_REMOVER,ROLE_VOCALIST_EDITOR,ROLE_USER_MANAGER,ROLE_USER_BLOCKER,ROLE_USER_ANALYST]
+        ROLE_USER_ANALYST: ROLE_MODERATOR
+        ROLE_USER_BLOCKER: ROLE_MODERATOR
+
+        ROLE_USER_MANAGER: [ROLE_MODERATOR, ROLE_SUPER_MODERATOR]
+        ROLE_ADMINISTRATOR: ROLE_USER_MANAGER
+
+        ROLE_OWNER: [ROLE_ADMINISTRATOR, ROLE_ARTICLE_COMMENT_REMOVER, ROLE_ARTICLE_EDITOR, ROLE_ARTICLE_AUTHOR, ROLE_ARTICLE_APPROVER, ROLE_VOCALIST_EDITOR, ROLE_SONG_COMMENT_REMOVER, ROLE_SONG_EDITOR, ROLE_USER_ANALYST, ROLE_USER_BLOCKER]
 
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
         # Administrator
-         - { path: ^/dashboard, roles: ROLE_ADMIN }
+         - { path: ^/dashboard, roles: ROLE_OWNER }
 
         # User blocker
          - { path: ^/blockingUser, roles: ROLE_USER_BLOCKER }
          - { path: ^/unblockingUser, roles: ROLE_USER_BLOCKER }
 
         # Moderator
-         - { path: ^/article/moderation/publish, roles: ROLE_ARTICLE_MODERATOR }
-         - { path: ^/article/moderation/reject, roles: ROLE_ARTICLE_MODERATOR }
-         - { path: ^/article/moderation, roles: ROLE_ARTICLE_MODERATOR }
+         - { path: ^/article/moderation/publish, roles: ROLE_ARTICLE_APPROVER }
+         - { path: ^/article/moderation/reject, roles: ROLE_ARTICLE_APPROVER }
+         - { path: ^/article/moderation, roles: ROLE_ARTICLE_APPROVER }
 
         # Authorized
          - { path: ^/deleteAccount, roles: ROLE_USER }

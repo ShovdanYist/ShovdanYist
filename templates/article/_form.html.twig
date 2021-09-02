@@ -41,7 +41,7 @@
                     </div>
                     {{ form_row(form.eventDate) }}
 
-                    {% if is_granted('ROLE_ARTICLE_MODERATOR') %}
+                    {% if is_granted('ROLE_ARTICLE_APPROVER') %}
                         <div class="chosen-search-off">
                             {{ form_widget(form.status) }}
                         </div>

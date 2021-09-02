@@ -82,7 +82,7 @@
                 <tr>
 
                     <td>
-                        {% if app.user == user or is_granted('ROLE_ARTICLE_MODERATOR') %}
+                        {% if app.user == user or is_granted('ROLE_ARTICLE_APPROVER') %}
                             <span style="font-size: 8px;top: -2px;position: relative;margin-right: 5px;">
                                 {{ articleStatus(article) }}
                             </span>
