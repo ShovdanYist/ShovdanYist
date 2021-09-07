@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Entity\Music;
+use App\Entity\Song;
 use App\Entity\People;
 use App\Entity\Article;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -31,17 +31,17 @@ class SitemapController extends AbstractController
             'changefreq' => 'hourly'
         ];
         $urls[] = [
-            'loc' => $this->generateUrl('music_index'),
+            'loc' => $this->generateUrl('song_index'),
             'changefreq' => 'hourly'
         ];
         $urls[] = [
-            'loc' => $this->generateUrl('music_chart', [
+            'loc' => $this->generateUrl('song_chart', [
                 'chart' => 'trends'
             ]),
             'changefreq' => 'daily'
         ];
         $urls[] = [
-            'loc' => $this->generateUrl('music_chart', [
+            'loc' => $this->generateUrl('song_chart', [
                 'chart' => 'novelty'
             ]),
             'changefreq' => 'daily'
@@ -50,10 +50,10 @@ class SitemapController extends AbstractController
         $urls[] = ['loc' => $this->generateUrl('app_login')];
         $urls[] = ['loc' => $this->generateUrl('app_register')];
 
-        // Adding music urls
-        foreach ($this->getDoctrine()->getRepository(Music::class)->findBy(['status' => true]) as $music) {
+        // Adding song urls
+        foreach ($this->getDoctrine()->getRepository(Song::class)->findBy(['status' => true]) as $music) {
             $urls[] = [
-                'loc' => $this->generateUrl('music_song', [
+                'loc' => $this->generateUrl('song_show', [
                     'slug' => $music->getSlug()
                 ]),
                 'lastmod' => $music->getEditingDate()->format('Y-m-d')
@@ -73,7 +73,7 @@ class SitemapController extends AbstractController
         // Adding vocalists urls
         foreach ($this->getDoctrine()->getRepository(People::class)->findAllVocalists('vocalist') as $person) {
             $urls[] = [
-                'loc' => $this->generateUrl('music_vocalist', [
+                'loc' => $this->generateUrl('song_vocalist', [
                     'slug' => $person->getSlug()
                 ]),
                 'lastmod' => $person->getUpdatedAt()->format('Y-m-d')

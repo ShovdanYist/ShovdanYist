@@ -2,46 +2,46 @@
 
 namespace App\Repository;
 
-use App\Entity\Music;
+use App\Entity\Song;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\Query\Expr;
 
 /**
- * @method Music|null find($id, $lockMode = null, $lockVersion = null)
- * @method Music|null findOneBy(array $criteria, array $orderBy = null)
- * @method Music[]    findAll()
- * @method Music[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method Song|null find($id, $lockMode = null, $lockVersion = null)
+ * @method Song|null findOneBy(array $criteria, array $orderBy = null)
+ * @method Song[]    findAll()
+ * @method Song[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class MusicRepository extends ServiceEntityRepository
+class SongRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, Music::class);
+        parent::__construct($registry, Song::class);
     }
 
     public function findUserPlaylist($criteria, $orderBy = ['id' => 'DESC'], $limit = 10, $offset = 0)
     {
-        $qb = $this->createQueryBuilder('m');
+        $qb = $this->createQueryBuilder('s');
 
         foreach ($criteria as $property => $value) {
             if ($property == 'user') {
                 $qb
-                    ->join('m.userMusics', 'um')
-                    ->join('um.user', 'u')
-                    ->where('m.status = true')
+                    ->join('s.userMusics', 'us')
+                    ->join('us.user', 'u')
+                    ->where('s.status = true')
                     ->andWhere('u = :' . $property . '')
                     ->setParameter($property,$value)
                 ;
             } else {
-                $qb ->andWhere('m.'. $property .' = :' . $property . '')
+                $qb ->andWhere('s.'. $property .' = :' . $property . '')
                     ->setParameter($property,$value)
                 ;
             }
         }
 
         foreach ($orderBy as $key => $value) {
-            $qb->orderBy('um.'.$key,$value);
+            $qb->orderBy('us.'.$key,$value);
         }
 
         $qb ->setMaxResults($limit)
@@ -52,14 +52,14 @@ class MusicRepository extends ServiceEntityRepository
 
     public function findRandom($limit = 20)
     {
-        $count = $this->createQueryBuilder('m')
-            ->select('COUNT(m)')
+        $count = $this->createQueryBuilder('s')
+            ->select('COUNT(s)')
             ->getQuery()
             ->getSingleScalarResult();
 
-        return $this->createQueryBuilder('m')
+        return $this->createQueryBuilder('s')
             ->setFirstResult(rand(0, $count - 7))
-            ->where('m.status = true')
+            ->where('s.status = true')
             ->setMaxResults($limit)
             ->getQuery()
             ->getResult();
@@ -69,15 +69,15 @@ class MusicRepository extends ServiceEntityRepository
     {
         $date = (new \DateTime('now'))->modify('-3 day')->format('Y-m-d');
 
-        $qb = $this->createQueryBuilder('m');
+        $qb = $this->createQueryBuilder('s');
 
-        $qb ->leftJoin('m.comments','c',Expr\Join::WITH,'c.publishedAt > \'' . $date . '\'')
-            ->groupBy('m')
+        $qb ->leftJoin('s.comments','c',Expr\Join::WITH,'c.publishedAt > \'' . $date . '\'')
+            ->groupBy('s')
             ->orderBy('COUNT(c.id)','DESC')
         ;
 
         foreach ($criteria as $property => $value) {
-            $qb ->andWhere('m.'. $property .' = :' . $property . '')
+            $qb ->andWhere('s.'. $property .' = :' . $property . '')
                 ->setParameter($property,$value)
             ;
         }
@@ -90,24 +90,24 @@ class MusicRepository extends ServiceEntityRepository
 
     public function findByTag($criteria, $orderBy = ['id' => 'DESC'], $limit = 10, $offset = 0)
     {
-        $qb = $this->createQueryBuilder('m');
+        $qb = $this->createQueryBuilder('s');
 
         foreach ($criteria as $property => $value) {
             if ($property == 'tag') {
-                $qb ->leftJoin('m.tags', 't')
+                $qb ->leftJoin('s.tags', 't')
                     ->where('t = :' . $property . '')
-                    ->andWhere('m.status = true')
+                    ->andWhere('s.status = true')
                     ->setParameter($property,$value)
                 ;
             } else {
-                $qb ->andWhere('m.'. $property .' = :' . $property . '')
+                $qb ->andWhere('s.'. $property .' = :' . $property . '')
                     ->setParameter($property,$value)
                 ;
             }
         }
 
         foreach ($orderBy as $key => $value) {
-            $qb->orderBy('m.'.$key,$value);
+            $qb->orderBy('s.'.$key,$value);
         }
 
         $qb ->setMaxResults($limit)
@@ -118,24 +118,24 @@ class MusicRepository extends ServiceEntityRepository
 
     public function findByGenre($criteria, $orderBy = ['id' => 'DESC'], $limit = 10, $offset = 0)
     {
-        $qb = $this->createQueryBuilder('m');
+        $qb = $this->createQueryBuilder('s');
 
         foreach ($criteria as $property => $value) {
             if ($property == 'genre') {
-                $qb ->leftJoin('m.genre', 'g')
+                $qb ->leftJoin('s.genre', 'g')
                     ->where('g = :' . $property . '')
-                    ->andWhere('m.status = true')
+                    ->andWhere('s.status = true')
                     ->setParameter($property,$value)
                 ;
             } else {
-                $qb ->andWhere('m.'. $property .' = :' . $property . '')
+                $qb ->andWhere('s.'. $property .' = :' . $property . '')
                     ->setParameter($property,$value)
                 ;
             }
         }
 
         foreach ($orderBy as $key => $value) {
-            $qb->orderBy('m.'.$key,$value);
+            $qb->orderBy('s.'.$key,$value);
         }
 
         $qb ->setMaxResults($limit)
@@ -146,24 +146,24 @@ class MusicRepository extends ServiceEntityRepository
 
     public function findByTheme($criteria, $orderBy = ['id' => 'DESC'], $limit = 10, $offset = 0)
     {
-        $qb = $this->createQueryBuilder('m');
+        $qb = $this->createQueryBuilder('s');
 
         foreach ($criteria as $property => $value) {
             if ($property == 'theme') {
-                $qb ->leftJoin('m.theme', 't')
+                $qb ->leftJoin('s.theme', 't')
                     ->where('t = :' . $property . '')
-                    ->andWhere('m.status = true')
+                    ->andWhere('s.status = true')
                     ->setParameter($property,$value)
                 ;
             } else {
-                $qb ->andWhere('m.'. $property .' = :' . $property . '')
+                $qb ->andWhere('s.'. $property .' = :' . $property . '')
                     ->setParameter($property,$value)
                 ;
             }
         }
 
         foreach ($orderBy as $key => $value) {
-            $qb->orderBy('m.'.$key,$value);
+            $qb->orderBy('s.'.$key,$value);
         }
 
         $qb ->setMaxResults($limit)
@@ -174,24 +174,24 @@ class MusicRepository extends ServiceEntityRepository
 
     public function findFeaturingCount($artist)
     {
-        return $this->createQueryBuilder('m')
-            ->select('COUNT(m.id)')
-            ->join('m.artist','a')
-            ->join('m.featuring', 'f')
+        return $this->createQueryBuilder('s')
+            ->select('COUNT(s.id)')
+            ->join('s.artist','a')
+            ->join('s.featuring', 'f')
             ->where('a = :artist')
-            ->andWhere('m.status = true')
+            ->andWhere('s.status = true')
             ->setParameter('artist', $artist)
-            ->groupBy('m.id')
+            ->groupBy('s.id')
             ->getQuery()
             ->getResult()
             ;
     }
 
     /*
-    public function findOneBySomeField($value): ?Music
+    public function findOneBySomeField($value): ?Song
     {
-        return $this->createQueryBuilder('m')
-            ->andWhere('m.exampleField = :val')
+        return $this->createQueryBuilder('s')
+            ->andWhere('s.exampleField = :val')
             ->setParameter('val', $value)
             ->getQuery()
             ->getOneOrNullResult()

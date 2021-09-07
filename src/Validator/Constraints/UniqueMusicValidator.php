@@ -3,8 +3,8 @@
 
 namespace App\Validator\Constraints;
 
-use App\Entity\Music;
-use App\Repository\MusicRepository;
+use App\Entity\Song;
+use App\Repository\SongRepository;
 use Cocur\Slugify\Slugify;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -13,7 +13,7 @@ class UniqueMusicValidator extends ConstraintValidator
 {
     public $repo;
 
-    public function __construct(MusicRepository $repo)
+    public function __construct(SongRepository $repo)
     {
         $this->repo = $repo;
     }
@@ -33,13 +33,13 @@ class UniqueMusicValidator extends ConstraintValidator
         $duplicate  = $this->duplicate($entity);
 
         if ($duplicate) {
-            $message   = 'This artist already has a music with same title';
+            $message   = 'This artist already has a song with same title';
         } elseif ($exist) {
-            $message   = 'Music with this alias already exists';
+            $message   = 'Song with this alias already exists';
             $duplicate = true;
         }
 
-        /** Verify if this is an existing music entity, for allow update */
+        /** Verify if this is an existing song entity, for allow update */
         if ($this->repo->findOneBy(['id' => $entity->getId()])){
             if ($exist && $exist->getId() == $entity->getId()) {
                 $duplicate = false;
@@ -54,7 +54,7 @@ class UniqueMusicValidator extends ConstraintValidator
         }
     }
 
-    public function duplicate(Music $newMusic)
+    public function duplicate(Song $newMusic)
     {
         $musics     = $this->repo->findBy(['title' => $newMusic->getTitle()]);
         $bool       = false;

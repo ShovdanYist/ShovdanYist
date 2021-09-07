@@ -7,6 +7,7 @@ use Exception;
 use Cocur\Slugify\Slugify;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use App\Repository\SongRepository;
 use Doctrine\ORM\Mapping as ORM;
 use App\Validator\Constraints as MyAssert;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -15,12 +16,12 @@ use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\MusicRepository")
+ * @ORM\Entity(repositoryClass=SongRepository::class)
  * @ORM\HasLifecycleCallbacks()
  * @MyAssert\UniqueMusic()
  * @Vich\Uploadable
  */
-class Music
+class Song
 {
     /**
      * @ORM\Id()
@@ -43,7 +44,7 @@ class Music
     private $lyrics;
 
     /**
-     * @Vich\UploadableField(mapping="artist_musics", fileNameProperty="audio")
+     * @Vich\UploadableField(mapping="artist_songs", fileNameProperty="audio")
      * @Assert\File(mimeTypes={"audio/mpeg","audio/mp4","audio/vnd.wav", "audio/x-aiff"}, mimeTypesMessage="audio.have.to.be.jpg.or.png")
      * @var File|null
      */
@@ -91,7 +92,7 @@ class Music
     private $slug;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\People", inversedBy="musics")
+     * @ORM\ManyToOne(targetEntity="App\Entity\People", inversedBy="songs")
      */
     private $artist;
 
@@ -106,17 +107,17 @@ class Music
     private $views;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="musics")
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="songs")
      */
     private $author;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Comment", mappedBy="music")
+     * @ORM\OneToMany(targetEntity="App\Entity\Comment", mappedBy="song")
      */
     private $comments;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\UserMusic", mappedBy="music", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="App\Entity\UserMusic", mappedBy="song", orphanRemoval=true)
      */
     private $userMusics;
 
@@ -131,7 +132,7 @@ class Music
     private $notifications;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Tag::class, inversedBy="musics")
+     * @ORM\ManyToMany(targetEntity=Tag::class, inversedBy="songs")
      */
     private $tags;
 
@@ -396,7 +397,7 @@ class Music
     {
         if (!$this->comments->contains($comment)) {
             $this->comments[] = $comment;
-            $comment->setMusic($this);
+            $comment->setSong($this);
         }
 
         return $this;
@@ -407,8 +408,8 @@ class Music
         if ($this->comments->contains($comment)) {
             $this->comments->removeElement($comment);
             // set the owning side to null (unless already changed)
-            if ($comment->getMusic() === $this) {
-                $comment->setMusic(null);
+            if ($comment->getSong() === $this) {
+                $comment->setSong(null);
             }
         }
 
@@ -427,7 +428,7 @@ class Music
     {
         if (!$this->userMusics->contains($userMusic)) {
             $this->userMusics[] = $userMusic;
-            $userMusic->setMusic($this);
+            $userMusic->setSong($this);
         }
 
         return $this;
@@ -438,8 +439,8 @@ class Music
         if ($this->userMusics->contains($userMusic)) {
             $this->userMusics->removeElement($userMusic);
             // set the owning side to null (unless already changed)
-            if ($userMusic->getMusic() === $this) {
-                $userMusic->setMusic(null);
+            if ($userMusic->getSong() === $this) {
+                $userMusic->setSong(null);
             }
         }
 

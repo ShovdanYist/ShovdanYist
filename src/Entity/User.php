@@ -75,9 +75,9 @@ class User implements UserInterface
     private $profile;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Music", mappedBy="author")
+     * @ORM\OneToMany(targetEntity=Song::class, mappedBy="author")
      */
-    private $musics;
+    private $songs;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Comment", mappedBy="author", orphanRemoval=true)
@@ -136,7 +136,7 @@ class User implements UserInterface
 
     public function __construct()
     {
-        $this->musics = new ArrayCollection();
+        $this->songs = new ArrayCollection();
         $this->comments = new ArrayCollection();
         $this->userMusics = new ArrayCollection();
         $this->replies = new ArrayCollection();
@@ -270,30 +270,30 @@ class User implements UserInterface
     }
 
     /**
-     * @return Collection|Music[]
+     * @return Collection|Song[]
      */
-    public function getMusics(): Collection
+    public function getSongs(): Collection
     {
-        return $this->musics;
+        return $this->songs;
     }
 
-    public function addMusic(Music $music): self
+    public function addSong(Song $song): self
     {
-        if (!$this->musics->contains($music)) {
-            $this->musics[] = $music;
-            $music->setAuthor($this);
+        if (!$this->songs->contains($song)) {
+            $this->songs[] = $song;
+            $song->setAuthor($this);
         }
 
         return $this;
     }
 
-    public function removeMusic(Music $music): self
+    public function removeSong(Song $song): self
     {
-        if ($this->musics->contains($music)) {
-            $this->musics->removeElement($music);
+        if ($this->songs->contains($song)) {
+            $this->songs->removeElement($song);
             // set the owning side to null (unless already changed)
-            if ($music->getAuthor() === $this) {
-                $music->setAuthor(null);
+            if ($song->getAuthor() === $this) {
+                $song->setAuthor(null);
             }
         }
 

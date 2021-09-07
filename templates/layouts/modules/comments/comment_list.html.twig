@@ -21,7 +21,7 @@
                     </span>
                 {% endif %}
 
-                {% if app.user and app.user.id == comment.author.id or is_granted('ROLE_USER_BLOCKER') or name == 'music' and is_granted('ROLE_SONG_COMMENT_REMOVER') or name == 'article' and is_granted('ROLE_ARTICLE_COMMENT_REMOVER') %}
+                {% if app.user and app.user.id == comment.author.id or is_granted('ROLE_USER_BLOCKER') or name == 'song' and is_granted('ROLE_SONG_COMMENT_REMOVER') or name == 'article' and is_granted('ROLE_ARTICLE_COMMENT_REMOVER') %}
 
                     <button type="button" class="btn md-comment-dot-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <i class="fas fa-ellipsis-h"></i>

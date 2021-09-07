@@ -20,8 +20,8 @@
 
     {{ breadcrumb({
         (path('app_home')) : ('home.page' | trans),
-        (path('music_index')) : ('music' | trans),
-        (path('music_vocalists', {letter: slugify(vocalist.fullName | first) })) : (vocalist.fullName | first),
+        (path('song_index')) : ('song' | trans),
+        (path('song_vocalists', {letter: slugify(vocalist.fullName | first) })) : (vocalist.fullName | first),
         'active' : (vocalist.fullName),
     }, vocalist,'vocalist') }}
 
@@ -74,7 +74,7 @@
 
             <tr>
                 <td>
-                    <a href="{{ path('music_song', {slug: song.slug}) }}">{{ song.title }}</a>
+                    <a href="{{ path('song_show', {slug: song.slug}) }}">{{ song.title }}</a>
                     <span class="small text-muted">
                         <br>{{ featuring( song, ',<br>' ) }}
                     </span>

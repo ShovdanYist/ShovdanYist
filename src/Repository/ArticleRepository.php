@@ -33,6 +33,7 @@ class ArticleRepository extends ServiceEntityRepository
                     ->setParameter($property,$value)
                 ;
             } else {
+                // TODO: Не понятно что такое "m" (Музыка?)
                 $qb ->andWhere('m.'. $property .' = :' . $property . '')
                     ->setParameter($property,$value)
                 ;

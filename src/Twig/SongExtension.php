@@ -2,14 +2,14 @@
 
 namespace App\Twig;
 
-use App\Repository\MusicRepository;
+use App\Repository\SongRepository;
 use App\Repository\TagRepository;
 use Cocur\Slugify\Slugify;
 use Twig\Environment;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
-class MusicExtension extends AbstractExtension
+class SongExtension extends AbstractExtension
 {
     private $music;
     private $letters = [
@@ -33,7 +33,7 @@ class MusicExtension extends AbstractExtension
         'yu' => 'ю'
     ];
 
-    public function __construct(MusicRepository $music)
+    public function __construct(SongRepository $music)
     {
         $this->music = $music;
     }

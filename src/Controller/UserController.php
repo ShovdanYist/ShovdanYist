@@ -4,7 +4,7 @@ namespace App\Controller;
 
 use App\CustomAbstracts\CustomAbstractController;
 use App\Entity\EmailAddress;
-use App\Entity\Music;
+use App\Entity\Song;
 use App\Entity\Notification;
 use App\Entity\Article;
 use App\Entity\User;
@@ -346,7 +346,7 @@ class UserController extends CustomAbstractController
             ->setMethod('findUserPlaylist')
             ->setOrder(['addedAt' => 'DESC'])
             ->setCriteria(['user' => $user])
-            ->setClass(Music::class)
+            ->setClass(Song::class)
             ->setType('playlist')
             ->setLimit(20)
             ->setPage($page);

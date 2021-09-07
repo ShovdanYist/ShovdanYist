@@ -8,17 +8,17 @@
 
         <h1>{{ 'moderation' | trans }}</h1>
 
-        <a class="btn btn-info float-right mb-3" href="{{ path('dash_music_new') }}">
+        <a class="btn btn-info float-right mb-3" href="{{ path('dash_song_new') }}">
             <i class="fa fa-plus" aria-hidden="true"></i>
-            <span class="mobile-txt-hider">{{ 'add.music' | trans }}</span>
+            <span class="mobile-txt-hider">{{ 'add.song' | trans }}</span>
         </a>
 
-        <a class="btn btn-outline-success float-right mb-3" href="{{ path('dash_music_index') }}">
+        <a class="btn btn-outline-success float-right mb-3" href="{{ path('dash_song_index') }}">
             <i class="fas fa-check"></i>
             <span class="mobile-txt-hider">{{ 'published' | trans }}</span>
         </a>
 
-        <a class="btn btn-outline-warning float-right mb-3" href="{{ path('dash_music_featureds') }}">
+        <a class="btn btn-outline-warning float-right mb-3" href="{{ path('dash_song_featureds') }}">
             <i class="fas fa-star"></i>
             <span class="mobile-txt-hider">{{ 'featureds' | trans }}</span>
         </a>
@@ -43,42 +43,42 @@
 
         <tbody>
 
-            {% for music in musics %}
+            {% for song in songs %}
 
                 <tr>
 
-                    <td>{{ music.id }}</td>
+                    <td>{{ song.id }}</td>
 
                     <td>
-                        <a href="{{ path('music_song', {'slug': music.slug}) }}" target="_blank">
-                            {{ music.title }}
+                        <a href="{{ path('song_show', {'slug': song.slug}) }}" target="_blank">
+                            {{ song.title }}
                         </a>
-                        {% if music.featured %} <i class="fas fa-star text-warning"></i> {% endif %}
+                        {% if song.featured %} <i class="fas fa-star text-warning"></i> {% endif %}
 
-                        {{ crudActions(music, 'music') }}
+                        {{ crudActions(song, 'song') }}
 
-                        <br><span class="small text-muted">{{ music.slug }}</span>
+                        <br><span class="small text-muted">{{ song.slug }}</span>
                     </td>
 
                     <td>
-                        {% if music.artist %}
-                            {{ music.artist.fullName }}
+                        {% if song.artist %}
+                            {{ song.artist.fullName }}
                         {% endif %}
                         <span class="small text-muted">
-                            <br>{{ featuring( music, ',<br>' ) }}
+                            <br>{{ featuring( song, ',<br>' ) }}
                         </span>
                     </td>
 
-{#                    <td>{{ music.publicationDate | format_datetime('medium', 'none', '', 'UTC') }}</td>#}
+{#                    <td>{{ song.publicationDate | format_datetime('medium', 'none', '', 'UTC') }}</td>#}
 
-{#                    <td>{{ music.editingDate | format_datetime('medium', 'none', '', 'UTC') }}</td>#}
+{#                    <td>{{ song.editingDate | format_datetime('medium', 'none', '', 'UTC') }}</td>#}
 
                 </tr>
 
             {% else %}
 
                 <tr>
-                    <td colspan="9">{{ 'music.not.found' | trans }}</td>
+                    <td colspan="9">{{ 'song.not.found' | trans }}</td>
                 </tr>
 
             {% endfor %}

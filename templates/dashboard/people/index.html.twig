@@ -39,7 +39,7 @@
                 <td>{{ person.id }}</td>
 
                 <td>
-                    <a style="color: unset" href="{{ path('dash_music_vocalist',{'slug':person.slug}) }}">
+                    <a style="color: unset" href="{{ path('dash_song_vocalist',{'slug':person.slug}) }}">
                         {{ person.fullName }}
                     </a>
 
@@ -47,9 +47,9 @@
 
                     <br><span class="small text-muted">{{ person.slug }}</span>
 
-                    {% if person.musics.count > 0 %}
+                    {% if person.songs.count > 0 %}
                         <span class="badge badge-pill badge-success">
-                            {{ person.musics.count }}
+                            {{ person.songs.count }}
                         </span>
                     {% endif %}
                 </td>

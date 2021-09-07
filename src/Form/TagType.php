@@ -40,7 +40,7 @@ class TagType extends AbstractType
             ->add('type',ChoiceType::class, [
                 'label' => 'type',
                 'choices' => [
-                    'music' => 'music',
+                    'song' => 'song',
                     'article' => 'article',
                 ]
             ])

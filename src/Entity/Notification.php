@@ -59,7 +59,7 @@ class Notification
     private $article;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Music::class, inversedBy="notifications")
+     * @ORM\ManyToOne(targetEntity=Song::class, inversedBy="notifications")
      */
     private $song;
 
@@ -174,12 +174,12 @@ class Notification
         return $this;
     }
 
-    public function getSong(): ?Music
+    public function getSong(): ?Song
     {
         return $this->song;
     }
 
-    public function setSong(?Music $song): self
+    public function setSong(?Song $song): self
     {
         $this->song = $song;
 

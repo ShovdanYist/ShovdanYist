@@ -792,9 +792,9 @@ td {
   width: 100%;
 }
 
-// Musics menu
+// Songs menu
 
-.md-music-menu a {
+.md-song-menu a {
   display: inline-block;
   padding: 1px 1px 0 0;
   background: $success;
@@ -806,12 +806,12 @@ td {
   width: 25px;
 }
 
-.md-music-menu a:hover {
+.md-song-menu a:hover {
   color: #fff;
   background-color: darken($success, 5%);
 }
 
-.md-music-menu {
+.md-song-menu {
   margin-bottom: -5px;
   text-align: center;
   padding: 0 10px;
@@ -1407,30 +1407,30 @@ select {
   margin: 12px 0;
 }
 
-// User music nav
+// User song nav
 
-.md-user-music-nav {
+.md-user-song-nav {
   display: table;
   margin: 0 auto 18px;
 }
 
-.md-user-music-nav li {
+.md-user-song-nav li {
   float: left;
 }
 
-.md-user-music-nav li:first-child a {
+.md-user-song-nav li:first-child a {
   border-top: 1px solid rgba(0,0,0,0.2);
   border-left: 1px solid rgba(0,0,0,0.2);
   border-bottom: 1px solid rgba(0,0,0,0.2);
   border-radius: 3px 0 0 3px;
 }
 
-.md-user-music-nav li:last-child a {
+.md-user-song-nav li:last-child a {
   border-right: 1px solid rgba(0,0,0,0.2);
   border-radius: 0 3px 3px 0;
 }
 
-.md-user-music-nav a {
+.md-user-song-nav a {
   border-top: 1px solid rgba(0,0,0,0.2);
   border-bottom: 1px solid rgba(0,0,0,0.2);
   padding: 8px;
@@ -1438,7 +1438,7 @@ select {
   color: #2c3e50;
 }
 
-.md-user-music-nav li:first-child.active {
+.md-user-song-nav li:first-child.active {
   border-top: 1px solid rgba(0,0,0,0.2);
   border-left: 1px solid rgba(0,0,0,0.2);
   border-bottom: 1px solid rgba(0,0,0,0.2);
@@ -1446,13 +1446,13 @@ select {
   margin-left: unset;
 }
 
-.md-user-music-nav li:last-child.active {
+.md-user-song-nav li:last-child.active {
   border-right: 1px solid rgba(0,0,0,0.2);
   border-radius: 0 3px 3px 0;
   margin-right: unset;
 }
 
-.md-user-music-nav li.active {
+.md-user-song-nav li.active {
   z-index: 1;
   padding: 8px;
   display: block;
@@ -1464,15 +1464,15 @@ select {
   margin-left: -1px;
 }
 
-.md-user-music-nav li:first-child a:hover {
+.md-user-song-nav li:first-child a:hover {
   margin-left: unset;
 }
 
-.md-user-music-nav li:last-child a:hover {
+.md-user-song-nav li:last-child a:hover {
   margin-right: unset;
 }
 
-.md-user-music-nav a:hover {
+.md-user-song-nav a:hover {
   z-index: 1;
   position: relative;
   border: 1px solid rgba(0,0,0,0.1) !important;
@@ -1482,7 +1482,7 @@ select {
   margin-left: -1px;
 }
 
-.md-user-music-nav a {
+.md-user-song-nav a {
   background-color: #e8e8e8;
 }
 

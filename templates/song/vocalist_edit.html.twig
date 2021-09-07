@@ -34,7 +34,7 @@
         {{ button_label | default('add') | trans }}
     </button>
 
-    <a class="btn btn-link float-right" href="{{ path('music_vocalist',{'slug':person.slug}) }}">
+    <a class="btn btn-link float-right" href="{{ path('song_vocalist',{'slug':person.slug}) }}">
         {{ 'cancel' | trans }}
     </a>
 

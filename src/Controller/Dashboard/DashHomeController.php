@@ -3,7 +3,7 @@
 
 namespace App\Controller\Dashboard;
 
-use App\Entity\Music;
+use App\Entity\Song;
 use App\Entity\People;
 use App\Entity\Article;
 use App\Entity\User;
@@ -25,7 +25,7 @@ class DashHomeController extends AbstractController
     public function index(): Response
     {
         $articles = $this->getDoctrine()->getRepository(Article::class);
-        $musics = $this->getDoctrine()->getRepository(Music::class);
+        $songs = $this->getDoctrine()->getRepository(Song::class);
         $users = $this->getDoctrine()->getRepository(User::class);
         $people = $this->getDoctrine()->getRepository(People::class);
 
@@ -42,11 +42,11 @@ class DashHomeController extends AbstractController
                 'published' => $articles->count(['status' => true]),
                 'total' => $articles->count([])
             ],
-            'music' => [
-                'name' => 'music',
-                'moderation' => $musics->count(['status' => false]),
-                'published' => $musics->count(['status' => true]),
-                'total' => $musics->count([])
+            'song' => [
+                'name' => 'song',
+                'moderation' => $songs->count(['status' => false]),
+                'published' => $songs->count(['status' => true]),
+                'total' => $songs->count([])
             ],
             'people' => [
                 'name' => 'people',

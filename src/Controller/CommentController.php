@@ -4,7 +4,7 @@ namespace App\Controller;
 
 use App\CustomAbstracts\CustomAbstractController;
 use App\Entity\Comment;
-use App\Entity\Music;
+use App\Entity\Song;
 use App\Entity\Notification;
 use App\Entity\Article;
 use App\Form\CommentType;
@@ -26,8 +26,8 @@ class CommentController extends CustomAbstractController
      */
     public function newComment(Request $request, $type, $id, UserRepository $userRepo): Response
     {
-        if ($type == 'music') {
-            $entity = $this->getDoctrine()->getRepository(Music::class)->findOneBy(['id' => $id]);
+        if ($type == 'song') {
+            $entity = $this->getDoctrine()->getRepository(Song::class)->findOneBy(['id' => $id]);
         } else {
             $entity = $this->getDoctrine()->getRepository(Article::class)->findOneBy(['id' => $id]);
         }
@@ -51,7 +51,7 @@ class CommentController extends CustomAbstractController
                 $notification->setReceiver($receiver);
                 $notification->setComment($comment);
 
-                if ($type == 'music') {
+                if ($type == 'song') {
                     $notification->setSong($entity);
                 } else {
                     $notification->setArticle($entity);
@@ -66,8 +66,8 @@ class CommentController extends CustomAbstractController
 
             $this->addFlash('success', $this->trans('flash.comment.added'));
 
-            if ($type == 'music') {
-                return $this->redirectToRoute('music_song', [
+            if ($type == 'song') {
+                return $this->redirectToRoute('song_show', [
                     'slug' => $entity->getSlug()
                 ]);
             } else {
@@ -79,8 +79,8 @@ class CommentController extends CustomAbstractController
 
         $this->addFlash('danger', $this->trans('flash.comment.adding.error'));
 
-        if ($type == 'music') {
-            return $this->redirectToRoute('music_song', [
+        if ($type == 'song') {
+            return $this->redirectToRoute('song_show', [
                 'slug' => $entity->getSlug()
             ]);
         } else {
@@ -98,7 +98,7 @@ class CommentController extends CustomAbstractController
      */
     public function commentDelete(Request $request, Comment $comment): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$comment->getId(), $request->request->get('_token')) && $comment->getAuthor() == $this->getUser() || $this->isGranted('ROLE_SONG_COMMENT_REMOVER') && $comment->getMusic() || $this->isGranted('ROLE_ARTICLE_COMMENT_REMOVER') && $comment->getArticle()) {
+        if ($this->isCsrfTokenValid('delete'.$comment->getId(), $request->request->get('_token')) && $comment->getAuthor() == $this->getUser() || $this->isGranted('ROLE_SONG_COMMENT_REMOVER') && $comment->getSong() || $this->isGranted('ROLE_ARTICLE_COMMENT_REMOVER') && $comment->getArticle()) {
             $em = $this->getDoctrine()->getManager();
             foreach ($comment->getNotifications() as $notification) {
                 $em->remove($notification);
@@ -110,9 +110,9 @@ class CommentController extends CustomAbstractController
             $this->addFlash('danger', $this->trans('flash.comment.deleting.error'));
         }
 
-        if ($comment->getMusic()) {
-            return $this->redirectToRoute('music_song', [
-                'slug' => $comment->getMusic()->getSlug()
+        if ($comment->getSong()) {
+            return $this->redirectToRoute('song_show', [
+                'slug' => $comment->getSong()->getSlug()
             ]);
         } else {
             return $this->redirectToRoute('article_show', [

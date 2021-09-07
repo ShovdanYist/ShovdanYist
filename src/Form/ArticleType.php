@@ -2,10 +2,10 @@
 
 namespace App\Form;
 
-use App\Entity\Music;
+use App\Entity\Song;
 use App\Entity\Article;
 use App\Entity\Tag;
-use App\Repository\MusicRepository;
+use App\Repository\SongRepository;
 use App\Repository\TagRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -30,7 +30,7 @@ class ArticleType extends AbstractType
     private $role;
     private $tags;
 
-    public function __construct(Security $security,AuthorizationCheckerInterface $authorizationChecker, TranslatorInterface $translator, MusicRepository $musics, TagRepository $tags)
+    public function __construct(Security $security, AuthorizationCheckerInterface $authorizationChecker, TranslatorInterface $translator, SongRepository $musics, TagRepository $tags)
     {
         $this->user = $security->getUser();
         $this->role = $authorizationChecker;
@@ -88,7 +88,7 @@ class ArticleType extends AbstractType
             ->add('songs', EntityType::class, [
                 'label' => 'music',
                 'help' => 'music.help',
-                'class' => Music::class,
+                'class' => Song::class,
                 'required' => false,
                 'multiple' => true,
                 'choice_label' => 'FullTitle',

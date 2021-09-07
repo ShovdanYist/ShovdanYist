@@ -25,10 +25,10 @@ class UserMusic
     private $user;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Music", inversedBy="userMusics")
+     * @ORM\ManyToOne(targetEntity=Song::class, inversedBy="userMusics")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $music;
+    private $song;
 
     /**
      * @ORM\Column(type="datetime")
@@ -61,14 +61,14 @@ class UserMusic
         return $this;
     }
 
-    public function getMusic(): ?Music
+    public function getSong(): ?Song
     {
-        return $this->music;
+        return $this->song;
     }
 
-    public function setMusic(?Music $music): self
+    public function setSong(?Song $song): self
     {
-        $this->music = $music;
+        $this->song = $song;
 
         return $this;
     }
