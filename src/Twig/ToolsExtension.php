@@ -36,7 +36,7 @@ class ToolsExtension extends AbstractExtension
         return $this->defender->isGranted($user,$role);
     }
 
-    public function rightToChangeUserRights(User $moderator, User $user): bool
+    public function rightToChangeUserRights($moderator, User $user): bool
     {
         return $this->defender->rightToChangeUserRights($moderator,$user);
     }

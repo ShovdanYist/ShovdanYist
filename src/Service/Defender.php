@@ -26,11 +26,21 @@ class Defender
         $this->accessDecisionManager = $accessDecisionManager;
     }
 
-    public function isGranted(User $user, $role, $object = null): bool
+    public function isGranted($user, $role, $object = null): bool
     {
-        $token = new UsernamePasswordToken($user, 'none', 'none', $user->getRoles());
+        if ($user === null) {
+            ($role === 'ROLE_GUEST') ? $granted = true : $granted = false;
+        } else {
+            $token = new UsernamePasswordToken($user, 'none', 'none', $user->getRoles());
 
-        return ($this->accessDecisionManager->decide($token, [$role], $object));
+            if ($this->accessDecisionManager->decide($token, [$role], $object)) {
+                $granted = true;
+            } else {
+                $granted = false;
+            }
+        }
+
+        return $granted;
     }
 
     public function getRoles(): array
@@ -38,7 +48,7 @@ class Defender
         return $this->roles;
     }
 
-    public function rightToChangeUserRights(User $moderator,User $user): bool
+    public function rightToChangeUserRights($moderator,User $user): bool
     {
         $right = false;
 
