@@ -9,7 +9,7 @@ use App\Repository\BookmarkRepository;
 use App\Repository\SongRepository;
 use App\Repository\NotificationRepository;
 use App\Repository\ArticleRepository;
-use App\Repository\UserMusicRepository;
+use App\Repository\PlaylistSongRepository;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Extension\AbstractExtension;
@@ -18,18 +18,18 @@ use Twig\TwigFunction;
 class CounterExtension extends AbstractExtension
 {
     private $songRepo;
-    private $userMusicRepo;
+    private $playlistSongRepo;
     private $notifyRepo;
     private $translator;
     private $bookmarks;
     private $articleRepo;
     private $security;
 
-    public function __construct(SongRepository $songRepository, ArticleRepository $articleRepo, BookmarkRepository $bookmarks, UserMusicRepository $userMusicRepo, NotificationRepository $notifyRepo, TranslatorInterface $translator, Security $security)
+    public function __construct(SongRepository $songRepository, ArticleRepository $articleRepo, BookmarkRepository $bookmarks, PlaylistSongRepository $playlistSongRepo, NotificationRepository $notifyRepo, TranslatorInterface $translator, Security $security)
     {
         $this->songRepo = $songRepository;
         $this->articleRepo = $articleRepo;
-        $this->userMusicRepo = $userMusicRepo;
+        $this->playlistSongRepo = $playlistSongRepo;
         $this->bookmarks = $bookmarks;
         $this->notifyRepo = $notifyRepo;
         $this->translator = $translator;
@@ -102,7 +102,7 @@ class CounterExtension extends AbstractExtension
 
     public function userContainSong($user, $song)
     {
-        return $this->userMusicRepo->findOneBy(['user' => $user, 'song' => $song]);
+        return $this->playlistSongRepo->findOneBy(['user' => $user, 'song' => $song]);
     }
 
     public function userContainArticle($user, $article)

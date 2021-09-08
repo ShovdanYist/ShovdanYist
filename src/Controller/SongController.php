@@ -6,12 +6,12 @@ use App\CustomAbstracts\CustomAbstractController;
 use App\Entity\Song;
 use App\Entity\People;
 use App\Entity\Tag;
-use App\Entity\UserMusic;
+use App\Entity\PlaylistSong;
 use App\Form\SongType;
 use App\Form\PeopleType;
 use App\Repository\SongRepository;
 use App\Repository\PeopleRepository;
-use App\Repository\UserMusicRepository;
+use App\Repository\PlaylistSongRepository;
 use App\Repository\UserRepository;
 use App\Service\Paginator;
 use App\Twig\SongExtension;
@@ -176,23 +176,23 @@ class SongController extends CustomAbstractController
      * @Route("/playlister/{slug}", name="song_playlister", methods={"POST", "GET"})
      * @param Song $song
      * @param UserRepository $userRepo
-     * @param UserMusicRepository $userMusicRepo
+     * @param PlaylistSongRepository $playlistSongRepo
      * @return Response
      */
-    public function playlister(Song $song, UserRepository $userRepo, UserMusicRepository $userMusicRepo): Response
+    public function playlister(Song $song, UserRepository $userRepo, PlaylistSongRepository $playlistSongRepo): Response
     {
         $user = $userRepo->findOneBy(['username' => $this->getUser()->getUsername()]);
-        $contains = $userMusicRepo->findOneBy(['user' => $user, 'song' => $song]);
+        $contains = $playlistSongRepo->findOneBy(['user' => $user, 'song' => $song]);
         $em = $this->getDoctrine()->getManager();
 
         if ($contains) {
-            $user->removeUserMusic($contains);
+            $user->removePlaylistSong($contains);
             $response = ['status' => 'removed', 'title' => $this->trans('add.to.playlist'), 'message' => $this->trans('flash.removed.from.playlist')];
         } else {
-            $userMusic = new UserMusic();
-            $userMusic->setUser($user);
-            $userMusic->setSong($song);
-            $em->persist($userMusic);
+            $playlistSong = new PlaylistSong();
+            $playlistSong->setUser($user);
+            $playlistSong->setSong($song);
+            $em->persist($playlistSong);
             $response = ['status' => 'added', 'title' => $this->trans('remove.from.playlist'), 'message' => $this->trans('flash.added.to.playlist')];
         }
 

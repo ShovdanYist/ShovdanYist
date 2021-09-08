@@ -18,7 +18,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 /**
  * @ORM\Entity(repositoryClass=SongRepository::class)
  * @ORM\HasLifecycleCallbacks()
- * @MyAssert\UniqueMusic()
+ * @MyAssert\UniqueSong()
  * @Vich\Uploadable
  */
 class Song
@@ -117,9 +117,9 @@ class Song
     private $comments;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\UserMusic", mappedBy="song", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=PlaylistSong::class, mappedBy="song", orphanRemoval=true)
      */
-    private $userMusics;
+    private $playlistSongs;
 
     /**
      * @ORM\ManyToMany(targetEntity=Article::class, mappedBy="songs")
@@ -145,7 +145,7 @@ class Song
     {
         $this->featuring = new ArrayCollection();
         $this->comments = new ArrayCollection();
-        $this->userMusics = new ArrayCollection();
+        $this->playlistSongs = new ArrayCollection();
         $this->articles = new ArrayCollection();
         $this->notifications = new ArrayCollection();
         $this->tags = new ArrayCollection();
@@ -417,30 +417,30 @@ class Song
     }
 
     /**
-     * @return Collection|UserMusic[]
+     * @return Collection|PlaylistSong[]
      */
-    public function getUserMusics(): Collection
+    public function getPlaylistSongs(): Collection
     {
-        return $this->userMusics;
+        return $this->playlistSongs;
     }
 
-    public function addUserMusic(UserMusic $userMusic): self
+    public function addPlaylistSong(PlaylistSong $playlistSong): self
     {
-        if (!$this->userMusics->contains($userMusic)) {
-            $this->userMusics[] = $userMusic;
-            $userMusic->setSong($this);
+        if (!$this->playlistSongs->contains($playlistSong)) {
+            $this->playlistSongs[] = $playlistSong;
+            $playlistSong->setSong($this);
         }
 
         return $this;
     }
 
-    public function removeUserMusic(UserMusic $userMusic): self
+    public function removePlaylistSong(PlaylistSong $playlistSong): self
     {
-        if ($this->userMusics->contains($userMusic)) {
-            $this->userMusics->removeElement($userMusic);
+        if ($this->playlistSongs->contains($playlistSong)) {
+            $this->playlistSongs->removeElement($playlistSong);
             // set the owning side to null (unless already changed)
-            if ($userMusic->getSong() === $this) {
-                $userMusic->setSong(null);
+            if ($playlistSong->getSong() === $this) {
+                $playlistSong->setSong(null);
             }
         }
 

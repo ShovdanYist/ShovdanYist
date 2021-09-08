@@ -7,8 +7,6 @@ use Symfony\Component\Validator\Constraint;
 
 /**
  * @Annotation
- *
- * @author Magomed Deniev <magomed@deniev.com>
  */
 class BlockedEmail extends Constraint
 {

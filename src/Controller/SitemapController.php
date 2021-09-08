@@ -51,12 +51,12 @@ class SitemapController extends AbstractController
         $urls[] = ['loc' => $this->generateUrl('app_register')];
 
         // Adding song urls
-        foreach ($this->getDoctrine()->getRepository(Song::class)->findBy(['status' => true]) as $music) {
+        foreach ($this->getDoctrine()->getRepository(Song::class)->findBy(['status' => true]) as $song) {
             $urls[] = [
                 'loc' => $this->generateUrl('song_show', [
-                    'slug' => $music->getSlug()
+                    'slug' => $song->getSlug()
                 ]),
-                'lastmod' => $music->getEditingDate()->format('Y-m-d')
+                'lastmod' => $song->getEditingDate()->format('Y-m-d')
             ];
         }
 

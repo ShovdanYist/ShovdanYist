@@ -40,7 +40,7 @@ class SongType extends AbstractType
                 'label' => 'title'
             ])
             ->add('audioFile', VichFileType::class, [
-                'label' => 'music',
+                'label' => 'song',
                 'download_uri' => false,
                 'allow_delete' => false,
                 'required' => false

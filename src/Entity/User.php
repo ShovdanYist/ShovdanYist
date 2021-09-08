@@ -85,9 +85,9 @@ class User implements UserInterface
     private $comments;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\UserMusic", mappedBy="user", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=PlaylistSong::class, mappedBy="user", orphanRemoval=true)
      */
-    private $userMusics;
+    private $playlistSongs;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Comment", mappedBy="replyTo", orphanRemoval=true)
@@ -138,7 +138,7 @@ class User implements UserInterface
     {
         $this->songs = new ArrayCollection();
         $this->comments = new ArrayCollection();
-        $this->userMusics = new ArrayCollection();
+        $this->playlistSongs = new ArrayCollection();
         $this->replies = new ArrayCollection();
         $this->notifications = new ArrayCollection();
         $this->articles = new ArrayCollection();
@@ -332,30 +332,30 @@ class User implements UserInterface
     }
 
     /**
-     * @return Collection|UserMusic[]
+     * @return Collection|PlaylistSong[]
      */
-    public function getUserMusics(): Collection
+    public function getPlaylistSongs(): Collection
     {
-        return $this->userMusics;
+        return $this->playlistSongs;
     }
 
-    public function addUserMusic(UserMusic $userMusic): self
+    public function addPlaylistSong(PlaylistSong $playlistSong): self
     {
-        if (!$this->userMusics->contains($userMusic)) {
-            $this->userMusics[] = $userMusic;
-            $userMusic->setUser($this);
+        if (!$this->playlistSongs->contains($playlistSong)) {
+            $this->playlistSongs[] = $playlistSong;
+            $playlistSong->setUser($this);
         }
 
         return $this;
     }
 
-    public function removeUserMusic(UserMusic $userMusic): self
+    public function removePlaylistSong(PlaylistSong $playlistSong): self
     {
-        if ($this->userMusics->contains($userMusic)) {
-            $this->userMusics->removeElement($userMusic);
+        if ($this->playlistSongs->contains($playlistSong)) {
+            $this->playlistSongs->removeElement($playlistSong);
             // set the owning side to null (unless already changed)
-            if ($userMusic->getUser() === $this) {
-                $userMusic->setUser(null);
+            if ($playlistSong->getUser() === $this) {
+                $playlistSong->setUser(null);
             }
         }
 

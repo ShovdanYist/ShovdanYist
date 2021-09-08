@@ -8,14 +8,17 @@ use App\Repository\SongRepository;
 use Cocur\Slugify\Slugify;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
-class UniqueMusicValidator extends ConstraintValidator
+class UniqueSongValidator extends ConstraintValidator
 {
-    public $repo;
+    private $translator;
+    private $repo;
 
-    public function __construct(SongRepository $repo)
+    public function __construct(SongRepository $repo, TranslatorInterface $translator)
     {
         $this->repo = $repo;
+        $this->translator = $translator;
     }
 
     public function validate($entity, Constraint $constraint)
@@ -33,9 +36,9 @@ class UniqueMusicValidator extends ConstraintValidator
         $duplicate  = $this->duplicate($entity);
 
         if ($duplicate) {
-            $message   = 'This artist already has a song with same title';
+            $message   = $this->translator->trans('This performer already has a composition with this title');
         } elseif ($exist) {
-            $message   = 'Song with this alias already exists';
+            $message   = $this->translator->trans('Composition with this alias already exists');
             $duplicate = true;
         }
 
@@ -54,20 +57,20 @@ class UniqueMusicValidator extends ConstraintValidator
         }
     }
 
-    public function duplicate(Song $newMusic)
+    public function duplicate(Song $newSong)
     {
-        $musics     = $this->repo->findBy(['title' => $newMusic->getTitle()]);
+        $songs     = $this->repo->findBy(['title' => $newSong->getTitle()]);
         $bool       = false;
 
-        foreach ($musics as $music) {
-            /** Verify if artist exists to compare with others in database */
-            if ($newMusic->getArtist()){
+        foreach ($songs as $song) {
+            /** Verify if vocalist exists to compare with others in database */
+            if ($newSong->getArtist()){
                 $fullname = false;
                 $same     = false;
 
-                if ($newMusic->getArtist() && $music->getArtist()) {
-                    $fullname = $newMusic->getArtist()->getFullName() == $music->getArtist()->getFullName();
-                    $same = $newMusic->getId() !== $music->getId();
+                if ($song->getArtist()) {
+                    $fullname = $newSong->getArtist()->getFullName() == $song->getArtist()->getFullName();
+                    $same = $newSong->getId() !== $song->getId();
                 }
 
                 if ($fullname && $same) {

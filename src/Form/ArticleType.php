@@ -25,17 +25,17 @@ use Vich\UploaderBundle\Form\Type\VichImageType;
 class ArticleType extends AbstractType
 {
     private $translator;
-    private $musics;
+    private $songs;
     private $user;
     private $role;
     private $tags;
 
-    public function __construct(Security $security, AuthorizationCheckerInterface $authorizationChecker, TranslatorInterface $translator, SongRepository $musics, TagRepository $tags)
+    public function __construct(Security $security, AuthorizationCheckerInterface $authorizationChecker, TranslatorInterface $translator, SongRepository $songs, TagRepository $tags)
     {
         $this->user = $security->getUser();
         $this->role = $authorizationChecker;
         $this->translator = $translator;
-        $this->musics = $musics;
+        $this->songs = $songs;
         $this->tags = $tags;
     }
 
@@ -86,16 +86,16 @@ class ArticleType extends AbstractType
                 ]
             ])
             ->add('songs', EntityType::class, [
-                'label' => 'music',
-                'help' => 'music.help',
+                'label' => 'song',
+                'help' => 'song.help',
                 'class' => Song::class,
                 'required' => false,
                 'multiple' => true,
                 'choice_label' => 'FullTitle',
                 'label_attr' => ['class' => 'checkbox-custom'],
-                'choices' => (!$this->role->isGranted('ROLE_ARTICLE_APPROVER') && !$this->role->isGranted('ROLE_ARTICLE_EDITOR')) ? $this->musics->findUserPlaylist(['user'=>$this->user]) : null,
+                'choices' => (!$this->role->isGranted('ROLE_ARTICLE_APPROVER') && !$this->role->isGranted('ROLE_ARTICLE_EDITOR')) ? $this->songs->findUserPlaylist(['user'=>$this->user]) : null,
                 'attr' => [
-                    'data-placeholder' => $this->translator->trans('select.music'),
+                    'data-placeholder' => $this->translator->trans('select.song'),
                     'class' => 'chosen'
                 ]
             ])

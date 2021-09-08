@@ -2,25 +2,25 @@
 
 namespace App\Repository;
 
-use App\Entity\UserMusic;
+use App\Entity\PlaylistSong;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 
 /**
- * @method UserMusic|null find($id, $lockMode = null, $lockVersion = null)
- * @method UserMusic|null findOneBy(array $criteria, array $orderBy = null)
- * @method UserMusic[]    findAll()
- * @method UserMusic[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method PlaylistSong|null find($id, $lockMode = null, $lockVersion = null)
+ * @method PlaylistSong|null findOneBy(array $criteria, array $orderBy = null)
+ * @method PlaylistSong[]    findAll()
+ * @method PlaylistSong[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class UserMusicRepository extends ServiceEntityRepository
+class PlaylistSongRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, UserMusic::class);
+        parent::__construct($registry, PlaylistSong::class);
     }
 
     // /**
-    //  * @return UserMusic[] Returns an array of UserMusic objects
+    //  * @return PlaylistSong[] Returns an array of PlaylistSong objects
     //  */
     /*
     public function findByExampleField($value)
@@ -37,7 +37,7 @@ class UserMusicRepository extends ServiceEntityRepository
     */
 
     /*
-    public function findOneBySomeField($value): ?UserMusic
+    public function findOneBySomeField($value): ?PlaylistSong
     {
         return $this->createQueryBuilder('u')
             ->andWhere('u.exampleField = :val')

@@ -7,8 +7,6 @@ use Symfony\Component\Validator\Constraint;
 
 /**
  * @Annotation
- *
- * @author Magomed Deniev <magomed.deniev@gmail.com>
  */
 class UniquePeople extends Constraint
 {

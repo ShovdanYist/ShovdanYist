@@ -27,7 +27,7 @@ class SongRepository extends ServiceEntityRepository
         foreach ($criteria as $property => $value) {
             if ($property == 'user') {
                 $qb
-                    ->join('s.userMusics', 'us')
+                    ->join('s.playlistSongs', 'us')
                     ->join('us.user', 'u')
                     ->where('s.status = true')
                     ->andWhere('u = :' . $property . '')
