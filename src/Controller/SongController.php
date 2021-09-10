@@ -3,18 +3,18 @@
 namespace App\Controller;
 
 use App\CustomAbstracts\CustomAbstractController;
-use App\Entity\Music;
+use App\Entity\Song;
 use App\Entity\People;
 use App\Entity\Tag;
-use App\Entity\UserMusic;
-use App\Form\MusicType;
+use App\Entity\PlaylistSong;
+use App\Form\SongType;
 use App\Form\PeopleType;
-use App\Repository\MusicRepository;
+use App\Repository\SongRepository;
 use App\Repository\PeopleRepository;
-use App\Repository\UserMusicRepository;
+use App\Repository\PlaylistSongRepository;
 use App\Repository\UserRepository;
 use App\Service\Paginator;
-use App\Twig\MusicExtension;
+use App\Twig\SongExtension;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NoResultException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -23,19 +23,19 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class MusicController extends CustomAbstractController
+class SongController extends CustomAbstractController
 {
     /**
-     * @Route("/music", name="music_index", methods={"GET"})
+     * @Route("/song", name="song_index", methods={"GET"})
      * @return Response
      */
     public function index(): Response
     {
-        return $this->render('music/index.html.twig');
+        return $this->render('song/index.html.twig');
     }
 
     /**
-     * @Route("/music/tag/{slug}/{page<\d+>?1}", name="tag_show", methods={"GET"})
+     * @Route("/song/tag/{slug}/{page<\d+>?1}", name="tag_show", methods={"GET"})
      * @param Tag $tag
      * @param $page
      * @param Paginator $paginator
@@ -43,7 +43,7 @@ class MusicController extends CustomAbstractController
      */
     public function tag(Tag $tag, $page, Paginator $paginator): Response
     {
-        if ($tag->getType() !== 'music') {
+        if ($tag->getType() !== 'song') {
             throw $this->createNotFoundException();
         }
 
@@ -52,7 +52,7 @@ class MusicController extends CustomAbstractController
             ->setCriteria(['tag' => $tag])
             ->setMethod('findByTag')
             ->setOrder(['title' => 'DESC'])
-            ->setClass(Music::class)
+            ->setClass(Song::class)
             ->setType('tag')
             ->setLimit(20)
             ->setPage($page);
@@ -65,7 +65,7 @@ class MusicController extends CustomAbstractController
             'description' => 'Чеченские песни жанра «' . mb_strtolower($tag->getTitle()) . '»'
         ];
 
-        return $this->render('music/chart.html.twig', [
+        return $this->render('song/chart.html.twig', [
             'songs' => $paginator->getData(),
             'paginator' => $paginator,
             'info' => $info
@@ -73,7 +73,7 @@ class MusicController extends CustomAbstractController
     }
 
     /**
-     * @Route("/chart/{chart}/{page<\d+>?1}", name="music_chart", methods={"GET"})
+     * @Route("/chart/{chart}/{page<\d+>?1}", name="song_chart", methods={"GET"})
      * @param $chart
      * @param $page
      * @param Paginator $paginator
@@ -81,7 +81,7 @@ class MusicController extends CustomAbstractController
      */
     public function chart($chart, $page, Paginator $paginator): Response
     {
-        $paginator->setClass(Music::class)->setParameters(['chart' => $chart])->setLimit(20)->setPage($page);
+        $paginator->setClass(Song::class)->setParameters(['chart' => $chart])->setLimit(20)->setPage($page);
 
         if ($chart == 'trends') {
             $paginator->setOrder(['editingDate' => 'DESC'])->setCriteria(['status' => true, 'featured' => true]);
@@ -111,7 +111,7 @@ class MusicController extends CustomAbstractController
             'description' => $description
         ];
 
-        return $this->render('music/chart.html.twig', [
+        return $this->render('song/chart.html.twig', [
             'songs' => $paginator->getData(),
             'paginator' => $paginator,
             'info' => $info
@@ -119,22 +119,22 @@ class MusicController extends CustomAbstractController
     }
 
     /**
-     * @Route("/song/{slug}/{page<\d+>?1}", name="music_song", methods={"GET", "POST"})
-     * @param Music $music
+     * @Route("/song/{slug}/{page<\d+>?1}", name="song_show", methods={"GET", "POST"})
+     * @param Song $song
      * @param $page
      * @param EntityManagerInterface $manager
      * @return Response
      */
-    public function song(Music $music, $page, EntityManagerInterface $manager): Response
+    public function song(Song $song, $page, EntityManagerInterface $manager): Response
     {
-        if ($music->getStatus() != true) {throw $this->createNotFoundException();}
+        if ($song->getStatus() != true) {throw $this->createNotFoundException();}
 
-        $music->setViews($music->getViews()+1);
-        $manager->persist($music);
+        $song->setViews($song->getViews()+1);
+        $manager->persist($song);
         $manager->flush();
 
-        return $this->render('music/song.html.twig', [
-            'song' => $music,
+        return $this->render('song/show.html.twig', [
+            'song' => $song,
             'page' => $page
         ]);
     }
@@ -143,12 +143,12 @@ class MusicController extends CustomAbstractController
      * @Route("/song/{slug}/edit", name="song_edit", methods={"GET","POST"})
      * @Security("has_role('ROLE_SONG_EDITOR')")
      * @param Request $request
-     * @param Music $music
+     * @param Song $song
      * @return Response
      */
-    public function songEdit(Request $request, Music $music)
+    public function songEdit(Request $request, Song $song)
     {
-        $form = $this->createForm(MusicType::class, $music)
+        $form = $this->createForm(SongType::class, $song)
             ->add('save', SubmitType::class);
         $form->handleRequest($request);
 
@@ -158,41 +158,41 @@ class MusicController extends CustomAbstractController
 
             if ($form->get('save')->isClicked()) {
                 return $this->redirectToRoute('song_edit', [
-                    'slug' => $music->getSlug()
+                    'slug' => $song->getSlug()
                 ]);
             }
 
-            return $this->redirectToRoute('music_song',['slug' => $music->getSlug()]);
+            return $this->redirectToRoute('song_show',['slug' => $song->getSlug()]);
         }
 
-        return $this->render('music/song_edit.html.twig', [
-            'music' => $music,
+        return $this->render('song/song_edit.html.twig', [
+            'song' => $song,
             'form' => $form->createView(),
-            'person' => $music->getArtist()
+            'person' => $song->getArtist()
         ]);
     }
 
     /**
-     * @Route("/playlister/{slug}", name="music_playlister", methods={"POST", "GET"})
-     * @param Music $music
+     * @Route("/playlister/{slug}", name="song_playlister", methods={"POST", "GET"})
+     * @param Song $song
      * @param UserRepository $userRepo
-     * @param UserMusicRepository $userMusicRepo
+     * @param PlaylistSongRepository $playlistSongRepo
      * @return Response
      */
-    public function playlister(Music $music, UserRepository $userRepo, UserMusicRepository $userMusicRepo): Response
+    public function playlister(Song $song, UserRepository $userRepo, PlaylistSongRepository $playlistSongRepo): Response
     {
         $user = $userRepo->findOneBy(['username' => $this->getUser()->getUsername()]);
-        $contains = $userMusicRepo->findOneBy(['user' => $user, 'music' => $music]);
+        $contains = $playlistSongRepo->findOneBy(['user' => $user, 'song' => $song]);
         $em = $this->getDoctrine()->getManager();
 
         if ($contains) {
-            $user->removeUserMusic($contains);
+            $user->removePlaylistSong($contains);
             $response = ['status' => 'removed', 'title' => $this->trans('add.to.playlist'), 'message' => $this->trans('flash.removed.from.playlist')];
         } else {
-            $userMusic = new UserMusic();
-            $userMusic->setUser($user);
-            $userMusic->setMusic($music);
-            $em->persist($userMusic);
+            $playlistSong = new PlaylistSong();
+            $playlistSong->setUser($user);
+            $playlistSong->setSong($song);
+            $em->persist($playlistSong);
             $response = ['status' => 'added', 'title' => $this->trans('remove.from.playlist'), 'message' => $this->trans('flash.added.to.playlist')];
         }
 
@@ -204,13 +204,13 @@ class MusicController extends CustomAbstractController
     }
 
     /**
-     * @Route("/vocalist/{slug}", name="music_vocalist", methods={"GET"})
+     * @Route("/vocalist/{slug}", name="song_vocalist", methods={"GET"})
      * @param $slug
-     * @param MusicRepository $musicRepo
+     * @param SongRepository $songRepo
      * @param PeopleRepository $people
      * @return Response
      */
-    public function vocalist($slug, MusicRepository $musicRepo, PeopleRepository $people): Response
+    public function vocalist($slug, SongRepository $songRepo, PeopleRepository $people): Response
     {
         try {
             $vocalist = $people->findOneActiveVocalist($slug);
@@ -219,9 +219,9 @@ class MusicController extends CustomAbstractController
             throw $this->createNotFoundException();
         }
 
-        $songs = $musicRepo->findBy(['artist' => $vocalist, 'status' => true], ['releaseDate' => 'DESC']);
+        $songs = $songRepo->findBy(['artist' => $vocalist, 'status' => true], ['releaseDate' => 'DESC']);
 
-        return $this->render('music/vocalist.html.twig', [
+        return $this->render('song/vocalist.html.twig', [
             'vocalist' => $vocalist,
             'songs' => $songs
         ]);
@@ -242,29 +242,29 @@ class MusicController extends CustomAbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('music_vocalist', ['slug' => $person->getSlug()]);
+            return $this->redirectToRoute('song_vocalist', ['slug' => $person->getSlug()]);
         }
 
-        return $this->render('music/vocalist_edit.html.twig', [
+        return $this->render('song/vocalist_edit.html.twig', [
             'person' => $person,
             'form' => $form->createView(),
         ]);
     }
 
     /**
-     * @Route("/vocalists/{letter}", name="music_vocalists", methods={"GET"})
+     * @Route("/vocalists/{letter}", name="song_vocalists", methods={"GET"})
      * @param $letter
      * @param PeopleRepository $people
-     * @param MusicExtension $extension
+     * @param SongExtension $extension
      * @return Response
      */
-    public function vocalists($letter, PeopleRepository $people, MusicExtension $extension): Response
+    public function vocalists($letter, PeopleRepository $people, SongExtension $extension): Response
     {
         if (!key_exists($letter,$extension->letters())) {
             throw $this->createNotFoundException();
         }
 
-        return $this->render('music/vocalists.html.twig', [
+        return $this->render('song/vocalists.html.twig', [
             'vocalists' => $people->findVocalistByLetter($extension->letters()[$letter]),
             'letter' => $extension->letters()[$letter]
         ]);

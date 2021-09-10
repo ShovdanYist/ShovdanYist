@@ -2,6 +2,9 @@
 
 namespace App\Service;
 
+use App\Entity\Article;
+use App\Entity\Comment;
+use App\Entity\Song;
 use App\Entity\User;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Core\Authorization\AccessDecisionManagerInterface;
@@ -26,6 +29,11 @@ class Defender
         $this->accessDecisionManager = $accessDecisionManager;
     }
 
+    public function getRoles(): array
+    {
+        return $this->roles;
+    }
+
     public function isGranted($user, $role, $object = null): bool
     {
         if ($user === null) {
@@ -43,11 +51,6 @@ class Defender
         return $granted;
     }
 
-    public function getRoles(): array
-    {
-        return $this->roles;
-    }
-
     public function rightToChangeUserRights($moderator,User $user): bool
     {
         $right = false;
@@ -57,6 +60,44 @@ class Defender
         } elseif ($this->isGranted($moderator,'ROLE_ADMINISTRATOR') && !$this->isGranted($user,'ROLE_ADMINISTRATOR') && !$this->isGranted($user,'ROLE_OWNER')) {
             $right = true;
         } elseif ($this->isGranted($moderator,'ROLE_USER_MANAGER') && !$this->isGranted($user,'ROLE_SUPER_MODERATOR')) {
+            $right = true;
+        }
+
+        return $right;
+    }
+
+    public function rightToDeleteComment(User $user,Comment $comment): bool
+    {
+        $right = false;
+
+        if ($comment->getAuthor() === $user) {
+            $right = true;
+        } elseif ($comment->getArticle()) {
+
+            if ($this->isGranted($user,'ROLE_ARTICLE_COMMENT_REMOVER')) {
+                $right = true;
+            } elseif ($comment->getArticle()->getAuthor() === $user) {
+                $right = true;
+            }
+
+        } elseif ($comment->getSong()) {
+
+            if ($this->isGranted($user,'ROLE_SONG_COMMENT_REMOVER')) {
+                $right = true;
+            } elseif ($comment->getSong()->getAuthor() === $user) {
+                $right = true;
+            }
+
+        }
+
+        return $right;
+    }
+
+    public function rightToBlockUser($moderator, User $user): bool
+    {
+        $right = false;
+
+        if ($this->isGranted($moderator,'ROLE_USER_BLOCKER') && !$this->isGranted($user,'ROLE_USER_BLOCKER') && $user->getProfile()->getVerified() !== true || $this->isGranted($moderator,'ROLE_OWNER')) {
             $right = true;
         }
 

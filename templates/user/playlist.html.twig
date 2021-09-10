@@ -15,9 +15,9 @@
 
 {% block body %}
 
-    {% for key,music in playlist %}
+    {% for key,song in playlist %}
 
-        {{ player(music,false,true) }}
+        {{ player(song,false,true) }}
 
     {% else %}
 

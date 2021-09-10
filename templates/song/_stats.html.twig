@@ -28,7 +28,7 @@
 
             {% for vocalist in song.featuring %}
                 <span class="badge badge-primary badge-a">
-                    <a class="md-feat-stat" href="{{ path('music_vocalist', { slug: vocalist.slug }) }}">
+                    <a class="md-feat-stat" href="{{ path('song_vocalist', { slug: vocalist.slug }) }}">
                         {{ vocalist.fullName }}
                     </a>
                 </span>

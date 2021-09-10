@@ -38,7 +38,7 @@
                 </span>
             </a>
 
-            <a class="sidenav-link" href="{{ path('music_index') }}">
+            <a class="sidenav-link" href="{{ path('song_index') }}">
                 <span class="dashbar-nav-icon">
                     <i class="fas fa-music"></i>
                 </span>
@@ -72,7 +72,7 @@
 
             </a>
 
-            <a class="sidenav-link" href="{{ path('user_playlist', {'username': app.user.username}) }}">
+            <a class="sidenav-link" href="{{ path('user_playlist') }}">
                 <span class="dashbar-nav-icon">
                     <i class="fas fa-headphones"></i>
                 </span>
@@ -174,7 +174,7 @@
                 </span>
             </a>
 
-            <a class="sidenav-link" href="{{ path('music_index') }}">
+            <a class="sidenav-link" href="{{ path('song_index') }}">
                 <span class="dashbar-nav-icon">
                     <i class="fas fa-music"></i>
                 </span>
@@ -186,7 +186,7 @@
 
             <hr>
 
-            <a class="sidenav-link" href="{{ path('music_chart', {'chart':'trends'}) }}">
+            <a class="sidenav-link" href="{{ path('song_chart', {'chart':'trends'}) }}">
                 <span class="dashbar-nav-icon">
                     <i class="fas fa-fire-alt"></i>
                 </span>
@@ -196,7 +196,7 @@
                 </span>
             </a>
 
-            <a class="sidenav-link" href="{{ path('music_chart', {'chart':'novelty'}) }}">
+            <a class="sidenav-link" href="{{ path('song_chart', {'chart':'novelty'}) }}">
                 <span class="dashbar-nav-icon">
                     <i class="fas fa-certificate"></i>
                 </span>

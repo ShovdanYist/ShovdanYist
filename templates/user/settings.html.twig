@@ -2,38 +2,46 @@
 
 {% block title %}{{ 'settings' | trans }}{% endblock %}
 
-{% block body %}
+{% block main %}
 
-    <h1 class="border-heading">
-        {{ 'settings' | trans }}
-    </h1>
+    <div class="md-box">
 
-    {{ form_start(form) }}
+        <header class="user-title-block">
+            {{ 'settings' | trans }}
+        </header>
 
-        <div class="row label-icons-form">
+        <div class="md-content-padding">
 
-            <div class="col-12">
+            {{ form_start(form) }}
 
-                {{ form_row(form.username) }}
-                {{ form_row(form.email) }}
+                <div class="row label-icons-form">
 
-                <button class="btn btn-primary">
-                    {% if app.user.email != app.user.confirmedEmail %}
-                        Отправить снова
-                    {% else %}
-                        {{ 'save' | trans }}
-                    {% endif %}
-                </button>
+                    <div class="col-12">
 
-                <a class="btn btn-link float-right" href="{{ path('user_profile', {'username': app.user.username}) }}">
-                    {{ 'cancel' | trans }}
-                </a>
+                        {{ form_row(form.username) }}
+                        {{ form_row(form.email) }}
 
-            </div>
+                        <button class="btn btn-primary">
+                            {% if app.user.email != app.user.confirmedEmail %}
+                                Отправить снова
+                            {% else %}
+                                {{ 'save' | trans }}
+                            {% endif %}
+                        </button>
+
+                        <a class="btn btn-link float-right" href="{{ path('user_profile', {'username': app.user.username}) }}">
+                            {{ 'cancel' | trans }}
+                        </a>
+
+                    </div>
+
+                </div>
+
+            {{ form_end(form) }}
 
         </div>
 
-    {{ form_end(form) }}
+    </div>
 
 {% endblock %}
 

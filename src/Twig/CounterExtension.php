@@ -2,14 +2,14 @@
 
 namespace App\Twig;
 
-use App\Entity\Music;
+use App\Entity\Song;
 use App\Entity\People;
 use App\Entity\User;
 use App\Repository\BookmarkRepository;
-use App\Repository\MusicRepository;
+use App\Repository\SongRepository;
 use App\Repository\NotificationRepository;
 use App\Repository\ArticleRepository;
-use App\Repository\UserMusicRepository;
+use App\Repository\PlaylistSongRepository;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Extension\AbstractExtension;
@@ -17,19 +17,19 @@ use Twig\TwigFunction;
 
 class CounterExtension extends AbstractExtension
 {
-    private $musicRepo;
-    private $userMusicRepo;
+    private $songRepo;
+    private $playlistSongRepo;
     private $notifyRepo;
     private $translator;
     private $bookmarks;
     private $articleRepo;
     private $security;
 
-    public function __construct(MusicRepository $musicRepository, ArticleRepository $articleRepo, BookmarkRepository $bookmarks, UserMusicRepository $userMusicRepo, NotificationRepository $notifyRepo, TranslatorInterface $translator, Security $security)
+    public function __construct(SongRepository $songRepository, ArticleRepository $articleRepo, BookmarkRepository $bookmarks, PlaylistSongRepository $playlistSongRepo, NotificationRepository $notifyRepo, TranslatorInterface $translator, Security $security)
     {
-        $this->musicRepo = $musicRepository;
+        $this->songRepo = $songRepository;
         $this->articleRepo = $articleRepo;
-        $this->userMusicRepo = $userMusicRepo;
+        $this->playlistSongRepo = $playlistSongRepo;
         $this->bookmarks = $bookmarks;
         $this->notifyRepo = $notifyRepo;
         $this->translator = $translator;
@@ -42,15 +42,16 @@ class CounterExtension extends AbstractExtension
             new TwigFunction('featuring', [$this, 'artistFeaturing'], ['is_safe' => ['html']]),
             new TwigFunction('featuringsCount', [$this, 'featuringsCount'], ['is_safe' => ['html']]),
             new TwigFunction('songsCount', [$this, 'songsCount'], ['is_safe' => ['html']]),
-            new TwigFunction('userContainMusic', [$this, 'userContainMusic'], ['is_safe' => ['html']]),
+            new TwigFunction('userContainSong', [$this, 'userContainSong'], ['is_safe' => ['html']]),
             new TwigFunction('userContainArticle', [$this, 'userContainArticle'], ['is_safe' => ['html']]),
             new TwigFunction('notifyCount', [$this, 'notifyCount'], ['is_safe' => ['html']]),
             new TwigFunction('articleModerationCount', [$this, 'articleModerationCount'], ['is_safe' => ['html']]),
             new TwigFunction('notifyIndicator', [$this, 'notifyIndicator'], ['is_safe' => ['html']]),
+            new TwigFunction('userHavePlaylistSongs', [$this, 'userHavePlaylistSongs'], ['is_safe' => ['html']]),
         ];
     }
 
-    public function artistFeaturing(Music $song, $delimiter = '')
+    public function artistFeaturing(Song $song, $delimiter = '')
     {
         $featuring = $song->getFeaturing();
         $result = [];
@@ -72,7 +73,7 @@ class CounterExtension extends AbstractExtension
 
     public function featuringsCount(People $vocalist)
     {
-        $featurings = count($this->musicRepo->findFeaturingCount($vocalist));
+        $featurings = count($this->songRepo->findFeaturingCount($vocalist));
         ($featurings == 1) ? $word = $this->translator->trans('featuring_singular') : $word = $this->translator->trans('featuring_plural');
         $template = '<span class="badge badge-secondary">%s %s</span>';
 
@@ -89,8 +90,8 @@ class CounterExtension extends AbstractExtension
 
     public function songsCount(People $vocalist)
     {
-        $songs = $this->musicRepo->count(['artist' => $vocalist,'status' => true]);
-        ($songs == 1) ? $word = $this->translator->trans('song') : (($songs < 5) ? $word = $this->translator->trans('two_songs') : $word = $this->translator->trans('songs'));
+        $songs = $this->songRepo->count(['artist' => $vocalist,'status' => true]);
+        ($songs == 1) ? $word = $this->translator->trans('song') : (($songs < 5) ? $word = $this->translator->trans('two_songs') : $word = $this->translator->trans('songs_plural'));
         $template = '<span class="badge badge-info">%s %s</span>';
 
         return sprintf(
@@ -100,14 +101,19 @@ class CounterExtension extends AbstractExtension
         );
     }
 
-    public function userContainMusic($user, $song)
+    public function userContainSong($user, $song)
     {
-        return $this->userMusicRepo->findOneBy(['user' => $user, 'music' => $song]);
+        return $this->playlistSongRepo->findOneBy(['user' => $user, 'song' => $song]);
     }
 
     public function userContainArticle($user, $article)
     {
         return $this->bookmarks->findOneBy(['user' => $user, 'article' => $article]);
+    }
+
+    public function userHavePlaylistSongs($user): bool
+    {
+        return (bool)$this->playlistSongRepo->findOneBy(['user' => $user]);
     }
 
     public function notifyCount($user): int

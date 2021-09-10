@@ -108,14 +108,43 @@ $article-colors: (
 
 // Buttons
 
-.btn {
-  @each $type, $color in $color-types {
-    &-#{$type}:hover {
-      background-color: lighten($color, 5%) !important;
-      border-color: lighten($color, 5%) !important;
-    }
-  }
+.btn-primary {
+  background-color: #3A5571 !important;
+  border-color: #3A5571 !important;
 }
+
+.btn-primary:hover {
+  background-color: #426384 !important;
+  border-color: #426384 !important;
+}
+
+.btn-link {
+  color: #3A5571 !important;
+}
+
+.btn-link:hover {
+  color: #426384 !important;
+  background-color: #f0f5f9 !important;
+}
+
+.btn-success {
+  background-color: #21B79A !important;
+  border-color: #21B79A !important;
+}
+
+.btn-success:hover {
+  background-color: #11BF9D !important;
+  border-color: #11BF9D !important;
+}
+
+//.btn {
+//  @each $type, $color in $color-types {
+//    &-#{$type}:hover {
+//      background-color: lighten($color, 5%) !important;
+//      border-color: lighten($color, 5%) !important;
+//    }
+//  }
+//}
 
 $btn-transition: 0 !default;
 

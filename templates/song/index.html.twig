@@ -27,7 +27,7 @@
         <div class="listing-module">
             <strong>{{ 'tags' | trans }}: </strong>
 
-            {% for tag in tags('music') %}
+            {% for tag in tags('song') %}
 
                 <span class="badge badge-info badge-a">
                     <a class="md-feat-stat" href="{{ path('tag_show', {'slug': tag.slug}) }}">

@@ -2,16 +2,16 @@
 
 namespace App\Twig;
 
-use App\Repository\MusicRepository;
+use App\Repository\SongRepository;
 use App\Repository\TagRepository;
 use Cocur\Slugify\Slugify;
 use Twig\Environment;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
-class MusicExtension extends AbstractExtension
+class SongExtension extends AbstractExtension
 {
-    private $music;
+    private $songs;
     private $letters = [
         'a' => 'а',
         'v' => 'в',
@@ -33,9 +33,9 @@ class MusicExtension extends AbstractExtension
         'yu' => 'ю'
     ];
 
-    public function __construct(MusicRepository $music)
+    public function __construct(SongRepository $songs)
     {
-        $this->music = $music;
+        $this->songs = $songs;
     }
 
     public function getFunctions(): array
@@ -68,13 +68,13 @@ class MusicExtension extends AbstractExtension
     public function chartBox(Environment $twig, $chart)
     {
         if ($chart == 'trends') {
-            $songs = $this->music->findBy(['status' => true, 'featured' => true], ['editingDate' => 'DESC'],5);
+            $songs = $this->songs->findBy(['status' => true, 'featured' => true], ['editingDate' => 'DESC'],5);
         } elseif ($chart == 'novelty') {
-            $songs = $this->music->findBy(['status' => true], ['releaseDate' => 'DESC'],5);
+            $songs = $this->songs->findBy(['status' => true], ['releaseDate' => 'DESC'],5);
         } elseif ($chart == 'lasts') {
-            $songs = $this->music->findBy(['status' => true], ['publicationDate' => 'DESC'],5);
+            $songs = $this->songs->findBy(['status' => true], ['publicationDate' => 'DESC'],5);
         } elseif ($chart == 'discussed') {
-            $songs = $this->music->findByDiscussed(['status' => true],[],5);
+            $songs = $this->songs->findByDiscussed(['status' => true],[],5);
         }
 
         return $twig->render('layouts/modules/chart_box.html.twig', [

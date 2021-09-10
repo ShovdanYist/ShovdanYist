@@ -18,9 +18,9 @@
 
     {{ breadcrumb({
         (path('app_home')) : ('home.page' | trans),
-        (path('music_index')) : ('music' | trans),
-        (path('music_vocalists', {letter: slugify(song.artist.fullName | first) })) : (song.artist.fullName | first),
-        (path('music_vocalist', {slug: song.artist.slug})) : (song.artist.fullName),
+        (path('song_index')) : ('music' | trans),
+        (path('song_vocalists', {letter: slugify(song.artist.fullName | first) })) : (song.artist.fullName | first),
+        (path('song_vocalist', {slug: song.artist.slug})) : (song.artist.fullName),
     }, song,'song') }}
 
 {% endblock %}
@@ -54,7 +54,7 @@
 {% block main_bottom %}
 
     <div class="md-box md-main-box-col-2">
-        {% include 'music/_stats.html.twig' %}
+        {% include 'song/_stats.html.twig' %}
     </div>
 
     {{ comments(song,page,{'slug':song.slug}) }}
@@ -65,7 +65,7 @@
 
     <div class="sidebar-b">
         <div class="md-box sticky-top">
-            {% include 'music/_stats.html.twig' %}
+            {% include 'song/_stats.html.twig' %}
         </div>
     </div>
 

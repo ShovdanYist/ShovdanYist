@@ -8,14 +8,16 @@
 
 {% block main %}
 
-    <form class="form-signin md-box" method="post" action="{{ path('app_login') }}">
+    <form class="md-form md-autofill md-box" method="post" action="{{ path('app_login') }}">
 
-        <header class="block">{{ 'login' | trans }}</header>
+        <header class="user-title-block">
+            {{ 'login' | trans }}
+        </header>
 
-        <div class="login block">
+        <div class="md-form-padding md-margin-bottom">
 
             {% if error %}
-                <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+                <div class="alert md-alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
             {% endif %}
 
             <div class="form-group">
@@ -35,7 +37,7 @@
 {#                <label class="switch-custom custom-control-label" for="remember.me">{{ 'remember.me' | trans }}</label>#}
 {#            </div>#}
 
-            <button class="btn btn-info mt-1" type="submit">
+            <button class="btn btn-primary mt-1" type="submit">
                 {{ 'log.in' | trans }}
             </button>
 

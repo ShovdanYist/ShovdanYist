@@ -79,9 +79,9 @@ class People
     private $slug;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Music", mappedBy="artist", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=Song::class, mappedBy="artist", orphanRemoval=true)
      */
-    private $musics;
+    private $songs;
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Activity", inversedBy="people")
@@ -89,13 +89,13 @@ class People
     private $activity;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Music", mappedBy="featuring")
+     * @ORM\ManyToMany(targetEntity=Song::class, mappedBy="featuring")
      */
     private $featuring;
 
     public function __construct()
     {
-        $this->musics = new ArrayCollection();
+        $this->songs = new ArrayCollection();
         $this->activity = new ArrayCollection();
         $this->featuring = new ArrayCollection();
     }
@@ -215,30 +215,30 @@ class People
     }
 
     /**
-     * @return Collection|Music[]
+     * @return Collection|Song[]
      */
-    public function getMusics(): Collection
+    public function getSongs(): Collection
     {
-        return $this->musics;
+        return $this->songs;
     }
 
-    public function addMusic(Music $music): self
+    public function addSong(Song $song): self
     {
-        if (!$this->musics->contains($music)) {
-            $this->musics[] = $music;
-            $music->setArtist($this);
+        if (!$this->songs->contains($song)) {
+            $this->songs[] = $song;
+            $song->setArtist($this);
         }
 
         return $this;
     }
 
-    public function removeMusic(Music $music): self
+    public function removeSong(Song $song): self
     {
-        if ($this->musics->contains($music)) {
-            $this->musics->removeElement($music);
+        if ($this->songs->contains($song)) {
+            $this->songs->removeElement($song);
             // set the owning side to null (unless already changed)
-            if ($music->getArtist() === $this) {
-                $music->setArtist(null);
+            if ($song->getArtist() === $this) {
+                $song->setArtist(null);
             }
         }
 
@@ -272,14 +272,14 @@ class People
     }
 
     /**
-     * @return Collection|Music[]
+     * @return Collection|Song[]
      */
     public function getFeaturing(): Collection
     {
         return $this->featuring;
     }
 
-    public function addFeaturing(Music $featuring): self
+    public function addFeaturing(Song $featuring): self
     {
         if (!$this->featuring->contains($featuring)) {
             $this->featuring[] = $featuring;
@@ -289,7 +289,7 @@ class People
         return $this;
     }
 
-    public function removeFeaturing(Music $featuring): self
+    public function removeFeaturing(Song $featuring): self
     {
         if ($this->featuring->contains($featuring)) {
             $this->featuring->removeElement($featuring);

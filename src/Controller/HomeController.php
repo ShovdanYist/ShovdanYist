@@ -54,23 +54,6 @@ class HomeController extends CustomAbstractController
     }
 
     /**
-     * @Route("/cheburek", name="cheburek", methods={"GET"})
-     * @return Response
-     */
-    public function cheburek(): Response
-    {
-        $comments = $this->getDoctrine()->getRepository(Comment::class)->findBy(['status' => true],[],2000);
-
-        foreach ($comments as $comment) {
-            $em = $this->getDoctrine()->getManager();
-            $em->remove($comment);
-            $em->flush();
-        }
-
-        return $this->redirectToRoute('app_home');
-    }
-
-    /**
      * @Route("/terms", name="terms", methods={"GET"})
      * @return Response
      */

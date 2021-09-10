@@ -825,7 +825,7 @@ Reference: http://blog.rrwd.nl/2015/04/04/the-screen-reader-text-class-why-and-h
     font-weight: 500;
 }
 .audio-player:hover {
-    background-color: rgba(0,0,0,0.05);
+    background-color: #f5f7fa;
 }
 .md-song-player .audio-player:hover {
     background: unset;

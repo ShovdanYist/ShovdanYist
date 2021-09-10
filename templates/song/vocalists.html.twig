@@ -7,7 +7,7 @@
 {% block main_top %}
     {{ breadcrumb({
         (path('app_home')) : ('home.page' | trans),
-        (path('music_index')) : ('music' | trans),
+        (path('song_index')) : ('music' | trans),
         'active' : (letter | capitalize),
     }) }}
 {% endblock %}
@@ -18,7 +18,7 @@
 
         {% for vocalist in vocalists %}
 
-            {% set songs = vocalist.musics.count %}
+            {% set songs = vocalist.songs.count %}
 
             <div class="md-vocalist-card">
 
@@ -26,7 +26,7 @@
 
                     <div class="md-vocalist-body">
 
-                        <h3 class="my-0"><a href="{{ path('music_vocalist', {slug: vocalist.slug}) }}">{{ vocalist.fullName }}</a></h3>
+                        <h3 class="my-0"><a href="{{ path('song_vocalist', {slug: vocalist.slug}) }}">{{ vocalist.fullName }}</a></h3>
 
                         <p class="text-lowercase">
                             {{ songsCount(vocalist) }}

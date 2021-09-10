@@ -94,7 +94,7 @@ class Article
     private $updatedAt;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Music::class, inversedBy="articles")
+     * @ORM\ManyToMany(targetEntity=Song::class, inversedBy="articles")
      */
     private $songs;
 
@@ -316,14 +316,14 @@ class Article
     }
 
     /**
-     * @return Collection|Music[]
+     * @return Collection|Song[]
      */
     public function getSongs(): Collection
     {
         return $this->songs;
     }
 
-    public function addSong(Music $song): self
+    public function addSong(Song $song): self
     {
         if (!$this->songs->contains($song)) {
             $this->songs[] = $song;
@@ -332,7 +332,7 @@ class Article
         return $this;
     }
 
-    public function removeSong(Music $song): self
+    public function removeSong(Song $song): self
     {
         if ($this->songs->contains($song)) {
             $this->songs->removeElement($song);

@@ -3,8 +3,8 @@
     <div class="row label-icons-form">
 
         <div class="col-9">
-            {% if music.id %}
-                {{ player(music) }}
+            {% if song.id %}
+                {{ player(song) }}
             {% endif %}
             {{ form_row(form.title) }}
             {{ form_row(form.audioFile) }}
@@ -37,23 +37,23 @@
 
     {{ form_widget(form.save, {label: 'save', attr: {class: 'btn btn-primary'}}) }}
 
-    {% if form.saveAndNew is defined %}
-        {{ form_widget(form.saveAndNew, {label: 'ㅤ', attr: {class: 'btn btn-info save-new-btn px-3'}}) }}
-        <script>
-            document.querySelector('.save-new-btn').innerHTML = '<i class="fas fa-file-medical"></i>';
-        </script>
-    {% endif %}
+        {% if form.saveAndNew is defined %}
+            {{ form_widget(form.saveAndNew, {label: 'ㅤ', attr: {class: 'btn btn-info save-new-btn px-3'}}) }}
+            <script>
+                document.querySelector('.save-new-btn').innerHTML = '<i class="fas fa-file-medical"></i>';
+            </script>
+        {% endif %}
 
     <button class="btn btn-secondary">
         <i class="fas fa-file-export"></i>
     </button>
 
     {% if not person %}
-        <a class="btn btn-link float-right" href="{{ path('dash_music_index') }}">
+        <a class="btn btn-link float-right" href="{{ path('song_show',{'slug':song.slug}) }}">
             {{ 'cancel' | trans }}
         </a>
     {% else %}
-        <a class="btn btn-link float-right" href="{{ path('dash_music_vocalist',{'slug':person.slug}) }}">
+        <a class="btn btn-link float-right" href="{{ path('song_show',{'slug':song.slug}) }}">
             {{ 'cancel' | trans }}
         </a>
     {% endif %}

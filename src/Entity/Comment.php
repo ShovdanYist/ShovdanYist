@@ -30,9 +30,9 @@ class Comment
     private $publishedAt;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Music", inversedBy="comments")
+     * @ORM\ManyToOne(targetEntity=Song::class, inversedBy="comments")
      */
-    private $music;
+    private $song;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="comments")
@@ -104,14 +104,14 @@ class Comment
         return $this;
     }
 
-    public function getMusic(): ?Music
+    public function getSong(): ?Song
     {
-        return $this->music;
+        return $this->song;
     }
 
-    public function setMusic(?Music $music): self
+    public function setSong(?Song $song): self
     {
-        $this->music = $music;
+        $this->song = $song;
 
         return $this;
     }

@@ -1,5 +1,5 @@
-<div class="md-music-menu container">
+<div class="md-song-menu container">
     {% for key,letter in letters %}
-        <a href="{{ path('music_vocalists', {letter: key}) }}">{{ letter | upper }}</a>
+        <a href="{{ path('song_vocalists', {letter: key}) }}">{{ letter | upper }}</a>
     {% endfor %}
 </div>

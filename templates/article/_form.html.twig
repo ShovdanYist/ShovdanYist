@@ -37,8 +37,17 @@
 
                 <div class="collapse" id="navbarToggleExternalContent">
                     <div class="chosen-songs">
-                        {{ form_row(form.songs) }}
+                        {% if not article.id and userHavePlaylistSongs(app.user) or article.author == app.user and userHavePlaylistSongs(app.user) %}
+                            {{ form_row(form.songs) }}
+                        {% elseif not article.id and not userHavePlaylistSongs(app.user) or article.author == app.user and not userHavePlaylistSongs(app.user) %}
+                            <div class="form-group">
+                                <label class="form-label" for="disabled_input">{{ 'music' | trans }}</label>
+                                <input class="form-control" id="disabled_input" type="text" placeholder="{{ 'not.songs.in.your.playlist' | trans }}" disabled="">
+                                <small class="form-text text-muted">{{ 'song.help' | trans }}</small>
+                            </div>
+                        {% endif %}
                     </div>
+
                     {{ form_row(form.eventDate) }}
 
                     {% if is_granted('ROLE_ARTICLE_APPROVER') %}

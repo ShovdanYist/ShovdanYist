@@ -87,7 +87,7 @@ textarea, input, .form-control {
 }
 
 .custom-file-label {
-  border-radius: 6px;
+  border-radius: 3px;
   border: 1px solid #dde2e8;
 }
 
@@ -167,11 +167,11 @@ blockquote, .ck.ck-content blockquote {
 
 .cke.cke_chrome {
   border: 1px solid #dde2e8 !important;
-  border-radius: 6px !important;
+  border-radius: 3px !important;
 }
 .cke .cke_top {
   border-bottom: 1px solid #dde2e8 !important;
-  border-radius: 6px 6px 0 0;
+  border-radius: 3px 3px 0 0;
 }
 .cke_button {
   cursor: pointer !important;
@@ -180,10 +180,10 @@ blockquote, .ck.ck-content blockquote {
   background-color: #eff0f5 !important;
 }
 .cke_inner {
-  border-radius: 6px;
+  border-radius: 3px;
 }
 .cke_reset {
-  border-radius: 6px;
+  border-radius: 3px;
 }
 .ckeditor {
   margin-bottom:16px;
@@ -197,10 +197,10 @@ blockquote, .ck.ck-content blockquote {
   border-top: 1px solid #dde2e8 !important;
   border-right: 1px solid #dde2e8 !important;
   border-left: 1px solid #dde2e8 !important;
-  border-radius: 6px 6px 0 0 !important;
+  border-radius: 3px 3px 0 0 !important;
 }
 .ck-rounded-corners .ck.ck-editor__main > .ck-editor__editable, .ck.ck-editor__main > .ck-editor__editable.ck-rounded-corners {
-  border-radius: 0 0 6px 6px !important;
+  border-radius: 0 0 3px 3px !important;
   border: 1px solid #dde2e8 !important;
   box-shadow: unset !important;
 }
@@ -249,7 +249,7 @@ blockquote, .ck.ck-content blockquote {
   top: auto !important;
   bottom: 136% !important;
   left: -5px !important;
-  border-radius: 6px !important;
+  border-radius: 3px !important;
 }
 
 .ck.ck-dropdown .ck-dropdown__panel {
@@ -334,26 +334,26 @@ blockquote, .ck.ck-content blockquote {
   margin-right: 10px;
 }
 
-.form-signin .md-form-gender .form-group label {
-  font-weight: 400;
-}
-
-.form-signin input.form-control:focus, .form-signin select.form-control:focus {
+.md-autofill input.form-control:focus, .md-autofill select.form-control:focus {
   border-color: #3498db !important;
 }
 
-.form-signin input:autofill, .form-signin input:autofill:hover, .form-signin input:autofill:focus, .form-signin input:autofill:active, .form-signin input:autofill:active:focus {
+.md-autofill input:autofill, .md-autofill input:autofill:hover, .md-autofill input:autofill:focus, .md-autofill input:autofill:active, .md-autofill input:autofill:active:focus {
   filter: none;
 }
 
-.form-signin input:autofill {
+.md-autofill input:autofill {
   background-color: #ebfffb !important;
   border-color: #92ead9 !important;
 }
 
-.form-signin input:autofill:focus, .form-signin input:autofill:active:focus{
+.md-autofill input:autofill:focus, .md-autofill input:autofill:active:focus{
   background-color: #e0fdf7 !important;
   border-color: #92ead9 !important;
+}
+
+.md-form-padding {
+  padding: 20px 24px 24px;
 }
 
 .md-form-unmargin .form-group {
@@ -426,13 +426,6 @@ blockquote, .ck.ck-content blockquote {
   height: 40px;
   right: 40px;
   top: -14px;
-}
-.md-profile-header {
-  width: 100%;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-  height: 50px;
-  display: block;
-  margin-bottom: 16px;
 }
 
 // Navbar
@@ -578,7 +571,7 @@ blockquote, .ck.ck-content blockquote {
   font-size: 15px;
   font-weight: normal;
   color: $primary;
-  border-radius: 6px;
+  border-radius: 3px;
 }
 
 // Body
@@ -792,9 +785,9 @@ td {
   width: 100%;
 }
 
-// Musics menu
+// Songs menu
 
-.md-music-menu a {
+.md-song-menu a {
   display: inline-block;
   padding: 1px 1px 0 0;
   background: $success;
@@ -806,12 +799,12 @@ td {
   width: 25px;
 }
 
-.md-music-menu a:hover {
+.md-song-menu a:hover {
   color: #fff;
   background-color: darken($success, 5%);
 }
 
-.md-music-menu {
+.md-song-menu {
   margin-bottom: -5px;
   text-align: center;
   padding: 0 10px;
@@ -836,10 +829,11 @@ td {
   background: $info;
 }
 .mejs__time-total::before {
-  background-color: $gray-200;
+  background-color: #e6ecf2;
+  border-radius: 3px;
 }
 .mejs__time-loaded {
-  background: $gray-300;
+  background: #cfdae5;
 }
 
 // Song sidebar
@@ -896,6 +890,10 @@ td {
   border-top: 1px solid rgba(0, 0, 0, 0.1);
   margin-top: 10px;
   padding-top: 10px;
+}
+.md-comment-verified {
+  top: 1px;
+  position: relative;
 }
 .md-comment:first-child {
   border: unset;
@@ -1031,8 +1029,10 @@ td {
 // User sidebar
 
 .md-verified {
-  margin-left: 3px;
+  margin-left: 4px;
   font-size: 16px;
+  top: 1px;
+  position: relative;
 }
 .md-user-sidebar-profile {
   padding: 3px 0 12px 4px;
@@ -1078,7 +1078,7 @@ td {
   border-left: 3px solid transparent !important;
 }
 .md-lined-menu:hover, .md-lined-menu.active {
-  background-color: rgba(0,0,0,0.05);
+  background-color: #f5f7fa;
 }
 .md-lined-menu a:hover {
   background-color: unset !important;
@@ -1090,11 +1090,6 @@ td {
   display: flow-root;
   width: 100%;
   position: relative;
-}
-.md-verified-profile {
-  position: relative;
-  font-size: 24px;
-  top: -1px;
 }
 .md-profile-info .md-fullname, .md-profile-info .md-link {
   font-weight: 600;
@@ -1165,6 +1160,30 @@ td {
   padding: 4px 0;
 }
 
+.md-margin-bottom {
+  margin-bottom: 12px;
+}
+
+.user-title-block {
+  border-bottom: 1px solid #eef1f5;
+  border-radius: 6px 6px 0 0;
+  padding: 10px 15px 10px;
+  position: relative;
+  text-align: center;
+  font-weight: 500;
+  font-size: 24px;
+}
+
+.user-title-block .verified {
+  font-size: 18px;
+}
+
+.user-title-block .md-dot-btn {
+  font-size: 18px;
+  right: 20px;
+  top: 14px;
+}
+
 .md-box {
   background-color: $box-background;
   box-shadow: 0 1px 0 0 #d7d8db, 0 0 0 1px #e3e4e8;
@@ -1232,29 +1251,6 @@ td {
 
 // Login & Register forms
 
-.form-signin {
-  margin: 0 auto;
-  font-size: 15px;
-}
-
-.form-signin header {
-  padding: 10px 15px 10px;
-  border-bottom: 1px solid #eef1f5;
-  text-align: center;
-  font-size: 20px;
-  font-weight: 500;
-  border-radius: 6px 6px 0 0;
-}
-
-.form-signin .login {
-  margin-bottom: 12px;
-  padding: 14px 16px 16px;
-}
-
-.form-signin .form-group label {
-  margin-bottom: 5px;
-}
-
 .form-signin-info {
   color: #5d666d;
   padding: 22px 14px;
@@ -1262,11 +1258,7 @@ td {
   border-radius: 3px;
 }
 
-.form-signin .info a {
-  margin-top: 10px;
-}
-
-.form-signin .alert {
+.md-form .alert {
   position: unset;
 }
 
@@ -1319,7 +1311,7 @@ select {
 
 .md-alert-success {
   border: 1px solid #7cd5c3;
-  background-color: #d6eae5;
+  background-color: #d7f2ec;
   color: #3cc4a9;
 }
 
@@ -1407,30 +1399,30 @@ select {
   margin: 12px 0;
 }
 
-// User music nav
+// User song nav
 
-.md-user-music-nav {
+.md-user-song-nav {
   display: table;
   margin: 0 auto 18px;
 }
 
-.md-user-music-nav li {
+.md-user-song-nav li {
   float: left;
 }
 
-.md-user-music-nav li:first-child a {
+.md-user-song-nav li:first-child a {
   border-top: 1px solid rgba(0,0,0,0.2);
   border-left: 1px solid rgba(0,0,0,0.2);
   border-bottom: 1px solid rgba(0,0,0,0.2);
   border-radius: 3px 0 0 3px;
 }
 
-.md-user-music-nav li:last-child a {
+.md-user-song-nav li:last-child a {
   border-right: 1px solid rgba(0,0,0,0.2);
   border-radius: 0 3px 3px 0;
 }
 
-.md-user-music-nav a {
+.md-user-song-nav a {
   border-top: 1px solid rgba(0,0,0,0.2);
   border-bottom: 1px solid rgba(0,0,0,0.2);
   padding: 8px;
@@ -1438,7 +1430,7 @@ select {
   color: #2c3e50;
 }
 
-.md-user-music-nav li:first-child.active {
+.md-user-song-nav li:first-child.active {
   border-top: 1px solid rgba(0,0,0,0.2);
   border-left: 1px solid rgba(0,0,0,0.2);
   border-bottom: 1px solid rgba(0,0,0,0.2);
@@ -1446,13 +1438,13 @@ select {
   margin-left: unset;
 }
 
-.md-user-music-nav li:last-child.active {
+.md-user-song-nav li:last-child.active {
   border-right: 1px solid rgba(0,0,0,0.2);
   border-radius: 0 3px 3px 0;
   margin-right: unset;
 }
 
-.md-user-music-nav li.active {
+.md-user-song-nav li.active {
   z-index: 1;
   padding: 8px;
   display: block;
@@ -1464,15 +1456,15 @@ select {
   margin-left: -1px;
 }
 
-.md-user-music-nav li:first-child a:hover {
+.md-user-song-nav li:first-child a:hover {
   margin-left: unset;
 }
 
-.md-user-music-nav li:last-child a:hover {
+.md-user-song-nav li:last-child a:hover {
   margin-right: unset;
 }
 
-.md-user-music-nav a:hover {
+.md-user-song-nav a:hover {
   z-index: 1;
   position: relative;
   border: 1px solid rgba(0,0,0,0.1) !important;
@@ -1482,7 +1474,7 @@ select {
   margin-left: -1px;
 }
 
-.md-user-music-nav a {
+.md-user-song-nav a {
   background-color: #e8e8e8;
 }
 

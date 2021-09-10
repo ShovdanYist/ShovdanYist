@@ -4,12 +4,14 @@ namespace App\Entity;
 
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\PlaylistSongRepository;
+use App\Entity\User;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\UserMusicRepository")
+ * @ORM\Entity(repositoryClass=PlaylistSongRepository::class)
  * @ORM\HasLifecycleCallbacks()
  */
-class UserMusic
+class PlaylistSong
 {
     /**
      * @ORM\Id()
@@ -19,16 +21,16 @@ class UserMusic
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="userMusics")
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="playlistSongs")
      * @ORM\JoinColumn(nullable=false)
      */
     private $user;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Music", inversedBy="userMusics")
+     * @ORM\ManyToOne(targetEntity=Song::class, inversedBy="playlistSongs")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $music;
+    private $song;
 
     /**
      * @ORM\Column(type="datetime")
@@ -36,7 +38,6 @@ class UserMusic
     private $addedAt;
 
     /**
-     * Initialise une date de modification automatique
      * @ORM\PrePersist()
      */
     public function initializeAddedDate()
@@ -61,14 +62,14 @@ class UserMusic
         return $this;
     }
 
-    public function getMusic(): ?Music
+    public function getSong(): ?Song
     {
-        return $this->music;
+        return $this->song;
     }
 
-    public function setMusic(?Music $music): self
+    public function setSong(?Song $song): self
     {
-        $this->music = $music;
+        $this->song = $song;
 
         return $this;
     }

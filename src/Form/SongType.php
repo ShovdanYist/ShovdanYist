@@ -3,7 +3,7 @@
 namespace App\Form;
 
 use App\Entity\Genre;
-use App\Entity\Music;
+use App\Entity\Song;
 use App\Entity\People;
 use App\Entity\Tag;
 use App\Entity\Theme;
@@ -20,7 +20,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Vich\UploaderBundle\Form\Type\VichFileType;
 
-class MusicType extends AbstractType
+class SongType extends AbstractType
 {
     private $people;
     private $translator;
@@ -40,7 +40,7 @@ class MusicType extends AbstractType
                 'label' => 'title'
             ])
             ->add('audioFile', VichFileType::class, [
-                'label' => 'music',
+                'label' => 'song',
                 'download_uri' => false,
                 'allow_delete' => false,
                 'required' => false
@@ -105,7 +105,7 @@ class MusicType extends AbstractType
                 'required' => false,
                 'multiple' => true,
                 'choice_label' => 'title',
-                'choices' => $this->tags->findBy(['type' => 'music']),
+                'choices' => $this->tags->findBy(['type' => 'song']),
                 'label_attr' => ['class' => 'checkbox-custom'],
                 'attr' => [
                     'data-placeholder' => $this->translator->trans('select.tags'),
@@ -118,7 +118,7 @@ class MusicType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => Music::class,
+            'data_class' => Song::class,
         ]);
     }
 }

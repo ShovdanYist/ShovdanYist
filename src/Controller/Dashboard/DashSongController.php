@@ -2,10 +2,10 @@
 
 namespace App\Controller\Dashboard;
 
-use App\Entity\Music;
+use App\Entity\Song;
 use App\Entity\People;
-use App\Form\MusicType;
-use App\Repository\MusicRepository;
+use App\Form\SongType;
+use App\Repository\SongRepository;
 use App\Repository\UserRepository;
 use App\Service\Paginator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -15,9 +15,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/dashboard/music", name="dash_music_")
+ * @Route("/dashboard/song", name="dash_song_")
  */
-class DashMusicController extends AbstractController
+class DashSongController extends AbstractController
 {
     /**
      * @Route("/{page<\d+>?1}", name="index", methods={"GET"})
@@ -27,11 +27,11 @@ class DashMusicController extends AbstractController
      */
     public function index($page, Paginator $paginator): Response
     {
-        $paginator->setClass(Music::class)->setLimit(10)
+        $paginator->setClass(Song::class)->setLimit(10)
             ->setPage($page)->setOrder(['publicationDate' => 'DESC']);
 
-        return $this->render('dashboard/music/index.html.twig', [
-            'musics' => $paginator->getData(),
+        return $this->render('dashboard/song/index.html.twig', [
+            'songs' => $paginator->getData(),
             'paginator' => $paginator,
             'type' => 'index'
         ]);
@@ -45,11 +45,11 @@ class DashMusicController extends AbstractController
      */
     public function featureds($page, Paginator $paginator): Response
     {
-        $paginator->setClass(Music::class)->setLimit(10)
+        $paginator->setClass(Song::class)->setLimit(10)
             ->setPage($page)->setCriteria(['featured' => true])->setOrder(['publicationDate' => 'DESC']);
 
-        return $this->render('dashboard/music/index.html.twig', [
-            'musics' => $paginator->getData(),
+        return $this->render('dashboard/song/index.html.twig', [
+            'songs' => $paginator->getData(),
             'paginator' => $paginator,
             'type' => 'featureds'
         ]);
@@ -63,11 +63,11 @@ class DashMusicController extends AbstractController
      */
     public function moderation($page, Paginator $paginator): Response
     {
-        $paginator->setClass(Music::class)->setLimit(10)
+        $paginator->setClass(Song::class)->setLimit(10)
             ->setPage($page)->setCriteria(['status' => false]);
 
-        return $this->render('dashboard/music/moderation.html.twig', [
-            'musics' => $paginator->getData(),
+        return $this->render('dashboard/song/moderation.html.twig', [
+            'songs' => $paginator->getData(),
             'paginator' => $paginator
         ]);
     }
@@ -75,12 +75,12 @@ class DashMusicController extends AbstractController
     /**
      * @Route("/vocalist/{slug}", name="vocalist", methods={"GET"})
      * @param People $person
-     * @param MusicRepository $musicRepo
+     * @param SongRepository $songRepo
      * @return Response
      */
-    public function vocalist(People $person, MusicRepository $musicRepo)
+    public function vocalist(People $person, SongRepository $songRepo)
     {
-        return $this->render('dashboard/music/vocalist.html.twig', [
+        return $this->render('dashboard/song/vocalist.html.twig', [
             'person' => $person
         ]);
     }
@@ -94,42 +94,42 @@ class DashMusicController extends AbstractController
      */
     public function new(Request $request, UserRepository $repo, $person = null): Response
     {
-        $music = new Music();
+        $song = new Song();
 
         if ($person) {
             $person = $this->getDoctrine()->getRepository(People::class)->findOneBy(['id' => $person]);
-            $music->setArtist($person);
+            $song->setArtist($person);
         }
 
-        $form = $this->createForm(MusicType::class, $music)
+        $form = $this->createForm(SongType::class, $song)
             ->add('save', SubmitType::class)
             ->add('saveAndNew', SubmitType::class);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $user = $repo->findOneBy(['username' => $this->getUser()->getUsername()]);
-            $music->setAuthor($user);
+            $song->setAuthor($user);
 
             $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($music);
+            $entityManager->persist($song);
             $entityManager->flush();
 
             if ($form->get('save')->isClicked()) {
-                return $this->redirectToRoute('dash_music_edit', [
-                    'id' => $music->getId()
+                return $this->redirectToRoute('dash_song_edit', [
+                    'id' => $song->getId()
                 ]);
             } elseif ($form->get('saveAndNew')->isClicked()) {
-                $person = $music->getArtist()->getId();
-                return $this->redirectToRoute('dash_music_new', [
+                $person = $song->getArtist()->getId();
+                return $this->redirectToRoute('dash_song_new', [
                     'person' => $person
                 ]);
             }
 
-            return $this->redirectToRoute('dash_music_index');
+            return $this->redirectToRoute('dash_song_index');
         }
 
-        return $this->render('dashboard/music/new.html.twig', [
-            'music' => $music,
+        return $this->render('dashboard/song/new.html.twig', [
+            'song' => $song,
             'form' => $form->createView(),
             'person' => $person
         ]);
@@ -138,12 +138,12 @@ class DashMusicController extends AbstractController
     /**
      * @Route("/{id}/edit", name="edit", methods={"GET","POST"})
      * @param Request $request
-     * @param Music $music
+     * @param Song $song
      * @return Response
      */
-    public function edit(Request $request, Music $music): Response
+    public function edit(Request $request, Song $song): Response
     {
-        $form = $this->createForm(MusicType::class, $music)
+        $form = $this->createForm(SongType::class, $song)
             ->add('save', SubmitType::class);
         $form->handleRequest($request);
 
@@ -152,42 +152,42 @@ class DashMusicController extends AbstractController
             $this->getDoctrine()->getManager()->flush();
 
             if ($form->get('save')->isClicked()) {
-                return $this->redirectToRoute('dash_music_edit', [
-                    'id' => $music->getId()
+                return $this->redirectToRoute('dash_song_edit', [
+                    'id' => $song->getId()
                 ]);
             }
 
-            return $this->redirectToRoute('dash_music_index');
+            return $this->redirectToRoute('dash_song_index');
         }
 
-        return $this->render('dashboard/music/edit.html.twig', [
-            'music' => $music,
+        return $this->render('dashboard/song/edit.html.twig', [
+            'song' => $song,
             'form' => $form->createView(),
-            'person' => $music->getArtist()
+            'person' => $song->getArtist()
         ]);
     }
 
     /**
      * @Route("/{id}", name="delete", methods={"DELETE"})
      * @param Request $request
-     * @param Music $music
+     * @param Song $song
      * @return Response
      */
-    public function delete(Request $request, Music $music): Response
+    public function delete(Request $request, Song $song): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$music->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete'.$song->getId(), $request->request->get('_token'))) {
             $em = $this->getDoctrine()->getManager();
-            // Delete each comments of music and each notification of each comments when you delete a song (music)
-            foreach ($music->getComments() as $comment) {
+            // Delete each comments of song and each notification of each comments when you delete a song (song)
+            foreach ($song->getComments() as $comment) {
                 $em->remove($comment);
                 foreach ($comment->getNotifications() as $notification) {
                     $em->remove($notification);
                 }
             }
-            $em->remove($music);
+            $em->remove($song);
             $em->flush();
         }
 
-        return $this->redirectToRoute('dash_music_index');
+        return $this->redirectToRoute('dash_song_index');
     }
 }

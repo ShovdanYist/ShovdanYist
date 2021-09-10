@@ -2,37 +2,45 @@
 
 {% block title %}Права пользователя{% endblock %}
 
-{% block body %}
+{% block main %}
 
-    <h1 class="border-heading">
-        Права пользователя {{ user.username }}
-    </h1>
+    <div class="md-box">
 
-    {{ form_start(form) }}
+        <header class="user-title-block">
+            Права пользователя {{ user.username }}
+        </header>
 
-        {{ form_row(form.ROLE_ARTICLE_AUTHOR) }}
-        {{ form_row(form.ROLE_ARTICLE_EDITOR) }}
-        {{ form_row(form.ROLE_ARTICLE_COMMENT_REMOVER) }}
-        {{ form_row(form.ROLE_ARTICLE_APPROVER) }}
-        {{ form_row(form.ROLE_SONG_EDITOR) }}
-        {{ form_row(form.ROLE_SONG_COMMENT_REMOVER) }}
-        {{ form_row(form.ROLE_VOCALIST_EDITOR) }}
-        {{ form_row(form.ROLE_USER_BLOCKER) }}
-        {{ form_row(form.ROLE_USER_ANALYST) }}
-        {{ form_row(form.ROLE_USER_MANAGER) }}
+        <div class="md-content-padding">
 
-        {% if is_granted('ROLE_OWNER') %}
-            {{ form_row(form.ROLE_ADMINISTRATOR) }}
-        {% endif %}
+            {{ form_start(form) }}
 
-        <button class="btn btn-primary">
-            {{ 'save' | trans }}
-        </button>
+                {{ form_row(form.ROLE_ARTICLE_AUTHOR) }}
+                {{ form_row(form.ROLE_ARTICLE_EDITOR) }}
+                {{ form_row(form.ROLE_ARTICLE_COMMENT_REMOVER) }}
+                {{ form_row(form.ROLE_ARTICLE_APPROVER) }}
+                {{ form_row(form.ROLE_SONG_EDITOR) }}
+                {{ form_row(form.ROLE_SONG_COMMENT_REMOVER) }}
+                {{ form_row(form.ROLE_VOCALIST_EDITOR) }}
+                {{ form_row(form.ROLE_USER_BLOCKER) }}
+                {{ form_row(form.ROLE_USER_ANALYST) }}
+                {{ form_row(form.ROLE_USER_MANAGER) }}
 
-        <a class="btn btn-link float-right" href="{{ path('user_profile', {'username' : user.username }) }}">
-            {{ 'cancel' | trans }}
-        </a>
+                {% if is_granted('ROLE_OWNER') %}
+                    {{ form_row(form.ROLE_ADMINISTRATOR) }}
+                {% endif %}
 
-    {{ form_end(form) }}
+                <button class="btn btn-primary">
+                    {{ 'save' | trans }}
+                </button>
+
+                <a class="btn btn-link float-right" href="{{ path('user_profile', {'username' : user.username }) }}">
+                    {{ 'cancel' | trans }}
+                </a>
+
+            {{ form_end(form) }}
+
+        </div>
+
+    </div>
 
 {% endblock %}

@@ -39,9 +39,9 @@ class Tag
     private $slug;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Music::class, mappedBy="tags")
+     * @ORM\ManyToMany(targetEntity=Song::class, mappedBy="tags")
      */
-    private $musics;
+    private $songs;
 
     /**
      * @ORM\Column(type="text", nullable=true)
@@ -60,7 +60,7 @@ class Tag
 
     public function __construct()
     {
-        $this->musics = new ArrayCollection();
+        $this->songs = new ArrayCollection();
         $this->articles = new ArrayCollection();
     }
 
@@ -94,28 +94,28 @@ class Tag
     }
 
     /**
-     * @return Collection|Music[]
+     * @return Collection|Song[]
      */
-    public function getMusics(): Collection
+    public function getSongs(): Collection
     {
-        return $this->musics;
+        return $this->songs;
     }
 
-    public function addMusic(Music $music): self
+    public function addSong(Song $song): self
     {
-        if (!$this->musics->contains($music)) {
-            $this->musics[] = $music;
-            $music->addTag($this);
+        if (!$this->songs->contains($song)) {
+            $this->songs[] = $song;
+            $song->addTag($this);
         }
 
         return $this;
     }
 
-    public function removeMusic(Music $music): self
+    public function removeSong(Song $song): self
     {
-        if ($this->musics->contains($music)) {
-            $this->musics->removeElement($music);
-            $music->removeTag($this);
+        if ($this->songs->contains($song)) {
+            $this->songs->removeElement($song);
+            $song->removeTag($this);
         }
 
         return $this;
