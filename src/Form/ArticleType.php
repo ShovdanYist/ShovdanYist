@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Entity\Song;
 use App\Entity\Article;
 use App\Entity\Tag;
+use App\Repository\PlaylistSongRepository;
 use App\Repository\SongRepository;
 use App\Repository\TagRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -29,14 +30,16 @@ class ArticleType extends AbstractType
     private $user;
     private $role;
     private $tags;
+    private $playlistSongs;
 
-    public function __construct(Security $security, AuthorizationCheckerInterface $authorizationChecker, TranslatorInterface $translator, SongRepository $songs, TagRepository $tags)
+    public function __construct(Security $security, AuthorizationCheckerInterface $authorizationChecker, TranslatorInterface $translator, SongRepository $songs, TagRepository $tags, PlaylistSongRepository $playlistSongs)
     {
         $this->user = $security->getUser();
         $this->role = $authorizationChecker;
         $this->translator = $translator;
         $this->songs = $songs;
         $this->tags = $tags;
+        $this->playlistSongs = $playlistSongs;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -85,20 +88,6 @@ class ArticleType extends AbstractType
                     'class' => 'chosen'
                 ]
             ])
-            ->add('songs', EntityType::class, [
-                'label' => 'song',
-                'help' => 'song.help',
-                'class' => Song::class,
-                'required' => false,
-                'multiple' => true,
-                'choice_label' => 'FullTitle',
-                'label_attr' => ['class' => 'checkbox-custom'],
-                'choices' => (!$this->role->isGranted('ROLE_ARTICLE_APPROVER') && !$this->role->isGranted('ROLE_ARTICLE_EDITOR')) ? $this->songs->findUserPlaylist(['user'=>$this->user]) : null,
-                'attr' => [
-                    'data-placeholder' => $this->translator->trans('select.song'),
-                    'class' => 'chosen'
-                ]
-            ])
             ->add('eventDate', DateType::class, [
                 'label' => 'event.date',
                 'help' => 'event.date.help',
@@ -112,7 +101,7 @@ class ArticleType extends AbstractType
                     'day' => 'День',
                 ],
                 'attr' => [
-                    'class' => 'user-birthday'
+                    'class' => 'user-birthday chosen-date'
                 ]
             ])
             ->add('moderation', CheckboxType::class, [
@@ -123,6 +112,27 @@ class ArticleType extends AbstractType
             ])
         ;
 
+        $article = $builder->getData();
+        $userPlaylist = $this->playlistSongs->findOneBy(['user' => $this->user]);
+
+        if (!$article->getId() && $userPlaylist !== null || $article->getAuthor() == $this->user && $userPlaylist !== null ) {
+            $builder
+                ->add('songs', EntityType::class, [
+                    'label' => 'music',
+                    'help' => 'song.help',
+                    'class' => Song::class,
+                    'required' => false,
+                    'multiple' => true,
+                    'choice_label' => 'FullTitle',
+                    'label_attr' => ['class' => 'checkbox-custom'],
+                    'choices' => (!$this->role->isGranted('ROLE_ARTICLE_APPROVER') && !$this->role->isGranted('ROLE_ARTICLE_EDITOR')) ? $this->songs->findUserPlaylist(['user'=>$this->user]) : null,
+                    'attr' => [
+                        'data-placeholder' => $this->translator->trans('select.song'),
+                        'class' => 'chosen-music'
+                    ]
+                ]);
+        }
+
         if ($this->role->isGranted('ROLE_ARTICLE_APPROVER')) {
             $builder
                 ->add('status', ChoiceType::class, [
@@ -132,7 +142,7 @@ class ArticleType extends AbstractType
                         'Опубликована' => true,
                         'Отклонена' => false
                     ],
-                    'label_attr' => ['class' => 'switch-custom']
+                    'attr' => ['class' => 'chosen']
                 ]);
         }
     }

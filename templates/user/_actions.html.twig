@@ -1,4 +1,4 @@
-{% if user == app.user or is_granted('ROLE_USER_BLOCKER') and not is_role(user,'ROLE_ADMINISTRATOR') or rightToChangeUserRights(app.user,user) %}
+{% if user == app.user or rightToBlockUser(app.user,user) or rightToChangeUserRights(app.user,user) %}
 
     <button type="button" class="btn md-dot-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         <i class="fas fa-ellipsis-h"></i>
@@ -26,17 +26,17 @@
 
         {% endif %}
 
-        {% if is_granted('ROLE_USER_BLOCKER') and (app.user == user) == false and not is_role(user,'ROLE_ADMINISTRATOR') %}
+        {% if rightToBlockUser(app.user,user) %}
 
             {% if user.status != false %}
 
-                <a href="{{ path('user_blocking_user', {'id': user.id}) }}" class="dropdown-item">
+                <a href="{{ path('user_blocking_user', {'id': user.id}) }}" class="dropdown-item" onclick="return confirm('{{ 'are.you.sure.to.block.user' | trans }}')">
                     <i class="fas fa-user-times"></i> {{ 'block' | trans }}
                 </a>
 
             {% else %}
 
-                <a href="{{ path('user_unblocking_user', {'id': user.id}) }}" class="dropdown-item">
+                <a href="{{ path('user_unblocking_user', {'id': user.id}) }}" class="dropdown-item" onclick="return confirm('{{ 'are.you.sure.to.unblock.user' | trans }}')">
                     <i class="fas fa-user-check"></i> {{ 'unblock' | trans }}
                 </a>
 

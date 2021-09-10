@@ -2,33 +2,41 @@
 
 {% block title %}{{ 'password.resetting' | trans }}{% endblock %}
 
-{% block body %}
+{% block main %}
 
-    <h1 class="border-heading">
-        {{ 'password.resetting' | trans }}
-    </h1>
+    <div class="md-box">
 
-    {{ form_start(form) }}
+        <header class="user-title-block">
+            {{ 'password.resetting' | trans }}
+        </header>
 
-        <div class="row label-icons-form">
+        <div class="md-autofill md-content-padding">
 
-            <div class="col-12">
+        {{ form_start(form) }}
 
-                {{ form_row(form.current) }}
-                {{ form_row(form.new) }}
+            <div class="row label-icons-form">
 
-                <button class="btn btn-primary">
-                    {{ 'change' | trans }}
-                </button>
+                <div class="col-12">
 
-                <a class="btn btn-link float-right" href="{{ path('user_profile', {'username': app.user.username}) }}">
-                    {{ 'cancel' | trans }}
-                </a>
+                    {{ form_row(form.current) }}
+                    {{ form_row(form.new) }}
+
+                    <button class="btn btn-primary">
+                        {{ 'change' | trans }}
+                    </button>
+
+                    <a class="btn btn-link float-right" href="{{ path('user_profile', {'username': app.user.username}) }}">
+                        {{ 'cancel' | trans }}
+                    </a>
+
+                </div>
 
             </div>
 
+        {{ form_end(form) }}
+
         </div>
 
-    {{ form_end(form) }}
+    </div>
 
 {% endblock %}

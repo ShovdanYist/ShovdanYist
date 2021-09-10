@@ -10,11 +10,11 @@
 
 {% block main %}
 
-    {{ form_start(registrationForm, {'attr': {'class': 'form-signin md-box'}}) }}
+    {{ form_start(registrationForm, {'attr': {'class': 'md-box'}}) }}
 
-        <header class="block">{{ 'sign.up' | trans }}</header>
+    <header class="user-title-block">{{ 'sign.up' | trans }}</header>
 
-        <div class="login block">
+        <div class="md-autofill md-form-padding">
 
             {{ form_row(registrationForm.username) }}
 
@@ -42,7 +42,7 @@
 {#            {{ form_errors(registrationForm.agreeTerms) }}#}
 {#            {{ form_widget(registrationForm.agreeTerms) }}#}
 
-            <button class="btn btn-info md-bottom-btn mt-0">
+            <button class="btn btn-primary md-bottom-btn mt-0">
                 {{ 'sign.up' | trans }}
             </button>
 

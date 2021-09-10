@@ -47,6 +47,7 @@ class CounterExtension extends AbstractExtension
             new TwigFunction('notifyCount', [$this, 'notifyCount'], ['is_safe' => ['html']]),
             new TwigFunction('articleModerationCount', [$this, 'articleModerationCount'], ['is_safe' => ['html']]),
             new TwigFunction('notifyIndicator', [$this, 'notifyIndicator'], ['is_safe' => ['html']]),
+            new TwigFunction('userHavePlaylistSongs', [$this, 'userHavePlaylistSongs'], ['is_safe' => ['html']]),
         ];
     }
 
@@ -90,7 +91,7 @@ class CounterExtension extends AbstractExtension
     public function songsCount(People $vocalist)
     {
         $songs = $this->songRepo->count(['artist' => $vocalist,'status' => true]);
-        ($songs == 1) ? $word = $this->translator->trans('song') : (($songs < 5) ? $word = $this->translator->trans('two_songs') : $word = $this->translator->trans('songs'));
+        ($songs == 1) ? $word = $this->translator->trans('song') : (($songs < 5) ? $word = $this->translator->trans('two_songs') : $word = $this->translator->trans('songs_plural'));
         $template = '<span class="badge badge-info">%s %s</span>';
 
         return sprintf(
@@ -108,6 +109,11 @@ class CounterExtension extends AbstractExtension
     public function userContainArticle($user, $article)
     {
         return $this->bookmarks->findOneBy(['user' => $user, 'article' => $article]);
+    }
+
+    public function userHavePlaylistSongs($user): bool
+    {
+        return (bool)$this->playlistSongRepo->findOneBy(['user' => $user]);
     }
 
     public function notifyCount($user): int

@@ -43,7 +43,7 @@
                         <span>
                             <i class="fas fa-music"></i>
                         </span>
-                        {{ 'song' | trans }}
+                        {{ 'music' | trans }}
                     </a>
                 </li>
 
@@ -66,7 +66,7 @@
                 </li>
 
                 <li class="md-menu-item">
-                    <a href="{{ path('user_playlist', {'username': app.user.username}) }}">
+                    <a href="{{ path('user_playlist') }}">
                         <span>
                             <i class="fas fa-headphones"></i>
                         </span>
@@ -119,9 +119,9 @@
                 <li class="md-menu-item">
                     <a href="{{ path('app_home') }}">
                         <span>
-                            <i class="fas fa-home"></i>
+                            <i class="fas fa-heading"></i>
                         </span>
-                        {{ 'home.page' | trans }}
+                        {{ 'articles' | trans }}
                     </a>
                 </li>
 
@@ -130,7 +130,7 @@
                         <span>
                             <i class="fas fa-music"></i>
                         </span>
-                        {{ 'song' | trans }}
+                        {{ 'music' | trans }}
                     </a>
                 </li>
 

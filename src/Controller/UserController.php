@@ -333,19 +333,18 @@ class UserController extends CustomAbstractController
     }
 
     /**
-     * @Route("/user/{username}/playlist/{page<\d+>?1}", name="playlist")
-     * @param User $user
+     * @Route("/playlist/{page<\d+>?1}", name="playlist")
      * @param $page
      * @param Paginator $paginator
      * @return Response
      */
-    public function playlist(User $user, $page, Paginator $paginator): Response
+    public function playlist($page, Paginator $paginator): Response
     {
         $paginator
-            ->setParameters(['username' => $user->getUsername()])
+            ->setParameters(['username' => $this->user()->getUsername()])
             ->setMethod('findUserPlaylist')
             ->setOrder(['addedAt' => 'DESC'])
-            ->setCriteria(['user' => $user])
+            ->setCriteria(['user' => $this->user()])
             ->setClass(Song::class)
             ->setType('playlist')
             ->setLimit(20)
@@ -354,7 +353,7 @@ class UserController extends CustomAbstractController
         return $this->render('user/playlist.html.twig', [
             'playlist' => $paginator->getData(),
             'paginator' => $paginator,
-            'user' => $user
+            'user' => $this->user()
         ]);
     }
 
@@ -394,7 +393,8 @@ class UserController extends CustomAbstractController
      */
     public function blocking(User $user, EmailAddressRepository $emails, Defender $defender): Response
     {
-        if ($defender->isGranted($user,'ROLE_ADMINISTRATOR') || $this->user() === $user) {
+        if (!$defender->rightToBlockUser($this->user(),$user)) {
+            $this->addFlash('warning', 'Вы не можете блокировать данного пользователя');
             return $this->redirectToRoute('user_profile', ['username' => $user->getUsername()]);
         }
 

@@ -2,33 +2,37 @@
 
 {% block title %}{{ 'account.deleting' | trans }}{% endblock %}
 
-{% block body %}
+{% block main %}
 
-    <div class="">
+    <div class="md-box">
 
-        <h1 class="border-heading">
+        <header class="user-title-block">
             {{ 'account.deleting' | trans }}
-        </h1>
+        </header>
 
-        <div class="mb-4">
-            {{ 'account.deleting.warning.message' | trans }}
+        <div class="md-autofill md-content-padding">
+
+            <div class="mb-4">
+                {{ 'account.deleting.warning.message' | trans }}
+            </div>
+
+            <form method="post" action="{{ path('user_delete', {'id': app.user.id}) }}" onsubmit="return confirm('{{ 'are.you.sure.to.delete.account' | trans }}');">
+                <input type="hidden" name="_method" value="DELETE">
+                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ app.user.id) }}">
+                <label style="width: 100%">
+                    {{ 'enter.password' | trans }}
+                    <input type="password" name="password" class="form-control mt-2 mb-3">
+                </label>
+                <br>
+                <button class="btn btn-danger">
+                    <i class="fas fa-exclamation-triangle"></i> {{ 'delete.account' | trans }}
+                </button>
+                <a class="btn btn-link float-right" href="{{ path('user_profile', {'username': app.user.username}) }}">
+                    {{ 'cancel' | trans }}
+                </a>
+            </form>
+
         </div>
-
-        <form method="post" action="{{ path('user_delete', {'id': app.user.id}) }}" onsubmit="return confirm('{{ 'are.you.sure.to.delete.account' | trans }}');">
-            <input type="hidden" name="_method" value="DELETE">
-            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ app.user.id) }}">
-            <label style="width: 100%">
-                {{ 'enter.password' | trans }}
-                <input type="password" name="password" class="form-control mt-2 mb-3">
-            </label>
-            <br>
-            <button class="btn btn-danger">
-                <i class="fas fa-exclamation-triangle"></i> {{ 'delete.account' | trans }}
-            </button>
-            <a class="btn btn-link float-right" href="{{ path('user_profile', {'username': app.user.username}) }}">
-                {{ 'cancel' | trans }}
-            </a>
-        </form>
 
     </div>
 

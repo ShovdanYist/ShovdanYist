@@ -37,19 +37,17 @@ form.password.max.length.message: 'Пароль может состоять ма
 feat: с
 featuring_singular: Совместая
 featuring_plural: Совместных
+music: Музыка
 song: Песня
+songs: Песни
 two_songs: Песни
-songs: Песен
+songs_plural: Песен
 trends: Тренды
 lasts: 'Последние добавленные'
 novelty: Новинки
 discussed: 'Самые обсуждаемые'
 see.all: 'Посмотреть всё'
-genres: Жанры
-themes: Темы
 download.song: 'Скачать песню'
-theme: Тема
-genre: Жанр
 release.date: 'Дата релиза'
 featuring: Совместно
 publication.date: 'Дата публикации'
@@ -173,8 +171,6 @@ song.editing: 'Изменение песни'
 song.adding: 'Добавление песни'
 save.and.close: 'Сохранить и закрыть'
 select.featuring: 'Выберите совместных'
-select.genres: 'Выберите жанры'
-select.themes: 'Выберите темы'
 article.add: 'Добавить статью'
 section: Секция
 update: Обновить
@@ -189,12 +185,6 @@ add.person: 'Добавить человека'
 activity.editing: 'Изменение деятельности'
 activity.adding: 'Добавление деятельности'
 add.activity: 'Добавить деятельность'
-genre.editing: 'Изменение жанра'
-genre.adding: 'Добавление жанра'
-theme.editing: 'Изменение темы'
-theme.adding: 'Добавление темы'
-add.theme: 'Добавить тему'
-add.genre: 'Добавить жанр'
 are.you.sure.to.delete: 'Вы уверены что хотите удалить этот элемент?'
 statistics: Статистика
 dashboard: 'Панель управления'
@@ -209,6 +199,8 @@ flash.added.to.bookmarks: 'Статья добавлена в закладки'
 bookmarks: Закладки
 moderation: Модерация
 are.you.sure.to.log.out: 'Вы уверены что хотите выйти?'
+are.you.sure.to.block.user: 'Вы уверены что хотите заблокировать этого пользователя?'
+are.you.sure.to.unblock.user: 'Вы уверены что хотите разблокировать этого пользователя?'
 are.you.sure.to.publish.it: 'Вы уверены что хотите опубликовать?'
 are.you.sure.to.change.it: 'Вы уверены что хотите изменить?'
 publish: Опубликовать

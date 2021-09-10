@@ -147,4 +147,6 @@
 {% block scripts %}
     {{ ckeditor('author') }}
     {{ chosen() }}
+    {{ chosen(10, '.chosen-music') }}
+    {{ chosen(3,'.chosen-date select') }}
 {% endblock %}

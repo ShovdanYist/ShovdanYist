@@ -9,6 +9,7 @@ use App\Entity\Notification;
 use App\Entity\Article;
 use App\Form\CommentType;
 use App\Repository\UserRepository;
+use App\Service\Defender;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -94,11 +95,12 @@ class CommentController extends CustomAbstractController
      * @Route("/comment/delete/{id}", name="comment_delete")
      * @param Request $request
      * @param Comment $comment
+     * @param Defender $defender
      * @return RedirectResponse
      */
-    public function commentDelete(Request $request, Comment $comment): Response
+    public function commentDelete(Request $request, Comment $comment, Defender $defender): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$comment->getId(), $request->request->get('_token')) && $comment->getAuthor() == $this->getUser() || $this->isGranted('ROLE_SONG_COMMENT_REMOVER') && $comment->getSong() || $this->isGranted('ROLE_ARTICLE_COMMENT_REMOVER') && $comment->getArticle()) {
+        if ($this->isCsrfTokenValid('delete'.$comment->getId(), $request->request->get('_token')) && $defender->rightToDeleteComment($this->user(),$comment)) {
             $em = $this->getDoctrine()->getManager();
             foreach ($comment->getNotifications() as $notification) {
                 $em->remove($notification);

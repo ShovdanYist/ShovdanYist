@@ -20,7 +20,7 @@
 
     {{ breadcrumb({
         (path('app_home')) : ('home.page' | trans),
-        (path('song_index')) : ('song' | trans),
+        (path('song_index')) : ('music' | trans),
         (path('song_vocalists', {letter: slugify(vocalist.fullName | first) })) : (vocalist.fullName | first),
         'active' : (vocalist.fullName),
     }, vocalist,'vocalist') }}

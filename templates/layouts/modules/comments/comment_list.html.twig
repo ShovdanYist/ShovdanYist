@@ -21,7 +21,7 @@
                     </span>
                 {% endif %}
 
-                {% if app.user and app.user.id == comment.author.id or is_granted('ROLE_USER_BLOCKER') or name == 'song' and is_granted('ROLE_SONG_COMMENT_REMOVER') or name == 'article' and is_granted('ROLE_ARTICLE_COMMENT_REMOVER') %}
+                {% if rightToDeleteComment(app.user,comment) or rightToBlockUser(app.user,comment.author) %}
 
                     <button type="button" class="btn md-comment-dot-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <i class="fas fa-ellipsis-h"></i>
@@ -29,17 +29,17 @@
 
                     <div class="dropdown-menu dropdown-menu-right">
 
-                        {% if is_granted('ROLE_USER_BLOCKER') %}
+                        {% if rightToBlockUser(app.user,comment.author) %}
 
                             {% if comment.author.status != false %}
 
-                                <a href="{{ path('user_blocking_user', {'id': comment.author.id}) }}" class="dropdown-item">
+                                <a href="{{ path('user_blocking_user', {'id': comment.author.id}) }}" class="dropdown-item" onclick="return confirm('{{ 'are.you.sure.to.block.user' | trans }}')">
                                     {{ 'block' | trans }}
                                 </a>
 
                             {% else %}
 
-                                <a href="{{ path('user_unblocking_user', {'id': comment.author.id}) }}" class="dropdown-item">
+                                <a href="{{ path('user_unblocking_user', {'id': comment.author.id}) }}" class="dropdown-item" onclick="return confirm('{{ 'are.you.sure.to.unblock.user' | trans }}')">
                                     {{ 'unblock' | trans }}
                                 </a>
 
@@ -47,7 +47,9 @@
 
                         {% endif %}
 
-                        {% include 'layouts/modules/comments/comment_delete.html.twig' %}
+                        {% if rightToDeleteComment(app.user,comment) %}
+                            {% include 'layouts/modules/comments/comment_delete.html.twig' %}
+                        {% endif %}
 
                     </div>
 

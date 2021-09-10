@@ -15,6 +15,12 @@
         </a>
     {% endif %}
 
+    {% if article.author.profile.verified %}
+        <span class="md-comment-verified">
+                        <i class="fas fa-check-circle text-info"></i>
+                    </span>
+    {% endif %}
+
     <span class="date">
     {{ article.publishedAt ? article.publishedAt | format_datetime('medium', 'none', '', 'UTC') }}
     в
