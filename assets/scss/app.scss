@@ -564,9 +564,9 @@ blockquote, .ck.ck-content blockquote {
 
 // Inputs
 
-.form-control, .form-control:focus, .form-control:focus-within, .form-control:active, .form-control:active:focus {
+.form-control, .form-control:focus, .form-control:focus-within, .form-control:active {
   box-shadow: unset !important;
-  border: 1px solid #dde2e8 !important;
+  border: 1px solid #dde2e8;
   font-family: Lato,Helvetica Neue,Helvetica,Arial,sans-serif;
   font-size: 15px;
   font-weight: normal;

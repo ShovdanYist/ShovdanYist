@@ -2,11 +2,9 @@
 
 namespace App\Form;
 
-use App\Entity\Genre;
 use App\Entity\Song;
 use App\Entity\People;
 use App\Entity\Tag;
-use App\Entity\Theme;
 use App\Repository\PeopleRepository;
 use App\Repository\TagRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;

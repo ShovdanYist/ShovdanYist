@@ -19,11 +19,12 @@ class Constraints
         $this->translator = $translator;
     }
 
-    public function trans(string $id, array $parameters = [], string $domain = null, string $locale = null) {
+    public function trans(string $id, array $parameters = [], string $domain = null, string $locale = null): string
+    {
         return $this->translator->trans($id, $parameters, $domain, $locale);
     }
 
-    public function username($username)
+    public function username($username): array
     {
         $exist = $this->userRepo->findOneBy(['username' => $username]);
         $message = null;
@@ -41,7 +42,9 @@ class Constraints
         }
 
         // Skip constraints if this user already have this username
-        ($exist === $this->getUser) ? $status = true : null ;
+        if ($exist === $this->getUser) {
+            $status = true;
+        }
 
         return ['status' => $status, 'message' => $message];
     }

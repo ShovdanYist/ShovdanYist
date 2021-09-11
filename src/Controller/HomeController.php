@@ -3,7 +3,6 @@
 namespace App\Controller;
 
 use App\CustomAbstracts\CustomAbstractController;
-use App\Entity\Comment;
 use App\Entity\EmailAddress;
 use App\Entity\Article;
 use App\Entity\Profile;

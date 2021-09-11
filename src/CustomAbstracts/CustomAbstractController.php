@@ -15,7 +15,7 @@ class CustomAbstractController extends AbstractController
         $this->translator = $translator;
     }
 
-    public function trans(string $id, array $parameters = [], string $domain = null, string $locale = null)
+    public function trans(string $id, array $parameters = [], string $domain = null, string $locale = null): string
     {
         return $this->translator->trans($id, $parameters, $domain, $locale);
     }

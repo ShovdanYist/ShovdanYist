@@ -5,6 +5,9 @@ namespace App\Service;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Twig\Environment;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 
 class Paginator
 {
@@ -27,6 +30,11 @@ class Paginator
         $this->request  = $request;
     }
 
+    /**
+     * @throws SyntaxError
+     * @throws RuntimeError
+     * @throws LoaderError
+     */
     public function display($box = false)
     {
         $this->twig->display('layouts/modules/pagination.html.twig', [

@@ -146,7 +146,7 @@ class SongController extends CustomAbstractController
      * @param Song $song
      * @return Response
      */
-    public function songEdit(Request $request, Song $song)
+    public function songEdit(Request $request, Song $song): Response
     {
         $form = $this->createForm(SongType::class, $song)
             ->add('save', SubmitType::class);

@@ -3,9 +3,11 @@
 namespace App\Twig;
 
 use App\Repository\SongRepository;
-use App\Repository\TagRepository;
 use Cocur\Slugify\Slugify;
 use Twig\Environment;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
@@ -49,12 +51,17 @@ class SongExtension extends AbstractExtension
         ];
     }
 
-    public function letters()
+    public function letters(): array
     {
         return $this->letters;
     }
 
-    public function player(Environment $twig, $song, $download = null, $add = null, $type = null, $image = null)
+    /**
+     * @throws RuntimeError
+     * @throws SyntaxError
+     * @throws LoaderError
+     */
+    public function player(Environment $twig, $song, $download = null, $add = null, $type = null, $image = null): string
     {
         return $twig->render('layouts/modules/player.html.twig', [
             'song' => $song,
@@ -65,7 +72,12 @@ class SongExtension extends AbstractExtension
         ]);
     }
 
-    public function chartBox(Environment $twig, $chart)
+    /**
+     * @throws RuntimeError
+     * @throws SyntaxError
+     * @throws LoaderError
+     */
+    public function chartBox(Environment $twig, $chart): string
     {
         if ($chart == 'trends') {
             $songs = $this->songs->findBy(['status' => true, 'featured' => true], ['editingDate' => 'DESC'],5);
@@ -75,6 +87,8 @@ class SongExtension extends AbstractExtension
             $songs = $this->songs->findBy(['status' => true], ['publicationDate' => 'DESC'],5);
         } elseif ($chart == 'discussed') {
             $songs = $this->songs->findByDiscussed(['status' => true],[],5);
+        } else {
+            $songs = null;
         }
 
         return $twig->render('layouts/modules/chart_box.html.twig', [
@@ -83,14 +97,19 @@ class SongExtension extends AbstractExtension
         ]);
     }
 
-    public function lettersMenu(Environment $twig)
+    /**
+     * @throws SyntaxError
+     * @throws RuntimeError
+     * @throws LoaderError
+     */
+    public function lettersMenu(Environment $twig): string
     {
         return $twig->render('layouts/modules/letters.html.twig', [
             'letters' => $this->letters
         ]);
     }
 
-    public function slugify(Environment $twig, $data)
+    public function slugify(Environment $twig, $data): string
     {
         $slugify = new Slugify();
         return $slugify->slugify($data);

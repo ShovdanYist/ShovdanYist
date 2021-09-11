@@ -205,7 +205,7 @@ class User implements UserInterface
     /**
      * Get passwordRequestedAt
      */
-    public function getPasswordRequestedAt()
+    public function getPasswordRequestedAt(): DateTime
     {
         return $this->passwordRequestedAt;
     }
@@ -215,7 +215,7 @@ class User implements UserInterface
      * @param $passwordRequestedAt
      * @return User
      */
-    public function setPasswordRequestedAt($passwordRequestedAt)
+    public function setPasswordRequestedAt($passwordRequestedAt): User
     {
         $this->passwordRequestedAt = $passwordRequestedAt;
         return $this;
@@ -224,7 +224,7 @@ class User implements UserInterface
     /**
      * Get token
      */
-    public function getToken()
+    public function getToken(): string
     {
         return $this->token;
     }
@@ -234,7 +234,7 @@ class User implements UserInterface
      * @param $token
      * @return User
      */
-    public function setToken($token)
+    public function setToken($token): User
     {
         $this->token = $token;
         return $this;

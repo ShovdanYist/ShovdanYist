@@ -42,7 +42,7 @@ class Mailer
         return $this->from;
     }
 
-    public function setFrom($from)
+    public function setFrom($from): Mailer
     {
         $this->from = $from;
 
@@ -54,7 +54,7 @@ class Mailer
         return $this->to;
     }
 
-    public function setTo($to)
+    public function setTo($to): Mailer
     {
         $this->to = $to;
 
@@ -66,7 +66,7 @@ class Mailer
         return $this->template;
     }
 
-    public function setTemplate($template)
+    public function setTemplate($template): Mailer
     {
         $this->template = $template;
 
@@ -78,7 +78,7 @@ class Mailer
         return $this->subject;
     }
 
-    public function setSubject($subject)
+    public function setSubject($subject): Mailer
     {
         $this->subject = $subject;
 
@@ -90,7 +90,7 @@ class Mailer
         return $this->variables;
     }
 
-    public function setVariables($variables)
+    public function setVariables($variables): Mailer
     {
         $this->variables = $variables;
 

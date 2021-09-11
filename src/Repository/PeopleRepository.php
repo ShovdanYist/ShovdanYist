@@ -23,7 +23,7 @@ class PeopleRepository extends ServiceEntityRepository
      * @param $activity
      * @return People[] Returns an array of People objects
      */
-    public function findByActivity($activity)
+    public function findByActivity($activity): array
     {
         return $this->createQueryBuilder('p')
             ->join('p.activity', 'a')

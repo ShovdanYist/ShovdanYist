@@ -10,6 +10,9 @@ use App\Service\Paginator;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\Form\FormInterface;
 use Twig\Environment;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
@@ -46,7 +49,12 @@ class ModulesExtension extends AbstractExtension
         return $this->container->get('form.factory')->create($type, $data, $options);
     }
 
-    public function comments(Environment $twig, $entity, $page, $params)
+    /**
+     * @throws RuntimeError
+     * @throws SyntaxError
+     * @throws LoaderError
+     */
+    public function comments(Environment $twig, $entity, $page, $params): string
     {
         $name = strtolower((new \ReflectionClass($entity))->getShortName());
 
@@ -67,7 +75,12 @@ class ModulesExtension extends AbstractExtension
         ]);
     }
 
-    public function crudActions(Environment $twig, $entity, $name)
+    /**
+     * @throws RuntimeError
+     * @throws SyntaxError
+     * @throws LoaderError
+     */
+    public function crudActions(Environment $twig, $entity, $name): string
     {
         ($entity instanceof User) ? $instance = true : $instance = false;
 
@@ -78,7 +91,12 @@ class ModulesExtension extends AbstractExtension
         ]);
     }
 
-    public function breadcrumb(Environment $twig, $links, $entity = null, $name = null)
+    /**
+     * @throws SyntaxError
+     * @throws RuntimeError
+     * @throws LoaderError
+     */
+    public function breadcrumb(Environment $twig, $links, $entity = null, $name = null): string
     {
 //        $name = ($entity) ? strtolower((new \ReflectionClass($entity))->getShortName()) : null ;
 

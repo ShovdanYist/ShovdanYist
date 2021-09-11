@@ -2,9 +2,7 @@
 
 namespace App\Service;
 
-use App\Entity\Article;
 use App\Entity\Comment;
-use App\Entity\Song;
 use App\Entity\User;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Core\Authorization\AccessDecisionManagerInterface;
@@ -97,7 +95,7 @@ class Defender
     {
         $right = false;
 
-        if ($this->isGranted($moderator,'ROLE_USER_BLOCKER') && !$this->isGranted($user,'ROLE_USER_BLOCKER') && $user->getProfile()->getVerified() !== true || $this->isGranted($moderator,'ROLE_OWNER')) {
+        if ($this->isGranted($moderator,'ROLE_USER_BLOCKER') && !$this->isGranted($user,'ROLE_USER_BLOCKER') && $user->getProfile()->getVerified() !== true || $this->isGranted($moderator,'ROLE_OWNER') && $moderator !== $user) {
             $right = true;
         }
 

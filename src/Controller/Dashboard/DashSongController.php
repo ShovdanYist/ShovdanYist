@@ -78,7 +78,7 @@ class DashSongController extends AbstractController
      * @param SongRepository $songRepo
      * @return Response
      */
-    public function vocalist(People $person, SongRepository $songRepo)
+    public function vocalist(People $person, SongRepository $songRepo): Response
     {
         return $this->render('dashboard/song/vocalist.html.twig', [
             'person' => $person

@@ -133,7 +133,7 @@ class People
         return $this->id;
     }
 
-    public function getFullName()
+    public function getFullName(): string
     {
         $space = ' ';
         if (empty($this->lastName)) {
@@ -142,12 +142,12 @@ class People
         return $this->firstName . $space . $this->lastName;
     }
 
-    public function getfirstName(): ?string
+    public function getFirstName(): ?string
     {
         return $this->firstName;
     }
 
-    public function setfirstName(string $firstName): self
+    public function setFirstName(string $firstName): self
     {
         $this->firstName = $firstName;
 

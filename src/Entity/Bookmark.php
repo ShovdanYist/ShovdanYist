@@ -61,7 +61,7 @@ class Bookmark
         return $this;
     }
 
-    public function getarticle(): ?Article
+    public function getArticle(): ?Article
     {
         return $this->article;
     }

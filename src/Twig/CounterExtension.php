@@ -2,6 +2,8 @@
 
 namespace App\Twig;
 
+use App\Entity\Bookmark;
+use App\Entity\PlaylistSong;
 use App\Entity\Song;
 use App\Entity\People;
 use App\Entity\User;
@@ -36,7 +38,7 @@ class CounterExtension extends AbstractExtension
         $this->security = $security;
     }
 
-    public function getFunctions()
+    public function getFunctions(): array
     {
         return [
             new TwigFunction('featuring', [$this, 'artistFeaturing'], ['is_safe' => ['html']]),
@@ -51,7 +53,7 @@ class CounterExtension extends AbstractExtension
         ];
     }
 
-    public function artistFeaturing(Song $song, $delimiter = '')
+    public function artistFeaturing(Song $song, $delimiter = ''): string
     {
         $featuring = $song->getFeaturing();
         $result = [];
@@ -71,7 +73,7 @@ class CounterExtension extends AbstractExtension
         return sprintf($template, $result);
     }
 
-    public function featuringsCount(People $vocalist)
+    public function featuringsCount(People $vocalist): ?string
     {
         $featurings = count($this->songRepo->findFeaturingCount($vocalist));
         ($featurings == 1) ? $word = $this->translator->trans('featuring_singular') : $word = $this->translator->trans('featuring_plural');
@@ -88,7 +90,7 @@ class CounterExtension extends AbstractExtension
         );
     }
 
-    public function songsCount(People $vocalist)
+    public function songsCount(People $vocalist): string
     {
         $songs = $this->songRepo->count(['artist' => $vocalist,'status' => true]);
         ($songs == 1) ? $word = $this->translator->trans('song') : (($songs < 5) ? $word = $this->translator->trans('two_songs') : $word = $this->translator->trans('songs_plural'));
@@ -101,12 +103,12 @@ class CounterExtension extends AbstractExtension
         );
     }
 
-    public function userContainSong($user, $song)
+    public function userContainSong($user, $song): ?PlaylistSong
     {
         return $this->playlistSongRepo->findOneBy(['user' => $user, 'song' => $song]);
     }
 
-    public function userContainArticle($user, $article)
+    public function userContainArticle($user, $article): ?Bookmark
     {
         return $this->bookmarks->findOneBy(['user' => $user, 'article' => $article]);
     }

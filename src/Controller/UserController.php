@@ -131,7 +131,10 @@ class UserController extends CustomAbstractController
             ])
             ->add('email', EmailType::class, [
                 'label' => $this->trans('form.email'),
-                'help' => 'Если не подтверждена, то проверьте свою электронную почту и перейдите по отправленной ссылке'
+                'help' => 'Если не подтверждена, то проверьте свою электронную почту и перейдите по отправленной ссылке',
+                'attr' => [
+                    'class' => ($user->getEmail() != $user->getConfirmedEmail()) ? 'is-invalid' : null,
+                ]
             ])
             ->getForm();
 

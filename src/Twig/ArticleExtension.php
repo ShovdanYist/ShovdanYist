@@ -7,6 +7,9 @@ use App\Form\NotificationType;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\Form\FormInterface;
 use Twig\Environment;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
@@ -39,7 +42,12 @@ class ArticleExtension extends AbstractExtension
         return $this->container->get('form.factory')->create($type, $data, $options);
     }
 
-    public function rejectArticle(Environment $twig, $article)
+    /**
+     * @throws SyntaxError
+     * @throws RuntimeError
+     * @throws LoaderError
+     */
+    public function rejectArticle(Environment $twig, $article): string
     {
         $form = $this->createForm(NotificationType::class);
 
@@ -49,42 +57,72 @@ class ArticleExtension extends AbstractExtension
         ]);
     }
 
-    public function articleInfo(Environment $twig, $article)
+    /**
+     * @throws RuntimeError
+     * @throws SyntaxError
+     * @throws LoaderError
+     */
+    public function articleInfo(Environment $twig, $article): string
     {
         return $twig->render('layouts/article/article_info.html.twig', [
             'article' => $article
         ]);
     }
 
-    public function articleTitle(Environment $twig, $article)
+    /**
+     * @throws SyntaxError
+     * @throws RuntimeError
+     * @throws LoaderError
+     */
+    public function articleTitle(Environment $twig, $article): string
     {
         return $twig->render('layouts/article/article_title.html.twig', [
             'article' => $article
         ]);
     }
 
-    public function articleTags(Environment $twig, $article)
+    /**
+     * @throws RuntimeError
+     * @throws SyntaxError
+     * @throws LoaderError
+     */
+    public function articleTags(Environment $twig, $article): string
     {
         return $twig->render('layouts/article/article_tags.html.twig', [
             'article' => $article
         ]);
     }
 
-    public function articleImage(Environment $twig, $article)
+    /**
+     * @throws SyntaxError
+     * @throws RuntimeError
+     * @throws LoaderError
+     */
+    public function articleImage(Environment $twig, $article): string
     {
         return $twig->render('layouts/article/article_image.html.twig', [
             'article' => $article
         ]);
     }
 
-    public function articleDescription(Environment $twig, $article)
+    /**
+     * @throws SyntaxError
+     * @throws RuntimeError
+     * @throws LoaderError
+     */
+    public function articleDescription(Environment $twig, $article): string
     {
         return $twig->render('layouts/article/article_description.html.twig', [
             'article' => $article
         ]);
     }
 
-    public function articleActions(Environment $twig, $article, $comments = true)
+    /**
+     * @throws SyntaxError
+     * @throws RuntimeError
+     * @throws LoaderError
+     */
+    public function articleActions(Environment $twig, $article, $comments = true): string
     {
         return $twig->render('layouts/article/article_actions.html.twig', [
             'article' => $article,
@@ -92,7 +130,12 @@ class ArticleExtension extends AbstractExtension
         ]);
     }
 
-    public function articleView(Environment $twig,$article,$type = null): string
+    /**
+     * @throws SyntaxError
+     * @throws RuntimeError
+     * @throws LoaderError
+     */
+    public function articleView(Environment $twig, $article, $type = null): string
     {
         return $twig->render('layouts/article/article_view.html.twig',[
             'article' => $article,
@@ -100,7 +143,7 @@ class ArticleExtension extends AbstractExtension
         ]);
     }
 
-    public function articleStatus(Article $article)
+    public function articleStatus(Article $article): string
     {
         if (!$article->getModeration()) {
             $badge = 'info';
