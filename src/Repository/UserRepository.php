@@ -25,6 +25,31 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
     }
 
     /**
+     * @return int|mixed|string
+     */
+    public function findActionUsers()
+    {
+        $actionRoles = [
+            'ROLE_ARTICLE_COMMENT_REMOVER',
+            'ROLE_ARTICLE_EDITOR',
+            'ROLE_ARTICLE_APPROVER',
+            'ROLE_VOCALIST_EDITOR',
+            'ROLE_SONG_COMMENT_REMOVER',
+            'ROLE_SONG_EDITOR',
+            'ROLE_USER_BLOCKER'
+        ];
+
+        $qb = $this->createQueryBuilder('u');
+
+        foreach ($actionRoles as $key => $role) {
+            $qb->orWhere('u.roles LIKE :role' . $key)
+               ->setParameter('role' . $key, '%'. $role .'%');
+        }
+
+        return $qb->getQuery()->getResult();
+    }
+
+    /**
      * Used to upgrade (rehash) the user's password automatically over time.
      * @param UserInterface $user
      * @param string $newEncodedPassword

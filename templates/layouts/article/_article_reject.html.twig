@@ -1,8 +1,8 @@
-{{ form_start(form, {action: path('article_moderation_reject', {'id': article.id})}) }}
+{{ form_start(form, {action: path('moderation_reject_article', {'id': article.id})}) }}
 
     {{ form_widget(form.message) }}
 
-    <a href="{{ path('article_moderation_publish', {'id':article.id}) }}" class="btn btn-primary" onclick="return confirm('{{ 'are.you.sure.to.publish.it' | trans }}')">{{ 'publish' | trans }}</a>
+    <a href="{{ path('moderation_publish_article', {'id':article.id}) }}" class="btn btn-primary" onclick="return confirm('{{ 'are.you.sure.to.publish.it' | trans }}')">{{ 'publish' | trans }}</a>
 
     <button class="btn btn-link float-right" onclick="return confirm('{{ 'are.you.sure.to.reject.it' | trans }}')">
         {{ 'reject' | trans }}

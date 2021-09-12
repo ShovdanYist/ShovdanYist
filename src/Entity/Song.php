@@ -112,7 +112,7 @@ class Song
     private $author;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Comment", mappedBy="song")
+     * @ORM\OneToMany(targetEntity="App\Entity\Comment", mappedBy="song", orphanRemoval=true)
      */
     private $comments;
 
@@ -141,6 +141,11 @@ class Song
      */
     private $translation;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Action::class, mappedBy="song", orphanRemoval=true)
+     */
+    private $actions;
+
     public function __construct()
     {
         $this->featuring = new ArrayCollection();
@@ -149,6 +154,7 @@ class Song
         $this->articles = new ArrayCollection();
         $this->notifications = new ArrayCollection();
         $this->tags = new ArrayCollection();
+        $this->actions = new ArrayCollection();
     }
 
     public function getFullTitle(): string
@@ -540,6 +546,37 @@ class Song
     public function setTranslation(?string $translation): self
     {
         $this->translation = $translation;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Action[]
+     */
+    public function getActions(): Collection
+    {
+        return $this->actions;
+    }
+
+    public function addAction(Action $action): self
+    {
+        if (!$this->actions->contains($action)) {
+            $this->actions[] = $action;
+            $action->setSong($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAction(Action $action): self
+    {
+        if ($this->actions->contains($action)) {
+            $this->actions->removeElement($action);
+            // set the owning side to null (unless already changed)
+            if ($action->getSong() === $this) {
+                $action->setSong(null);
+            }
+        }
 
         return $this;
     }

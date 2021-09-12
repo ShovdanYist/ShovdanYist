@@ -134,6 +134,11 @@ class Article
      */
     private $tags;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Action::class, mappedBy="article", orphanRemoval=true)
+     */
+    private $actions;
+
     public function __construct()
     {
         $this->songs = new ArrayCollection();
@@ -141,6 +146,7 @@ class Article
         $this->bookmarks = new ArrayCollection();
         $this->notifications = new ArrayCollection();
         $this->tags = new ArrayCollection();
+        $this->actions = new ArrayCollection();
     }
 
     /**
@@ -491,6 +497,37 @@ class Article
     {
         if ($this->tags->contains($tag)) {
             $this->tags->removeElement($tag);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Action[]
+     */
+    public function getActions(): Collection
+    {
+        return $this->actions;
+    }
+
+    public function addAction(Action $action): self
+    {
+        if (!$this->actions->contains($action)) {
+            $this->actions[] = $action;
+            $action->setArticle($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAction(Action $action): self
+    {
+        if ($this->actions->contains($action)) {
+            $this->actions->removeElement($action);
+            // set the owning side to null (unless already changed)
+            if ($action->getArticle() === $this) {
+                $action->setArticle(null);
+            }
         }
 
         return $this;

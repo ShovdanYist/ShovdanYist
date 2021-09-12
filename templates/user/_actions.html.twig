@@ -20,7 +20,7 @@
 
         {% if rightToChangeUserRights(app.user,user) %}
 
-            <a href="{{ path('user_rights', {'username': user.username}) }}" class="dropdown-item">
+            <a href="{{ path('moderation_user_rights', {'username': user.username}) }}" class="dropdown-item">
                 <i class="fas fa-shield-alt"></i> {{ 'rights' | trans }}
             </a>
 
@@ -30,13 +30,13 @@
 
             {% if user.status != false %}
 
-                <a href="{{ path('user_blocking_user', {'id': user.id}) }}" class="dropdown-item" onclick="return confirm('{{ 'are.you.sure.to.block.user' | trans }}')">
+                <a href="{{ path('moderation_block_user', {'id': user.id}) }}" class="dropdown-item" onclick="return confirm('{{ 'are.you.sure.to.block.user' | trans }}')">
                     <i class="fas fa-user-times"></i> {{ 'block' | trans }}
                 </a>
 
             {% else %}
 
-                <a href="{{ path('user_unblocking_user', {'id': user.id}) }}" class="dropdown-item" onclick="return confirm('{{ 'are.you.sure.to.unblock.user' | trans }}')">
+                <a href="{{ path('moderation_unblock_user', {'id': user.id}) }}" class="dropdown-item" onclick="return confirm('{{ 'are.you.sure.to.unblock.user' | trans }}')">
                     <i class="fas fa-user-check"></i> {{ 'unblock' | trans }}
                 </a>
 

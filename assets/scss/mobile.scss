@@ -242,6 +242,15 @@
   .mobile-txt-hider {
     display: none;
   }
+  .moderation-actions, .moderation-actions label {
+    width: 100%;
+  }
+  .moderation-type-actions {
+    margin-bottom: 8px !important;
+  }
+  .moderation-user-actions {
+    margin-bottom: 2px !important;
+  }
 }
 
 @media only screen and (max-width: 400px) {

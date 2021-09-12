@@ -11,159 +11,163 @@
 
 {% block body %}
 
-    {% for notification in notifications %}
+    <div class="md-notifications">
 
-        {% if notification.type == 'comment_reply' %}
+        {% for notification in notifications %}
 
-            <div class="md-notification md-comment-notification">
+            {% if notification.type == 'comment_reply' %}
 
-                <div class="notify-sender-user">
-                    <a href="{{ path('user_profile', {'username': notification.comment.author.username}) }}">
-                        <span class="md-avatar md-avatar-50" style="background-image: url('{% if notification.comment.author.profile.avatar != 'avatar.jpg' %}{{ vich_uploader_asset(notification.comment.author.profile) | imagine_filter('thumbnail') }}{% else %}{{ asset('assets/images/avatar.jpg') | imagine_filter('thumbnail') }}{% endif %}')"></span>
-                    </a>
-                </div>
+                <div class="md-notification md-comment-notification">
 
-                <div class="notify-message-body">
-
-                    <div class="notify-message">
-
-                        <a class="notify-message-user" style="font-weight: 500" href="{{ path('user_profile', {'username': notification.comment.author.username}) }}">
-                            {{ notification.comment.author.profile.username }}
+                    <div class="notify-sender-user">
+                        <a href="{{ path('user_profile', {'username': notification.comment.author.username}) }}">
+                            <span class="md-avatar md-avatar-50" style="background-image: url('{% if notification.comment.author.profile.avatar != 'avatar.jpg' %}{{ vich_uploader_asset(notification.comment.author.profile) | imagine_filter('thumbnail') }}{% else %}{{ asset('assets/images/avatar.jpg') | imagine_filter('thumbnail') }}{% endif %}')"></span>
                         </a>
+                    </div>
 
-                        {% if notification.comment.author.profile.gender %}
-                            {{ 'replied.you.with.comment.female' | trans }}:
-                        {% else %}
-                            {{ 'replied.you.with.comment.male' | trans }}:
-                        {% endif %}
+                    <div class="notify-message-body">
 
+                        <div class="notify-message">
+
+                            <a class="notify-message-user" style="font-weight: 500" href="{{ path('user_profile', {'username': notification.comment.author.username}) }}">
+                                {{ notification.comment.author.profile.username }}
+                            </a>
+
+                            {% if notification.comment.author.profile.gender %}
+                                {{ 'replied.you.with.comment.female' | trans }}:
+                            {% else %}
+                                {{ 'replied.you.with.comment.male' | trans }}:
+                            {% endif %}
+
+                            {% if notification.comment.song %}
+                                <a class="notify-message-link" href="{{ path('song_show', {'slug': notification.comment.song.slug}) }}">
+                                    {{ notification.comment.message }}
+                                </a>
+                            {% else %}
+                                <a class="notify-message-link" href="{{ path( 'article_show', {'slug': notification.comment.article.slug}) }}">
+                                    {{ notification.comment.message }}
+                                </a>
+                            {% endif %}
+
+                            <br>
+
+                            <small class="text-muted">
+                                {{ notification.publishedAt ? notification.publishedAt | format_datetime('medium', 'none', '', 'UTC') }}
+                            </small>
+
+                        </div>
+
+                    </div>
+
+                    <div class="notify-picture">
                         {% if notification.comment.song %}
-                            <a class="notify-message-link" href="{{ path('song_show', {'slug': notification.comment.song.slug}) }}">
-                                {{ notification.comment.message }}
+                            <a href="{{ path('song_show', {'slug': notification.comment.song.slug}) }}">
+                                <span class="back-picture bp-50" style="border-radius: 3px;margin-right: 14px;background-image: url('{% if notification.comment.song.artist.picture %}{{ vich_uploader_asset(notification.comment.song.artist) | imagine_filter('thumbnail') }}{% else %}{{ asset('assets/images/avatar.jpg') | imagine_filter('thumbnail') }}{% endif %}')">
+                                </span>
                             </a>
                         {% else %}
-                            <a class="notify-message-link" href="{{ path( 'article_show', {'slug': notification.comment.article.slug}) }}">
-                                {{ notification.comment.message }}
+                            <a href="{{ path( 'article_show', {'slug': notification.comment.article.slug}) }}">
+                                <span class="back-picture bp-50" style="border-radius: 3px;margin-right: 14px;background-image: url(' {% if notification.comment.article.image %}{{ vich_uploader_asset(notification.comment.article) | imagine_filter('thumbnail') }}{% else %}{{ asset('assets/images/question.jpg') }}{% endif %}')">
+                                </span>
                             </a>
                         {% endif %}
-
-                        <br>
-
-                        <small class="text-muted">
-                            {{ notification.publishedAt ? notification.publishedAt | format_datetime('medium', 'none', '', 'UTC') }}
-                        </small>
-
                     </div>
 
                 </div>
 
-                <div class="notify-picture">
-                    {% if notification.comment.song %}
-                        <a href="{{ path('song_show', {'slug': notification.comment.song.slug}) }}">
-                            <span class="back-picture bp-50" style="border-radius: 3px;margin-right: 14px;background-image: url('{{ vich_uploader_asset(notification.comment.song.artist) | imagine_filter('thumbnail') }}')">
+            {% elseif notification.type == 'article_rejected' %}
+
+                <div class="md-notification md-comment-notification">
+
+                    <div class="notify-sender-user">
+                        <a href="javascript:void(0)">
+                            <span class="md-avatar md-avatar-50" style="background-image: url('{{ asset('assets/images/logo-avatar.jpg') }}')"></span>
+                        </a>
+                    </div>
+
+                    <div class="notify-message-body">
+
+                        <div class="notify-message">
+
+                            <a class="notify-message-user" style="font-weight: 500" href="javascript:void(0)">
+                                shovdanyist
+                            </a>
+
+                            Администрация сайта отклонила вашу публикацию
+                            <a href="{{ path( 'article_show', {'slug': notification.article.slug}) }}">{{ notification.article.title }}</a>
+                            по следующей причине:
+
+                            <span style="font-weight: 400">{{ notification.message }}</span>
+
+                            <br>
+
+                            <small class="text-muted">
+                                {{ notification.publishedAt ? notification.publishedAt | format_datetime('medium', 'none', '', 'UTC') }}
+                            </small>
+
+                        </div>
+
+                    </div>
+
+                    <div class="notify-picture">
+                        <a href="{{ path( 'article_show', {'slug': notification.article.slug}) }}">
+                            <span class="back-picture bp-50" style="border-radius: 3px;margin-right: 14px;background-image: url('{% if notification.article.image %}{{ vich_uploader_asset(notification.article) | imagine_filter('thumbnail') }}{% else %}{{ asset('assets/images/question.jpg') | imagine_filter('thumbnail') }}{% endif %}')">
                             </span>
                         </a>
-                    {% else %}
-                        <a href="{{ path( 'article_show', {'slug': notification.comment.article.slug}) }}">
-                            <span class="back-picture bp-50" style="border-radius: 3px;margin-right: 14px;background-image: url(' {% if notification.comment.article.image %}{{ vich_uploader_asset(notification.comment.article) | imagine_filter('thumbnail') }}{% else %}{{ asset('assets/images/question.jpg') }}{% endif %}')">
+                    </div>
+
+                </div>
+
+            {% elseif notification.type == 'article_posted' %}
+
+                <div class="md-notification md-comment-notification">
+
+                    <div class="notify-sender-user">
+                        <a href="javascript:void(0)">
+                            <span class="md-avatar md-avatar-50" style="background-image: url('{{ asset('assets/images/logo-avatar.jpg') }}')"></span>
+                        </a>
+                    </div>
+
+                    <div class="notify-message-body">
+
+                        <div class="notify-message">
+
+                            <a class="notify-message-user" style="font-weight: 500" href="javascript:void(0)">
+                                shovdanyist
+                            </a>
+
+                            Ваша статья
+                            <a href="{{ path( 'article_show', {'slug': notification.article.slug}) }}">{{ notification.article.title }}</a>
+                            опубликована
+
+                            <br>
+
+                            <small class="text-muted">
+                                {{ notification.publishedAt ? notification.publishedAt | format_datetime('medium', 'none', '', 'UTC') }}
+                            </small>
+
+                        </div>
+
+                    </div>
+
+                    <div class="notify-picture">
+                        <a href="{{ path( 'article_show', {'slug': notification.article.slug}) }}">
+                            <span class="back-picture bp-50" style="border-radius: 3px;margin-right: 14px;background-image: url('{% if notification.article.image %}{{ vich_uploader_asset(notification.article) | imagine_filter('thumbnail') }}{% else %}{{ asset('assets/images/question.jpg') | imagine_filter('thumbnail') }}{% endif %}')">
                             </span>
                         </a>
-                    {% endif %}
-                </div>
-
-            </div>
-
-        {% elseif notification.type == 'article_rejected' %}
-
-            <div class="md-notification md-comment-notification">
-
-                <div class="notify-sender-user">
-                    <a href="javascript:void(0)">
-                        <span class="md-avatar md-avatar-50" style="background-image: url('{{ asset('assets/images/logo-avatar.jpg') }}')"></span>
-                    </a>
-                </div>
-
-                <div class="notify-message-body">
-
-                    <div class="notify-message">
-
-                        <a class="notify-message-user" style="font-weight: 500" href="javascript:void(0)">
-                            shovdanyist
-                        </a>
-
-                        Администрация сайта отклонила вашу публикацию
-                        <a href="{{ path( 'article_show', {'slug': notification.article.slug}) }}">{{ notification.article.title }}</a>
-                        по следующей причине:
-
-                        <span style="font-weight: 400">{{ notification.message }}</span>
-
-                        <br>
-
-                        <small class="text-muted">
-                            {{ notification.publishedAt ? notification.publishedAt | format_datetime('medium', 'none', '', 'UTC') }}
-                        </small>
-
                     </div>
 
                 </div>
 
-                <div class="notify-picture">
-                    <a href="{{ path( 'article_show', {'slug': notification.article.slug}) }}">
-                        <span class="back-picture bp-50" style="border-radius: 3px;margin-right: 14px;background-image: url('{% if notification.article.image %}{{ vich_uploader_asset(notification.article) | imagine_filter('thumbnail') }}{% else %}{{ asset('assets/images/question.jpg') | imagine_filter('thumbnail') }}{% endif %}')">
-                        </span>
-                    </a>
-                </div>
+            {% endif %}
 
-            </div>
+        {% else %}
 
-        {% elseif notification.type == 'article_posted' %}
+            {{ 'you.have.no.notifications' | trans }}
 
-            <div class="md-notification md-comment-notification">
+        {% endfor %}
 
-                <div class="notify-sender-user">
-                    <a href="javascript:void(0)">
-                        <span class="md-avatar md-avatar-50" style="background-image: url('{{ asset('assets/images/logo-avatar.jpg') }}')"></span>
-                    </a>
-                </div>
-
-                <div class="notify-message-body">
-
-                    <div class="notify-message">
-
-                        <a class="notify-message-user" style="font-weight: 500" href="javascript:void(0)">
-                            shovdanyist
-                        </a>
-
-                        Ваша статья
-                        <a href="{{ path( 'article_show', {'slug': notification.article.slug}) }}">{{ notification.article.title }}</a>
-                        опубликована
-
-                        <br>
-
-                        <small class="text-muted">
-                            {{ notification.publishedAt ? notification.publishedAt | format_datetime('medium', 'none', '', 'UTC') }}
-                        </small>
-
-                    </div>
-
-                </div>
-
-                <div class="notify-picture">
-                    <a href="{{ path( 'article_show', {'slug': notification.article.slug}) }}">
-                        <span class="back-picture bp-50" style="border-radius: 3px;margin-right: 14px;background-image: url('{% if notification.article.image %}{{ vich_uploader_asset(notification.article) | imagine_filter('thumbnail') }}{% else %}{{ asset('assets/images/question.jpg') | imagine_filter('thumbnail') }}{% endif %}')">
-                        </span>
-                    </a>
-                </div>
-
-            </div>
-
-        {% endif %}
-
-    {% else %}
-
-        {{ 'you.have.no.notifications' | trans }}
-
-    {% endfor %}
+    </div>
 
     {{ paginator.display() }}
 

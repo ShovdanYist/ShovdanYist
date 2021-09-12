@@ -22,7 +22,7 @@
                 {{ articleTags(article) }}
                 {{ articleImage(article) }}
                 {% for song in article.songs %}
-                    {{ player(song,null,null,null,vich_uploader_asset(article)) }}
+                    {{ player(song,null,null,null) }}
                 {% endfor %}
                 {{ articleDescription(article) }}
                 {{ articleActions(article) }}

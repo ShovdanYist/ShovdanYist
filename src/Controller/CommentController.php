@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\CustomAbstracts\CustomAbstractController;
+use App\Entity\Action;
 use App\Entity\Comment;
 use App\Entity\Song;
 use App\Entity\Notification;
@@ -92,21 +93,37 @@ class CommentController extends CustomAbstractController
     }
 
     /**
-     * @Route("/comment/delete/{id}", name="comment_delete")
+     * @Route("/comment/delete/{id}", name="delete_comment")
      * @param Request $request
      * @param Comment $comment
      * @param Defender $defender
      * @return RedirectResponse
      */
-    public function commentDelete(Request $request, Comment $comment, Defender $defender): Response
+    public function deleteComment(Request $request, Comment $comment, Defender $defender): Response
     {
         if ($this->isCsrfTokenValid('delete'.$comment->getId(), $request->request->get('_token')) && $defender->rightToDeleteComment($this->user(),$comment)) {
+
             $em = $this->getDoctrine()->getManager();
-            foreach ($comment->getNotifications() as $notification) {
-                $em->remove($notification);
+
+            if ($comment->getArticle() && $comment->getArticle()->getAuthor() !== $this->user() && $comment->getAuthor() !== $this->user() || $comment->getSong() && $comment->getSong()->getAuthor() !== $this->user() && $comment->getAuthor() !== $this->user()) {
+                $action = new Action();
+                $action->setModerator($this->user());
+                $action->setContent($comment->getMessage());
+                $action->setType('comment_deleted');
+                $action->setUser($comment->getAuthor());
+
+                if ($comment->getSong()) {
+                    $action->setSong($comment->getSong());
+                } elseif ($comment->getArticle()) {
+                    $action->setArticle($comment->getArticle());
+                }
+
+                $em->persist($action);
             }
+
             $em->remove($comment);
             $em->flush();
+
             $this->addFlash('success', $this->trans('flash.comment.deleted'));
         } else {
             $this->addFlash('danger', $this->trans('flash.comment.deleting.error'));

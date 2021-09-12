@@ -177,13 +177,6 @@ class DashSongController extends AbstractController
     {
         if ($this->isCsrfTokenValid('delete'.$song->getId(), $request->request->get('_token'))) {
             $em = $this->getDoctrine()->getManager();
-            // Delete each comments of song and each notification of each comments when you delete a song (song)
-            foreach ($song->getComments() as $comment) {
-                $em->remove($comment);
-                foreach ($comment->getNotifications() as $notification) {
-                    $em->remove($notification);
-                }
-            }
             $em->remove($song);
             $em->flush();
         }

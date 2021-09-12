@@ -3,15 +3,14 @@
 namespace App\Controller;
 
 use App\CustomAbstracts\CustomAbstractController;
+use App\Entity\Action;
 use App\Entity\Bookmark;
-use App\Entity\Notification;
 use App\Entity\Article;
 use App\Entity\Tag;
-use App\Form\NotificationType;
+use DateTime;
 use App\Form\ArticleType;
 use App\Repository\UserRepository;
 use App\Service\Paginator;
-use DateTime;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -85,83 +84,6 @@ class ArticleController extends CustomAbstractController
     }
 
     /**
-     * @Route("/article/moderation/{page<\d+>?1}", name="moderation", methods={"GET"})
-     * @param $page
-     * @param Paginator $paginator
-     * @return Response
-     */
-    public function moderation($page, Paginator $paginator): Response
-    {
-        $paginator
-            ->setClass(Article::class)
-            ->setOrder(['updatedAt' => 'ASC'])
-            ->setCriteria(['status' => null, 'moderation' => true])
-            ->setLimit(10)
-            ->setPage($page)
-        ;
-
-        return $this->render('article/moderation.html.twig', [
-            'articles' => $paginator->getData(),
-            'paginator' => $paginator
-        ]);
-    }
-
-    /**
-     * @Route("/article/moderation/publish/{id}", name="moderation_publish")
-     * @param Article $article
-     * @return Response
-     */
-    public function publish(Article $article):Response
-    {
-        $notification = new Notification();
-        $notification->setReceiver($article->getAuthor());
-        $notification->setType('article_posted');
-        $notification->setArticle($article);
-
-        $article->setStatus(true);
-
-        if (!$article->getPublishedAt()) {
-            $article->setPublishedAt(new DateTime('now'));
-        }
-
-        $article->setUpdatedAt(new DateTime('now'));
-
-        foreach ($article->getNotifications() as $value) {
-            $value->setStatus(true);
-        }
-
-        $em = $this->getDoctrine()->getManager();
-        $em->persist($notification);
-        $em->flush();
-
-        return $this->redirectToRoute('article_moderation');
-    }
-
-    /**
-     * @Route("/article/moderation/reject/{id}", name="moderation_reject")
-     * @param Request $request
-     * @param Article $article
-     * @return Response
-     */
-    public function reject(Request $request, Article $article): Response
-    {
-        $notification = new Notification();
-        $notification->setReceiver($article->getAuthor());
-        $notification->setType('article_rejected');
-        $notification->setArticle($article);
-        $article->setStatus(false);
-
-        $form = $this->createForm(NotificationType::class, $notification);
-        $form->handleRequest($request);
-
-        $em = $this->getDoctrine()->getManager();
-        $em->persist($notification);
-        $em->flush();
-
-        return $this->redirectToRoute('article_moderation');
-    }
-
-    /**
      * @Route("/article/{slug}/{page<\d+>?1}", name="show")
      * @param Article $article
      * @param $page
@@ -215,7 +137,17 @@ class ArticleController extends CustomAbstractController
                     }
                 }
 
-                $this->getDoctrine()->getManager()->flush();
+                $em = $this->getDoctrine()->getManager();
+
+                if ($article->getAuthor() !== $this->user()) {
+                    $action = new Action();
+                    $action->setModerator($this->user());
+                    $action->setArticle($article);
+                    $action->setType('article_edited');
+                    $em->persist($action);
+                }
+
+                $em->flush();
 
                 return $this->redirectToRoute('article_show', ['slug' => $article->getSlug()]);
             }

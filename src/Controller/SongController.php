@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\CustomAbstracts\CustomAbstractController;
+use App\Entity\Action;
 use App\Entity\Song;
 use App\Entity\People;
 use App\Entity\Tag;
@@ -154,7 +155,14 @@ class SongController extends CustomAbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $this->getDoctrine()->getManager()->flush();
+            $action = new Action();
+            $action->setModerator($this->user());
+            $action->setSong($song);
+            $action->setType('song_edited');
+
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($action);
+            $em->flush();
 
             if ($form->get('save')->isClicked()) {
                 return $this->redirectToRoute('song_edit', [

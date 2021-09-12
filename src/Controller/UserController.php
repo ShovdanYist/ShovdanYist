@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\CustomAbstracts\CustomAbstractController;
+use App\Entity\Action;
 use App\Entity\EmailAddress;
 use App\Entity\Song;
 use App\Entity\Notification;
@@ -18,7 +19,6 @@ use App\Service\Defender;
 use App\Service\Mailer;
 use App\Service\Paginator;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormError;
@@ -180,88 +180,6 @@ class UserController extends CustomAbstractController
     }
 
     /**
-     * @Route("/user/{username}/rights", name="rights", methods={"GET", "POST"})
-     * @Security("has_role('ROLE_SUPER_MODERATOR')")
-     * @param Request $request
-     * @param User $user
-     * @param Defender $defender
-     * @return Response
-     */
-    public function rights(Request $request, User $user, Defender $defender): Response
-    {
-        if (!$defender->rightToChangeUserRights($this->user(),$user)) {
-            return $this->redirectToRoute('user_profile', ['username' => $user->getUsername()]);
-        }
-
-        $form = $this->createFormBuilder($user)->getForm();
-
-        foreach ($defender->getRoles() as $role) {
-            if ($defender->isGranted($this->user(),$role)) {
-                $form->add($role, CheckboxType::class,[
-                    'label' => $role,
-                    'mapped' => false,
-                    'required' => false,
-                    'data' => $defender->isGranted($user,$role),
-                    'disabled' => $role === 'ROLE_USER_MANAGER' && !$defender->isGranted($this->user(),'ROLE_ADMINISTRATOR'),
-                    'label_attr' => ['class' => 'switch-custom']
-                ]);
-            } else {
-                $form->add($role, CheckboxType::class,[
-                    'label' => $role,
-                    'mapped' => false,
-                    'required' => false,
-                    'data' => $defender->isGranted($user,$role),
-                    'disabled' => true,
-                    'label_attr' => ['class' => 'switch-custom']
-                ]);
-            }
-        }
-
-        if ($defender->isGranted($this->user(),'ROLE_OWNER')) {
-            $form->add('ROLE_ADMINISTRATOR', CheckboxType::class,[
-                'label' => 'ROLE_ADMINISTRATOR',
-                'mapped' => false,
-                'required' => false,
-                'data' => $defender->isGranted($user,'ROLE_ADMINISTRATOR'),
-                'label_attr' => ['class' => 'switch-custom']
-            ]);
-        }
-
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-
-            $rights = [];
-
-            foreach ($defender->getRoles() as $role) {
-                $status = $form->get($role)->getData();
-                if ($status) {
-                    $rights[] = $role;
-                }
-            }
-
-            if ($defender->isGranted($this->user(),'ROLE_OWNER') && $form->get('ROLE_ADMINISTRATOR')->getData()) {
-                $rights[] = 'ROLE_ADMINISTRATOR';
-            }
-
-            ($rights) ? $user->setRoles($rights) : $user->setRoles(["ROLE_USER"]);
-
-            $em = $this->getDoctrine()->getManager();
-            $em->flush();
-
-            return $this->redirectToRoute('user_profile', [
-                'username' => $user->getUsername()
-            ]);
-        }
-
-        return $this->render('user/rights.html.twig', [
-            'form' => $form->createView(),
-            'user' => $user,
-            'roles' => $defender->getRoles()
-        ]);
-    }
-
-    /**
      * @Route("/reset", name="reset", methods={"GET", "POST"})
      * @param Request $request
      * @param UserRepository $repo
@@ -383,65 +301,6 @@ class UserController extends CustomAbstractController
         return $this->render('user/bookmarks.html.twig', [
             'articles' => $paginator->getData(),
             'paginator' => $paginator
-        ]);
-    }
-
-    /**
-     * @Route("/blockingUser/{id}", name="blocking_user", methods={"GET","POST"})
-     * @Security("has_role('ROLE_USER_BLOCKER')")
-     * @param User $user
-     * @param EmailAddressRepository $emails
-     * @param Defender $defender
-     * @return Response
-     */
-    public function blocking(User $user, EmailAddressRepository $emails, Defender $defender): Response
-    {
-        if (!$defender->rightToBlockUser($this->user(),$user)) {
-            $this->addFlash('warning', 'Вы не можете блокировать данного пользователя');
-            return $this->redirectToRoute('user_profile', ['username' => $user->getUsername()]);
-        }
-
-        $email = $emails->findOneBy(['address' => $user->getConfirmedEmail()]);
-
-        if ($email) {
-            $email->setStatus(false);
-        }
-
-        $user->setStatus(false);
-        $user->setRoles(["ROLE_USER"]);
-        $em = $this->getDoctrine()->getManager();
-        $em->flush();
-
-        $this->addFlash('danger', 'Пользователь '. $user->getUsername() . ' заблокирован');
-
-        return $this->redirectToRoute('user_profile', [
-            'username' => $user->getUsername()
-        ]);
-    }
-
-    /**
-     * @Route("/unblockingUser/{id}", name="unblocking_user", methods={"GET","POST"})
-     * @Security("has_role('ROLE_USER_BLOCKER')")
-     * @param User $user
-     * @param EmailAddressRepository $emails
-     * @return Response
-     */
-    public function unblocking(User $user, EmailAddressRepository $emails): Response
-    {
-        $email = $emails->findOneBy(['address' => $user->getConfirmedEmail()]);
-
-        if ($email) {
-            $email->setStatus(true);;
-        }
-
-        $user->setStatus(true);
-        $em = $this->getDoctrine()->getManager();
-        $em->flush();
-
-        $this->addFlash('success', 'Пользователь '. $user->getUsername() . ' разблоктрован');
-
-        return $this->redirectToRoute('user_profile', [
-            'username' => $user->getUsername()
         ]);
     }
 

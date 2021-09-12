@@ -92,17 +92,17 @@
                 </span>
             </a>
 
-            {% if is_granted('ROLE_ARTICLE_APPROVER') %}
-
+            {% if is_granted('ROLE_ARTICLE_APPROVER') or is_granted('ROLE_USER_ACTIONS') or is_granted('ROLE_OWNER') %}
                 <hr>
+            {% endif %}
 
-                <a class="sidenav-link" href="{{ path('article_moderation') }}">
+            {% if is_granted('ROLE_ARTICLE_APPROVER') %}
+                <a class="sidenav-link" href="{{ path('moderation_articles') }}">
                     <span class="dashbar-nav-icon">
                         <i class="fas fa-tasks"></i>
                     </span>
-
                     <span class="dashbar-nav-name">
-                        {{ 'moderation' | trans }}
+                        {{ 'articles' | trans }}
                     </span>
 
                     {% if articleModerationCount() != 0 %}
@@ -115,23 +115,28 @@
                     </span>
                     {% endif %}
                 </a>
+            {% endif %}
 
-                {% if is_granted('ROLE_OWNER') %}
+            {% if is_granted('ROLE_USER_ACTIONS') %}
+                <a class="sidenav-link" href="{{ path('moderation_actions') }}">
+                    <span class="dashbar-nav-icon">
+                        <i class="fas fa-hand-point-up"></i>
+                    </span>
+                    <span class="dashbar-nav-name">
+                        {{ 'actions' | trans }}
+                    </span>
+                </a>
+            {% endif %}
 
-                    <a class="sidenav-link" href="{{ path('dash_index') }}">
-
-                        <span class="dashbar-nav-icon">
-                            <i class="fas fa-tools"></i>
-                        </span>
-
-                        <span class="dashbar-nav-name">
-                            {{ 'manager' | trans }}
-                        </span>
-
-                    </a>
-
-                {% endif %}
-
+            {% if is_granted('ROLE_OWNER') %}
+                <a class="sidenav-link" href="{{ path('dash_index') }}">
+                    <span class="dashbar-nav-icon">
+                        <i class="fas fa-tools"></i>
+                    </span>
+                    <span class="dashbar-nav-name">
+                        {{ 'manager' | trans }}
+                    </span>
+                </a>
             {% endif %}
 
             <hr>

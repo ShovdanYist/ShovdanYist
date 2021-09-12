@@ -134,6 +134,16 @@ class User implements UserInterface
      */
     private $registeredAt;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Action::class, mappedBy="moderator", orphanRemoval=true)
+     */
+    private $actions;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Action::class, mappedBy="user", orphanRemoval=true)
+     */
+    private $remarks;
+
     public function __construct()
     {
         $this->songs = new ArrayCollection();
@@ -144,6 +154,8 @@ class User implements UserInterface
         $this->articles = new ArrayCollection();
         $this->bookmarks = new ArrayCollection();
         $this->invitees = new ArrayCollection();
+        $this->actions = new ArrayCollection();
+        $this->remarks = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -573,6 +585,68 @@ class User implements UserInterface
     public function setRegisteredAt(\DateTimeInterface $registeredAt): self
     {
         $this->registeredAt = $registeredAt;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Action[]
+     */
+    public function getActions(): Collection
+    {
+        return $this->actions;
+    }
+
+    public function addAction(Action $action): self
+    {
+        if (!$this->actions->contains($action)) {
+            $this->actions[] = $action;
+            $action->setModerator($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAction(Action $action): self
+    {
+        if ($this->actions->contains($action)) {
+            $this->actions->removeElement($action);
+            // set the owning side to null (unless already changed)
+            if ($action->getModerator() === $this) {
+                $action->setModerator(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Action[]
+     */
+    public function getRemarks(): Collection
+    {
+        return $this->remarks;
+    }
+
+    public function addRemark(Action $remark): self
+    {
+        if (!$this->remarks->contains($remark)) {
+            $this->remarks[] = $remark;
+            $remark->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRemark(Action $remark): self
+    {
+        if ($this->remarks->contains($remark)) {
+            $this->remarks->removeElement($remark);
+            // set the owning side to null (unless already changed)
+            if ($remark->getUser() === $this) {
+                $remark->setUser(null);
+            }
+        }
 
         return $this;
     }

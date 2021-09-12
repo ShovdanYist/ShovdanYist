@@ -33,13 +33,13 @@
 
                             {% if comment.author.status != false %}
 
-                                <a href="{{ path('user_blocking_user', {'id': comment.author.id}) }}" class="dropdown-item" onclick="return confirm('{{ 'are.you.sure.to.block.user' | trans }}')">
+                                <a href="{{ path('moderation_block_user', {'id': comment.author.id}) }}" class="dropdown-item" onclick="return confirm('{{ 'are.you.sure.to.block.user' | trans }}')">
                                     {{ 'block' | trans }}
                                 </a>
 
                             {% else %}
 
-                                <a href="{{ path('user_unblocking_user', {'id': comment.author.id}) }}" class="dropdown-item" onclick="return confirm('{{ 'are.you.sure.to.unblock.user' | trans }}')">
+                                <a href="{{ path('moderation_unblock_user', {'id': comment.author.id}) }}" class="dropdown-item" onclick="return confirm('{{ 'are.you.sure.to.unblock.user' | trans }}')">
                                     {{ 'unblock' | trans }}
                                 </a>
 

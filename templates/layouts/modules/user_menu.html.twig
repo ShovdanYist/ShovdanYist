@@ -2,108 +2,127 @@
 
     {% set user = app.user %}
 
-    <div class="md-box sidebar sticky-top">
+    <div class="sidebar sticky-top">
 
-        <div class="md-user-sidebar-profile">
+        <div class="md-box sidebar-box">
 
-            <div class="back-picture bp-45" style="background-image: url('{% if app.user.profile.avatar != 'avatar.jpg' %}{{ vich_uploader_asset(app.user.profile) | imagine_filter('thumbnail') }}{% else %}{{ asset('assets/images/avatar.jpg') | imagine_filter('thumbnail') }}{% endif %}')">
-            </div>
+            <div class="md-user-sidebar-profile">
 
-            <div class="md-user-sidebar-username">
-                <span class="md-username">
-                    <a href="{{ path('user_profile', {'username' : user.username }) }}">
-                        {{ user.username }}
-                    </a>
-                </span>
+                <div class="back-picture bp-45" style="background-image: url('{% if app.user.profile.avatar != 'avatar.jpg' %}{{ vich_uploader_asset(app.user.profile) | imagine_filter('thumbnail') }}{% else %}{{ asset('assets/images/avatar.jpg') | imagine_filter('thumbnail') }}{% endif %}')">
+                </div>
 
-                {% if user.profile.verified %}
-                    <span class="md-verified">
-                        <i class="fas fa-check-circle text-info"></i>
+                <div class="md-user-sidebar-username">
+                    <span class="md-username">
+                        <a href="{{ path('user_profile', {'username' : user.username }) }}">
+                            {{ user.username }}
+                        </a>
                     </span>
-                {% endif %}
+
+                    {% if user.profile.verified %}
+                        <span class="md-verified">
+                            <i class="fas fa-check-circle text-info"></i>
+                        </span>
+                    {% endif %}
+                </div>
+
             </div>
 
-        </div>
+            <div class="md-menu">
 
-        <div class="md-menu">
+                <ul>
 
-            <ul>
-
-                <li class="md-menu-item">
-                    <a href="{{ path('app_home') }}">
-                        <span>
-                            <i class="fas fa-heading"></i>
-                        </span>
-                        {{ 'articles' | trans }}
-                    </a>
-                </li>
-
-                <li class="md-menu-item">
-                    <a href="{{ path('song_index') }}">
-                        <span>
-                            <i class="fas fa-music"></i>
-                        </span>
-                        {{ 'music' | trans }}
-                    </a>
-                </li>
-
-                <li class="md-menu-item">
-                    <a href="{{ path('user_notifications') }}">
-                        <span>
-                            <i class="fas fa-bell"></i>
-                        </span>
-                        {{ 'notifications' | trans }}
-                        {% if notifyCount(app.user) != 0 %}
-                            <span class="badge badge-pill badge-danger float-right mt-1">
-                                {% if notifyCount(app.user) > 99 %}
-                                    99+
-                                {% else %}
-                                    {{ notifyCount(app.user) }}
-                                {% endif %}
-                            </span>
-                        {% endif %}
-                    </a>
-                </li>
-
-                <li class="md-menu-item">
-                    <a href="{{ path('user_playlist') }}">
-                        <span>
-                            <i class="fas fa-headphones"></i>
-                        </span>
-                        {{ 'playlist' | trans }}
-                    </a>
-                </li>
-
-                <li class="md-menu-item">
-                    <a href="{{ path('user_bookmarks') }}">
-                        <span>
-                            <i class="fas fa-bookmark"></i>
-                        </span>
-                        {{ 'bookmarks' | trans }}
-                    </a>
-                </li>
-
-                {% if is_granted('ROLE_ARTICLE_APPROVER') %}
                     <li class="md-menu-item">
-                        <a href="{{ path('article_moderation') }}">
-                        <span>
-                            <i class="fas fa-tasks"></i>
-                        </span>
-                            {{ 'moderation' | trans }}
-                            {% if articleModerationCount() != 0 %}
-                                <span class="badge badge-pill badge-danger float-right mt-1">
-                                {% if articleModerationCount() > 99 %}
-                                    99+
-                                {% else %}
-                                    {{ articleModerationCount() }}
-                                {% endif %}
+                        <a href="{{ path('app_home') }}">
+                            <span>
+                                <i class="fas fa-heading"></i>
                             </span>
+                            {{ 'articles' | trans }}
+                        </a>
+                    </li>
+
+                    <li class="md-menu-item">
+                        <a href="{{ path('song_index') }}">
+                            <span>
+                                <i class="fas fa-music"></i>
+                            </span>
+                            {{ 'music' | trans }}
+                        </a>
+                    </li>
+
+                    <li class="md-menu-item">
+                        <a href="{{ path('user_notifications') }}">
+                            <span>
+                                <i class="fas fa-bell"></i>
+                            </span>
+                            {{ 'notifications' | trans }}
+                            {% if notifyCount(app.user) != 0 %}
+                                <span class="badge badge-pill badge-danger float-right mt-1">
+                                    {% if notifyCount(app.user) > 99 %}
+                                        99+
+                                    {% else %}
+                                        {{ notifyCount(app.user) }}
+                                    {% endif %}
+                                </span>
                             {% endif %}
                         </a>
                     </li>
-                {% endif %}
 
-            </ul>
+                    <li class="md-menu-item">
+                        <a href="{{ path('user_playlist') }}">
+                            <span>
+                                <i class="fas fa-headphones"></i>
+                            </span>
+                            {{ 'playlist' | trans }}
+                        </a>
+                    </li>
+
+                    <li class="md-menu-item">
+                        <a href="{{ path('user_bookmarks') }}">
+                            <span>
+                                <i class="fas fa-bookmark"></i>
+                            </span>
+                            {{ 'bookmarks' | trans }}
+                        </a>
+                    </li>
+
+{#                    {% if is_granted('ROLE_ARTICLE_APPROVER') or is_granted('ROLE_USER_ACTIONS') %}#}
+{#                        <span class="user-menu-separator text-muted">Модерация</span>#}
+{#                    {% endif %}#}
+
+                    {% if is_granted('ROLE_ARTICLE_APPROVER') %}
+                        <li class="md-menu-item">
+                            <a href="{{ path('moderation_articles') }}">
+                            <span>
+                                <i class="fas fa-tasks"></i>
+                            </span>
+                                {{ 'articles' | trans }}
+                                {% if articleModerationCount() != 0 %}
+                                    <span class="badge badge-pill badge-danger float-right mt-1">
+                                    {% if articleModerationCount() > 99 %}
+                                        99+
+                                    {% else %}
+                                        {{ articleModerationCount() }}
+                                    {% endif %}
+                                </span>
+                                {% endif %}
+                            </a>
+                        </li>
+                    {% endif %}
+
+                    {% if is_granted('ROLE_USER_ACTIONS') %}
+                        <li class="md-menu-item">
+                            <a href="{{ path('moderation_actions') }}">
+                                <span>
+                                    <i class="fas fa-hand-point-up"></i>
+                                </span>
+                                {{ 'actions' | trans }}
+                            </a>
+                        </li>
+                    {% endif %}
+
+                </ul>
+
+            </div>
 
         </div>
 

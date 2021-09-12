@@ -117,6 +117,10 @@ li {
   user-select: none;
 }
 
+.moderation-actions {
+  margin-bottom: 14px;
+}
+
 // CK Editor Content
 
 blockquote, .ck.ck-content blockquote {
@@ -1013,8 +1017,9 @@ td {
 
 // Sidebar
 
-.sidebar {
+.sidebar-box {
   padding: 12px;
+  margin-bottom: 12px;
 }
 
 // User pages
@@ -1053,6 +1058,13 @@ td {
 
 // Custom menu
 
+.md-menu .user-menu-separator {
+  border-bottom: 1px solid #cad6d7;
+  width: 100%;
+  display: block;
+  margin: 4px 0 8px 0;
+  padding-bottom: 4px;
+}
 .md-menu-item span {
   width: 25px;
   display: table;
@@ -1160,6 +1172,14 @@ td {
   padding: 4px 0;
 }
 
+.md-pagination .md-pagination-box {
+  margin: unset;
+}
+
+.md-pagination-box {
+  margin-top: 14px;
+}
+
 .md-margin-bottom {
   margin-bottom: 12px;
 }
@@ -1190,7 +1210,7 @@ td {
   border-radius: 3px;
 }
 
-.md-box.sticky-top {
+.md-box.sticky-top, .sidebar.sticky-top {
   top: 67px
 }
 

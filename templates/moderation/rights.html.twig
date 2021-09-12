@@ -22,6 +22,7 @@
                 {{ form_row(form.ROLE_USER_BLOCKER) }}
                 {{ form_row(form.ROLE_USER_ANALYST) }}
                 {{ form_row(form.ROLE_USER_MANAGER) }}
+                {{ form_row(form.ROLE_USER_ACTIONS) }}
 
                 {% if is_granted('ROLE_OWNER') %}
                     {{ form_row(form.ROLE_ADMINISTRATOR) }}

@@ -198,6 +198,7 @@ flash.removed.from.bookmarks: 'Статья удалена из закладок
 flash.added.to.bookmarks: 'Статья добавлена в закладки'
 bookmarks: Закладки
 moderation: Модерация
+moderators: Модераторы
 are.you.sure.to.log.out: 'Вы уверены что хотите выйти?'
 are.you.sure.to.block.user: 'Вы уверены что хотите заблокировать этого пользователя?'
 are.you.sure.to.unblock.user: 'Вы уверены что хотите разблокировать этого пользователя?'
@@ -223,6 +224,8 @@ type: Тип
 categories: Категории
 select.categories: 'Выберите категории'
 invited.by: 'По приглашению'
+'This performer already has a composition with this title': 'У этого исполнителя уже существует произведение с таким названием'
+'Composition with this alias already exists': 'Уже существует произведение с таким алиасом'
 rights: Права
 ROLE_ADMINISTRATOR: Администратор
 ROLE_ARTICLE_AUTHOR: 'Писать статьи'
@@ -235,5 +238,12 @@ ROLE_VOCALIST_EDITOR: 'Редактировать исполнителей'
 ROLE_USER_MANAGER: 'Назначение модераторов'
 ROLE_USER_BLOCKER: 'Блокировать пользователей'
 ROLE_USER_ANALYST: 'Статистика пользователей'
-'This performer already has a composition with this title': 'У этого исполнителя уже существует произведение с таким названием'
-'Composition with this alias already exists': 'Уже существует произведение с таким алиасом'
+ROLE_USER_ACTIONS: 'Действия модераторов'
+actions: 'Действия'
+type_user_blocked: 'Блокировка пользователей'
+type_user_unblocked: 'Разблокировка пользователей'
+type_article_published: 'Утверждение статей'
+type_article_rejected: 'Отклонение статей'
+type_article_edited: 'Редактирование статей'
+type_song_edited: 'Редактирование песен'
+type_comment_deleted: 'Удаление комментариев'

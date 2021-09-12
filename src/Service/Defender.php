@@ -4,12 +4,14 @@ namespace App\Service;
 
 use App\Entity\Comment;
 use App\Entity\User;
+use App\Repository\UserRepository;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Core\Authorization\AccessDecisionManagerInterface;
 
 class Defender
 {
     private $accessDecisionManager;
+    private $userRepo;
     private $roles = [
         'ROLE_ARTICLE_AUTHOR',
         'ROLE_ARTICLE_EDITOR',
@@ -20,16 +22,23 @@ class Defender
         'ROLE_VOCALIST_EDITOR',
         'ROLE_USER_MANAGER',
         'ROLE_USER_BLOCKER',
-        'ROLE_USER_ANALYST'
+        'ROLE_USER_ANALYST',
+        'ROLE_USER_ACTIONS'
     ];
 
-    public function __construct(AccessDecisionManagerInterface $accessDecisionManager) {
+    public function __construct(AccessDecisionManagerInterface $accessDecisionManager, UserRepository $userRepo) {
         $this->accessDecisionManager = $accessDecisionManager;
+        $this->userRepo = $userRepo;
     }
 
     public function getRoles(): array
     {
         return $this->roles;
+    }
+
+    public function getActionUsers()
+    {
+        return $this->userRepo->findActionUsers();
     }
 
     public function isGranted($user, $role, $object = null): bool
