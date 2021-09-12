@@ -3,7 +3,7 @@
 namespace App\Form;
 
 use App\Entity\Activity;
-use App\Entity\People;
+use App\Entity\Person;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
@@ -57,7 +57,7 @@ class PeopleType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => People::class,
+            'data_class' => Person::class,
         ]);
     }
 }

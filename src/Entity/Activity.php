@@ -30,7 +30,7 @@ class Activity
     private $title;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\People", mappedBy="activity")
+     * @ORM\ManyToMany(targetEntity=Person::class, mappedBy="activity")
      */
     private $people;
 
@@ -64,14 +64,14 @@ class Activity
     }
 
     /**
-     * @return Collection|People[]
+     * @return Collection|Person[]
      */
     public function getPeople(): Collection
     {
         return $this->people;
     }
 
-    public function addPerson(People $person): self
+    public function addPerson(Person $person): self
     {
         if (!$this->people->contains($person)) {
             $this->people[] = $person;
@@ -81,7 +81,7 @@ class Activity
         return $this;
     }
 
-    public function removePerson(People $person): self
+    public function removePerson(Person $person): self
     {
         if ($this->people->contains($person)) {
             $this->people->removeElement($person);

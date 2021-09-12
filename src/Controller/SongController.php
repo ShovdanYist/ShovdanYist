@@ -5,7 +5,7 @@ namespace App\Controller;
 use App\CustomAbstracts\CustomAbstractController;
 use App\Entity\Action;
 use App\Entity\Song;
-use App\Entity\People;
+use App\Entity\Person;
 use App\Entity\Tag;
 use App\Entity\PlaylistSong;
 use App\Form\SongType;
@@ -176,7 +176,7 @@ class SongController extends CustomAbstractController
         return $this->render('interface/song/song_edit.html.twig', [
             'song' => $song,
             'form' => $form->createView(),
-            'person' => $song->getArtist()
+            'person' => $song->getVocalist()
         ]);
     }
 
@@ -227,7 +227,7 @@ class SongController extends CustomAbstractController
             throw $this->createNotFoundException();
         }
 
-        $songs = $songRepo->findBy(['artist' => $vocalist, 'status' => true], ['releaseDate' => 'DESC']);
+        $songs = $songRepo->findBy(['vocalist' => $vocalist, 'status' => true], ['releaseDate' => 'DESC']);
 
         return $this->render('interface/song/vocalist.html.twig', [
             'vocalist' => $vocalist,
@@ -239,16 +239,24 @@ class SongController extends CustomAbstractController
      * @Route("/vocalist/{slug}/edit", name="vocalist_edit", methods={"GET","POST"})
      * @Security("has_role('ROLE_VOCALIST_EDITOR')")
      * @param Request $request
-     * @param People $person
+     * @param Person $person
      * @return Response
      */
-    public function vocalistEdit(Request $request, People $person): Response
+    public function vocalistEdit(Request $request, Person $person): Response
     {
         $form = $this->createForm(PeopleType::class, $person);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+            $em = $this->getDoctrine()->getManager();
+
+            $action = new Action();
+            $action->setModerator($this->user());
+            $action->setPerson($person);
+            $action->setType('person_edited');
+
+            $em->persist($action);
+            $em->flush();
 
             return $this->redirectToRoute('song_vocalist', ['slug' => $person->getSlug()]);
         }

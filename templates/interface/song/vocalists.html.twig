@@ -1,7 +1,7 @@
 {% extends 'interface/base.html.twig' %}
 
 {% block title %}
-    {{ 'artists.for.letter' | trans({'%letter%': letter | capitalize}) }}
+    {{ 'vocalists.for.letter' | trans({'%letter%': letter | capitalize}) }}
 {% endblock %}
 
 {% block main_top %}
@@ -42,7 +42,7 @@
 
         {% else %}
 
-            {{ 'artists.for.letter.not.found' | trans({'%letter%': letter | capitalize}) }}
+            {{ 'vocalists.for.letter.not.found' | trans({'%letter%': letter | capitalize}) }}
 
         {% endfor %}
 

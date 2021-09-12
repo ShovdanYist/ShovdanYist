@@ -1,16 +1,16 @@
 <div class="audio-player text-muted">
 
     <div class="audio-player-image">
-        <div style="background-image: url('{% if image %}{{ image }}{% elseif song.artist.picture %}{{ vich_uploader_asset(song.artist) | imagine_filter('thumbnail') }}{% else %}{{ asset('assets/images/avatar.jpg') }}{% endif %}')"></div>
+        <div style="background-image: url('{% if image %}{{ image }}{% elseif song.vocalist.picture %}{{ vich_uploader_asset(song.vocalist) | imagine_filter('thumbnail') }}{% else %}{{ asset('assets/images/avatar.jpg') }}{% endif %}')"></div>
     </div>
 
     <div class="audio-player-title">
         <span>
             {% if type == 'song' %}
-                <strong>{{ song.artist.fullName }}</strong> -
+                <strong>{{ song.vocalist.fullName }}</strong> -
                 {{ song.title }}
             {% else %}
-                <a href="{{ path('song_show', {slug: song.slug}) }}"><span class="md-player-artist">{{ song.artist.fullName }}</span> - {{ song.title }}</a>
+                <a href="{{ path('song_show', {slug: song.slug}) }}"><span class="md-player-vocalist">{{ song.vocalist.fullName }}</span> - {{ song.title }}</a>
             {% endif %}
         </span>
         {{ featuring( song, ', ' ) }}
@@ -21,7 +21,7 @@
         <span class="audio-player-actions">
 
             {% if download == true %}
-                <a class="playlist-download muted-link-info" download="{{ song.artist.fullName }} - {{ song.title }} {{ featuring( song, ', ' ) }}.mp3" href="{{ vich_uploader_asset(song) }}" data-toggle="tooltip" title="{{ 'download.song' | trans }}">
+                <a class="playlist-download muted-link-info" download="{{ song.vocalist.fullName }} - {{ song.title }} {{ featuring( song, ', ' ) }}.mp3" href="{{ vich_uploader_asset(song) }}" data-toggle="tooltip" title="{{ 'download.song' | trans }}">
                     <i class="far fa-arrow-alt-circle-down"></i>
                 </a>
             {% endif %}
@@ -42,6 +42,6 @@
 
     {% endif %}
 
-    <audio preload="none" title="{{ song.artist.fullName }} - {{ song.title }}{{ featuring( song, ', ' ) }}" class="player-audio" src="{{ vich_uploader_asset(song) }}" type="audio/mp3" controls="controls"></audio>
+    <audio preload="none" title="{{ song.vocalist.fullName }} - {{ song.title }}{{ featuring( song, ', ' ) }}" class="player-audio" src="{{ vich_uploader_asset(song) }}" type="audio/mp3" controls="controls"></audio>
 
 </div>

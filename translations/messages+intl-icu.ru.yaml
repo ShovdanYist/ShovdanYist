@@ -52,8 +52,8 @@ release.date: 'Дата релиза'
 featuring: Совместно
 publication.date: 'Дата публикации'
 author: Автор
-artists.for.letter.not.found: 'Исполнителей на букву "{ letter }" не найдено'
-artists.for.letter: 'Исполнители на букву "{ letter }"'
+vocalists.for.letter.not.found: 'Исполнителей на букву "{ letter }" не найдено'
+vocalists.for.letter: 'Исполнители на букву "{ letter }"'
 birth.date: 'Дата рождения'
 birthday: 'День рождения'
 title: Название
@@ -154,7 +154,7 @@ translation: Перевод
 featured: Избранное
 featureds: Избранные
 activated: Опубликовано
-artist: Артист
+vocalist: Артист
 first.name: Имя
 last.name: Фамилия
 biography: Биография
@@ -242,8 +242,9 @@ ROLE_USER_ACTIONS: 'Действия модераторов'
 actions: 'Действия'
 type_user_blocked: 'Блокировка пользователей'
 type_user_unblocked: 'Разблокировка пользователей'
+type_comment_deleted: 'Удаление комментариев'
+type_article_edited: 'Редактирование статей'
 type_article_published: 'Утверждение статей'
 type_article_rejected: 'Отклонение статей'
-type_article_edited: 'Редактирование статей'
 type_song_edited: 'Редактирование песен'
-type_comment_deleted: 'Удаление комментариев'
+type_person_edited: 'Редактирование биографии'

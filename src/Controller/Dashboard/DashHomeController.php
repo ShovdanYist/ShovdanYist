@@ -4,7 +4,7 @@
 namespace App\Controller\Dashboard;
 
 use App\Entity\Song;
-use App\Entity\People;
+use App\Entity\Person;
 use App\Entity\Article;
 use App\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -27,7 +27,7 @@ class DashHomeController extends AbstractController
         $articles = $this->getDoctrine()->getRepository(Article::class);
         $songs = $this->getDoctrine()->getRepository(Song::class);
         $users = $this->getDoctrine()->getRepository(User::class);
-        $people = $this->getDoctrine()->getRepository(People::class);
+        $people = $this->getDoctrine()->getRepository(Person::class);
 
         $article = [
             'users' => [

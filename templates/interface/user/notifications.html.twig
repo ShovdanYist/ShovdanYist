@@ -53,6 +53,8 @@
 
                             <small class="text-muted">
                                 {{ notification.publishedAt ? notification.publishedAt | format_datetime('medium', 'none', '', 'UTC') }}
+                                в
+                                {{ notification.publishedAt ? notification.publishedAt | date(' H:i') }}
                             </small>
 
                         </div>
@@ -62,7 +64,7 @@
                     <div class="notify-picture">
                         {% if notification.comment.song %}
                             <a href="{{ path('song_show', {'slug': notification.comment.song.slug}) }}">
-                                <span class="back-picture bp-50" style="border-radius: 3px;margin-right: 14px;background-image: url('{% if notification.comment.song.artist.picture %}{{ vich_uploader_asset(notification.comment.song.artist) | imagine_filter('thumbnail') }}{% else %}{{ asset('assets/images/avatar.jpg') | imagine_filter('thumbnail') }}{% endif %}')">
+                                <span class="back-picture bp-50" style="border-radius: 3px;margin-right: 14px;background-image: url('{% if notification.comment.song.vocalist.picture %}{{ vich_uploader_asset(notification.comment.song.vocalist) | imagine_filter('thumbnail') }}{% else %}{{ asset('assets/images/avatar.jpg') | imagine_filter('thumbnail') }}{% endif %}')">
                                 </span>
                             </a>
                         {% else %}
@@ -103,6 +105,8 @@
 
                             <small class="text-muted">
                                 {{ notification.publishedAt ? notification.publishedAt | format_datetime('medium', 'none', '', 'UTC') }}
+                                в
+                                {{ notification.publishedAt ? notification.publishedAt | date(' H:i') }}
                             </small>
 
                         </div>
@@ -144,6 +148,8 @@
 
                             <small class="text-muted">
                                 {{ notification.publishedAt ? notification.publishedAt | format_datetime('medium', 'none', '', 'UTC') }}
+                                в
+                                {{ notification.publishedAt ? notification.publishedAt | date(' H:i') }}
                             </small>
 
                         </div>

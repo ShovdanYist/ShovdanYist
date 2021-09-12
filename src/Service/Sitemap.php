@@ -3,7 +3,7 @@
 namespace App\Service;
 
 use App\Entity\Article;
-use App\Entity\People;
+use App\Entity\Person;
 use App\Entity\Song;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Response;
@@ -81,7 +81,7 @@ class Sitemap
         }
 
         // Vocalists urls
-        foreach ($this->em->getRepository(People::class)->findAllVocalists('vocalist') as $person) {
+        foreach ($this->em->getRepository(Person::class)->findAllVocalists('vocalist') as $person) {
             $urls[] = [
                 'loc' => $this->generator->generate('song_vocalist', [
                     'slug' => $person->getSlug()

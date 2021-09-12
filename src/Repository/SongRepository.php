@@ -178,15 +178,15 @@ class SongRepository extends ServiceEntityRepository
         return $qb->getQuery()->getResult();
     }
 
-    public function findFeaturingCount($artist)
+    public function findFeaturingCount($vocalist)
     {
         return $this->createQueryBuilder('s')
             ->select('COUNT(s.id)')
-            ->join('s.artist','a')
+            ->join('s.vocalist','a')
             ->join('s.featuring', 'f')
-            ->where('a = :artist')
+            ->where('a = :vocalist')
             ->andWhere('s.status = true')
-            ->setParameter('artist', $artist)
+            ->setParameter('vocalist', $vocalist)
             ->groupBy('s.id')
             ->getQuery()
             ->getResult()

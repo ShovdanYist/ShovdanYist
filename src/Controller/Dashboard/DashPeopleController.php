@@ -2,7 +2,7 @@
 
 namespace App\Controller\Dashboard;
 
-use App\Entity\People;
+use App\Entity\Person;
 use App\Form\PeopleType;
 use App\Repository\PeopleRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -34,7 +34,7 @@ class DashPeopleController extends AbstractController
      */
     public function new(Request $request): Response
     {
-        $person = new People();
+        $person = new Person();
         $form = $this->createForm(PeopleType::class, $person);
         $form->handleRequest($request);
 
@@ -55,10 +55,10 @@ class DashPeopleController extends AbstractController
     /**
      * @Route("/{id}/edit", name="edit", methods={"GET","POST"})
      * @param Request $request
-     * @param People $person
+     * @param Person $person
      * @return Response
      */
-    public function edit(Request $request, People $person): Response
+    public function edit(Request $request, Person $person): Response
     {
         $form = $this->createForm(PeopleType::class, $person);
         $form->handleRequest($request);
@@ -78,10 +78,10 @@ class DashPeopleController extends AbstractController
     /**
      * @Route("/{id}", name="delete", methods={"DELETE"})
      * @param Request $request
-     * @param People $person
+     * @param Person $person
      * @return Response
      */
-    public function delete(Request $request, People $person): Response
+    public function delete(Request $request, Person $person): Response
     {
         if ($this->isCsrfTokenValid('delete'.$person->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();

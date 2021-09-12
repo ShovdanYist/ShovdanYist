@@ -56,6 +56,11 @@ class Action
     private $user;
 
     /**
+     * @ORM\ManyToOne(targetEntity=Person::class, inversedBy="actions")
+     */
+    private $person;
+
+    /**
      * @ORM\PrePersist()
      */
     public function initializePrePersist()
@@ -148,6 +153,18 @@ class Action
     public function setUser(?User $user): self
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    public function getPerson(): ?Person
+    {
+        return $this->person;
+    }
+
+    public function setPerson(?Person $person): self
+    {
+        $this->person = $person;
 
         return $this;
     }

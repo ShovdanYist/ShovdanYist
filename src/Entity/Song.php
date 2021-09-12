@@ -44,7 +44,7 @@ class Song
     private $lyrics;
 
     /**
-     * @Vich\UploadableField(mapping="artist_songs", fileNameProperty="audio")
+     * @Vich\UploadableField(mapping="vocalist_songs", fileNameProperty="audio")
      * @Assert\File(mimeTypes={"audio/mpeg","audio/mp4","audio/vnd.wav", "audio/x-aiff"}, mimeTypesMessage="audio.have.to.be.jpg.or.png")
      * @var File|null
      */
@@ -92,12 +92,12 @@ class Song
     private $slug;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\People", inversedBy="songs")
+     * @ORM\ManyToOne(targetEntity=Person::class, inversedBy="songs")
      */
-    private $artist;
+    private $vocalist;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\People", inversedBy="featuring")
+     * @ORM\ManyToMany(targetEntity=Person::class, inversedBy="featuring")
      */
     private $featuring;
 
@@ -159,7 +159,7 @@ class Song
 
     public function getFullTitle(): string
     {
-        ($this->artist) ? $fullName = $this->artist->getFullName() . ' - ' : $fullName = '';
+        ($this->vocalist) ? $fullName = $this->vocalist->getFullName() . ' - ' : $fullName = '';
         return $fullName . $this->getTitle();
     }
 
@@ -189,12 +189,12 @@ class Song
     public function initializeSlug()
     {
         $slugifier = new Slugify();
-        $artist = '';
-        if ($this->getArtist()){
-            $artist = $this->getArtist()->getFullName() . ' ';
+        $vocalist = '';
+        if ($this->getVocalist()){
+            $Vocalist = $this->getVocalist()->getFullName() . ' ';
         }
 
-        $this->slug = $slugifier->slugify($artist . $this->title);
+        $this->slug = $slugifier->slugify($vocalist . $this->title);
     }
 
     /**
@@ -329,27 +329,27 @@ class Song
         return $this;
     }
 
-    public function getArtist(): ?People
+    public function getVocalist(): ?Person
     {
-        return $this->artist;
+        return $this->vocalist;
     }
 
-    public function setArtist(?People $artist): self
+    public function setVocalist(?Person $vocalist): self
     {
-        $this->artist = $artist;
+        $this->vocalist = $vocalist;
 
         return $this;
     }
 
     /**
-     * @return Collection|People[]
+     * @return Collection|Person[]
      */
     public function getFeaturing(): Collection
     {
         return $this->featuring;
     }
 
-    public function addFeaturing(People $featuring): self
+    public function addFeaturing(Person $featuring): self
     {
         if (!$this->featuring->contains($featuring)) {
             $this->featuring[] = $featuring;
@@ -358,7 +358,7 @@ class Song
         return $this;
     }
 
-    public function removeFeaturing(People $featuring): self
+    public function removeFeaturing(Person $featuring): self
     {
         if ($this->featuring->contains($featuring)) {
             $this->featuring->removeElement($featuring);

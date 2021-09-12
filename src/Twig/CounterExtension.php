@@ -5,7 +5,7 @@ namespace App\Twig;
 use App\Entity\Bookmark;
 use App\Entity\PlaylistSong;
 use App\Entity\Song;
-use App\Entity\People;
+use App\Entity\Person;
 use App\Entity\User;
 use App\Repository\BookmarkRepository;
 use App\Repository\SongRepository;
@@ -41,7 +41,7 @@ class CounterExtension extends AbstractExtension
     public function getFunctions(): array
     {
         return [
-            new TwigFunction('featuring', [$this, 'artistFeaturing'], ['is_safe' => ['html']]),
+            new TwigFunction('featuring', [$this, 'vocalistFeaturing'], ['is_safe' => ['html']]),
             new TwigFunction('featuringsCount', [$this, 'featuringsCount'], ['is_safe' => ['html']]),
             new TwigFunction('songsCount', [$this, 'songsCount'], ['is_safe' => ['html']]),
             new TwigFunction('userContainSong', [$this, 'userContainSong'], ['is_safe' => ['html']]),
@@ -53,13 +53,13 @@ class CounterExtension extends AbstractExtension
         ];
     }
 
-    public function artistFeaturing(Song $song, $delimiter = ''): string
+    public function vocalistFeaturing(Song $song, $delimiter = ''): string
     {
         $featuring = $song->getFeaturing();
         $result = [];
 
-        foreach ($featuring as $artist) {
-            array_push($result,$artist->getFullName());
+        foreach ($featuring as $vocalist) {
+            array_push($result,$vocalist->getFullName());
         }
 
         sort($result);
@@ -73,7 +73,7 @@ class CounterExtension extends AbstractExtension
         return sprintf($template, $result);
     }
 
-    public function featuringsCount(People $vocalist): ?string
+    public function featuringsCount(Person $vocalist): ?string
     {
         $featurings = count($this->songRepo->findFeaturingCount($vocalist));
         ($featurings == 1) ? $word = $this->translator->trans('featuring_singular') : $word = $this->translator->trans('featuring_plural');
@@ -90,9 +90,9 @@ class CounterExtension extends AbstractExtension
         );
     }
 
-    public function songsCount(People $vocalist): string
+    public function songsCount(Person $vocalist): string
     {
-        $songs = $this->songRepo->count(['artist' => $vocalist,'status' => true]);
+        $songs = $this->songRepo->count(['vocalist' => $vocalist,'status' => true]);
         ($songs == 1) ? $word = $this->translator->trans('song') : (($songs < 5) ? $word = $this->translator->trans('two_songs') : $word = $this->translator->trans('songs_plural'));
         $template = '<span class="badge badge-info">%s %s</span>';
 

@@ -48,7 +48,7 @@
             <tr>
                 <th scope="col">ID</th>
                 <th scope="col">{{ 'title' | trans }}</th>
-                <th scope="col">{{ 'artist' | trans }}</th>
+                <th scope="col">{{ 'vocalist' | trans }}</th>
 {#                <th scope="col">{{ 'publication.date' | trans }}</th>#}
 {#                <th scope="col">{{ 'editing.date' | trans }}</th>#}
             </tr>
@@ -74,9 +74,9 @@
                     </td>
 
                     <td>
-                        {% if song.artist %}
-                            <a style="color: unset" href="{{ path('dash_song_vocalist',{'slug':song.artist.slug}) }}">
-                                {{ song.artist.fullName }}
+                        {% if song.vocalist %}
+                            <a style="color: unset" href="{{ path('dash_song_vocalist',{'slug':song.vocalist.slug}) }}">
+                                {{ song.vocalist.fullName }}
                             </a>
                         {% endif %}
                         <span class="small text-muted">

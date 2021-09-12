@@ -38,7 +38,7 @@
             </label>
         </div>
 
-        {% set action_types = ['user_blocked', 'user_unblocked', 'article_published', 'article_rejected', 'article_edited', 'song_edited', 'comment_deleted'] %}
+        {% set action_types = ['user_blocked', 'user_unblocked', 'comment_deleted', 'article_edited', 'article_published', 'article_rejected', 'song_edited', 'person_edited'] %}
 
         <div class="moderation-actions moderation-type-actions chosen-search-off">
             <label>
@@ -83,6 +83,8 @@
 
                             <small class="text-muted">
                                 {{ action.createdAt ? action.createdAt | format_datetime('medium', 'none', '', 'UTC') }}
+                                в
+                                {{ action.createdAt ? action.createdAt | date(' H:i') }}
                             </small>
 
                         </div>
@@ -97,7 +99,7 @@
                             </a>
                         {% elseif action.song %}
                             <a href="{{ path( 'song_show', {'slug': action.song.slug}) }}">
-                                <span class="back-picture bp-50" style="border-radius: 3px;margin-right: 14px;background-image: url('{{ vich_uploader_asset(action.song.artist) | imagine_filter('thumbnail') }}')">
+                                <span class="back-picture bp-50" style="border-radius: 3px;margin-right: 14px;background-image: url('{{ vich_uploader_asset(action.song.vocalist) | imagine_filter('thumbnail') }}')">
                                 </span>
                             </a>
                         {% endif %}
@@ -133,6 +135,8 @@
 
                             <small class="text-muted">
                                 {{ action.createdAt ? action.createdAt | format_datetime('medium', 'none', '', 'UTC') }}
+                                в
+                                {{ action.createdAt ? action.createdAt | date(' H:i') }}
                             </small>
 
                         </div>
@@ -176,6 +180,8 @@
 
                             <small class="text-muted">
                                 {{ action.createdAt ? action.createdAt | format_datetime('medium', 'none', '', 'UTC') }}
+                                в
+                                {{ action.createdAt ? action.createdAt | date(' H:i') }}
                             </small>
 
                         </div>
@@ -215,6 +221,8 @@
 
                             <small class="text-muted">
                                 {{ action.createdAt ? action.createdAt | format_datetime('medium', 'none', '', 'UTC') }}
+                                в
+                                {{ action.createdAt ? action.createdAt | date(' H:i') }}
                             </small>
 
                         </div>
@@ -223,7 +231,7 @@
 
                     <div class="notify-picture">
                         <a href="{{ path( 'song_show', {'slug': action.song.slug}) }}">
-                            <span class="back-picture bp-50" style="border-radius: 3px;margin-right: 14px;background-image: url('{{ vich_uploader_asset(action.song.artist) | imagine_filter('thumbnail') }}')">
+                            <span class="back-picture bp-50" style="border-radius: 3px;margin-right: 14px;background-image: url('{{ vich_uploader_asset(action.song.vocalist) | imagine_filter('thumbnail') }}')">
                             </span>
                         </a>
                     </div>
@@ -254,6 +262,8 @@
 
                             <small class="text-muted">
                                 {{ action.createdAt ? action.createdAt | format_datetime('medium', 'none', '', 'UTC') }}
+                                в
+                                {{ action.createdAt ? action.createdAt | date(' H:i') }}
                             </small>
 
                         </div>
@@ -294,6 +304,8 @@
 
                             <small class="text-muted">
                                 {{ action.createdAt ? action.createdAt | format_datetime('medium', 'none', '', 'UTC') }}
+                                в
+                                {{ action.createdAt ? action.createdAt | date(' H:i') }}
                             </small>
 
                         </div>
@@ -303,6 +315,47 @@
                     <div class="notify-picture">
                         <a href="{{ path( 'user_profile', {'username':action.user.username}) }}">
                             <span class="back-picture bp-50" style="border-radius: 3px;margin-right: 14px;background-image: url('{% if action.user.profile.avatar != 'avatar.jpg' %}{{ vich_uploader_asset(action.user.profile) | imagine_filter('thumbnail') }}{% else %}{{ asset('assets/images/avatar.jpg') | imagine_filter('thumbnail') }}{% endif %}')">
+                            </span>
+                        </a>
+                    </div>
+
+                </div>
+
+            {% elseif action.type == 'person_edited' %}
+
+                <div class="md-notification md-comment-notification">
+
+                    <div class="notify-sender-user">
+                        <a href="{{ path('user_profile', {'username':action.moderator.username}) }}">
+                            <span class="md-avatar md-avatar-50" style="background-image: url('{% if action.moderator.profile.avatar != 'avatar.jpg' %}{{ vich_uploader_asset(action.moderator.profile) | imagine_filter('thumbnail') }}{% else %}{{ asset('assets/images/avatar.jpg') | imagine_filter('thumbnail') }}{% endif %}')"></span>
+                        </a>
+                    </div>
+
+                    <div class="notify-message-body">
+
+                        <div class="notify-message">
+
+                            <a class="notify-message-user" style="font-weight: 500" href="{{ path('user_profile', {'username':action.moderator.username}) }}">
+                                {{ action.moderator.username }}
+                            </a>
+
+                            {% if action.moderator.profile.gender %}Отредактировала{% else %}Отредактировал{% endif %} биографию <a href="{{ path( 'song_vocalist', {'slug': action.person.slug}) }}">{{ action.person.fullName }}</a>
+
+                            <br>
+
+                            <small class="text-muted">
+                                {{ action.createdAt ? action.createdAt | format_datetime('medium', 'none', '', 'UTC') }}
+                                в
+                                {{ action.createdAt ? action.createdAt | date(' H:i') }}
+                            </small>
+
+                        </div>
+
+                    </div>
+
+                    <div class="notify-picture">
+                        <a href="{{ path( 'song_vocalist', {'slug': action.person.slug}) }}">
+                            <span class="back-picture bp-50" style="border-radius: 3px;margin-right: 14px;background-image: url('{{ vich_uploader_asset(action.person) | imagine_filter('thumbnail') }}')">
                             </span>
                         </a>
                     </div>

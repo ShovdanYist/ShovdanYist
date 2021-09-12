@@ -1,16 +1,16 @@
 {% extends 'interface/base.html.twig' %}
 
-{% block og_title %}{{ song.artist.fullName }} - {{ song.title }}{{ featuring( song, ', ' ) }} | Текст песни{% endblock %}
+{% block og_title %}{{ song.vocalist.fullName }} - {{ song.title }}{{ featuring( song, ', ' ) }} | Текст песни{% endblock %}
 
-{% block og_image %}{{ vich_uploader_asset(song.artist) }}{% endblock %}
+{% block og_image %}{{ vich_uploader_asset(song.vocalist) }}{% endblock %}
 
 {% block og_type %}<meta property="og:type" content="music.song">{% endblock %}
 
-{% block title %}{{ song.artist.fullName }} - {{ song.title }}{{ featuring( song, ', ' ) }} | Текст песни{% if page and page > 1 %} | Страница {{ page }}{% endif %}{% endblock %}
+{% block title %}{{ song.vocalist.fullName }} - {{ song.title }}{{ featuring( song, ', ' ) }} | Текст песни{% if page and page > 1 %} | Страница {{ page }}{% endif %}{% endblock %}
 
-{% block description %}В ShovdanYist вы можете cкачать песню {{ song.artist.fullName }} - {{ song.title }}{% if featuring( song, ', ' ) %} {% endif %}{{ featuring( song, ', ' ) }}, найти тексты чеченских песен, переводы чеченских песен, а также создавать свой собственный плейлист.{% endblock %}
+{% block description %}В ShovdanYist вы можете cкачать песню {{ song.vocalist.fullName }} - {{ song.title }}{% if featuring( song, ', ' ) %} {% endif %}{{ featuring( song, ', ' ) }}, найти тексты чеченских песен, переводы чеченских песен, а также создавать свой собственный плейлист.{% endblock %}
 
-{% block keywords %}текст песни, скачать, перевод, {{ song.artist.fullName | lower }}, {{ song.title | lower}}, музыка{% endblock %}
+{% block keywords %}текст песни, скачать, перевод, {{ song.vocalist.fullName | lower }}, {{ song.title | lower}}, музыка{% endblock %}
 
 {% block pageclass %}two-sidebars{% endblock %}
 
@@ -19,8 +19,8 @@
     {{ breadcrumb({
         (path('app_home')) : ('home.page' | trans),
         (path('song_index')) : ('music' | trans),
-        (path('song_vocalists', {letter: slugify(song.artist.fullName | first) })) : (song.artist.fullName | first),
-        (path('song_vocalist', {slug: song.artist.slug})) : (song.artist.fullName),
+        (path('song_vocalists', {letter: slugify(song.vocalist.fullName | first) })) : (song.vocalist.fullName | first),
+        (path('song_vocalist', {slug: song.vocalist.slug})) : (song.vocalist.fullName),
     }, song,'song') }}
 
 {% endblock %}
@@ -29,7 +29,7 @@
 
     <article>
 
-        <h1>{{ song.artist.fullName }} - {{ song.title }}</h1>
+        <h1>{{ song.vocalist.fullName }} - {{ song.title }}</h1>
 
         <span class="md-song-feat text-muted">{{ featuring( song, ', ' ) }}</span>
 

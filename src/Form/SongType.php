@@ -3,7 +3,7 @@
 namespace App\Form;
 
 use App\Entity\Song;
-use App\Entity\People;
+use App\Entity\Person;
 use App\Entity\Tag;
 use App\Repository\PeopleRepository;
 use App\Repository\TagRepository;
@@ -74,9 +74,9 @@ class SongType extends AbstractType
                 'required' => false,
                 'label_attr' => ['class' => 'switch-custom']
             ])
-            ->add('artist', EntityType::class, [
-                'label' => 'artist',
-                'class' => People::class,
+            ->add('vocalist', EntityType::class, [
+                'label' => 'vocalist',
+                'class' => Person::class,
                 'choice_label' => 'fullName',
                 'label_attr' => ['class' => 'checkbox-custom'],
                 'choices' => $this->people->findByActivity('vocalist'),
@@ -86,7 +86,7 @@ class SongType extends AbstractType
             ])
             ->add('featuring', EntityType::class, [
                 'label' => 'featuring',
-                'class' => People::class,
+                'class' => Person::class,
                 'multiple' => true,
                 'required' => false,
                 'choice_label' => 'fullName',

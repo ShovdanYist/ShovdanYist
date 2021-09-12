@@ -19,7 +19,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
  * @MyAssert\UniquePeople()
  * @Vich\Uploadable
  */
-class People
+class Person
 {
     /**
      * @ORM\Id()
@@ -79,7 +79,7 @@ class People
     private $slug;
 
     /**
-     * @ORM\OneToMany(targetEntity=Song::class, mappedBy="artist", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=Song::class, mappedBy="vocalist", orphanRemoval=true)
      */
     private $songs;
 
@@ -93,11 +93,17 @@ class People
      */
     private $featuring;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Action::class, mappedBy="person", orphanRemoval=true)
+     */
+    private $actions;
+
     public function __construct()
     {
         $this->songs = new ArrayCollection();
         $this->activity = new ArrayCollection();
         $this->featuring = new ArrayCollection();
+        $this->actions = new ArrayCollection();
     }
 
     /**
@@ -226,7 +232,7 @@ class People
     {
         if (!$this->songs->contains($song)) {
             $this->songs[] = $song;
-            $song->setArtist($this);
+            $song->setVocalist($this);
         }
 
         return $this;
@@ -237,8 +243,8 @@ class People
         if ($this->songs->contains($song)) {
             $this->songs->removeElement($song);
             // set the owning side to null (unless already changed)
-            if ($song->getArtist() === $this) {
-                $song->setArtist(null);
+            if ($song->getVocalist() === $this) {
+                $song->setVocalist(null);
             }
         }
 
@@ -307,6 +313,37 @@ class People
     public function setUpdatedAt(?\DateTimeInterface $updatedAt): self
     {
         $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Action[]
+     */
+    public function getActions(): Collection
+    {
+        return $this->actions;
+    }
+
+    public function addAction(Action $action): self
+    {
+        if (!$this->actions->contains($action)) {
+            $this->actions[] = $action;
+            $action->setPerson($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAction(Action $action): self
+    {
+        if ($this->actions->contains($action)) {
+            $this->actions->removeElement($action);
+            // set the owning side to null (unless already changed)
+            if ($action->getPerson() === $this) {
+                $action->setPerson(null);
+            }
+        }
 
         return $this;
     }

@@ -2,26 +2,26 @@
 
 namespace App\Repository;
 
-use App\Entity\People;
+use App\Entity\Person;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 
 /**
- * @method People|null find($id, $lockMode = null, $lockVersion = null)
- * @method People|null findOneBy(array $criteria, array $orderBy = null)
- * @method People[]    findAll()
- * @method People[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method Person|null find($id, $lockMode = null, $lockVersion = null)
+ * @method Person|null findOneBy(array $criteria, array $orderBy = null)
+ * @method Person[]    findAll()
+ * @method Person[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
 class PeopleRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, People::class);
+        parent::__construct($registry, Person::class);
     }
 
     /**
      * @param $activity
-     * @return People[] Returns an array of People objects
+     * @return Person[] Returns an array of Person objects
      */
     public function findByActivity($activity): array
     {
@@ -65,7 +65,7 @@ class PeopleRepository extends ServiceEntityRepository
 
     /**
      * @param $letter
-     * @return People[] Returns an array of People objects
+     * @return Person[] Returns an array of Person objects
      */
     public function findVocalistByLetter($letter)
     {
@@ -81,7 +81,7 @@ class PeopleRepository extends ServiceEntityRepository
     }
 
     /*
-    public function findOneBySomeField($value): ?People
+    public function findOneBySomeField($value): ?Person
     {
         return $this->createQueryBuilder('p')
             ->andWhere('p.exampleField = :val')

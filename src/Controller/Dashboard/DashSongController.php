@@ -3,7 +3,7 @@
 namespace App\Controller\Dashboard;
 
 use App\Entity\Song;
-use App\Entity\People;
+use App\Entity\Person;
 use App\Form\SongType;
 use App\Repository\SongRepository;
 use App\Repository\UserRepository;
@@ -74,11 +74,11 @@ class DashSongController extends AbstractController
 
     /**
      * @Route("/vocalist/{slug}", name="vocalist", methods={"GET"})
-     * @param People $person
+     * @param Person $person
      * @param SongRepository $songRepo
      * @return Response
      */
-    public function vocalist(People $person, SongRepository $songRepo): Response
+    public function vocalist(Person $person, SongRepository $songRepo): Response
     {
         return $this->render('dashboard/song/vocalist.html.twig', [
             'person' => $person
@@ -97,8 +97,8 @@ class DashSongController extends AbstractController
         $song = new Song();
 
         if ($person) {
-            $person = $this->getDoctrine()->getRepository(People::class)->findOneBy(['id' => $person]);
-            $song->setArtist($person);
+            $person = $this->getDoctrine()->getRepository(Person::class)->findOneBy(['id' => $person]);
+            $song->setVocalist($person);
         }
 
         $form = $this->createForm(SongType::class, $song)
@@ -119,7 +119,7 @@ class DashSongController extends AbstractController
                     'id' => $song->getId()
                 ]);
             } elseif ($form->get('saveAndNew')->isClicked()) {
-                $person = $song->getArtist()->getId();
+                $person = $song->getVocalist()->getId();
                 return $this->redirectToRoute('dash_song_new', [
                     'person' => $person
                 ]);
@@ -163,7 +163,7 @@ class DashSongController extends AbstractController
         return $this->render('dashboard/song/edit.html.twig', [
             'song' => $song,
             'form' => $form->createView(),
-            'person' => $song->getArtist()
+            'person' => $song->getVocalist()
         ]);
     }
 

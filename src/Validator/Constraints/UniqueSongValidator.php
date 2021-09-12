@@ -24,14 +24,14 @@ class UniqueSongValidator extends ConstraintValidator
     public function validate($entity, Constraint $constraint)
     {
         $slugifier  = new Slugify();
-        $artist     = '';
+        $vocalist     = '';
         $message    = '';
 
-        if ($entity->getArtist()){
-            $artist = $entity->getArtist()->getFullName() . ' ';
+        if ($entity->getVocalist()){
+            $vocalist = $entity->getVocalist()->getFullName() . ' ';
         }
 
-        $slug       = $slugifier->slugify($artist . $entity->getTitle());
+        $slug       = $slugifier->slugify($vocalist . $entity->getTitle());
         $exist      = $this->repo->findOneBy(['slug' => $slug]);
         $duplicate  = $this->duplicate($entity);
 
@@ -64,12 +64,12 @@ class UniqueSongValidator extends ConstraintValidator
 
         foreach ($songs as $song) {
             /** Verify if vocalist exists to compare with others in database */
-            if ($newSong->getArtist()){
+            if ($newSong->getVocalist()){
                 $fullname = false;
                 $same     = false;
 
-                if ($song->getArtist()) {
-                    $fullname = $newSong->getArtist()->getFullName() == $song->getArtist()->getFullName();
+                if ($song->getVocalist()) {
+                    $fullname = $newSong->getVocalist()->getFullName() == $song->getVocalist()->getFullName();
                     $same = $newSong->getId() !== $song->getId();
                 }
 

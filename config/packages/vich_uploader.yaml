@@ -17,7 +17,7 @@ vich_uploader:
             upload_destination: '%kernel.project_dir%/public/uploads/images/theme'
             namer: Vich\UploaderBundle\Naming\SmartUniqueNamer
 
-        artist_songs:
+        vocalist_songs:
             uri_prefix: /uploads/audio/song
             upload_destination: '%kernel.project_dir%/public/uploads/audio/song'
             namer:

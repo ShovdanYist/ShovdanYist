@@ -10,7 +10,7 @@ use Symfony\Component\Validator\Constraint;
  */
 class UniquePeople extends Constraint
 {
-    public $message = 'People with this {{ field }} already exists';
+    public $message = 'Person with this {{ field }} already exists';
 
     public function validatedBy()
     {
