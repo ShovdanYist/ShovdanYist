@@ -32,7 +32,7 @@ class SongController extends CustomAbstractController
      */
     public function index(): Response
     {
-        return $this->render('song/index.html.twig');
+        return $this->render('interface/song/index.html.twig');
     }
 
     /**
@@ -66,7 +66,7 @@ class SongController extends CustomAbstractController
             'description' => 'Чеченские песни жанра «' . mb_strtolower($tag->getTitle()) . '»'
         ];
 
-        return $this->render('song/chart.html.twig', [
+        return $this->render('interface/song/chart.html.twig', [
             'songs' => $paginator->getData(),
             'paginator' => $paginator,
             'info' => $info
@@ -112,7 +112,7 @@ class SongController extends CustomAbstractController
             'description' => $description
         ];
 
-        return $this->render('song/chart.html.twig', [
+        return $this->render('interface/song/chart.html.twig', [
             'songs' => $paginator->getData(),
             'paginator' => $paginator,
             'info' => $info
@@ -134,7 +134,7 @@ class SongController extends CustomAbstractController
         $manager->persist($song);
         $manager->flush();
 
-        return $this->render('song/show.html.twig', [
+        return $this->render('interface/song/show.html.twig', [
             'song' => $song,
             'page' => $page
         ]);
@@ -173,7 +173,7 @@ class SongController extends CustomAbstractController
             return $this->redirectToRoute('song_show',['slug' => $song->getSlug()]);
         }
 
-        return $this->render('song/song_edit.html.twig', [
+        return $this->render('interface/song/song_edit.html.twig', [
             'song' => $song,
             'form' => $form->createView(),
             'person' => $song->getArtist()
@@ -229,7 +229,7 @@ class SongController extends CustomAbstractController
 
         $songs = $songRepo->findBy(['artist' => $vocalist, 'status' => true], ['releaseDate' => 'DESC']);
 
-        return $this->render('song/vocalist.html.twig', [
+        return $this->render('interface/song/vocalist.html.twig', [
             'vocalist' => $vocalist,
             'songs' => $songs
         ]);
@@ -253,7 +253,7 @@ class SongController extends CustomAbstractController
             return $this->redirectToRoute('song_vocalist', ['slug' => $person->getSlug()]);
         }
 
-        return $this->render('song/vocalist_edit.html.twig', [
+        return $this->render('interface/song/vocalist_edit.html.twig', [
             'person' => $person,
             'form' => $form->createView(),
         ]);
@@ -272,7 +272,7 @@ class SongController extends CustomAbstractController
             throw $this->createNotFoundException();
         }
 
-        return $this->render('song/vocalists.html.twig', [
+        return $this->render('interface/song/vocalists.html.twig', [
             'vocalists' => $people->findVocalistByLetter($extension->letters()[$letter]),
             'letter' => $extension->letters()[$letter]
         ]);

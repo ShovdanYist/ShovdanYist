@@ -1,0 +1,22 @@
+{% extends 'interface/base.html.twig' %}
+
+{% block title %}{{ 'home.page' | trans }}{% endblock %}
+
+{% block main_top %}
+    {{ breadcrumb({
+        '' : 'moderation' | trans,
+        'active' : ('articles' | trans),
+    }) }}
+{% endblock %}
+
+{% block main %}
+
+    {% for article in articles %}
+        {{ articleView(article,'moderation') }}
+    {% else%}
+        <div class="md-box md-content-padding">Пока нет статей на модерации</div>
+    {% endfor %}
+
+    {{ paginator.display() }}
+
+{% endblock %}

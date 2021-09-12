@@ -1,0 +1,330 @@
+{% extends 'interface/base.html.twig' %}
+
+{% block title %}{{ 'actions' | trans }}{% endblock %}
+
+{% block main_top %}
+    {% if type is defined %}
+        {{ breadcrumb({
+            '' : 'moderation' | trans,
+            (path('moderation_actions')) : 'actions' | trans,
+            'active' : ('type_' ~ type) | trans,
+        }) }}
+    {% elseif user is defined %}
+        {{ breadcrumb({
+            '' : 'moderation' | trans,
+            (path('moderation_actions')) : 'actions' | trans,
+            'active' : user.username
+        }) }}
+    {% else %}
+        {{ breadcrumb({
+            '' : 'moderation' | trans,
+            'active' : ('actions' | trans),
+        }) }}
+    {% endif %}
+{% endblock %}
+
+{% block body %}
+
+    <div class="row m-0">
+
+        <div class="moderation-actions moderation-user-actions chosen-search-off flex-grow-1">
+            <label>
+                <select class="form-control text-center" onchange="location = this.value;">
+                    <option selected="selected" value="{{ path('moderation_actions') }}">Все администраторы</option>
+                    {% for moderator in moderators %}
+                        <option {% if user is defined and user == moderator %}selected="selected"{% endif %} value="{{ path('moderation_user_actions', {'username' : moderator.username}) }}">{{ moderator.username }}</option>
+                    {% endfor %}
+                </select>
+            </label>
+        </div>
+
+        {% set action_types = ['user_blocked', 'user_unblocked', 'article_published', 'article_rejected', 'article_edited', 'song_edited', 'comment_deleted'] %}
+
+        <div class="moderation-actions moderation-type-actions chosen-search-off">
+            <label>
+                <select class="form-control text-center" onchange="location = this.value;">
+                    <option value="{{ path('moderation_actions') }}">Все действия</option>
+                    {% for action_type in action_types %}
+                        <option {% if type is defined and type == action_type %}selected="selected"{% endif %} value="{{ path('moderation_type_actions', {'type' : action_type}) }}">{{ ('type_' ~ action_type) | trans }}</option>
+                    {% endfor %}
+                </select>
+            </label>
+        </div>
+
+    </div>
+
+    <div class="md-notifications">
+
+        {% for action in actions %}
+
+            {% if action.type == 'comment_deleted' %}
+
+                <div class="md-notification md-comment-notification">
+
+                    <div class="notify-sender-user">
+                        <a href="{{ path('user_profile', {'username':action.moderator.username}) }}">
+                            <span class="md-avatar md-avatar-50" style="background-image: url('{% if action.moderator.profile.avatar != 'avatar.jpg' %}{{ vich_uploader_asset(action.moderator.profile) | imagine_filter('thumbnail') }}{% else %}{{ asset('assets/images/avatar.jpg') | imagine_filter('thumbnail') }}{% endif %}')"></span>
+                        </a>
+                    </div>
+
+                    <div class="notify-message-body">
+
+                        <div class="notify-message">
+
+                            <a class="notify-message-user" style="font-weight: 500" href="{{ path('user_profile', {'username':action.moderator.username}) }}">
+                                {{ action.moderator.username }}
+                            </a>
+
+                            {% if action.moderator.profile.gender %}Удалила{% else %}Удалил{% endif %} комментарий "{{ action.content }}"
+
+                            от пользователя <a href="{{ path('user_profile',{'username': action.user.username }) }}">{{ action.user.username }}</a>
+
+                            <br>
+
+                            <small class="text-muted">
+                                {{ action.createdAt ? action.createdAt | format_datetime('medium', 'none', '', 'UTC') }}
+                            </small>
+
+                        </div>
+
+                    </div>
+
+                    <div class="notify-picture">
+                        {% if action.article %}
+                            <a href="{{ path('article_show', {'slug': action.article.slug}) }}">
+                                <span class="back-picture bp-50" style="border-radius: 3px;margin-right: 14px;background-image: url('{% if action.article.image %}{{ vich_uploader_asset(action.article) | imagine_filter('thumbnail') }}{% else %}{{ asset('assets/images/question.jpg') }}{% endif %}')">
+                                </span>
+                            </a>
+                        {% elseif action.song %}
+                            <a href="{{ path( 'song_show', {'slug': action.song.slug}) }}">
+                                <span class="back-picture bp-50" style="border-radius: 3px;margin-right: 14px;background-image: url('{{ vich_uploader_asset(action.song.artist) | imagine_filter('thumbnail') }}')">
+                                </span>
+                            </a>
+                        {% endif %}
+                    </div>
+
+                </div>
+
+            {% elseif action.type == 'user_blocked' or action.type == 'user_unblocked' %}
+
+                <div class="md-notification md-comment-notification">
+
+                    <div class="notify-sender-user">
+                        <a href="{{ path('user_profile', {'username':action.moderator.username}) }}">
+                            <span class="md-avatar md-avatar-50" style="background-image: url('{% if action.moderator.profile.avatar != 'avatar.jpg' %}{{ vich_uploader_asset(action.moderator.profile) | imagine_filter('thumbnail') }}{% else %}{{ asset('assets/images/avatar.jpg') | imagine_filter('thumbnail') }}{% endif %}')"></span>
+                        </a>
+                    </div>
+
+                    <div class="notify-message-body">
+
+                        <div class="notify-message">
+
+                            <a class="notify-message-user" style="font-weight: 500" href="{{ path('user_profile', {'username':action.moderator.username}) }}">
+                                {{ action.moderator.username }}
+                            </a>
+
+                            {% if action.type == 'user_blocked' %}
+                                {% if action.moderator.profile.gender %}Заблокировала{% else %}Заблокировал{% endif %} пользователя <a href="{{ path('user_profile',{'username': action.user.username }) }}">{{ action.user.username }}</a>
+                            {% else %}
+                                {% if action.moderator.profile.gender %}Разблокировала{% else %}Разблокировал{% endif %} пользователя <a href="{{ path('user_profile',{'username': action.user.username }) }}">{{ action.user.username }}</a>
+                            {% endif %}
+
+                            <br>
+
+                            <small class="text-muted">
+                                {{ action.createdAt ? action.createdAt | format_datetime('medium', 'none', '', 'UTC') }}
+                            </small>
+
+                        </div>
+
+                    </div>
+
+                    <div class="notify-picture">
+                        <a href="{{ path( 'user_profile', {'username':action.user.username}) }}">
+                            <span class="back-picture bp-50" style="border-radius: 3px;margin-right: 14px;background-image: url('{{ vich_uploader_asset(action.user.profile) | imagine_filter('thumbnail') }}')">
+                            </span>
+                        </a>
+                    </div>
+
+                </div>
+
+            {% elseif action.type == 'article_published' or action.type == 'article_rejected' %}
+
+                <div class="md-notification md-comment-notification">
+
+                    <div class="notify-sender-user">
+                        <a href="{{ path('user_profile', {'username':action.moderator.username}) }}">
+                            <span class="md-avatar md-avatar-50" style="background-image: url('{% if action.moderator.profile.avatar != 'avatar.jpg' %}{{ vich_uploader_asset(action.moderator.profile) | imagine_filter('thumbnail') }}{% else %}{{ asset('assets/images/avatar.jpg') | imagine_filter('thumbnail') }}{% endif %}')"></span>
+                        </a>
+                    </div>
+
+                    <div class="notify-message-body">
+
+                        <div class="notify-message">
+
+                            <a class="notify-message-user" style="font-weight: 500" href="{{ path('user_profile', {'username':action.moderator.username}) }}">
+                                {{ action.moderator.username }}
+                            </a>
+
+                            {% if action.type == 'article_published' %}
+                                {% if action.moderator.profile.gender %}Утвердила и опубликовала{% else %}Утвердил и опубликовал{% endif %} статью <a href="{{ path('article_show',{'slug':action.article.slug}) }}">{{ action.article.title }}</a>
+                            {% elseif action.type == 'article_rejected' %}
+                                {% if action.moderator.profile.gender %}Отклонила{% else %}Отклонил{% endif %} статью <a href="{{ path('article_show',{'slug':action.article.slug}) }}">{{ action.article.title }}</a> по следующей причине: {{ action.content }}
+                            {% endif %}
+
+                            <br>
+
+                            <small class="text-muted">
+                                {{ action.createdAt ? action.createdAt | format_datetime('medium', 'none', '', 'UTC') }}
+                            </small>
+
+                        </div>
+
+                    </div>
+
+                    <div class="notify-picture">
+                        <a href="{{ path('article_show',{'slug':action.article.slug}) }}">
+                            <span class="back-picture bp-50" style="border-radius: 3px;margin-right: 14px;background-image: url('{% if action.article.image %}{{ vich_uploader_asset(action.article) | imagine_filter('thumbnail') }}{% else %}{{ asset('assets/images/question.jpg') }}{% endif %}')">
+                            </span>
+                        </a>
+                    </div>
+
+                </div>
+
+            {% elseif action.type == 'song_edited' %}
+
+                <div class="md-notification md-comment-notification">
+
+                    <div class="notify-sender-user">
+                        <a href="{{ path('user_profile', {'username':action.moderator.username}) }}">
+                            <span class="md-avatar md-avatar-50" style="background-image: url('{% if action.moderator.profile.avatar != 'avatar.jpg' %}{{ vich_uploader_asset(action.moderator.profile) | imagine_filter('thumbnail') }}{% else %}{{ asset('assets/images/avatar.jpg') | imagine_filter('thumbnail') }}{% endif %}')"></span>
+                        </a>
+                    </div>
+
+                    <div class="notify-message-body">
+
+                        <div class="notify-message">
+
+                            <a class="notify-message-user" style="font-weight: 500" href="{{ path('user_profile', {'username':action.moderator.username}) }}">
+                                {{ action.moderator.username }}
+                            </a>
+
+                            {% if action.moderator.profile.gender %}Отредактировала{% else %}Отредактировал{% endif %} песню <a href="{{ path( 'song_show', {'slug': action.song.slug}) }}">{{ action.song.fullTitle }}</a>
+
+                            <br>
+
+                            <small class="text-muted">
+                                {{ action.createdAt ? action.createdAt | format_datetime('medium', 'none', '', 'UTC') }}
+                            </small>
+
+                        </div>
+
+                    </div>
+
+                    <div class="notify-picture">
+                        <a href="{{ path( 'song_show', {'slug': action.song.slug}) }}">
+                            <span class="back-picture bp-50" style="border-radius: 3px;margin-right: 14px;background-image: url('{{ vich_uploader_asset(action.song.artist) | imagine_filter('thumbnail') }}')">
+                            </span>
+                        </a>
+                    </div>
+
+                </div>
+
+            {% elseif action.type == 'article_edited' %}
+
+                <div class="md-notification md-comment-notification">
+
+                    <div class="notify-sender-user">
+                        <a href="{{ path('user_profile', {'username':action.moderator.username}) }}">
+                            <span class="md-avatar md-avatar-50" style="background-image: url('{% if action.moderator.profile.avatar != 'avatar.jpg' %}{{ vich_uploader_asset(action.moderator.profile) | imagine_filter('thumbnail') }}{% else %}{{ asset('assets/images/avatar.jpg') | imagine_filter('thumbnail') }}{% endif %}')"></span>
+                        </a>
+                    </div>
+
+                    <div class="notify-message-body">
+
+                        <div class="notify-message">
+
+                            <a class="notify-message-user" style="font-weight: 500" href="{{ path('user_profile', {'username':action.moderator.username}) }}">
+                                {{ action.moderator.username }}
+                            </a>
+
+                            {% if action.moderator.profile.gender %}Отредактировала{% else %}Отредактировал{% endif %} статью <a href="{{ path( 'article_show', {'slug': action.article.slug}) }}">{{ action.article.title }}</a>
+
+                            <br>
+
+                            <small class="text-muted">
+                                {{ action.createdAt ? action.createdAt | format_datetime('medium', 'none', '', 'UTC') }}
+                            </small>
+
+                        </div>
+
+                    </div>
+
+                    <div class="notify-picture">
+                        <a href="{{ path( 'article_show', {'slug': action.article.slug}) }}">
+                            <span class="back-picture bp-50" style="border-radius: 3px;margin-right: 14px;background-image: url('{% if action.article.image %}{{ vich_uploader_asset(action.article) | imagine_filter('thumbnail') }}{% else %}{{ asset('assets/images/question.jpg') }}{% endif %}')">
+                            </span>
+                        </a>
+                    </div>
+
+                </div>
+
+            {% elseif action.type == 'rights_changed' %}
+
+                <div class="md-notification md-comment-notification">
+
+                    <div class="notify-sender-user">
+                        <a href="{{ path('user_profile', {'username':action.moderator.username}) }}">
+                            <span class="md-avatar md-avatar-50" style="background-image: url('{% if action.moderator.profile.avatar != 'avatar.jpg' %}{{ vich_uploader_asset(action.moderator.profile) | imagine_filter('thumbnail') }}{% else %}{{ asset('assets/images/avatar.jpg') | imagine_filter('thumbnail') }}{% endif %}')"></span>
+                        </a>
+                    </div>
+
+                    <div class="notify-message-body">
+
+                        <div class="notify-message">
+
+                            <a class="notify-message-user" style="font-weight: 500" href="{{ path('user_profile', {'username':action.moderator.username}) }}">
+                                {{ action.moderator.username }}
+                            </a>
+
+                            {% if action.moderator.profile.gender %}Поменяла{% else %}Поменял{% endif %} права пользователя <a href="{{ path('user_profile',{'username': action.user.username }) }}">{{ action.user.username }}</a>:
+                            {{ action.content | raw }}
+
+                            <br>
+
+                            <small class="text-muted">
+                                {{ action.createdAt ? action.createdAt | format_datetime('medium', 'none', '', 'UTC') }}
+                            </small>
+
+                        </div>
+
+                    </div>
+
+                    <div class="notify-picture">
+                        <a href="{{ path( 'user_profile', {'username':action.user.username}) }}">
+                            <span class="back-picture bp-50" style="border-radius: 3px;margin-right: 14px;background-image: url('{% if action.user.profile.avatar != 'avatar.jpg' %}{{ vich_uploader_asset(action.user.profile) | imagine_filter('thumbnail') }}{% else %}{{ asset('assets/images/avatar.jpg') | imagine_filter('thumbnail') }}{% endif %}')">
+                            </span>
+                        </a>
+                    </div>
+
+                </div>
+
+            {% endif %}
+
+        {% else %}
+
+            {% if user is defined %}
+                У администратора {{ user.username }} нет действий
+            {% endif %}
+
+        {% endfor %}
+
+    </div>
+
+    {{ paginator.display() }}
+
+{% endblock %}
+
+{% block scripts %}
+    {{ chosen() }}
+{% endblock %}

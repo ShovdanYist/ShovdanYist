@@ -1,0 +1,88 @@
+{% extends 'interface/base.html.twig' %}
+
+{% block og_title %}{{ article.title }}{% endblock %}
+
+{% block og_image %}{% if article.image %}{{ vich_uploader_asset(article) | imagine_filter('article') }}{% endif %}{% endblock %}
+
+{% block og_type %}
+    <meta property="og:type" content="article">
+    <meta property="article:published_time" content="{{ article.publishedAt | format_datetime('full', 'full', '', 'UTC')}}">
+    <meta property="article:modified_time" content="{{ article.updatedAt | format_datetime('full', 'full', '', 'UTC')}}">
+    <meta property="article:author" content="{{ article.author.profile.fullname }}">
+{% endblock %}
+
+{% block title %}{{ article.title }}{% endblock %}
+
+{% block pageclass %}{% if is_granted('ROLE_ARTICLE_APPROVER') or is_granted('ROLE_ARTICLE_EDITOR') or app.user == article.author %} moder-or-author{% endif %}{% endblock %}
+
+{% block main_top %}
+
+    {{ breadcrumb({
+        (path('app_home')) : ('home.page' | trans),
+        'active' : (article.title),
+    }, article, 'article') }}
+
+    {% if article.moderation == true %}
+
+        {% if article.status is null %}
+            <div class="md-alert md-alert-warning md-box-mb">
+                <i class="fas fa-exclamation-triangle"></i>
+                Статья на модерации
+            </div>
+        {% elseif article.status == false %}
+            <div class="md-alert md-alert-danger md-box-mb">
+                <i class="fas fa-ban"></i>
+                Статья отклонена
+            </div>
+        {% endif %}
+
+    {% elseif article.moderation == false %}
+
+        <div class="md-alert md-alert-info md-box-mb">
+            <i class="fas fa-user-edit"></i>
+            Черновик
+        </div>
+
+    {% endif %}
+
+{% endblock %}
+
+{% block body %}
+
+    <article>
+
+        {{ articleInfo(article) }}
+
+        <h1 class="mb-0">{{ article.title }}</h1>
+
+        {{ articleTags(article) }}
+
+        {{ articleImage(article) }}
+
+        {% for song in article.songs %}
+            {{ player(song,null,null,null ) }}
+        {% endfor %}
+
+        {% if article.description %}
+            {{ article.description }}.<p>&nbsp;</p>
+        {% endif %}
+
+        <div class="ckeditor-content">
+            {{ article.content | raw }}
+        </div>
+
+        {% if article.status == true %}
+            {{ articleActions(article,false) }}
+        {% endif %}
+
+    </article>
+
+{% endblock %}
+
+{% block main_bottom %}
+
+    {% if article.status == true %}
+        {{ comments(article,page,{'slug':article.slug}) }}
+    {% endif %}
+
+{% endblock %}

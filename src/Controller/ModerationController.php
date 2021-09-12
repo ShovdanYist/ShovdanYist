@@ -40,7 +40,7 @@ class ModerationController extends CustomAbstractController
             ->setLimit(20)
             ->setPage($page);
 
-        return $this->render('moderation/actions.html.twig', [
+        return $this->render('interface/moderation/actions.html.twig', [
             'actions' => $paginator->getData(),
             'paginator' => $paginator,
             'moderators' => $defender->getActionUsers()
@@ -67,7 +67,7 @@ class ModerationController extends CustomAbstractController
             ->setLimit(20)
             ->setPage($page);
 
-        return $this->render('moderation/actions.html.twig', [
+        return $this->render('interface/moderation/actions.html.twig', [
             'actions' => $paginator->getData(),
             'paginator' => $paginator,
             'user' => $user,
@@ -94,7 +94,7 @@ class ModerationController extends CustomAbstractController
             ->setLimit(20)
             ->setPage($page);
 
-        return $this->render('moderation/actions.html.twig', [
+        return $this->render('interface/moderation/actions.html.twig', [
             'actions' => $paginator->getData(),
             'paginator' => $paginator,
             'moderators' => $defender->getActionUsers(),
@@ -118,7 +118,7 @@ class ModerationController extends CustomAbstractController
             ->setPage($page)
         ;
 
-        return $this->render('moderation/articles.html.twig', [
+        return $this->render('interface/moderation/articles.html.twig', [
             'articles' => $paginator->getData(),
             'paginator' => $paginator
         ]);
@@ -291,7 +291,7 @@ class ModerationController extends CustomAbstractController
             ]);
         }
 
-        return $this->render('moderation/rights.html.twig', [
+        return $this->render('interface/moderation/rights.html.twig', [
             'form' => $form->createView(),
             'user' => $user,
             'roles' => $defender->getRoles()

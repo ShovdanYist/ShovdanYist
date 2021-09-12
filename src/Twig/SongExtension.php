@@ -44,7 +44,6 @@ class SongExtension extends AbstractExtension
     {
         return [
             new TwigFunction('player', [$this, 'player'], ['is_safe' => ['html'], 'needs_environment' => true]),
-            new TwigFunction('listing', [$this, 'listing'], ['is_safe' => ['html'], 'needs_environment' => true]),
             new TwigFunction('chartBox', [$this, 'chartBox'], ['is_safe' => ['html'], 'needs_environment' => true]),
             new TwigFunction('lettersMenu', [$this, 'lettersMenu'], ['is_safe' => ['html'], 'needs_environment' => true]),
             new TwigFunction('slugify', [$this, 'slugify'], ['is_safe' => ['html'], 'needs_environment' => true]),
@@ -63,7 +62,7 @@ class SongExtension extends AbstractExtension
      */
     public function player(Environment $twig, $song, $download = null, $add = null, $type = null, $image = null): string
     {
-        return $twig->render('layouts/modules/player.html.twig', [
+        return $twig->render('interface/layouts/service/player.html.twig', [
             'song' => $song,
             'download' => $download,
             'add' => $add,
@@ -91,7 +90,7 @@ class SongExtension extends AbstractExtension
             $songs = null;
         }
 
-        return $twig->render('layouts/modules/chart_box.html.twig', [
+        return $twig->render('interface/layouts/service/chart_box.html.twig', [
             'songs' => $songs,
             'chart' => $chart
         ]);
@@ -104,7 +103,7 @@ class SongExtension extends AbstractExtension
      */
     public function lettersMenu(Environment $twig): string
     {
-        return $twig->render('layouts/modules/letters.html.twig', [
+        return $twig->render('interface/layouts/service/letters.html.twig', [
             'letters' => $this->letters
         ]);
     }

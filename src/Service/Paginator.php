@@ -37,7 +37,7 @@ class Paginator
      */
     public function display($box = false)
     {
-        $this->twig->display('layouts/modules/pagination.html.twig', [
+        $this->twig->display('interface/layouts/service/pagination.html.twig', [
             'page'  => $this->page,
             'pages' => $this->getPages(),
             'route' => $this->request->getCurrentRequest()->attributes->get('_route'),

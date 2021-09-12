@@ -46,7 +46,7 @@ class HomeController extends CustomAbstractController
             ->setPage($page)
         ;
 
-        return $this->render('home/index.html.twig', [
+        return $this->render('interface/home/index.html.twig', [
             'articles' => $paginator->getData(),
             'paginator' => $paginator
         ]);
@@ -58,7 +58,7 @@ class HomeController extends CustomAbstractController
      */
     public function terms(): Response
     {
-        return $this->render('home/terms.html.twig');
+        return $this->render('interface/home/terms.html.twig');
     }
 
     /**
@@ -75,7 +75,7 @@ class HomeController extends CustomAbstractController
         $error = $authenticationUtils->getLastAuthenticationError();
         $lastUsername = $authenticationUtils->getLastUsername();
 
-        return $this->render('home/login.html.twig', ['last_username' => $lastUsername, 'error' => $error]);
+        return $this->render('interface/home/login.html.twig', ['last_username' => $lastUsername, 'error' => $error]);
     }
 
     /**
@@ -149,7 +149,7 @@ class HomeController extends CustomAbstractController
             );
         }
 
-        return $this->render('home/register.html.twig', [
+        return $this->render('interface/home/register.html.twig', [
             'registrationForm' => $form->createView(),
         ]);
     }
@@ -194,7 +194,7 @@ class HomeController extends CustomAbstractController
             return $this->redirectToRoute("app_login");
         }
 
-        return $this->render('home/account_recovery.html.twig', [
+        return $this->render('interface/home/account_recovery.html.twig', [
             'form' => $form->createView()
         ]);
     }
@@ -245,7 +245,7 @@ class HomeController extends CustomAbstractController
             return $this->redirectToRoute('app_login');
         }
 
-        return $this->render('home/new_password.html.twig', [
+        return $this->render('interface/home/new_password.html.twig', [
             'form' => $form->createView()
         ]);
     }
@@ -278,7 +278,7 @@ class HomeController extends CustomAbstractController
             $em->flush();
         }
 
-        return $this->render('home/email_validation.html.twig', [
+        return $this->render('interface/home/email_validation.html.twig', [
             'user' => $user
         ]);
     }

@@ -1,0 +1,80 @@
+{% extends 'interface/base.html.twig' %}
+
+{% block title %}{{ 'profile.editing' | trans }}{% endblock %}
+
+{% block main %}
+
+    <div class="md-box">
+
+        <header class="user-title-block">{{ 'profile.editing' | trans }}</header>
+
+        <div class="md-content-padding">
+
+            {% if not user.status == 0 or user.status is null %}
+
+                {% if app.user.status %}
+
+                    {{ form_start(form) }}
+
+                        <div class="row label-icons-form md-edit-form">
+
+                            <div class="col-12 md-edit-form-block">
+
+                                <div id="output-content" style="background-image: url('{% if app.user.profile.avatar != 'avatar.jpg' %}{% if '.gif' in user.profile.avatar %}{{ vich_uploader_asset(app.user.profile) }}{% else %}{{ vich_uploader_asset(app.user.profile) | imagine_filter('avatar') }}{% endif %}{% else %}{{ asset('assets/images/avatar.jpg') }}{% endif %}')">
+                                </div>
+                                {{ form_row(form.avatarFile) }}
+                                {{ form_row(form.avatarDelete) }}
+                                {{ form_row(form.fullname) }}
+                                {{ form_row(form.about) }}
+                                {{ form_row(form.url) }}
+
+                                {{ form_row(form.birthday) }}
+
+                                <div class="md-form-gender">
+                                    {{ form_row(form.gender) }}
+                                </div>
+
+
+                                <div class="mt-3">
+
+                                    <button class="btn btn-primary">
+                                        {{ 'save' | trans }}
+                                    </button>
+
+                                    <a class="btn btn-link float-right" href="{{ path('user_profile', {'username' : user.username }) }}">
+                                        {{ 'cancel' | trans }}
+                                    </a>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    {{ form_end(form) }}
+
+                {% else %}
+
+                    <div class="md-comment-guest md-alert md-alert-warning">
+                        <i class="fas fa-exclamation-triangle"></i> <a href="{{ path('user_settings') }}">Подтвердите свою электронную почту</a>, чтобы оформить свою страницу добавляя аватар, имя и прочее
+                    </div>
+
+                {% endif %}
+
+            {% else %}
+
+                <div class="md-comment-guest md-alert md-alert-danger md-box-mb mb-0">
+                    <i class="fas fa-ban"></i> Вы заблокированы и не можете редактировать свою страницу
+                </div>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+{% endblock %}
+
+{% block scripts %}
+    {{ ckeditor() }}
+{% endblock %}

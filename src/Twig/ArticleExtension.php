@@ -51,7 +51,7 @@ class ArticleExtension extends AbstractExtension
     {
         $form = $this->createForm(NotificationType::class);
 
-        return $twig->render('layouts/article/_article_reject.html.twig', [
+        return $twig->render('interface/layouts/article/_article_reject.html.twig', [
             'article' => $article,
             'form' => $form->createView(),
         ]);
@@ -64,7 +64,7 @@ class ArticleExtension extends AbstractExtension
      */
     public function articleInfo(Environment $twig, $article): string
     {
-        return $twig->render('layouts/article/article_info.html.twig', [
+        return $twig->render('interface/layouts/article/article_info.html.twig', [
             'article' => $article
         ]);
     }
@@ -76,7 +76,7 @@ class ArticleExtension extends AbstractExtension
      */
     public function articleTitle(Environment $twig, $article): string
     {
-        return $twig->render('layouts/article/article_title.html.twig', [
+        return $twig->render('interface/layouts/article/article_title.html.twig', [
             'article' => $article
         ]);
     }
@@ -88,7 +88,7 @@ class ArticleExtension extends AbstractExtension
      */
     public function articleTags(Environment $twig, $article): string
     {
-        return $twig->render('layouts/article/article_tags.html.twig', [
+        return $twig->render('interface/layouts/article/article_tags.html.twig', [
             'article' => $article
         ]);
     }
@@ -100,7 +100,7 @@ class ArticleExtension extends AbstractExtension
      */
     public function articleImage(Environment $twig, $article): string
     {
-        return $twig->render('layouts/article/article_image.html.twig', [
+        return $twig->render('interface/layouts/article/article_image.html.twig', [
             'article' => $article
         ]);
     }
@@ -112,7 +112,7 @@ class ArticleExtension extends AbstractExtension
      */
     public function articleDescription(Environment $twig, $article): string
     {
-        return $twig->render('layouts/article/article_description.html.twig', [
+        return $twig->render('interface/layouts/article/article_description.html.twig', [
             'article' => $article
         ]);
     }
@@ -124,7 +124,7 @@ class ArticleExtension extends AbstractExtension
      */
     public function articleActions(Environment $twig, $article, $comments = true): string
     {
-        return $twig->render('layouts/article/article_actions.html.twig', [
+        return $twig->render('interface/layouts/article/article_actions.html.twig', [
             'article' => $article,
             'comments' => $comments
         ]);
@@ -137,7 +137,7 @@ class ArticleExtension extends AbstractExtension
      */
     public function articleView(Environment $twig, $article, $type = null): string
     {
-        return $twig->render('layouts/article/article_view.html.twig',[
+        return $twig->render('interface/layouts/article/article_view.html.twig',[
             'article' => $article,
             'type' => $type
         ]);

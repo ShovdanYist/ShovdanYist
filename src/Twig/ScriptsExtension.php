@@ -27,7 +27,7 @@ class ScriptsExtension extends AbstractExtension
      */
     public function autoplay(Environment $twig): string
     {
-        return $twig->render('layouts/scripts/autoplay.html.twig');
+        return $twig->render('interface/layouts/scripts/autoplay.html.twig');
     }
 
     /**
@@ -37,7 +37,7 @@ class ScriptsExtension extends AbstractExtension
      */
     public function ckeditor(Environment $twig, $type = 'user'): string
     {
-        return $twig->render('layouts/scripts/ckeditor.html.twig', [
+        return $twig->render('interface/layouts/scripts/ckeditor.html.twig', [
             'type' => $type
         ]);
     }
@@ -49,7 +49,7 @@ class ScriptsExtension extends AbstractExtension
      */
     public function chosen(Environment $twig, $limit = 3, $selector = '.chosen'): string
     {
-        return $twig->render('layouts/scripts/chosen.html.twig', [
+        return $twig->render('interface/layouts/scripts/chosen.html.twig', [
             'limit' => $limit,
             'selector' => $selector
         ]);

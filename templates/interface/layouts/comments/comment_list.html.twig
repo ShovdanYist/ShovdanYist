@@ -1,0 +1,94 @@
+<div class="md-comments">
+
+    {% for comment in comments %}
+
+        <div class="md-comment">
+
+            <a href="{{ path('user_profile', {username: comment.author.username}) }}">
+                <span class="back-picture bp-45" style="margin-right: 14px;background-image: url('{% if comment.author.profile.avatar != 'avatar.jpg' %}{{ vich_uploader_asset(comment.author.profile) | imagine_filter('thumbnail') }}{% else %}{{ asset('assets/images/avatar.jpg') | imagine_filter('thumbnail') }}{% endif %}')">
+                </span>
+            </a>
+
+            <div class="md-comment-author">
+
+                <a class="md-comment-username" href="{{ path('user_profile', {username: comment.author.username}) }}">
+                    {{ comment.author.username }}
+                </a>
+
+                {% if comment.author.profile.verified == true %}
+                    <span class="md-comment-verified">
+                        <i class="fas fa-check-circle text-info"></i>
+                    </span>
+                {% endif %}
+
+                {% if rightToDeleteComment(app.user,comment) or rightToBlockUser(app.user,comment.author) %}
+
+                    <button type="button" class="btn md-comment-dot-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fas fa-ellipsis-h"></i>
+                    </button>
+
+                    <div class="dropdown-menu dropdown-menu-right">
+
+                        {% if rightToBlockUser(app.user,comment.author) %}
+
+                            {% if comment.author.status != false %}
+
+                                <a href="{{ path('moderation_block_user', {'id': comment.author.id}) }}" class="dropdown-item" onclick="return confirm('{{ 'are.you.sure.to.block.user' | trans }}')">
+                                    {{ 'block' | trans }}
+                                </a>
+
+                            {% else %}
+
+                                <a href="{{ path('moderation_unblock_user', {'id': comment.author.id}) }}" class="dropdown-item" onclick="return confirm('{{ 'are.you.sure.to.unblock.user' | trans }}')">
+                                    {{ 'unblock' | trans }}
+                                </a>
+
+                            {% endif %}
+
+                        {% endif %}
+
+                        {% if rightToDeleteComment(app.user,comment) %}
+                            {% include 'interface/layouts/comments/comment_delete.html.twig' %}
+                        {% endif %}
+
+                    </div>
+
+                {% endif %}
+
+            </div>
+
+            <span class="md-comment-message">
+                {% if comment.replyTo %}
+                    <span class="md-comment-replied badge badge-light">
+                        <span class="float-left mr-1">{{ 'reply.for' | trans }}</span>
+
+                        <a class="md-comment-username" href="{{ path('user_profile', {username: comment.replyTo.username}) }}">
+                            {{ comment.replyTo.username }}{{ 'reply.for_2' | trans }}
+                        </a>
+
+                    </span>
+                {% endif %}
+
+                {{ comment.message }}
+            </span>
+
+            <div class="md-comment-info">
+                <small class="md-comment-date text-muted">
+                    {{ comment.publishedAt ? comment.publishedAt | format_datetime('medium', 'none', '', 'UTC') }}
+                </small>
+
+                {% if app.user and comment.author.username != app.user.username %}
+                    <small class="md-comment-reply text-muted">
+                        <span class="comment-reply">
+                            <span class="reply-user d-none">{{ comment.author.username }}</span>
+                            {{ 'reply' | trans }}
+                        </span>
+                    </small>
+                {% endif %}
+            </div>
+
+        </div>
+
+    {% endfor %}
+
+</div>

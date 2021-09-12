@@ -47,7 +47,7 @@ class ArticleController extends CustomAbstractController
             ->setPage($page)
         ;
 
-        return $this->render('article/tag.html.twig', [
+        return $this->render('interface/article/tag.html.twig', [
             'articles' => $paginator->getData(),
             'paginator' => $paginator,
             'tag' => $tag
@@ -77,7 +77,7 @@ class ArticleController extends CustomAbstractController
             return $this->redirectToRoute('article_show', ['slug' => $article->getSlug()]);
         }
 
-        return $this->render('article/new.html.twig', [
+        return $this->render('interface/article/new.html.twig', [
             'form' => $form->createView(),
             'article' => $article
         ]);
@@ -99,7 +99,7 @@ class ArticleController extends CustomAbstractController
                 $em->flush();
             }
 
-            return $this->render('article/show.html.twig', [
+            return $this->render('interface/article/show.html.twig', [
                 'article' => $article,
                 'page' => $page
             ]);
@@ -152,7 +152,7 @@ class ArticleController extends CustomAbstractController
                 return $this->redirectToRoute('article_show', ['slug' => $article->getSlug()]);
             }
 
-            return $this->render('article/edit.html.twig', [
+            return $this->render('interface/article/edit.html.twig', [
                 'article' => $article,
                 'form' => $form->createView(),
             ]);

@@ -66,7 +66,7 @@ class ModulesExtension extends AbstractExtension
             ->setLimit(10)
             ->setPage($page);
 
-        return $twig->render('/layouts/modules/comments/comment_block.html.twig', [
+        return $twig->render('interface/layouts/comments/comment_block.html.twig', [
             'commentForm' => $this->createForm(CommentType::class)->createView(),
             'comments' => $this->paginator->getData(),
             'paginator' => $this->paginator,
@@ -100,7 +100,7 @@ class ModulesExtension extends AbstractExtension
     {
 //        $name = ($entity) ? strtolower((new \ReflectionClass($entity))->getShortName()) : null ;
 
-        return $twig->render('layouts/modules/breadcrumb.html.twig', [
+        return $twig->render('interface/layouts/service/breadcrumb.html.twig', [
             'links' => $links,
             'entity' => $entity,
             'name' => $name

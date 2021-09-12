@@ -61,7 +61,7 @@ class UserController extends CustomAbstractController
             ->setPage($page)
         ;
 
-        return $this->render('user/profile.html.twig', [
+        return $this->render('interface/user/profile.html.twig', [
             'invitees' => $this->getDoctrine()->getRepository(User::class)->count(['invitedBy' => $user, 'status' => true]),
             'articles' => $paginator->getData(),
             'paginator' => $paginator,
@@ -100,7 +100,7 @@ class UserController extends CustomAbstractController
             return $this->redirectToRoute('user_profile', ['username' => $user->getUsername()]);
         }
 
-        return $this->render('user/edit.html.twig', [
+        return $this->render('interface/user/edit.html.twig', [
             'user' => $user,
             'form' => $form->createView()
         ]);
@@ -173,7 +173,7 @@ class UserController extends CustomAbstractController
             }
         }
 
-        return $this->render('user/settings.html.twig', [
+        return $this->render('interface/user/settings.html.twig', [
             'user' => $user,
             'form' => $form->createView()
         ]);
@@ -208,7 +208,7 @@ class UserController extends CustomAbstractController
             }
         }
 
-        return $this->render('user/reset.html.twig', [
+        return $this->render('interface/user/reset.html.twig', [
             'form' => $form->createView()
         ]);
     }
@@ -247,7 +247,7 @@ class UserController extends CustomAbstractController
             ->setLimit(10)
             ->setPage($page);
 
-        return $this->render('user/notifications.html.twig', [
+        return $this->render('interface/user/notifications.html.twig', [
             'notifications' => $paginator->getData(),
             'paginator' => $paginator
         ]);
@@ -271,7 +271,7 @@ class UserController extends CustomAbstractController
             ->setLimit(20)
             ->setPage($page);
 
-        return $this->render('user/playlist.html.twig', [
+        return $this->render('interface/user/playlist.html.twig', [
             'playlist' => $paginator->getData(),
             'paginator' => $paginator,
             'user' => $this->user()
@@ -298,7 +298,7 @@ class UserController extends CustomAbstractController
             ->setPage($page)
         ;
 
-        return $this->render('user/bookmarks.html.twig', [
+        return $this->render('interface/user/bookmarks.html.twig', [
             'articles' => $paginator->getData(),
             'paginator' => $paginator
         ]);
@@ -310,7 +310,7 @@ class UserController extends CustomAbstractController
      */
     public function deleteAccount(): Response
     {
-        return $this->render('user/delete_account.html.twig');
+        return $this->render('interface/user/delete_account.html.twig');
     }
 
     /**
