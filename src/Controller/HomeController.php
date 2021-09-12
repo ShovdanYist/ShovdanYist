@@ -5,13 +5,16 @@ namespace App\Controller;
 use App\CustomAbstracts\CustomAbstractController;
 use App\Entity\EmailAddress;
 use App\Entity\Article;
+use App\Entity\People;
 use App\Entity\Profile;
+use App\Entity\Song;
 use App\Entity\User;
 use App\Form\RegistrationFormType;
 use App\Form\NewPasswordType;
 use App\Security\UserAuthenticator;
 use App\Service\Mailer;
 use App\Service\Paginator;
+use App\Service\Sitemap;
 use App\Validator\Constraints\MailExists;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\HttpFoundation\Request;
@@ -24,6 +27,9 @@ use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 
 /**
  * @Route(name="app_")
@@ -50,6 +56,20 @@ class HomeController extends CustomAbstractController
             'articles' => $paginator->getData(),
             'paginator' => $paginator
         ]);
+    }
+
+    /**
+     * @Route("/sitemap.xml", name="sitemap", defaults={"_format"="xml"})
+     * @param Request $request
+     * @param Sitemap $sitemap
+     * @throws RuntimeError
+     * @throws SyntaxError
+     * @throws LoaderError
+     * @return Response
+     */
+    public function sitemap(Request $request, Sitemap $sitemap): Response
+    {
+        return $sitemap->urls($request->getSchemeAndHttpHost());
     }
 
     /**
