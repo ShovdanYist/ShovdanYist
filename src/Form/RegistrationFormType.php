@@ -78,7 +78,7 @@ class RegistrationFormType extends AbstractType
                 'years' => range(date('Y')-10, date('Y')-100),
                 'mapped' => false,
                 'widget' => 'choice',
-                'format' => 'ddMMMyyyy',
+                'format' => 'ddMMMMyyyy',
                 'constraints' => [
                     new NotBlank([
                         'message' => 'birthday.required'

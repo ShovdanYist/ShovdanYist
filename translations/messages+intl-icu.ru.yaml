@@ -74,8 +74,12 @@ profile.editing: 'Редактирование страницы'
 save: Сохранить
 cancel: Отмена
 notifications: Уведомлении
-replied.you.with.comment.male: 'Ответил вам'
-replied.you.with.comment.female: 'Ответила вам'
+replied.you.with.comment.male: 'ответил на ваш комментарий:'
+replied.you.with.comment.female: 'ответила на ваш комментарий:'
+replied.you.with.comment.users: 'и другие ответили на ваш комментарий'
+commented.your.article.male : 'оставил комментарий на вашу статью'
+commented.your.article.female : 'оставила комментарий на вашу статью'
+commented.your.article.users : 'и другие оставили комментарии на вашу статью'
 you.have.no.notifications: 'У вас нет уведомлений'
 account.deleting: 'Удаление аккаунта'
 account.deleting.warning.message: 'Все данные связанные с вашим аккаунтом будут безвозвратно удалены.'

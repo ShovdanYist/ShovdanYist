@@ -64,6 +64,11 @@ class Notification
     private $song;
 
     /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $quantity;
+
+    /**
      * @ORM\PrePersist()
      */
     public function initialize()
@@ -182,6 +187,18 @@ class Notification
     public function setSong(?Song $song): self
     {
         $this->song = $song;
+
+        return $this;
+    }
+
+    public function getQuantity(): ?int
+    {
+        return $this->quantity;
+    }
+
+    public function setQuantity(?int $quantity): self
+    {
+        $this->quantity = $quantity;
 
         return $this;
     }

@@ -33,20 +33,109 @@
                                 {{ notification.comment.author.profile.username }}
                             </a>
 
-                            {% if notification.comment.author.profile.gender %}
-                                {{ 'replied.you.with.comment.female' | trans }}:
+                            {% if notification.quantity > 1 %}
+
+                                {{ 'replied.you.with.comment.users' | trans }}
+
+                                {% if notification.article %}
+                                    {{ 'в статье' }} <a href="{{ path('article_show',{'slug':notification.article.slug}) }}">{{ notification.article.title }}</a>
+                                {% elseif notification.song %}
+                                    {{ 'в песне' }} <a href="{{ path('song_show', {'slug': notification.song.slug}) }}">{{ notification.song.fulltitle }}</a>
+                                {% endif %}
+
+                            {% elseif notification.comment.author.profile.gender %}
+                                {{ 'replied.you.with.comment.female' | trans }}
                             {% else %}
-                                {{ 'replied.you.with.comment.male' | trans }}:
+                                {{ 'replied.you.with.comment.male' | trans }}
                             {% endif %}
 
-                            {% if notification.comment.song %}
-                                <a class="notify-message-link" href="{{ path('song_show', {'slug': notification.comment.song.slug}) }}">
-                                    {{ notification.comment.message }}
-                                </a>
+                            {% if notification.quantity == 1 %}
+                                {% if notification.comment.song %}
+                                    <a class="notify-message-link" href="{{ path('song_show', {'slug': notification.comment.song.slug}) }}">
+                                        {{ notification.comment.message }}
+                                    </a>
+                                {% else %}
+                                    <a class="notify-message-link" href="{{ path( 'article_show', {'slug': notification.comment.article.slug}) }}">
+                                        {{ notification.comment.message }}
+                                    </a>
+                                {% endif %}
+                            {% endif %}
+
+                            <br>
+
+                            <small class="text-muted">
+                                {{ notification.publishedAt ? notification.publishedAt | format_datetime('medium', 'none', '', 'UTC') }}
+                                в
+                                {{ notification.publishedAt ? notification.publishedAt | date(' H:i') }}
+
+                                <form class="md-comment-reply" style="display: contents" method="post" action="{{ path('user_notification_delete', {'id': notification.id}) }}" onsubmit="return confirm('{{ 'sure.to.delete.notification' | trans }}');">
+                                    <input type="hidden" name="_method" value="DELETE">
+                                    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ notification.id) }}">
+                                    <button class="comment-reply" style="display: contents">
+                                        {{ 'delete' | trans }}
+                                    </button>
+                                </form>
+                            </small>
+
+                        </div>
+
+                    </div>
+
+                    <div class="notify-picture">
+                        {% if notification.comment.song %}
+                            <a href="{{ path('song_show', {'slug': notification.comment.song.slug}) }}">
+                                <span class="back-picture bp-50" style="border-radius: 3px;margin-right: 14px;background-image: url('{% if notification.comment.song.vocalist.picture %}{{ vich_uploader_asset(notification.comment.song.vocalist) | imagine_filter('thumbnail') }}{% else %}{{ asset('assets/images/avatar.jpg') | imagine_filter('thumbnail') }}{% endif %}')">
+                                </span>
+                            </a>
+                        {% else %}
+                            <a href="{{ path( 'article_show', {'slug': notification.comment.article.slug}) }}">
+                                <span class="back-picture bp-50" style="border-radius: 3px;margin-right: 14px;background-image: url(' {% if notification.comment.article.image %}{{ vich_uploader_asset(notification.comment.article) | imagine_filter('thumbnail') }}{% else %}{{ asset('assets/images/question.jpg') }}{% endif %}')">
+                                </span>
+                            </a>
+                        {% endif %}
+                    </div>
+
+                </div>
+
+            {% elseif notification.type == 'article_comment' %}
+
+                <div class="md-notification md-comment-notification">
+
+                    <div class="notify-sender-user">
+                        <a href="{{ path('user_profile', {'username': notification.comment.author.username}) }}">
+                            <span class="md-avatar md-avatar-50" style="background-image: url('{% if notification.comment.author.profile.avatar != 'avatar.jpg' %}{{ vich_uploader_asset(notification.comment.author.profile) | imagine_filter('thumbnail') }}{% else %}{{ asset('assets/images/avatar.jpg') | imagine_filter('thumbnail') }}{% endif %}')"></span>
+                        </a>
+                    </div>
+
+                    <div class="notify-message-body">
+
+                        <div class="notify-message">
+
+                            <a class="notify-message-user" style="font-weight: 500" href="{{ path('user_profile', {'username': notification.comment.author.username}) }}">
+                                {{ notification.comment.author.profile.username }}
+                            </a>
+
+                            {% if notification.quantity > 1 %}
+                                {{ 'commented.your.article.users' | trans }}
+
+                                <a href="{{ path('article_show',{'slug':notification.article.slug}) }}">{{ notification.article.title }}</a>
+
+                            {% elseif notification.comment.author.profile.gender %}
+                                {{ 'commented.your.article.female' | trans }}:
                             {% else %}
-                                <a class="notify-message-link" href="{{ path( 'article_show', {'slug': notification.comment.article.slug}) }}">
-                                    {{ notification.comment.message }}
-                                </a>
+                                {{ 'commented.your.article.male' | trans }}:
+                            {% endif %}
+
+                            {% if notification.quantity == 1 %}
+                                {% if notification.comment.song %}
+                                    <a class="notify-message-link" href="{{ path('song_show', {'slug': notification.comment.song.slug}) }}">
+                                        {{ notification.comment.message }}
+                                    </a>
+                                {% else %}
+                                    <a class="notify-message-link" href="{{ path( 'article_show', {'slug': notification.comment.article.slug}) }}">
+                                        {{ notification.comment.message }}
+                                    </a>
+                                {% endif %}
                             {% endif %}
 
                             <br>
@@ -103,7 +192,7 @@
                                 shovdanyist
                             </a>
 
-                            Администрация сайта отклонила вашу публикацию
+                            отклонил вашу статью
                             <a href="{{ path( 'article_show', {'slug': notification.article.slug}) }}">{{ notification.article.title }}</a>
                             по следующей причине:
 
@@ -156,9 +245,8 @@
                                 shovdanyist
                             </a>
 
-                            Ваша статья
+                            опубликовал вашу статью
                             <a href="{{ path( 'article_show', {'slug': notification.article.slug}) }}">{{ notification.article.title }}</a>
-                            опубликована
 
                             <br>
 

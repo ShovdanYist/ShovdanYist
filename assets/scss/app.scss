@@ -1688,7 +1688,7 @@ select {
   padding: unset;
 }
 .notify-message-user {
-  display: table;
+  display: contents;
   overflow: hidden;
   font-weight: 600 !important;
   text-overflow: ellipsis;

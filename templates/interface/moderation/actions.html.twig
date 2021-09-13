@@ -75,7 +75,7 @@
                                 {{ action.moderator.username }}
                             </a>
 
-                            {% if action.moderator.profile.gender %}Удалила{% else %}Удалил{% endif %} комментарий "{{ action.content }}"
+                            {% if action.moderator.profile.gender %}удалила{% else %}удалил{% endif %} комментарий "{{ action.content }}"
 
                             от пользователя <a href="{{ path('user_profile',{'username': action.user.username }) }}">{{ action.user.username }}</a>
 
@@ -136,9 +136,9 @@
                             </a>
 
                             {% if action.type == 'user_blocked' %}
-                                {% if action.moderator.profile.gender %}Заблокировала{% else %}Заблокировал{% endif %} пользователя <a href="{{ path('user_profile',{'username': action.user.username }) }}">{{ action.user.username }}</a>
+                                {% if action.moderator.profile.gender %}заблокировала{% else %}заблокировал{% endif %} пользователя <a href="{{ path('user_profile',{'username': action.user.username }) }}">{{ action.user.username }}</a>
                             {% else %}
-                                {% if action.moderator.profile.gender %}Разблокировала{% else %}Разблокировал{% endif %} пользователя <a href="{{ path('user_profile',{'username': action.user.username }) }}">{{ action.user.username }}</a>
+                                {% if action.moderator.profile.gender %}разблокировала{% else %}разблокировал{% endif %} пользователя <a href="{{ path('user_profile',{'username': action.user.username }) }}">{{ action.user.username }}</a>
                             {% endif %}
 
                             <br>
@@ -191,9 +191,9 @@
                             </a>
 
                             {% if action.type == 'article_published' %}
-                                {% if action.moderator.profile.gender %}Утвердила и опубликовала{% else %}Утвердил и опубликовал{% endif %} статью <a href="{{ path('article_show',{'slug':action.article.slug}) }}">{{ action.article.title }}</a>
+                                {% if action.moderator.profile.gender %}утвердила{% else %}утвердил{% endif %} статью <a href="{{ path('article_show',{'slug':action.article.slug}) }}">{{ action.article.title }}</a>
                             {% elseif action.type == 'article_rejected' %}
-                                {% if action.moderator.profile.gender %}Отклонила{% else %}Отклонил{% endif %} статью <a href="{{ path('article_show',{'slug':action.article.slug}) }}">{{ action.article.title }}</a> по следующей причине: {{ action.content }}
+                                {% if action.moderator.profile.gender %}отклонила{% else %}отклонил{% endif %} статью <a href="{{ path('article_show',{'slug':action.article.slug}) }}">{{ action.article.title }}</a> по следующей причине: {{ action.content }}
                             {% endif %}
 
                             <br>
@@ -245,7 +245,7 @@
                                 {{ action.moderator.username }}
                             </a>
 
-                            {% if action.moderator.profile.gender %}Отредактировала{% else %}Отредактировал{% endif %} песню <a href="{{ path( 'song_show', {'slug': action.song.slug}) }}">{{ action.song.fullTitle }}</a>
+                            {% if action.moderator.profile.gender %}отредактировала{% else %}отредактировал{% endif %} песню <a href="{{ path( 'song_show', {'slug': action.song.slug}) }}">{{ action.song.fullTitle }}</a>
 
                             <br>
 
@@ -296,7 +296,7 @@
                                 {{ action.moderator.username }}
                             </a>
 
-                            {% if action.moderator.profile.gender %}Отредактировала{% else %}Отредактировал{% endif %} статью <a href="{{ path( 'article_show', {'slug': action.article.slug}) }}">{{ action.article.title }}</a>
+                            {% if action.moderator.profile.gender %}отредактировала{% else %}отредактировал{% endif %} статью <a href="{{ path( 'article_show', {'slug': action.article.slug}) }}">{{ action.article.title }}</a>
 
                             <br>
 
@@ -347,7 +347,7 @@
                                 {{ action.moderator.username }}
                             </a>
 
-                            {% if action.moderator.profile.gender %}Поменяла{% else %}Поменял{% endif %} права пользователя <a href="{{ path('user_profile',{'username': action.user.username }) }}">{{ action.user.username }}</a>:
+                            {% if action.moderator.profile.gender %}поменяла{% else %}поменял{% endif %} права пользователя <a href="{{ path('user_profile',{'username': action.user.username }) }}">{{ action.user.username }}</a>:
                             {{ action.content | raw }}
 
                             <br>
@@ -399,7 +399,7 @@
                                 {{ action.moderator.username }}
                             </a>
 
-                            {% if action.moderator.profile.gender %}Отредактировала{% else %}Отредактировал{% endif %} биографию <a href="{{ path( 'song_vocalist', {'slug': action.person.slug}) }}">{{ action.person.fullName }}</a>
+                            {% if action.moderator.profile.gender %}отредактировала{% else %}отредактировал{% endif %} биографию <a href="{{ path( 'song_vocalist', {'slug': action.person.slug}) }}">{{ action.person.fullName }}</a>
 
                             <br>
 

@@ -75,7 +75,7 @@ class ProfileType extends AbstractType
                 'label' => 'birth.date',
                 'years' => range(date('Y')-10, date('Y')-100),
                 'widget' => 'choice',
-                'format' => 'ddMMMyyyy',
+                'format' => 'ddMMMMyyyy',
                 'constraints' => [
                     new NotBlank([
                         'message' => 'birthday.required'

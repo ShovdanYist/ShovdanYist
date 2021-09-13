@@ -48,19 +48,54 @@ class CommentController extends CustomAbstractController
 
             if ($form->get('replyTo')->getData()) {
                 $receiver = $userRepo->findOneBy(['username' => $form->get('replyTo')->getData()]);
-                $notification = new Notification();
-                $notification->setType('comment_reply');
-                $notification->setReceiver($receiver);
-                $notification->setComment($comment);
+                $existNotify = $this->getDoctrine()->getRepository(Notification::class)->findOneBy(['type' => 'comment_reply', $type => $entity, 'receiver' => $receiver]);
 
-                if ($type == 'song') {
-                    $notification->setSong($entity);
+                if ($existNotify) {
+                    if ($existNotify->getSeen()) {
+                        $existNotify->setSeen(false);
+                        $existNotify->setQuantity(1);
+                    } else {
+                        $existNotify->setQuantity($existNotify->getQuantity() + 1);
+                    }
+                    $existNotify->setPublishedAt(new \DateTime('now'));
+                    $existNotify->setComment($comment);
                 } else {
-                    $notification->setArticle($entity);
+                    $notification = new Notification();
+                    $notification->setType('comment_reply');
+                    $notification->setReceiver($receiver);
+                    $notification->setComment($comment);
+                    $notification->setQuantity(1);
+
+                    if ($type == 'song') {
+                        $notification->setSong($entity);
+                    } else {
+                        $notification->setArticle($entity);
+                    }
+                    $em->persist($notification);
                 }
 
-                $em->persist($notification);
                 $comment->setReplyTo($receiver);
+            }
+
+            $existNotify = $this->getDoctrine()->getRepository(Notification::class)->findOneBy(['type' => 'article_comment', 'article' => $comment->getArticle()]);
+
+            if ($type == 'article' && $existNotify && $this->user() !== $comment->getArticle()->getAuthor() && $form->get('replyTo')->getData() !== $comment->getArticle()->getAuthor()->getUsername()) {
+                if ($existNotify->getSeen()) {
+                    $existNotify->setSeen(false);
+                    $existNotify->setQuantity(1);
+                } elseif ($existNotify->getComment()->getAuthor() !== $comment->getAuthor()) {
+                    $existNotify->setQuantity($existNotify->getQuantity() + 1);
+                }
+                $existNotify->setPublishedAt(new \DateTime('now'));
+                $existNotify->setComment($comment);
+            } elseif ($type == 'article' && $this->user() !== $comment->getArticle()->getAuthor() && $form->get('replyTo')->getData() !== $comment->getArticle()->getAuthor()->getUsername()) {
+                $notify = new Notification();
+                $notify->setReceiver($comment->getArticle()->getAuthor());
+                $notify->setComment($comment);
+                $notify->setQuantity(1);
+                $notify->setArticle($comment->getArticle());
+                $notify->setType('article_comment');
+                $em->persist($notify);
             }
 
             $em->persist($comment);

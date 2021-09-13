@@ -98,7 +98,7 @@ class ArticleType extends AbstractType
                 'years' => range(date('Y')+100, date('Y')-1000),
                 'required' => false,
                 'widget' => 'choice',
-                'format' => 'ddMMMyyyy',
+                'format' => 'ddMMMMyyyy',
                 'placeholder' => [
                     'year' => 'Год',
                     'month' => 'Месяц',
