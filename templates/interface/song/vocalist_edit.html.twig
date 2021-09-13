@@ -31,7 +31,7 @@
     </div>
 
     <button class="btn btn-primary">
-        {{ button_label | default('add') | trans }}
+        {{ button_label | default('save') | trans }}
     </button>
 
     <a class="btn btn-link float-right" href="{{ path('song_vocalist',{'slug':person.slug}) }}">

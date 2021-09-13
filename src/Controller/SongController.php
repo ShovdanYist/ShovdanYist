@@ -54,7 +54,7 @@ class SongController extends CustomAbstractController
             ->setParameters(['slug' => $tag->getSlug()])
             ->setCriteria(['tag' => $tag])
             ->setMethod('findByTag')
-            ->setOrder(['title' => 'DESC'])
+            ->setOrder(['publicationDate' => 'DESC'])
             ->setClass(Song::class)
             ->setType('tag')
             ->setLimit(20)
@@ -177,6 +177,7 @@ class SongController extends CustomAbstractController
             $action->setSong($song);
             $action->setType('song_edited');
 
+            $song->setEditingDate(new \DateTime('now'));
             $em = $this->getDoctrine()->getManager();
             $em->persist($action);
             $em->flush();
@@ -272,6 +273,7 @@ class SongController extends CustomAbstractController
             $action->setPerson($person);
             $action->setType('person_edited');
 
+            $person->setUpdatedAt(new \DateTime('now'));
             $em->persist($action);
             $em->flush();
 

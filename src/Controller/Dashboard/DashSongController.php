@@ -110,6 +110,12 @@ class DashSongController extends AbstractController
             $user = $repo->findOneBy(['username' => $this->getUser()->getUsername()]);
             $song->setAuthor($user);
 
+            if ($song->getTags()) {
+                foreach ($song->getTags() as $tag) {
+                    $tag->setUpdatedAt(new \DateTime('now'));
+                }
+            }
+
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($song);
             $entityManager->flush();

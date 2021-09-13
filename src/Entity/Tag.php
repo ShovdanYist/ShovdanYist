@@ -12,6 +12,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=TagRepository::class)
+ * @ORM\HasLifecycleCallbacks()
  * @UniqueEntity("title")
  * @UniqueEntity("slug")
  * @Vich\Uploadable
@@ -58,10 +59,24 @@ class Tag
      */
     private $articles;
 
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $updatedAt;
+
     public function __construct()
     {
         $this->songs = new ArrayCollection();
         $this->articles = new ArrayCollection();
+    }
+
+    /**
+     * Initialise un slug automatique
+     * @ORM\PrePersist()
+     */
+    public function initializeSlug()
+    {
+        $this->updatedAt = new \DateTime('now');
     }
 
     public function getId(): ?int
@@ -169,6 +184,18 @@ class Tag
             $this->articles->removeElement($article);
             $article->removeTag($this);
         }
+
+        return $this;
+    }
+
+    public function getUpdatedAt(): ?\DateTimeInterface
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt(\DateTimeInterface $updatedAt): self
+    {
+        $this->updatedAt = $updatedAt;
 
         return $this;
     }

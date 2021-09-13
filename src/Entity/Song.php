@@ -142,7 +142,7 @@ class Song
     private $actions;
 
     /**
-     * @ORM\OneToMany(targetEntity=View::class, mappedBy="song")
+     * @ORM\OneToMany(targetEntity=View::class, mappedBy="song", orphanRemoval=true)
      */
     private $views;
 
@@ -192,7 +192,7 @@ class Song
         $slugifier = new Slugify();
         $vocalist = '';
         if ($this->getVocalist()){
-            $Vocalist = $this->getVocalist()->getFullName() . ' ';
+            $vocalist = $this->getVocalist()->getFullName() . ' ';
         }
 
         $this->slug = $slugifier->slugify($vocalist . $this->title);
