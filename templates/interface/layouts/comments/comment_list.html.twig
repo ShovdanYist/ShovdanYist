@@ -75,6 +75,8 @@
             <div class="md-comment-info">
                 <small class="md-comment-date text-muted">
                     {{ comment.publishedAt ? comment.publishedAt | format_datetime('medium', 'none', '', 'UTC') }}
+                    в
+                    {{ comment.publishedAt ? comment.publishedAt | date(' H:i') }}
                 </small>
 
                 {% if app.user and comment.author.username != app.user.username %}

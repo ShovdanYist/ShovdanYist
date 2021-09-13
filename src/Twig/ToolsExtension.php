@@ -37,7 +37,7 @@ class ToolsExtension extends AbstractExtension
         return $this->defender->rightToChangeUserRights($moderator, $user);
     }
 
-    public function rightToDeleteComment(User $user, Comment $comment): bool
+    public function rightToDeleteComment($user, Comment $comment): bool
     {
         return $this->defender->rightToDeleteComment($user, $comment);
     }

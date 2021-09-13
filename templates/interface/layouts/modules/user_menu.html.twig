@@ -131,49 +131,55 @@
 {% else %}
 
     <div class="md-box sidebar sticky-top">
-        <div class="md-menu">
 
-            <ul>
+        <div class="md-box sidebar-box">
 
-                <li class="md-menu-item">
-                    <a href="{{ path('app_home') }}">
-                        <span>
-                            <i class="fas fa-heading"></i>
-                        </span>
-                        {{ 'articles' | trans }}
-                    </a>
-                </li>
+            <div class="md-menu">
 
-                <li class="md-menu-item">
-                    <a href="{{ path('song_index') }}">
-                        <span>
-                            <i class="fas fa-music"></i>
-                        </span>
-                        {{ 'music' | trans }}
-                    </a>
-                </li>
+                <ul>
 
-                <li class="md-menu-item">
-                    <a href="{{ path('song_chart', {'chart':'trends'}) }}">
-                        <span>
-                            <i class="fas fa-fire-alt"></i>
-                        </span>
-                        {{ 'trends' | trans }}
-                    </a>
-                </li>
+                    <li class="md-menu-item">
+                        <a href="{{ path('app_home') }}">
+                            <span>
+                                <i class="fas fa-heading"></i>
+                            </span>
+                            {{ 'articles' | trans }}
+                        </a>
+                    </li>
 
-                <li class="md-menu-item">
-                    <a href="{{ path('song_chart', {'chart':'novelty'}) }}">
-                        <span>
-                            <i class="fas fa-certificate"></i>
-                        </span>
-                        {{ 'novelty' | trans }}
-                    </a>
-                </li>
+                    <li class="md-menu-item">
+                        <a href="{{ path('song_index') }}">
+                            <span>
+                                <i class="fas fa-music"></i>
+                            </span>
+                            {{ 'music' | trans }}
+                        </a>
+                    </li>
 
-            </ul>
+                    <li class="md-menu-item">
+                        <a href="{{ path('song_chart', {'chart':'trends'}) }}">
+                            <span>
+                                <i class="fas fa-fire-alt"></i>
+                            </span>
+                            {{ 'trends' | trans }}
+                        </a>
+                    </li>
+
+                    <li class="md-menu-item">
+                        <a href="{{ path('song_chart', {'chart':'novelty'}) }}">
+                            <span>
+                                <i class="fas fa-certificate"></i>
+                            </span>
+                            {{ 'novelty' | trans }}
+                        </a>
+                    </li>
+
+                </ul>
+
+            </div>
 
         </div>
+
     </div>
 
 {% endif %}

@@ -73,7 +73,7 @@ class Defender
         return $right;
     }
 
-    public function rightToDeleteComment(User $user,Comment $comment): bool
+    public function rightToDeleteComment($user,Comment $comment): bool
     {
         $right = false;
 
