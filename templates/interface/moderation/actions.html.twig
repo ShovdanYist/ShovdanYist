@@ -85,6 +85,16 @@
                                 {{ action.createdAt ? action.createdAt | format_datetime('medium', 'none', '', 'UTC') }}
                                 в
                                 {{ action.createdAt ? action.createdAt | date(' H:i') }}
+
+                                {% if is_granted('ROLE_OWNER') %}
+                                    <form class="md-comment-reply" style="display: contents" method="post" action="{{ path('moderation_action_delete', {'id': action.id}) }}" onsubmit="return confirm('{{ 'sure.to.delete.action' | trans }}');">
+                                        <input type="hidden" name="_method" value="DELETE">
+                                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ action.id) }}">
+                                        <button class="comment-reply" style="display: contents">
+                                            {{ 'delete' | trans }}
+                                        </button>
+                                    </form>
+                                {% endif %}
                             </small>
 
                         </div>
@@ -137,6 +147,16 @@
                                 {{ action.createdAt ? action.createdAt | format_datetime('medium', 'none', '', 'UTC') }}
                                 в
                                 {{ action.createdAt ? action.createdAt | date(' H:i') }}
+
+                                {% if is_granted('ROLE_OWNER') %}
+                                    <form class="md-comment-reply" style="display: contents" method="post" action="{{ path('moderation_action_delete', {'id': action.id}) }}" onsubmit="return confirm('{{ 'sure.to.delete.action' | trans }}');">
+                                        <input type="hidden" name="_method" value="DELETE">
+                                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ action.id) }}">
+                                        <button class="comment-reply" style="display: contents">
+                                            {{ 'delete' | trans }}
+                                        </button>
+                                    </form>
+                                {% endif %}
                             </small>
 
                         </div>
@@ -182,6 +202,16 @@
                                 {{ action.createdAt ? action.createdAt | format_datetime('medium', 'none', '', 'UTC') }}
                                 в
                                 {{ action.createdAt ? action.createdAt | date(' H:i') }}
+
+                                {% if is_granted('ROLE_OWNER') %}
+                                    <form class="md-comment-reply" style="display: contents" method="post" action="{{ path('moderation_action_delete', {'id': action.id}) }}" onsubmit="return confirm('{{ 'sure.to.delete.action' | trans }}');">
+                                        <input type="hidden" name="_method" value="DELETE">
+                                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ action.id) }}">
+                                        <button class="comment-reply" style="display: contents">
+                                            {{ 'delete' | trans }}
+                                        </button>
+                                    </form>
+                                {% endif %}
                             </small>
 
                         </div>
@@ -223,6 +253,16 @@
                                 {{ action.createdAt ? action.createdAt | format_datetime('medium', 'none', '', 'UTC') }}
                                 в
                                 {{ action.createdAt ? action.createdAt | date(' H:i') }}
+
+                                {% if is_granted('ROLE_OWNER') %}
+                                    <form class="md-comment-reply" style="display: contents" method="post" action="{{ path('moderation_action_delete', {'id': action.id}) }}" onsubmit="return confirm('{{ 'sure.to.delete.action' | trans }}');">
+                                        <input type="hidden" name="_method" value="DELETE">
+                                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ action.id) }}">
+                                        <button class="comment-reply" style="display: contents">
+                                            {{ 'delete' | trans }}
+                                        </button>
+                                    </form>
+                                {% endif %}
                             </small>
 
                         </div>
@@ -264,6 +304,16 @@
                                 {{ action.createdAt ? action.createdAt | format_datetime('medium', 'none', '', 'UTC') }}
                                 в
                                 {{ action.createdAt ? action.createdAt | date(' H:i') }}
+
+                                {% if is_granted('ROLE_OWNER') %}
+                                    <form class="md-comment-reply" style="display: contents" method="post" action="{{ path('moderation_action_delete', {'id': action.id}) }}" onsubmit="return confirm('{{ 'sure.to.delete.action' | trans }}');">
+                                        <input type="hidden" name="_method" value="DELETE">
+                                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ action.id) }}">
+                                        <button class="comment-reply" style="display: contents">
+                                            {{ 'delete' | trans }}
+                                        </button>
+                                    </form>
+                                {% endif %}
                             </small>
 
                         </div>
@@ -306,6 +356,16 @@
                                 {{ action.createdAt ? action.createdAt | format_datetime('medium', 'none', '', 'UTC') }}
                                 в
                                 {{ action.createdAt ? action.createdAt | date(' H:i') }}
+
+                                {% if is_granted('ROLE_OWNER') %}
+                                    <form class="md-comment-reply" style="display: contents" method="post" action="{{ path('moderation_action_delete', {'id': action.id}) }}" onsubmit="return confirm('{{ 'sure.to.delete.action' | trans }}');">
+                                        <input type="hidden" name="_method" value="DELETE">
+                                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ action.id) }}">
+                                        <button class="comment-reply" style="display: contents">
+                                            {{ 'delete' | trans }}
+                                        </button>
+                                    </form>
+                                {% endif %}
                             </small>
 
                         </div>
@@ -347,6 +407,16 @@
                                 {{ action.createdAt ? action.createdAt | format_datetime('medium', 'none', '', 'UTC') }}
                                 в
                                 {{ action.createdAt ? action.createdAt | date(' H:i') }}
+
+                                {% if is_granted('ROLE_OWNER') %}
+                                    <form class="md-comment-reply" style="display: contents" method="post" action="{{ path('moderation_action_delete', {'id': action.id}) }}" onsubmit="return confirm('{{ 'sure.to.delete.action' | trans }}');">
+                                        <input type="hidden" name="_method" value="DELETE">
+                                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ action.id) }}">
+                                        <button class="comment-reply" style="display: contents">
+                                            {{ 'delete' | trans }}
+                                        </button>
+                                    </form>
+                                {% endif %}
                             </small>
 
                         </div>

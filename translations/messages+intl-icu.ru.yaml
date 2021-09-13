@@ -97,8 +97,9 @@ reply: Ответить
 comments: Комментарии
 or: или
 to.leave.a.comment: 'чтобы оставлять комментарии'
-sure.to.delete.comment: 'Вы уверены что хотите удалить комментарий?'
-sure.to.delete.notification: 'Вы уверены что хотите удалить уведомление?'
+sure.to.delete.comment: 'Вы уверены что хотите удалить этот комментарий?'
+sure.to.delete.notification: 'Вы уверены что хотите удалить это уведомление?'
+sure.to.delete.action: 'Вы уверены что хотите удалить это действие?'
 delete: Удалить
 password.recovery: 'Восстановление пароля'
 flash.registration.successful.completed: 'Регистрация успешно завершена'

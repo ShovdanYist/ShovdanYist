@@ -48,6 +48,24 @@ class ModerationController extends CustomAbstractController
     }
 
     /**
+     * @Route("/action/{id}/delete", name="action_delete", methods={"DELETE"})
+     * @Security("has_role('ROLE_OWNER')")
+     * @param Request $request
+     * @param Action $action
+     * @return Response
+     */
+    public function deleteAction(Request $request, Action $action): Response
+    {
+        if ($this->isCsrfTokenValid('delete'.$action->getId(), $request->request->get('_token'))) {
+            $em = $this->getDoctrine()->getManager();
+            $em->remove($action);
+            $em->flush();
+        }
+
+        return $this->redirectToRoute('moderation_actions');
+    }
+
+    /**
      * @Route("/actions/user/{username}/{page<\d+>?1}", name="user_actions")
      * @Security("has_role('ROLE_USER_ACTIONS')")
      * @param User $user
