@@ -1524,14 +1524,17 @@ select {
 }
 #sideNav {
   position: fixed;
-  left: 0;
   z-index: 1300;
+  transform: translateX(-100%);
   top: 0;
   background-color: #282828;
   height: 100%;
   overflow-x: hidden;
-  transition: 0.3s !important;
-  width: 0;
+  -webkit-transition: all 300ms ease;
+  -moz-transition: all 300ms ease;
+  -o-transition: all 300ms ease;
+  transition: all 300ms ease;
+  width: 240px;
 }
 
 #sideNavOpener {

@@ -46,14 +46,14 @@ const sideNavBack = document.getElementById('sideNavBack');
 
 function openNav() {
     disableScroll();
-    sideNav.style.width = '240px';
+    sideNav.style.transform = 'translateX(0)';
     sideNavBack.style.opacity = '1';
     sideNavCloser.style.width = '100%';
 }
 
 function closeNav() {
     enableScroll();
-    sideNav.style.width = '0';
+    sideNav.style.transform = 'translateX(-100%)';
     sideNavBack.style.opacity = '0';
     sideNavCloser.style.width = '0';
 }
