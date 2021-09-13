@@ -27,3 +27,6 @@ liip_imagine:
                 auto_rotate: ~
                 relative_resize:
                     heighten: 850
+                watermark:
+                    image: ../public/assets/images/article-watermark.png
+                    position: bottomright
