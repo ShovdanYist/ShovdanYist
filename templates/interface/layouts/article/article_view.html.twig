@@ -11,7 +11,14 @@
             {{ player(song,null,null,null) }}
         {% endfor %}
 
-        {{ articleDescription(article) }}
+        {% if type == 'moderation' %}
+            <div class="mt-1">
+                {{ articleDescription(article) }}
+            </div>
+            <hr>
+        {% else %}
+            {{ articleDescription(article) }}
+        {% endif %}
 
         {% if type == 'moderation' %}
             <div class="mb-2">

@@ -17,7 +17,7 @@ class NotificationType extends AbstractType
             ->add('message', TextareaType::class,[
                 'attr' => [
                     'class' => 'md-autosizer',
-                    'placeholder' => 'Напиши причину отказа',
+                    'placeholder' => 'Напишите причину отказа',
                     'rows' => 1
                 ],
                 'constraints' => [
