@@ -75,6 +75,12 @@
                                 {{ action.moderator.username }}
                             </a>
 
+                            {% if action.moderator.profile.verified %}
+                                <span class="md-comment-verified">
+                                    <i class="fas fa-check-circle text-info"></i>
+                                </span>
+                            {% endif %}
+
                             {% if action.moderator.profile.gender %}удалила{% else %}удалил{% endif %} комментарий "{{ action.content }}"
 
                             от пользователя <a href="{{ path('user_profile',{'username': action.user.username }) }}">{{ action.user.username }}</a>
@@ -135,6 +141,12 @@
                                 {{ action.moderator.username }}
                             </a>
 
+                            {% if action.moderator.profile.verified %}
+                                <span class="md-comment-verified">
+                                    <i class="fas fa-check-circle text-info"></i>
+                                </span>
+                            {% endif %}
+
                             {% if action.type == 'user_blocked' %}
                                 {% if action.moderator.profile.gender %}заблокировала{% else %}заблокировал{% endif %} пользователя <a href="{{ path('user_profile',{'username': action.user.username }) }}">{{ action.user.username }}</a>
                             {% else %}
@@ -189,6 +201,12 @@
                             <a class="notify-message-user" style="font-weight: 500" href="{{ path('user_profile', {'username':action.moderator.username}) }}">
                                 {{ action.moderator.username }}
                             </a>
+
+                            {% if action.moderator.profile.verified %}
+                                <span class="md-comment-verified">
+                                    <i class="fas fa-check-circle text-info"></i>
+                                </span>
+                            {% endif %}
 
                             {% if action.type == 'article_published' %}
                                 {% if action.moderator.profile.gender %}утвердила{% else %}утвердил{% endif %} статью <a href="{{ path('article_show',{'slug':action.article.slug}) }}">{{ action.article.title }}</a>
@@ -245,6 +263,12 @@
                                 {{ action.moderator.username }}
                             </a>
 
+                            {% if action.moderator.profile.verified %}
+                                <span class="md-comment-verified">
+                                    <i class="fas fa-check-circle text-info"></i>
+                                </span>
+                            {% endif %}
+
                             {% if action.moderator.profile.gender %}отредактировала{% else %}отредактировал{% endif %} песню <a href="{{ path( 'song_show', {'slug': action.song.slug}) }}">{{ action.song.fullTitle }}</a>
 
                             <br>
@@ -295,6 +319,12 @@
                             <a class="notify-message-user" style="font-weight: 500" href="{{ path('user_profile', {'username':action.moderator.username}) }}">
                                 {{ action.moderator.username }}
                             </a>
+
+                            {% if action.moderator.profile.verified %}
+                                <span class="md-comment-verified">
+                                    <i class="fas fa-check-circle text-info"></i>
+                                </span>
+                            {% endif %}
 
                             {% if action.moderator.profile.gender %}отредактировала{% else %}отредактировал{% endif %} статью <a href="{{ path( 'article_show', {'slug': action.article.slug}) }}">{{ action.article.title }}</a>
 
@@ -347,6 +377,12 @@
                                 {{ action.moderator.username }}
                             </a>
 
+                            {% if action.moderator.profile.verified %}
+                                <span class="md-comment-verified">
+                                    <i class="fas fa-check-circle text-info"></i>
+                                </span>
+                            {% endif %}
+
                             {% if action.moderator.profile.gender %}поменяла{% else %}поменял{% endif %} права пользователя <a href="{{ path('user_profile',{'username': action.user.username }) }}">{{ action.user.username }}</a>:
                             {{ action.content | raw }}
 
@@ -398,6 +434,12 @@
                             <a class="notify-message-user" style="font-weight: 500" href="{{ path('user_profile', {'username':action.moderator.username}) }}">
                                 {{ action.moderator.username }}
                             </a>
+
+                            {% if action.moderator.profile.verified %}
+                                <span class="md-comment-verified">
+                                    <i class="fas fa-check-circle text-info"></i>
+                                </span>
+                            {% endif %}
 
                             {% if action.moderator.profile.gender %}отредактировала{% else %}отредактировал{% endif %} биографию <a href="{{ path( 'song_vocalist', {'slug': action.person.slug}) }}">{{ action.person.fullName }}</a>
 
