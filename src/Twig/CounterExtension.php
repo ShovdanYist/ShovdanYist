@@ -50,6 +50,7 @@ class CounterExtension extends AbstractExtension
             new TwigFunction('articleModerationCount', [$this, 'articleModerationCount'], ['is_safe' => ['html']]),
             new TwigFunction('notifyIndicator', [$this, 'notifyIndicator'], ['is_safe' => ['html']]),
             new TwigFunction('userHavePlaylistSongs', [$this, 'userHavePlaylistSongs'], ['is_safe' => ['html']]),
+            new TwigFunction('songViewsCount', [$this, 'songViewsCount'], ['is_safe' => ['html']]),
         ];
     }
 
@@ -136,5 +137,10 @@ class CounterExtension extends AbstractExtension
             $result = $this->notifyCount($user);
         }
         return $result;
+    }
+
+    public function songViewsCount(Song $song): float
+    {
+        return $this->songRepo->getSongViews($song);
     }
 }

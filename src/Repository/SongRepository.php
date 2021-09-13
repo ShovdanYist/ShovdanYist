@@ -52,32 +52,51 @@ class SongRepository extends ServiceEntityRepository
         return $qb->getQuery()->getResult();
     }
 
-    /**
-     * @throws NonUniqueResultException
-     * @throws NoResultException
-     */
-    public function findRandom($limit = 20)
+    public function getSongViews(Song $song): float
     {
-        $count = $this->createQueryBuilder('s')
-            ->select('COUNT(s)')
-            ->getQuery()
-            ->getSingleScalarResult();
+        $qb = $this->createQueryBuilder('s');
 
-        return $this->createQueryBuilder('s')
-            ->setFirstResult(rand(0, $count - 7))
-            ->where('s.status = true')
-            ->setMaxResults($limit)
-            ->getQuery()
-            ->getResult();
+        $qb->join('s.views','v')
+            ->select('SUM(v.quantity) / 3')
+            ->where('s.slug = :slug')
+            ->setParameter('slug',$song->getSlug())
+        ;
+
+        $qb ->setMaxResults(1);
+
+        return round($qb->getQuery()->getResult()[0]['1']);
+    }
+
+    public function findByViews($criteria, $orderBy = null, $limit = null, $offset = 0)
+    {
+        $date = (new \DateTime('now'))->modify('-21 day')->format('Y-m-d');
+
+        $qb = $this->createQueryBuilder('s');
+
+        $qb->join('s.views','v',Expr\Join::WITH,'v.viewedAt > \'' . $date . '\'')
+            ->groupBy('s')
+            ->orderBy('COUNT(v.id)','DESC')
+        ;
+
+        foreach ($criteria as $property => $value) {
+            $qb ->andWhere('s.'. $property .' = :' . $property . '')
+                ->setParameter($property,$value)
+            ;
+        }
+
+        $qb ->setMaxResults($limit)
+            ->setFirstResult($offset);
+
+        return $qb->getQuery()->getResult();
     }
 
     public function findByDiscussed($criteria, $orderBy = null, $limit = null, $offset = 0)
     {
-        $date = (new \DateTime('now'))->modify('-3 day')->format('Y-m-d');
+        $date = (new \DateTime('now'))->modify('-7 day')->format('Y-m-d');
 
         $qb = $this->createQueryBuilder('s');
 
-        $qb ->leftJoin('s.comments','c',Expr\Join::WITH,'c.publishedAt > \'' . $date . '\'')
+        $qb ->join('s.comments','c',Expr\Join::WITH,'c.publishedAt > \'' . $date . '\'')
             ->groupBy('s')
             ->orderBy('COUNT(c.id)','DESC')
         ;
@@ -94,69 +113,13 @@ class SongRepository extends ServiceEntityRepository
         return $qb->getQuery()->getResult();
     }
 
-    public function findByTag($criteria, $orderBy = ['id' => 'DESC'], $limit = 10, $offset = 0)
+    public function findByTag($criteria, $orderBy = ['id' => 'DESC'], $limit = null, $offset = 0)
     {
         $qb = $this->createQueryBuilder('s');
 
         foreach ($criteria as $property => $value) {
             if ($property == 'tag') {
                 $qb ->leftJoin('s.tags', 't')
-                    ->where('t = :' . $property . '')
-                    ->andWhere('s.status = true')
-                    ->setParameter($property,$value)
-                ;
-            } else {
-                $qb ->andWhere('s.'. $property .' = :' . $property . '')
-                    ->setParameter($property,$value)
-                ;
-            }
-        }
-
-        foreach ($orderBy as $key => $value) {
-            $qb->orderBy('s.'.$key,$value);
-        }
-
-        $qb ->setMaxResults($limit)
-            ->setFirstResult($offset);
-
-        return $qb->getQuery()->getResult();
-    }
-
-    public function findByGenre($criteria, $orderBy = ['id' => 'DESC'], $limit = 10, $offset = 0)
-    {
-        $qb = $this->createQueryBuilder('s');
-
-        foreach ($criteria as $property => $value) {
-            if ($property == 'genre') {
-                $qb ->leftJoin('s.genre', 'g')
-                    ->where('g = :' . $property . '')
-                    ->andWhere('s.status = true')
-                    ->setParameter($property,$value)
-                ;
-            } else {
-                $qb ->andWhere('s.'. $property .' = :' . $property . '')
-                    ->setParameter($property,$value)
-                ;
-            }
-        }
-
-        foreach ($orderBy as $key => $value) {
-            $qb->orderBy('s.'.$key,$value);
-        }
-
-        $qb ->setMaxResults($limit)
-            ->setFirstResult($offset);
-
-        return $qb->getQuery()->getResult();
-    }
-
-    public function findByTheme($criteria, $orderBy = ['id' => 'DESC'], $limit = 10, $offset = 0)
-    {
-        $qb = $this->createQueryBuilder('s');
-
-        foreach ($criteria as $property => $value) {
-            if ($property == 'theme') {
-                $qb ->leftJoin('s.theme', 't')
                     ->where('t = :' . $property . '')
                     ->andWhere('s.status = true')
                     ->setParameter($property,$value)

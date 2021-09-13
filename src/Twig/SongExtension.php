@@ -79,13 +79,13 @@ class SongExtension extends AbstractExtension
     public function chartBox(Environment $twig, $chart): string
     {
         if ($chart == 'trends') {
-            $songs = $this->songs->findBy(['status' => true, 'featured' => true], ['editingDate' => 'DESC'],5);
+            $songs = $this->songs->findByViews(['status' => true], [],5);
         } elseif ($chart == 'novelty') {
             $songs = $this->songs->findBy(['status' => true], ['releaseDate' => 'DESC'],5);
-        } elseif ($chart == 'lasts') {
-            $songs = $this->songs->findBy(['status' => true], ['publicationDate' => 'DESC'],5);
         } elseif ($chart == 'discussed') {
             $songs = $this->songs->findByDiscussed(['status' => true],[],5);
+        } elseif ($chart == 'lasts') {
+            $songs = $this->songs->findBy(['status' => true], ['publicationDate' => 'DESC'],5);
         } else {
             $songs = null;
         }

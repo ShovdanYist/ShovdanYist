@@ -102,11 +102,6 @@ class Song
     private $featuring;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
-    private $views;
-
-    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="songs")
      */
     private $author;
@@ -146,6 +141,11 @@ class Song
      */
     private $actions;
 
+    /**
+     * @ORM\OneToMany(targetEntity=View::class, mappedBy="song")
+     */
+    private $views;
+
     public function __construct()
     {
         $this->featuring = new ArrayCollection();
@@ -155,6 +155,7 @@ class Song
         $this->notifications = new ArrayCollection();
         $this->tags = new ArrayCollection();
         $this->actions = new ArrayCollection();
+        $this->views = new ArrayCollection();
     }
 
     public function getFullTitle(): string
@@ -367,18 +368,6 @@ class Song
         return $this;
     }
 
-    public function getViews(): ?int
-    {
-        return $this->views;
-    }
-
-    public function setViews(?int $views): self
-    {
-        $this->views = $views;
-
-        return $this;
-    }
-
     public function getAuthor(): ?User
     {
         return $this->author;
@@ -575,6 +564,37 @@ class Song
             // set the owning side to null (unless already changed)
             if ($action->getSong() === $this) {
                 $action->setSong(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|View[]
+     */
+    public function getViews(): Collection
+    {
+        return $this->views;
+    }
+
+    public function addView(View $view): self
+    {
+        if (!$this->views->contains($view)) {
+            $this->views[] = $view;
+            $view->setSong($this);
+        }
+
+        return $this;
+    }
+
+    public function removeView(View $view): self
+    {
+        if ($this->views->contains($view)) {
+            $this->views->removeElement($view);
+            // set the owning side to null (unless already changed)
+            if ($view->getSong() === $this) {
+                $view->setSong(null);
             }
         }
 

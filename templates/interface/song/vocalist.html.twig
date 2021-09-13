@@ -80,7 +80,7 @@
                     </span>
                 </td>
                 <td>{{ song.releaseDate ? song.releaseDate | date("Y") }}</td>
-                {% if is_granted('ROLE_OWNER') %}<td>{{ song.views }}</td>{% endif %}
+                {% if is_granted('ROLE_OWNER') %}<td>{{ songViewsCount(song) }}</td>{% endif %}
             </tr>
 
         {% endfor %}

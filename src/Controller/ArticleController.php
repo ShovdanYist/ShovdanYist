@@ -7,6 +7,7 @@ use App\Entity\Action;
 use App\Entity\Bookmark;
 use App\Entity\Article;
 use App\Entity\Tag;
+use App\Service\Defender;
 use DateTime;
 use App\Form\ArticleType;
 use App\Repository\UserRepository;
@@ -87,13 +88,14 @@ class ArticleController extends CustomAbstractController
      * @Route("/article/{slug}/{page<\d+>?1}", name="show")
      * @param Article $article
      * @param $page
+     * @param Defender $defender
      * @return Response
      */
-    public function show(Article $article, $page): Response
+    public function show(Article $article, $page, Defender $defender): Response
     {
         if ($article->getAuthor() === $this->getUser() || $this->isGranted('ROLE_ARTICLE_APPROVER') || $this->isGranted('ROLE_ARTICLE_EDITOR') && $article->getStatus() || $article->getStatus() === true) {
 
-            if ($this->isGranted('IS_AUTHENTICATED_FULLY') && $this->user() !== $article->getAuthor() && !$this->isGranted('ROLE_ARTICLE_APPROVER')) {
+            if (!$defender->isGranted($this->getUser(),'ROLE_GUEST') && $this->getUser() !== $article->getAuthor() && !$this->isGranted('ROLE_ARTICLE_APPROVER')) {
                 $article->setViews($article->getViews() + 1);
                 $em = $this->getDoctrine()->getManager();
                 $em->flush();

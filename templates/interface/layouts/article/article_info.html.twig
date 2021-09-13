@@ -27,7 +27,7 @@
     {{ article.publishedAt ? article.publishedAt | date(' H:i') }}
     </span>
 
-    {% if app.user and app.user == article.author %}
+    {% if is_granted('ROLE_OWNER') %}
         <span class="article-views float-right">
             <i class="fas fa-eye"></i> {{ article.views }}
         </span>

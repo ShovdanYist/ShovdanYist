@@ -8,12 +8,14 @@ use App\Entity\Song;
 use App\Entity\Person;
 use App\Entity\Tag;
 use App\Entity\PlaylistSong;
+use App\Entity\View;
 use App\Form\SongType;
 use App\Form\PeopleType;
 use App\Repository\SongRepository;
 use App\Repository\PeopleRepository;
 use App\Repository\PlaylistSongRepository;
 use App\Repository\UserRepository;
+use App\Service\Defender;
 use App\Service\Paginator;
 use App\Twig\SongExtension;
 use Doctrine\ORM\EntityManagerInterface;
@@ -63,7 +65,7 @@ class SongController extends CustomAbstractController
         $info = [
             'title' => $tag->getTitle() . ' | Чеченские песни с тегом «' . mb_strtolower($tag->getTitle()) . '»' . $page,
             'h1' => 'Песни с тегом «' . mb_strtolower($tag->getTitle()) . '»',
-            'description' => 'Чеченские песни жанра «' . mb_strtolower($tag->getTitle()) . '»'
+            'description' => 'Чеченские песни с тегом «' . mb_strtolower($tag->getTitle()) . '»'
         ];
 
         return $this->render('interface/song/chart.html.twig', [
@@ -85,11 +87,11 @@ class SongController extends CustomAbstractController
         $paginator->setClass(Song::class)->setParameters(['chart' => $chart])->setLimit(20)->setPage($page);
 
         if ($chart == 'trends') {
-            $paginator->setOrder(['editingDate' => 'DESC'])->setCriteria(['status' => true, 'featured' => true]);
+            $paginator->setCriteria(['status' => true])->setMethod('findByViews');
         } elseif ($chart == 'lasts') {
-            $paginator->setOrder(['publicationDate' => 'DESC'])->setCriteria(['status' => true]);
+            $paginator->setCriteria(['status' => true])->setOrder(['publicationDate' => 'DESC']);
         } elseif ($chart == 'novelty') {
-            $paginator->setOrder(['releaseDate' => 'DESC'])->setCriteria(['status' => true]);
+            $paginator->setCriteria(['status' => true])->setOrder(['releaseDate' => 'DESC']);
         } elseif ($chart == 'discussed') {
             $paginator->setCriteria(['status' => true])->setMethod('findByDiscussed');
         } else {
@@ -124,13 +126,28 @@ class SongController extends CustomAbstractController
      * @param Song $song
      * @param $page
      * @param EntityManagerInterface $manager
+     * @param Defender $defender
      * @return Response
      */
-    public function song(Song $song, $page, EntityManagerInterface $manager): Response
+    public function song(Song $song, $page, EntityManagerInterface $manager, Defender $defender): Response
     {
         if ($song->getStatus() != true) {throw $this->createNotFoundException();}
 
-        $song->setViews($song->getViews()+1);
+        if (!$defender->isGranted($this->getUser(),'ROLE_GUEST')) {
+            if ($this->getDoctrine()->getRepository(View::class)->findOneBy(['user' => $this->user(), 'song' => $song])) {
+                $view = $this->getDoctrine()->getRepository(View::class)->findOneBy(['user' => $this->user(), 'song' => $song]);
+                $view->setQuantity($view->getQuantity() + 1);
+                $view->setViewedAt(new \DateTime('now'));
+            } else {
+                $view = new View();
+                $view->setUser($this->user());
+                $view->setSong($song);
+                $view->setViewedAt(new \DateTime('now'));
+                $view->setQuantity(1);
+                $manager->persist($view);
+            }
+        }
+
         $manager->persist($song);
         $manager->flush();
 
