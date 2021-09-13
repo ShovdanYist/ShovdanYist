@@ -254,6 +254,27 @@ class UserController extends CustomAbstractController
     }
 
     /**
+     * @Route("/notification/{id}/delete", name="notification_delete", methods={"DELETE"})
+     * @param Request $request
+     * @param Notification $notification
+     * @return Response
+     */
+    public function deleteNotification(Request $request, Notification $notification): Response
+    {
+        if ($this->user() !== $notification->getReceiver()) {
+            throw $this->createNotFoundException();
+        }
+
+        if ($this->isCsrfTokenValid('delete'.$notification->getId(), $request->request->get('_token'))) {
+            $em = $this->getDoctrine()->getManager();
+            $em->remove($notification);
+            $em->flush();
+        }
+
+        return $this->redirectToRoute('user_notifications');
+    }
+
+    /**
      * @Route("/playlist/{page<\d+>?1}", name="playlist")
      * @param $page
      * @param Paginator $paginator
