@@ -38,6 +38,18 @@ class Song
     private $title;
 
     /**
+     * @ORM\Column(type="string", length=255)
+     * @Assert\Type("string")
+     */
+    private $fullTitle;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     * @Assert\Type("string")
+     */
+    private $slug;
+
+    /**
      * @ORM\Column(type="text", nullable=true)
      * @Assert\Type("string")
      */
@@ -84,12 +96,6 @@ class Song
      * @Assert\Type("bool")
      */
     private $status;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     * @Assert\Type("string")
-     */
-    private $slug;
 
     /**
      * @ORM\ManyToOne(targetEntity=Person::class, inversedBy="songs")
@@ -158,12 +164,6 @@ class Song
         $this->views = new ArrayCollection();
     }
 
-    public function getFullTitle(): string
-    {
-        ($this->vocalist) ? $fullName = $this->vocalist->getFullName() . ' - ' : $fullName = '';
-        return $fullName . $this->getTitle();
-    }
-
     /**
      * @param File|UploadedFile|null $audioFile
      * @throws Exception
@@ -183,7 +183,16 @@ class Song
     }
 
     /**
-     * Initialise un slug automatique
+     * @ORM\PrePersist()
+     * @ORM\PreUpdate()
+     */
+    public function initializeFullTitle()
+    {
+        ($this->vocalist) ? $fullName = $this->vocalist->getFullName() . ' ' : $fullName = '';
+        $this->fullTitle = $fullName . $this->getTitle();
+    }
+
+    /**
      * @ORM\PrePersist()
      * @ORM\PreUpdate()
      */
@@ -230,6 +239,32 @@ class Song
     public function setTitle(string $title): self
     {
         $this->title = $title;
+
+        return $this;
+    }
+
+    public function getFullTitle(): ?string
+    {
+        ($this->vocalist) ? $fullName = $this->vocalist->getFullName() . ' - ' : $fullName = '';
+
+        return $fullName . $this->getTitle();
+    }
+
+    public function setFullTitle(string $fullTitle): self
+    {
+        $this->fullTitle = $fullTitle;
+
+        return $this;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(string $slug): self
+    {
+        $this->slug = $slug;
 
         return $this;
     }
@@ -314,18 +349,6 @@ class Song
     public function setStatus(bool $status): self
     {
         $this->status = $status;
-
-        return $this;
-    }
-
-    public function getSlug(): ?string
-    {
-        return $this->slug;
-    }
-
-    public function setSlug(string $slug): self
-    {
-        $this->slug = $slug;
 
         return $this;
     }

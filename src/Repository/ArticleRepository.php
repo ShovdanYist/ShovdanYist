@@ -19,6 +19,26 @@ class ArticleRepository extends ServiceEntityRepository
         parent::__construct($registry, Article::class);
     }
 
+    public function findByKeyword($keyword, $orderBy = ['id' => 'DESC'], $limit = null, $offset = 0)
+    {
+        $qb = $this->createQueryBuilder('a');
+
+        $qb ->where('a.content LIKE :keyword')
+            ->orWhere('a.title LIKE :keyword')
+            ->andWhere('a.status = true')
+            ->setParameter('keyword','%'. $keyword .'%')
+        ;
+
+        foreach ($orderBy as $key => $value) {
+            $qb->orderBy('a.'.$key,$value);
+        }
+
+        $qb ->setMaxResults($limit)
+            ->setFirstResult($offset);
+
+        return $qb->getQuery()->getResult();
+    }
+
     public function findUserBookmarks($criteria, $orderBy = ['id' => 'DESC'], $limit = 10, $offset = 0)
     {
         $qb = $this->createQueryBuilder('a');

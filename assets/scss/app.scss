@@ -121,6 +121,60 @@ li {
   margin-bottom: 14px;
 }
 
+// Search
+
+.found-keyword {
+  background: #d5eee9;
+}
+
+.md-search .md-search-box {
+  margin-bottom: 12px;
+}
+
+.md-search .md-search-box:first-child {
+  margin-bottom: 12px !important;
+}
+
+.md-search .md-search-box:last-child {
+  margin-bottom: unset;
+}
+
+.md-search-input {
+  display: flex;
+}
+
+.md-search-input button {
+  margin-left: 12px;
+}
+
+.user-line {
+  display: block;
+  height: 45px;
+}
+
+.user-line {
+  margin-bottom: 12px;
+}
+
+.user-line:last-child {
+  margin-bottom: unset;
+}
+
+.user-line-username {
+  display: flex;
+  font-weight: 600;
+  line-height: 45px;
+}
+
+.user-line-fullname {
+  top: -3px;
+  position: relative;
+}
+
+.user-line-username .md-verified {
+  top: unset;
+}
+
 // CK Editor Content
 
 blockquote, .ck.ck-content blockquote {
@@ -1395,15 +1449,15 @@ select {
   padding: 0 13px 12px;
 }
 
-.md-chart-box-see-all a {
+.see-all a {
   color: #777;
 }
 
-.md-chart-box-see-all a:hover {
+.see-all a:hover {
   color: #1f5887;
 }
 
-.md-chart-box-see-all span {
+.see-all span {
   position: relative;
   top: 2px;
   color: #aaa;

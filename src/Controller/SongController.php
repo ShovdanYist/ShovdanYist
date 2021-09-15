@@ -29,7 +29,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class SongController extends CustomAbstractController
 {
     /**
-     * @Route("/song", name="song_index", methods={"GET"})
+     * @Route("/music", name="song_index", methods={"GET"})
      * @return Response
      */
     public function index(): Response

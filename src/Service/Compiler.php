@@ -1,0 +1,61 @@
+<?php
+
+namespace App\Service;
+
+class Compiler
+{
+    private $symbols = [
+        '<br>' => ' ',
+        '</p><p>' => ' ',
+        '&nbs' => '',
+        ';' => '',
+        'blockquote' => ' ',
+        'strong' => '',
+        '<' => '',
+        '>' => '',
+        'p' => '',
+        's' => '',
+        'u' => '',
+        'h5' => ' ',
+        'h6' => ' ',
+        'i' => '',
+        '/' => '',
+        '   ' => ' ',
+        '  ' => ' '
+    ];
+
+    public function __construct() {
+    }
+
+    public function htmlToText($html)
+    {
+        foreach ($this->symbols as $symbol => $replace) {
+            $html = str_replace($symbol,$replace,$html);
+        }
+
+        return mb_strtolower($html);
+    }
+
+    public function matchInText($text, $keyword): string
+    {
+        $keywordCount = str_word_count($keyword);
+        $keywordPositionA = (int)(round(strpos($text,$keyword) / 2));
+        $keywordPositionB = (int)((round(strpos($text,$keyword) / 2) + $keywordCount) / 2);
+
+        if (($keywordPositionA - $keywordPositionB) < 30) {
+            $keywordPositionA -= 30;
+            $keywordPositionB += 30;
+        }
+
+        if (($keywordPositionA - $keywordPositionB) > 100) {
+            $keywordPositionB /= 2.5;
+        }
+
+        if ($keywordPositionA < 20) {
+            $keywordPositionB = $keywordPositionB + abs($keywordPositionA);
+            $keywordPositionA = 0;
+        }
+
+        return mb_substr($text, $keywordPositionA, $keywordPositionB);
+    }
+}

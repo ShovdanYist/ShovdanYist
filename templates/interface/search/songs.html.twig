@@ -1,0 +1,79 @@
+{% extends 'interface/base.html.twig' %}
+
+{% block title %}{{ 'search' | trans }}{% endblock %}
+
+{% block main_top %}
+    {{ breadcrumb({
+        (path('app_home')) : ('home.page' | trans),
+        'active' : ('songs.for.keyword' | trans({'keyword': keyword})),
+    }) }}
+{% endblock %}
+
+{% block main %}
+
+    <div class="md-search">
+
+        {% if songs %}
+
+            <div class="md-search-box md-box md-content-padding">
+
+                {% for song in songs %}
+
+                    {% if not loop.first %}<br>{% endif %}
+
+                    {{ player(song.info) }}
+
+                    <div>
+                        {{ song.words | raw}}
+                    </div>
+
+                {% endfor %}
+
+                {% if (songs | length) == 5 %}
+                    <div class="see-all mt-3">
+                        <a href="">
+                            {{ 'see.all.results' | trans }}
+                            <span><i class="fas fa-angle-right"></i></span>
+                        </a>
+                    </div>
+                {% endif %}
+
+            </div>
+
+        {% endif %}
+
+        {% if not songs %}
+
+            <div class="md-search-box md-box md-content-padding">
+                {% if page > 1 %}
+                    {{ 'not.found.songs.for.keyword' | trans({'keyword':keyword}) }} {{ 'in.page' | trans({'page':page}) }}
+                {% else %}
+                    {{ 'not.found.songs.for.keyword' | trans({'keyword':keyword}) }}
+                {% endif %}
+            </div>
+
+        {% endif %}
+
+{#        {% if not articles or not songs %}#}
+
+{#            <div class="md-search-box md-box md-content-padding">#}
+{#                {% if not articles and songs %}#}
+{#                    {{ 'not.found.articles.for.keyword' | trans({'keyword':keyword}) }}#}
+{#                {% elseif not songs and articles %}#}
+{#                    {{ 'not.found.songs.for.keyword' | trans({'keyword':keyword}) }}#}
+{#                {% else %}#}
+{#                    {{ 'not.found.for.keyword' | trans({'keyword':keyword}) }}#}
+{#                {% endif %}#}
+{#            </div>#}
+
+{#        {% endif %}#}
+
+    </div>
+
+    {{ paginator.display(true) }}
+
+{% endblock %}
+
+{% block scripts %}
+    {{ autoplay() }}
+{% endblock %}

@@ -1,0 +1,63 @@
+{% extends 'interface/base.html.twig' %}
+
+{% block title %}{{ 'search' | trans }}{% endblock %}
+
+{% block main_top %}
+    {{ breadcrumb({
+        (path('app_home')) : ('home.page' | trans),
+        'active' : ('articles.for.keyword' | trans({'keyword': keyword})),
+    }) }}
+{% endblock %}
+
+{% block main %}
+
+    <div class="md-search">
+
+        {% if articles %}
+
+            <div class="md-search-box md-box md-content-padding">
+
+                {% for article in articles %}
+
+                    {% if not loop.first %}<br>{% endif %}
+
+                    <div class="back-picture bp-50" style="background-image: url('{% if article.info.image %}{{ vich_uploader_asset(article.info) | imagine_filter('thumbnail') }}{% else %}{{ asset('assets/images/question.jpg') }}{% endif %}'); border-radius: 3px; margin-right: 10px">
+                    </div>
+
+                    <h5>
+                        <a href="{{ path('article_show',{'slug':article.info.slug}) }}">
+                            {{ article.info.title }}
+                        </a>
+                    </h5>
+
+                    <div>
+                        {{ article.words | raw}}
+                    </div>
+
+                {% endfor %}
+
+            </div>
+
+        {% endif %}
+
+        {% if not articles %}
+
+            <div class="md-search-box md-box md-content-padding">
+                {% if page > 1 %}
+                    {{ 'not.found.articles.for.keyword' | trans({'keyword':keyword}) }} {{ 'in.page' | trans({'page':page}) }}
+                {% else %}
+                    {{ 'not.found.articles.for.keyword' | trans({'keyword':keyword}) }}
+                {% endif %}
+            </div>
+
+        {% endif %}
+
+    </div>
+
+    {{ paginator.display(true) }}
+
+{% endblock %}
+
+{% block scripts %}
+    {{ autoplay() }}
+{% endblock %}

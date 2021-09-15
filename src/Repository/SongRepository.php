@@ -22,6 +22,26 @@ class SongRepository extends ServiceEntityRepository
         parent::__construct($registry, Song::class);
     }
 
+    public function findByKeyword($keyword, $orderBy = ['id' => 'DESC'], $limit = null, $offset = 0)
+    {
+        $qb = $this->createQueryBuilder('s');
+
+        $qb ->where('s.lyrics LIKE :keyword')
+            ->orWhere('s.fullTitle LIKE :keyword')
+            ->andWhere('s.status = true')
+            ->setParameter('keyword','%'. $keyword .'%')
+        ;
+
+        foreach ($orderBy as $key => $value) {
+            $qb->orderBy('s.'.$key,$value);
+        }
+
+        $qb ->setMaxResults($limit)
+            ->setFirstResult($offset);
+
+        return $qb->getQuery()->getResult();
+    }
+
     public function findUserPlaylist($criteria, $orderBy = ['id' => 'DESC'], $limit = 10, $offset = 0)
     {
         $qb = $this->createQueryBuilder('s');

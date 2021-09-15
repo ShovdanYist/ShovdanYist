@@ -24,6 +24,27 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         parent::__construct($registry, User::class);
     }
 
+    public function findByKeyword($keyword, $orderBy = ['id' => 'DESC'], $limit = null, $offset = 0)
+    {
+        $qb = $this->createQueryBuilder('u');
+
+        $qb ->join('u.profile','p')
+            ->where('u.username LIKE :keyword')
+            ->orWhere('p.fullname LIKE :keyword')
+            ->orWhere('p.about LIKE :keyword')
+            ->setParameter('keyword','%'. $keyword .'%')
+        ;
+
+        foreach ($orderBy as $key => $value) {
+            $qb->orderBy('u.'.$key,$value);
+        }
+
+        $qb ->setMaxResults($limit)
+            ->setFirstResult($offset);
+
+        return $qb->getQuery()->getResult();
+    }
+
     /**
      * @return int|mixed|string
      */

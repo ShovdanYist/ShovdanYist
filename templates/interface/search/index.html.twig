@@ -1,0 +1,182 @@
+{% extends 'interface/base.html.twig' %}
+
+{% block title %}{{ 'search' | trans }}{% endblock %}
+
+{% block main_top %}
+    {{ breadcrumb({
+        (path('app_home')) : ('home.page' | trans),
+        'active' : ('search' | trans),
+    }) }}
+{% endblock %}
+
+{% block main %}
+
+    <div class="md-search">
+
+        {{ form_start(form) }}
+
+            <div class="md-search-box md-box md-content-padding">
+
+                <div class="md-search-input">
+                    {{ form_widget(form.keyword) }}
+                    <button class="btn btn-success">
+                        {{ 'search' | trans }}
+                    </button>
+                </div>
+
+            </div>
+
+        {{ form_end(form) }}
+
+        {% if songs %}
+
+            <div class="md-search-box md-box md-content-padding">
+
+                <h4 class="mb-3">
+                    {{ 'music' | trans }}
+                </h4>
+
+                {% for song in songs %}
+
+                    {% if not loop.first %}<br>{% endif %}
+
+                    {{ player(song.info) }}
+
+                    <div>
+                        {{ song.words | raw}}
+                    </div>
+
+                {% endfor %}
+
+                {% if (songs | length) == 5 %}
+                    <div class="see-all mt-3">
+                        <a href="{{ path('search_songs',{'keyword':keyword}) }}">
+                            {{ 'see.all.results' | trans }}
+                            <span><i class="fas fa-angle-right"></i></span>
+                        </a>
+                    </div>
+                {% endif %}
+
+            </div>
+
+        {% endif %}
+
+        {% if users %}
+
+            <div class="md-search-box md-box md-content-padding">
+
+                <h4 class="mb-3">
+                    {{ 'users' | trans }}
+                </h4>
+
+                {% for user in users %}
+
+                    <div class="user-line">
+
+                        <div class="back-picture bp-45" style="background-image: url('{% if user.profile.avatar != 'avatar.jpg' %}{{ vich_uploader_asset(user.profile) | imagine_filter('thumbnail') }}{% else %}{{ asset('assets/images/avatar.jpg') | imagine_filter('thumbnail') }}{% endif %}'); margin-right: 10px">
+                        </div>
+
+                        <div class="user-line-username" {% if user.profile.fullName %}style="line-height: unset"{% endif %}>
+                            <span class="md-username">
+                                <a href="{{ path('user_profile', {'username' : user.username }) }}">
+                                    {{ user.username }}
+                                </a>
+                            </span>
+
+                            {% if user.profile.verified %}
+                                <span class="md-verified">
+                                <i class="fas fa-check-circle text-info"></i>
+                            </span>
+                            {% endif %}
+                        </div>
+
+                        <span class="user-line-fullname">
+                            {{ user.profile.fullName }}
+                        </span>
+
+                    </div>
+
+                {% endfor %}
+
+                {% if (users | length) == 5 %}
+                    <div class="see-all mt-3">
+                        <a href="{{ path('search_users',{'keyword':keyword}) }}">
+                            {{ 'see.all.results' | trans }}
+                            <span><i class="fas fa-angle-right"></i></span>
+                        </a>
+                    </div>
+                {% endif %}
+
+            </div>
+
+        {% endif %}
+
+        {% if articles %}
+
+            <div class="md-search-box md-box md-content-padding">
+
+                <h4 class="mb-3">
+                    {{ 'articles' | trans }}
+                </h4>
+
+                {% for article in articles %}
+
+                    {% if not loop.first %}<br>{% endif %}
+
+                    <div class="back-picture bp-50" style="background-image: url('{% if article.info.image %}{{ vich_uploader_asset(article.info) | imagine_filter('thumbnail') }}{% else %}{{ asset('assets/images/question.jpg') }}{% endif %}'); border-radius: 3px; margin-right: 10px">
+                    </div>
+
+                    <h5>
+                        <a href="{{ path('article_show',{'slug':article.info.slug}) }}">
+                            {{ article.info.title }}
+                        </a>
+                    </h5>
+
+                    <div>
+                        {{ article.words | raw}}
+                    </div>
+
+                {% endfor %}
+
+                {% if (articles | length) == 5 %}
+                    <div class="see-all mt-3">
+                        <a href="{{ path('search_articles',{'keyword':keyword}) }}">
+                            {{ 'see.all.results' | trans }}
+                            <span><i class="fas fa-angle-right"></i></span>
+                        </a>
+                    </div>
+                {% endif %}
+
+            </div>
+
+        {% endif %}
+
+        {% if not articles or not songs or not users %}
+
+            <div class="md-search-box md-box md-content-padding">
+                {% if not articles and songs and users %}
+                    {{ 'not.found.articles.for.keyword' | trans({'keyword':keyword}) }}
+                {% elseif not songs and articles and users %}
+                    {{ 'not.found.songs.for.keyword' | trans({'keyword':keyword}) }}
+                {% elseif not users and articles and songs %}
+                    {{ 'not.found.users.for.keyword' | trans({'keyword':keyword}) }}
+                {% elseif not users and not articles and songs %}
+                    {{ 'not.found.users.articles.for.keyword' | trans({'keyword':keyword}) }}
+                {% elseif not users and not songs and articles %}
+                    {{ 'not.found.users.songs.for.keyword' | trans({'keyword':keyword}) }}
+                {% elseif not songs and not articles and users %}
+                    {{ 'not.found.songs.articles.for.keyword' | trans({'keyword':keyword}) }}
+                {% else %}
+                    {{ 'not.found.for.keyword' | trans({'keyword':keyword}) }}
+                {% endif %}
+            </div>
+
+        {% endif %}
+
+    </div>
+
+{% endblock %}
+
+{% block scripts %}
+    {{ autoplay() }}
+{% endblock %}

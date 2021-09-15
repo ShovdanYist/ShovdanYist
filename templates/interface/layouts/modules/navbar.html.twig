@@ -1,3 +1,37 @@
+{#<style>#}
+{#    .md-lyrics, .ck-editor, .custom-file, .ckeditor-content, .custom-control, .md-song-player, button, .chosen-container, textarea, input, .audio-player, .ck-content, .content, a, h1, h2, h3, h4, h5, h6 {#}
+{#        z-index: 200;#}
+{#        position: relative;#}
+{#    }#}
+
+{#    .sidenav-swiper {#}
+{#        height: 100%;#}
+{#        width: 80px;#}
+{#        position: fixed;#}
+{#        z-index: 100;#}
+{#    }#}
+{#</style>#}
+
+{#<script>#}
+{#    const sideNav = document.getElementById('sideNav');#}
+{#    const sideNavCloser = document.getElementById('sideNavCloser');#}
+{#    const sideNavBack = document.getElementById('sideNavBack');#}
+
+{#    require('hammerjs');#}
+
+{#    let hammer = new Hammer(document.querySelector('.sidenav-swiper'));#}
+
+{#    hammer.on('swiperight', function (threshold = 1) {#}
+{#        disableScroll();#}
+{#        sideNav.style.transform = 'translateX(100%)';#}
+{#        sideNavBack.style.opacity = '1';#}
+{#        sideNavCloser.style.width = '100%';#}
+{#    })#}
+{#</script>#}
+
+{#<div class="sidenav-swiper">#}
+{#</div>#}
+
 <nav class="md-nav sticky-top">
 
     <div class="container">
