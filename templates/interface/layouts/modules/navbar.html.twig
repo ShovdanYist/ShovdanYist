@@ -49,12 +49,24 @@
 
         {% if app.user %}
 
-            <a class="mobile-navbar-item" href="javascript:void(0)" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <i class="fas fa-feather-alt"></i>
+            <a class="navbar-search-opener" id="openNavbarSearch" href="javascript:void(0)">
+                <i class="fas fa-search"></i>
             </a>
 
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink" style="margin-top: 7px">
-                <a class="dropdown-item" href="{{ path('article_add') }}"><i class="fas fa-heading"></i> {{ 'write.article' | trans }}</a>
+            <div class="navbar-search navbar-search-mobile" id="navbarSearch">
+
+                <span class="navbar-search-closer" id="closeNavbarSearch">
+                    <i class="fas fa-times"></i>
+                </span>
+
+                <div class="md-search-all-input">
+                    <input class="form-control search_input" type="search" placeholder="{{ 'search' | trans}}" aria-label="{{ 'search' | trans}}">
+
+                    <a class="btn btn-success search_button">
+                        <i class="fas fa-search"></i>
+                    </a>
+                </div>
+
             </div>
 
         {% else %}
@@ -69,6 +81,31 @@
         <div class="md-nav-menu">
 
             <ul>
+
+                <li class="md-nav-item md-navbar-search">
+
+                    <div class="navbar-search">
+                        <div class="md-search-all-input">
+                            <input class="form-control search_input" type="search" placeholder="{{ 'search' | trans}}" aria-label="{{ 'search' | trans}}">
+
+                            <a class="btn btn-success search_button">
+                                <i class="fas fa-search"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                </li>
+
+                {% if not app.user %}
+
+                    <li style="padding-top: 8px">
+                        <a class="btn btn-white" style="box-shadow: unset" href="{{ path('app_login') }}">
+                            <i class="fas fa-user-circle"></i>
+                            {{ 'log.in' | trans }}
+                        </a>
+                    </li>
+
+                {% endif %}
 
                 {% if app.user %}
 
@@ -124,21 +161,6 @@
                 {% endif %}
 
             </ul>
-
-            {% if not app.user %}
-
-                <ul class="float-right" style="position: relative;top: 8px">
-
-                    <li>
-                        <a class="btn btn-white" style="box-shadow: unset" href="{{ path('app_login') }}">
-                            <i class="fas fa-user-circle"></i>
-                            {{ 'log.in' | trans }}
-                        </a>
-                    </li>
-
-                </ul>
-
-            {% endif %}
 
         </div>
 

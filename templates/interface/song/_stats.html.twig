@@ -7,7 +7,7 @@
             <strong>{{ 'tags' | trans }}</strong>
             {% for tag in song.tags %}
                 <span class="badge badge-info badge-a">
-                    <a href="{{ path('tag_show', {'slug': tag.slug}) }}">
+                    <a href="{{ path('search_songs', {'keyword': 'tags=' ~ tag.slug}) }}">
                         {{ tag.title }}
                     </a>
                 </span>

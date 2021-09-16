@@ -30,7 +30,7 @@
             {% for tag in tags('song') %}
 
                 <span class="badge badge-info badge-a">
-                    <a class="md-feat-stat" href="{{ path('tag_show', {'slug': tag.slug}) }}">
+                    <a class="md-feat-stat" href="{{ path('search_songs', {'keyword': 'tags=' ~ tag.slug}) }}">
                         {{ tag.title }}
                     </a>
                 </span>

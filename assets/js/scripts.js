@@ -93,3 +93,48 @@ if (commentReply) {
         })
     });
 }
+
+// Searcher
+
+let searchInputs = document.querySelectorAll('.md-search-all-input');
+
+const navbarSearch = document.getElementById('navbarSearch');
+const navbarSearchOpener = document.getElementById('openNavbarSearch');
+const navbarSearchCloser = document.getElementById('closeNavbarSearch');
+
+function openNavbarSearch(){
+    document.querySelector('.navbar-search-mobile').style.opacity = '1';
+    document.querySelector('.navbar-search-closer').style.opacity = '1';
+    document.querySelector('.navbar-search-mobile input').style.padding = '0.375rem 0.75rem';
+    document.querySelector('.navbar-search-mobile input').style.width = '100%';
+    document.querySelector('.navbar-search-mobile .md-search-all-input').style.width = '100%';
+    document.querySelector('.navbar-search-mobile').style.zIndex = '200';
+    document.querySelector('.navbar-search-mobile input').focus();
+}
+
+function closeNavbarSearch(){
+    document.querySelector('.navbar-search-mobile').style.opacity = '0';
+    document.querySelector('.navbar-search-closer').style.opacity = '0';
+    document.querySelector('.navbar-search-mobile input').style.padding = '0';
+    document.querySelector('.navbar-search-mobile input').style.width = '0';
+    document.querySelector('.navbar-search-mobile .md-search-all-input').style.width = '0';
+    document.querySelector('.navbar-search-mobile').style.zIndex = 'unset';
+}
+
+if (navbarSearch) {
+    navbarSearchOpener.addEventListener('click', openNavbarSearch);
+    navbarSearchCloser.addEventListener('click', closeNavbarSearch);
+}
+
+searchInputs.forEach((inputBox,key) => {
+    inputBox.querySelector('.search_input').addEventListener('input',(input) => {
+        inputBox.querySelector('.search_button').href = '/search/' + input.target.value;
+    })
+
+    inputBox.querySelector('.search_input').addEventListener('keyup',(event) => {
+            if (event.keyCode === 13 || event.code === "Enter") {
+                inputBox.querySelector('.search_button').click();
+            }
+        }
+    );
+});

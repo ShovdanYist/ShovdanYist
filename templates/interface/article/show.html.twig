@@ -77,6 +77,12 @@
 
     </article>
 
+    {% if is_granted('ROLE_ARTICLE_AUTHOR') %}
+        <a href="{{ path('article_add') }}" class="md-write-article-button">
+            <i class="fas fa-feather-alt"></i>
+        </a>
+    {% endif %}
+
 {% endblock %}
 
 {% block main_bottom %}

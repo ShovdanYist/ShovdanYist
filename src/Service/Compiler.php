@@ -21,7 +21,8 @@ class Compiler
         'i' => '',
         '/' => '',
         '   ' => ' ',
-        '  ' => ' '
+        '  ' => ' ',
+        ',' => ''
     ];
 
     public function __construct() {
@@ -57,5 +58,33 @@ class Compiler
         }
 
         return mb_substr($text, $keywordPositionA, $keywordPositionB);
+    }
+
+    public function tagsSearchToArray($tags)
+    {
+        return explode(',',str_replace('tags=','',$tags));
+    }
+
+    public function arrayToTagsSearch($array): string
+    {
+        $tags = [];
+
+        foreach ($array as $tag) {
+            $tags[] = $tag->getSlug();
+        }
+
+        return 'tags=' . implode(',',$tags);
+    }
+
+    public function tagsString($tags): string
+    {
+        $result = '';
+        foreach ($tags as $key => $tag) {
+            if ($key !== 0) {
+                $result .= ', ';
+            }
+            $result .= $tag->getTitle();
+        }
+        return $result;
     }
 }

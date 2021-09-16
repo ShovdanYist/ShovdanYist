@@ -26,8 +26,7 @@ class SongRepository extends ServiceEntityRepository
     {
         $qb = $this->createQueryBuilder('s');
 
-        $qb ->where('s.lyrics LIKE :keyword')
-            ->orWhere('s.fullTitle LIKE :keyword')
+        $qb ->where('s.search LIKE :keyword')
             ->andWhere('s.status = true')
             ->setParameter('keyword','%'. $keyword .'%')
         ;
@@ -125,6 +124,27 @@ class SongRepository extends ServiceEntityRepository
             $qb ->andWhere('s.'. $property .' = :' . $property . '')
                 ->setParameter($property,$value)
             ;
+        }
+
+        $qb ->setMaxResults($limit)
+            ->setFirstResult($offset);
+
+        return $qb->getQuery()->getResult();
+    }
+
+    public function findByTags($tags, $orderBy = ['id' => 'DESC'], $limit = null, $offset = 0)
+    {
+        $qb = $this->createQueryBuilder('s');
+
+        foreach ($tags as $key => $tag) {
+            $qb ->innerJoin('s.tags','t' . $key)
+                ->andWhere('t' . $key . '.slug IN (:tag' . $key . ')')
+                ->setParameter('tag' . $key, $tag)
+            ;
+        }
+
+        foreach ($orderBy as $key => $value) {
+            $qb->orderBy('s.'.$key,$value);
         }
 
         $qb ->setMaxResults($limit)

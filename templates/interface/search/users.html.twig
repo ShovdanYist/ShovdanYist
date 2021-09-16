@@ -2,6 +2,8 @@
 
 {% block title %}{{ 'search' | trans }}{% endblock %}
 
+{% block pageclass %}two-sidebars{% endblock %}
+
 {% block main_top %}
     {{ breadcrumb({
         (path('app_home')) : ('home.page' | trans),
@@ -12,6 +14,28 @@
 {% block main %}
 
     <div class="md-search">
+
+        {{ form_start(form) }}
+
+            <div class="md-search-box md-search-input-box md-box">
+
+                <div class="md-search-input">
+                    {{ form_widget(form.keyword) }}
+                    <button class="btn btn-success">
+                        {{ 'search' | trans }}
+                    </button>
+                </div>
+
+                <div class="md-search-pages-menu">
+                    <a href="{{ path('search_index',{'keyword':keyword}) }}">Всё</a>
+                    <a href="{{ path('search_songs',{'keyword':keyword}) }}">Музыка</a>
+                    <a href="{{ path('search_users',{'keyword':keyword}) }}" class="active">Пользователи</a>
+                    <a href="{{ path('search_articles',{'keyword':keyword}) }}">Статьи</a>
+                </div>
+
+            </div>
+
+        {{ form_end(form) }}
 
         {% if users %}
 
@@ -46,6 +70,8 @@
 
                 {% endfor %}
 
+                {{ paginator.display() }}
+
             </div>
 
         {% endif %}
@@ -64,10 +90,43 @@
 
     </div>
 
-    {{ paginator.display(true) }}
-
 {% endblock %}
 
-{% block scripts %}
-    {{ autoplay() }}
+{% block sidebar_b %}
+
+    <div class="sidebar-b">
+        <div class="md-box sticky-top" style="padding: 12px">
+            <div class="text-muted mb-2 pl-2">{{ 'search' | trans }}</div>
+
+            <div class="md-menu">
+
+                <ul>
+                    <li class="md-menu-item md-lined-menu">
+                        <a style="padding-left: 8px" href="{{ path('search_index',{'keyword':keyword}) }}">
+                            {{ 'all' | trans }}
+                        </a>
+                    </li>
+                    <li class="md-menu-item md-lined-menu">
+                        <a style="padding-left: 8px" href="{{ path('search_songs',{'keyword':keyword}) }}">
+                            {{ 'music' | trans }}
+                        </a>
+                    </li>
+                    <li class="md-menu-item md-lined-menu active">
+                        <a style="padding-left: 8px" href="{{ path('search_users',{'keyword':keyword}) }}">
+                            {{ 'users' | trans }}
+                        </a>
+                    </li>
+                    <li class="md-menu-item md-lined-menu">
+                        <a style="padding-left: 8px" href="{{ path('search_articles',{'keyword':keyword}) }}">
+                            {{ 'articles' | trans }}
+                        </a>
+                    </li>
+
+                </ul>
+
+            </div>
+
+        </div>
+    </div>
+
 {% endblock %}

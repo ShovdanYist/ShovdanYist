@@ -2,10 +2,12 @@
 
 {% block title %}{{ 'search' | trans }}{% endblock %}
 
+{% block pageclass %}two-sidebars{% endblock %}
+
 {% block main_top %}
     {{ breadcrumb({
         (path('app_home')) : ('home.page' | trans),
-        'active' : ('search' | trans),
+        'active' : keyword
     }) }}
 {% endblock %}
 
@@ -15,13 +17,20 @@
 
         {{ form_start(form) }}
 
-            <div class="md-search-box md-box md-content-padding">
+            <div class="md-search-box md-search-input-box md-box">
 
                 <div class="md-search-input">
                     {{ form_widget(form.keyword) }}
                     <button class="btn btn-success">
                         {{ 'search' | trans }}
                     </button>
+                </div>
+
+                <div class="md-search-pages-menu">
+                    <a href="{{ path('search_index',{'keyword':keyword}) }}" class="active">Всё</a>
+                    <a href="{{ path('search_songs',{'keyword':keyword}) }}">Музыка</a>
+                    <a href="{{ path('search_users',{'keyword':keyword}) }}">Пользователи</a>
+                    <a href="{{ path('search_articles',{'keyword':keyword}) }}">Статьи</a>
                 </div>
 
             </div>
@@ -51,7 +60,7 @@
                 {% if (songs | length) == 5 %}
                     <div class="see-all mt-3">
                         <a href="{{ path('search_songs',{'keyword':keyword}) }}">
-                            {{ 'see.all.results' | trans }}
+                            {{ 'see.all' | trans }}
                             <span><i class="fas fa-angle-right"></i></span>
                         </a>
                     </div>
@@ -101,7 +110,7 @@
                 {% if (users | length) == 5 %}
                     <div class="see-all mt-3">
                         <a href="{{ path('search_users',{'keyword':keyword}) }}">
-                            {{ 'see.all.results' | trans }}
+                            {{ 'see.all' | trans }}
                             <span><i class="fas fa-angle-right"></i></span>
                         </a>
                     </div>
@@ -141,7 +150,7 @@
                 {% if (articles | length) == 5 %}
                     <div class="see-all mt-3">
                         <a href="{{ path('search_articles',{'keyword':keyword}) }}">
-                            {{ 'see.all.results' | trans }}
+                            {{ 'see.all' | trans }}
                             <span><i class="fas fa-angle-right"></i></span>
                         </a>
                     </div>
@@ -173,6 +182,45 @@
 
         {% endif %}
 
+    </div>
+
+{% endblock %}
+
+{% block sidebar_b %}
+
+    <div class="sidebar-b">
+        <div class="md-box sticky-top" style="padding: 12px">
+            <div class="text-muted mb-2 pl-2">{{ 'search' | trans }}</div>
+
+            <div class="md-menu">
+
+                <ul>
+                    <li class="md-menu-item md-lined-menu active">
+                        <a style="padding-left: 8px" href="{{ path('search_index',{'keyword':keyword}) }}">
+                            {{ 'all' | trans }}
+                        </a>
+                    </li>
+                    <li class="md-menu-item md-lined-menu">
+                        <a style="padding-left: 8px" href="{{ path('search_songs',{'keyword':keyword}) }}">
+                            {{ 'music' | trans }}
+                        </a>
+                    </li>
+                    <li class="md-menu-item md-lined-menu">
+                        <a style="padding-left: 8px" href="{{ path('search_users',{'keyword':keyword}) }}">
+                            {{ 'users' | trans }}
+                        </a>
+                    </li>
+                    <li class="md-menu-item md-lined-menu">
+                        <a style="padding-left: 8px" href="{{ path('search_articles',{'keyword':keyword}) }}">
+                            {{ 'articles' | trans }}
+                        </a>
+                    </li>
+
+                </ul>
+
+            </div>
+
+        </div>
     </div>
 
 {% endblock %}

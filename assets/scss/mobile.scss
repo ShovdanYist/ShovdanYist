@@ -36,7 +36,7 @@
     margin-bottom: 20px !important;
   }
   .md-nav-menu {
-    display: none;
+    display: none !important;
   }
   .md-nav-logo, .md-nav-item {
     display: table;
@@ -47,6 +47,15 @@
     display: block !important;
   }
   .navbar-login-mobile {
+    display: unset !important;
+  }
+  .navbar-search-opener, .navbar-search {
+    display: unset !important;
+  }
+  .md-search-pages-menu {
+    display: flex !important;
+  }
+  .md-write-article-button {
     display: unset !important;
   }
 }
@@ -257,6 +266,10 @@
   }
   .moderation-user-actions {
     margin-bottom: 2px !important;
+  }
+  .md-search-pages-menu {
+    margin-left: 2px !important;
+    margin-right: 0 !important;
   }
 }
 

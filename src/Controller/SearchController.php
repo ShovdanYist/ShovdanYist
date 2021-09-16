@@ -7,9 +7,8 @@ use App\Entity\Article;
 use App\Entity\Song;
 use App\Entity\User;
 use App\Service\Compiler;
+use App\Service\Searcher;
 use App\Service\Paginator;
-use Symfony\Component\Form\Extension\Core\Type\SearchType;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -22,59 +21,26 @@ class SearchController extends CustomAbstractController
 {
     /**
      * @Route("/search/{keyword}", name="index", methods={"POST","GET"})
-     * @param Request $request
      * @param $keyword
-     * @param Compiler $compiler
+     * @param Searcher $searcher
      * @return Response
      */
-    public function index(Request $request, $keyword, Compiler $compiler): Response
+    public function index($keyword, Searcher $searcher): Response
     {
-        $form = $this->createFormBuilder()
-            ->add('keyword', SearchType::class, [
-                'label' => 'search',
-                'attr' => ['value' => $keyword]
-            ])
-            ->getForm();
-
-        $form->handleRequest($request);
-
+        $searcher->setKeyword($keyword);
+        $form = $searcher->searchForm($keyword);
         if ($form->isSubmitted() && $form->isValid()) {
             return $this->redirectToRoute('search_index',[
                 'keyword' => $form->get('keyword')->getData()
             ]);
         }
 
-        $keyword = mb_strtolower($keyword);
-        $repoSongs = $this->getDoctrine()->getRepository(Song::class)->findByKeyword($keyword, ['releaseDate' => 'DESC'],5);
-        $repoArticles = $this->getDoctrine()->getRepository(Article::class)->findByKeyword($keyword, [],5);
-        $repoUsers = $this->getDoctrine()->getRepository(User::class)->findByKeyword($keyword,['registeredAt' => 'DESC'],5);
-        $songs = [];
-        $articles = [];
-
-        foreach ($repoSongs as $song) {
-            $result = $compiler->matchInText($compiler->htmlToText($song->getLyrics()),$keyword);
-
-            $songs[] = [
-                'info' => $song,
-                'words' => str_replace($keyword,'<span class="found-keyword">' . $keyword . '</span>', $result)
-            ];
-        }
-
-        foreach ($repoArticles as $article) {
-            $result = $compiler->matchInText($compiler->htmlToText($article->getContent()),$keyword);
-
-            $articles[] = [
-                'info' => $article,
-                'words' => str_replace($keyword,'<span class="found-keyword">' . $keyword . '</span>', $result)
-            ];
-        }
-
         return $this->render('interface/search/index.html.twig', [
             'form' => $form->createView(),
-            'keyword' => $keyword,
-            'songs' => $songs,
-            'articles' => $articles,
-            'users' => $repoUsers
+            'keyword' => mb_strtolower($keyword),
+            'songs' => $searcher->getData('songs'),
+            'articles' => $searcher->getData('articles'),
+            'users' => $searcher->getData('users')
         ]);
     }
 
@@ -83,37 +49,48 @@ class SearchController extends CustomAbstractController
      * @param $keyword
      * @param $page
      * @param Paginator $paginator
-     * @param Compiler $compiler
+     * @param Searcher $searcher
      * @return Response
      */
-    public function songs($keyword, $page, Paginator $paginator, Compiler $compiler): Response
+    public function songs($keyword, $page, Paginator $paginator, Searcher $searcher, Compiler $compiler): Response
     {
-        $paginator
-            ->setClass(Song::class)
-            ->setMethod('findByKeyword')
+        $searcher->setKeyword($keyword);
+        $form = $searcher->searchForm($keyword);
+        $tagsForm = $searcher->tagsForm();
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            return $this->redirectToRoute('search_songs',[
+                'keyword' => $form->get('keyword')->getData()
+            ]);
+        } elseif ($tagsForm->isSubmitted() && $tagsForm->isValid()) {
+            return $this->redirectToRoute('search_songs',[
+                'keyword' => $compiler->arrayToTagsSearch($tagsForm->get('tags')->getData()),
+                'tagsForm' => $tagsForm
+            ]);
+        }
+
+        $paginator->setClass(Song::class)
             ->setOrder(['releaseDate' => 'DESC'])
             ->setParameters(['keyword' => $keyword])
-            ->setCriteria($keyword)
             ->setLimit(10)
-            ->setPage($page)
-        ;
+            ->setPage($page);
 
-        $songs = [];
-
-        foreach ($paginator->getData() as $song) {
-            $result = $compiler->matchInText($compiler->htmlToText($song->getLyrics()),$keyword);
-
-            $songs[] = [
-                'info' => $song,
-                'words' => str_replace($keyword,'<span class="found-keyword">' . $keyword . '</span>', $result)
-            ];
+        if ($searcher->isTagsSearch()) {
+            $paginator  ->setMethod('findByTags')
+                        ->setCriteria($compiler->tagsSearchToArray($keyword));
+        } else {
+            $paginator  ->setMethod('findByKeyword')
+                        ->setCriteria($compiler->htmlToText($keyword));
         }
 
         return $this->render('interface/search/songs.html.twig', [
             'keyword' => $keyword,
             'page' => $page,
-            'songs' => $songs,
-            'paginator' => $paginator
+            'songs' => $searcher->getData('songs', $paginator->getData()),
+            'paginator' => $paginator,
+            'form' => $form->createView(),
+            'tagsForm' => $tagsForm->createView(),
+            'tags' => $searcher->getSearchedTagsData()
         ]);
     }
 
@@ -122,37 +99,36 @@ class SearchController extends CustomAbstractController
      * @param $keyword
      * @param $page
      * @param Paginator $paginator
-     * @param Compiler $compiler
+     * @param Searcher $searcher
      * @return Response
      */
-    public function articles($keyword, $page, Paginator $paginator, Compiler $compiler): Response
+    public function articles($keyword, $page, Paginator $paginator, Searcher $searcher): Response
     {
+        $searcher->setKeyword($keyword);
+        $form = $searcher->searchForm($keyword);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            return $this->redirectToRoute('search_articles',[
+                'keyword' => $form->get('keyword')->getData()
+            ]);
+        }
+
         $paginator
             ->setClass(Article::class)
             ->setMethod('findByKeyword')
             ->setOrder([])
             ->setParameters(['keyword' => $keyword])
             ->setCriteria($keyword)
-            ->setLimit(10)
+            ->setLimit(20)
             ->setPage($page)
         ;
-
-        $articles = [];
-
-        foreach ($paginator->getData() as $article) {
-            $result = $compiler->matchInText($compiler->htmlToText($article->getContent()),$keyword);
-
-            $articles[] = [
-                'info' => $article,
-                'words' => str_replace($keyword,'<span class="found-keyword">' . $keyword . '</span>', $result)
-            ];
-        }
 
         return $this->render('interface/search/articles.html.twig', [
             'keyword' => $keyword,
             'page' => $page,
-            'articles' => $articles,
-            'paginator' => $paginator
+            'articles' => $searcher->getData('articles', $paginator->getData()),
+            'paginator' => $paginator,
+            'form' => $form->createView()
         ]);
     }
 
@@ -161,11 +137,19 @@ class SearchController extends CustomAbstractController
      * @param $keyword
      * @param $page
      * @param Paginator $paginator
-     * @param Compiler $compiler
+     * @param Searcher $searcher
      * @return Response
      */
-    public function users($keyword, $page, Paginator $paginator, Compiler $compiler): Response
+    public function users($keyword, $page, Paginator $paginator, Searcher $searcher): Response
     {
+        $form = $searcher->searchForm($keyword);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            return $this->redirectToRoute('search_users',[
+                'keyword' => $form->get('keyword')->getData()
+            ]);
+        }
+
         $paginator
             ->setClass(User::class)
             ->setMethod('findByKeyword')
@@ -180,7 +164,8 @@ class SearchController extends CustomAbstractController
             'keyword' => $keyword,
             'page' => $page,
             'paginator' => $paginator,
-            'users' => $paginator->getData()
+            'users' => $paginator->getData(),
+            'form' => $form->createView()
         ]);
     }
 }

@@ -5,7 +5,6 @@ namespace App\Service;
 use App\Entity\Article;
 use App\Entity\Person;
 use App\Entity\Song;
-use App\Entity\Tag;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -68,16 +67,6 @@ class Sitemap
                     'slug' => $song->getSlug()
                 ]),
                 'lastmod' => $song->getEditingDate()->format('Y-m-d')
-            ];
-        }
-
-        // Song tags urls
-        foreach ($this->em->getRepository(Tag::class)->findBy(['type' => 'song']) as $tag) {
-            $urls[] = [
-                'loc' => $this->generator->generate('tag_show', [
-                    'slug' => $tag->getSlug()
-                ]),
-                'lastmod' => $tag->getUpdatedAt()->format('Y-m-d')
             ];
         }
 

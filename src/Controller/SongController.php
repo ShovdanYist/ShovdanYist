@@ -38,44 +38,6 @@ class SongController extends CustomAbstractController
     }
 
     /**
-     * @Route("/song/tag/{slug}/{page<\d+>?1}", name="tag_show", methods={"GET"})
-     * @param Tag $tag
-     * @param $page
-     * @param Paginator $paginator
-     * @return Response
-     */
-    public function tag(Tag $tag, $page, Paginator $paginator): Response
-    {
-        if ($tag->getType() !== 'song') {
-            throw $this->createNotFoundException();
-        }
-
-        $paginator
-            ->setParameters(['slug' => $tag->getSlug()])
-            ->setCriteria(['tag' => $tag])
-            ->setMethod('findByTag')
-            ->setOrder(['publicationDate' => 'DESC'])
-            ->setClass(Song::class)
-            ->setType('tag')
-            ->setLimit(20)
-            ->setPage($page);
-
-        ($page > 1) ? $page = ' | Страница ' . $page : $page = '';
-
-        $info = [
-            'title' => $tag->getTitle() . ' | Чеченские песни с тегом «' . mb_strtolower($tag->getTitle()) . '»' . $page,
-            'h1' => 'Песни с тегом «' . mb_strtolower($tag->getTitle()) . '»',
-            'description' => 'Чеченские песни с тегом «' . mb_strtolower($tag->getTitle()) . '»'
-        ];
-
-        return $this->render('interface/song/chart.html.twig', [
-            'songs' => $paginator->getData(),
-            'paginator' => $paginator,
-            'info' => $info
-        ]);
-    }
-
-    /**
      * @Route("/chart/{chart}/{page<\d+>?1}", name="song_chart", methods={"GET"})
      * @param $chart
      * @param $page
@@ -148,7 +110,6 @@ class SongController extends CustomAbstractController
             }
         }
 
-        $manager->persist($song);
         $manager->flush();
 
         return $this->render('interface/song/show.html.twig', [

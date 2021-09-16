@@ -6,11 +6,6 @@
 
 {% block main_top %}
 
-{#    {{ breadcrumb({#}
-{#        (path('app_home')) : ('home.page' | trans),#}
-{#        'active' : ('articles' | trans),#}
-{#    }) }}#}
-
     <div class="md-box d-lg-none" style="margin-bottom: 12px">
 
         <a class="btn text-muted" style="width: 100%" data-toggle="collapse" data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false">
@@ -35,6 +30,13 @@
         </div>
 
     </div>
+
+    {% if is_granted('ROLE_ARTICLE_AUTHOR') %}
+        <a href="{{ path('article_add') }}" class="md-write-article-button">
+            <i class="fas fa-feather-alt"></i>
+        </a>
+    {% endif %}
+
 {% endblock %}
 
 {% block main %}

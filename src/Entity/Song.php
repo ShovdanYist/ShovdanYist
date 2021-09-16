@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Service\Compiler;
 use DateTime;
 use Exception;
 use Cocur\Slugify\Slugify;
@@ -36,12 +37,6 @@ class Song
      * @Assert\Type("string")
      */
     private $title;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     * @Assert\Type("string")
-     */
-    private $fullTitle;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -152,6 +147,11 @@ class Song
      */
     private $views;
 
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $search;
+
     public function __construct()
     {
         $this->featuring = new ArrayCollection();
@@ -183,13 +183,19 @@ class Song
     }
 
     /**
-     * @ORM\PrePersist()
      * @ORM\PreUpdate()
      */
-    public function initializeFullTitle()
+    public function initializeSearch()
     {
-        ($this->vocalist) ? $fullName = $this->vocalist->getFullName() . ' ' : $fullName = '';
-        $this->fullTitle = $fullName . $this->getTitle();
+        $searcher = new Compiler();
+
+        $values = [
+            $this->getFullTitle(),
+            $this->vocalist->getFirstName() . ' ' . $this->vocalist->getLastName() . ' ' . $this->getTitle(),
+            $searcher->htmlToText($this->getLyrics()),
+        ];
+
+        $this->search = mb_strtolower(implode(' ', $values));
     }
 
     /**
@@ -198,13 +204,13 @@ class Song
      */
     public function initializeSlug()
     {
-        $slugifier = new Slugify();
+        $slugify = new Slugify();
         $vocalist = '';
         if ($this->getVocalist()){
             $vocalist = $this->getVocalist()->getFullName() . ' ';
         }
 
-        $this->slug = $slugifier->slugify($vocalist . $this->title);
+        $this->slug = $slugify->slugify($vocalist . $this->title);
     }
 
     /**
@@ -248,13 +254,6 @@ class Song
         ($this->vocalist) ? $fullName = $this->vocalist->getFullName() . ' - ' : $fullName = '';
 
         return $fullName . $this->getTitle();
-    }
-
-    public function setFullTitle(string $fullTitle): self
-    {
-        $this->fullTitle = $fullTitle;
-
-        return $this;
     }
 
     public function getSlug(): ?string
@@ -620,6 +619,18 @@ class Song
                 $view->setSong(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getSearch(): ?string
+    {
+        return $this->search;
+    }
+
+    public function setSearch(?string $search): self
+    {
+        $this->search = $search;
 
         return $this;
     }
