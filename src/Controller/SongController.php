@@ -3,22 +3,18 @@
 namespace App\Controller;
 
 use App\CustomAbstracts\CustomAbstractController;
-use App\Entity\Action;
 use App\Entity\Song;
 use App\Entity\Person;
-use App\Entity\Tag;
 use App\Entity\PlaylistSong;
-use App\Entity\View;
 use App\Form\SongType;
 use App\Form\PeopleType;
 use App\Repository\SongRepository;
 use App\Repository\PeopleRepository;
 use App\Repository\PlaylistSongRepository;
 use App\Repository\UserRepository;
-use App\Service\Defender;
+use App\Service\Initializer;
 use App\Service\Paginator;
 use App\Twig\SongExtension;
-use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NoResultException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -87,30 +83,14 @@ class SongController extends CustomAbstractController
      * @Route("/song/{slug}/{page<\d+>?1}", name="song_show", methods={"GET", "POST"})
      * @param Song $song
      * @param $page
-     * @param EntityManagerInterface $manager
-     * @param Defender $defender
+     * @param Initializer $initializer
      * @return Response
      */
-    public function song(Song $song, $page, EntityManagerInterface $manager, Defender $defender): Response
+    public function song(Song $song, $page, Initializer $initializer): Response
     {
         if ($song->getStatus() != true) {throw $this->createNotFoundException();}
 
-        if (!$defender->isGranted($this->getUser(),'ROLE_GUEST')) {
-            if ($this->getDoctrine()->getRepository(View::class)->findOneBy(['user' => $this->user(), 'song' => $song])) {
-                $view = $this->getDoctrine()->getRepository(View::class)->findOneBy(['user' => $this->user(), 'song' => $song]);
-                $view->setQuantity($view->getQuantity() + 1);
-                $view->setViewedAt(new \DateTime('now'));
-            } else {
-                $view = new View();
-                $view->setUser($this->user());
-                $view->setSong($song);
-                $view->setViewedAt(new \DateTime('now'));
-                $view->setQuantity(1);
-                $manager->persist($view);
-            }
-        }
-
-        $manager->flush();
+        $initializer->initializeSongShow($song);
 
         return $this->render('interface/song/show.html.twig', [
             'song' => $song,
@@ -123,25 +103,17 @@ class SongController extends CustomAbstractController
      * @Security("has_role('ROLE_SONG_EDITOR')")
      * @param Request $request
      * @param Song $song
+     * @param Initializer $initializer
      * @return Response
      */
-    public function songEdit(Request $request, Song $song): Response
+    public function songEdit(Request $request, Song $song, Initializer $initializer): Response
     {
         $form = $this->createForm(SongType::class, $song)
-            ->add('save', SubmitType::class);
+                     ->add('save', SubmitType::class);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
-            $action = new Action();
-            $action->setModerator($this->user());
-            $action->setSong($song);
-            $action->setType('song_edited');
-
-            $song->setEditingDate(new \DateTime('now'));
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($action);
-            $em->flush();
+            $initializer->initializeSongEdit($song);
 
             if ($form->get('save')->isClicked()) {
                 return $this->redirectToRoute('song_edit', [
@@ -219,24 +191,16 @@ class SongController extends CustomAbstractController
      * @Security("has_role('ROLE_VOCALIST_EDITOR')")
      * @param Request $request
      * @param Person $person
+     * @param Initializer $initializer
      * @return Response
      */
-    public function vocalistEdit(Request $request, Person $person): Response
+    public function vocalistEdit(Request $request, Person $person, Initializer $initializer): Response
     {
         $form = $this->createForm(PeopleType::class, $person);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-
-            $action = new Action();
-            $action->setModerator($this->user());
-            $action->setPerson($person);
-            $action->setType('person_edited');
-
-            $person->setUpdatedAt(new \DateTime('now'));
-            $em->persist($action);
-            $em->flush();
+            $initializer->initializeVocalistEdit($person);
 
             return $this->redirectToRoute('song_vocalist', ['slug' => $person->getSlug()]);
         }

@@ -18,7 +18,6 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
  * @ORM\Entity(repositoryClass=SongRepository::class)
- * @ORM\HasLifecycleCallbacks()
  * @MyAssert\UniqueSong()
  * @Vich\Uploadable
  */
@@ -52,7 +51,7 @@ class Song
 
     /**
      * @Vich\UploadableField(mapping="vocalist_songs", fileNameProperty="audio")
-     * @Assert\File(mimeTypes={"audio/mpeg","audio/mp4","audio/vnd.wav", "audio/x-aiff"}, mimeTypesMessage="audio.have.to.be.jpg.or.png")
+     * @Assert\File(mimeTypes={"audio/mpeg","audio/mp4","audio/vnd.wav", "audio/x-aiff"}, mimeTypesMessage="audio.have.to.be.mpeg.or.wav")
      * @var File|null
      */
     private $audioFile;
@@ -180,56 +179,6 @@ class Song
     public function getAudioFile(): ?File
     {
         return $this->audioFile;
-    }
-
-    /**
-     * @ORM\PreUpdate()
-     */
-    public function initializeSearch()
-    {
-        $searcher = new Compiler();
-
-        $values = [
-            $this->getFullTitle(),
-            $this->vocalist->getFirstName() . ' ' . $this->vocalist->getLastName() . ' ' . $this->getTitle(),
-            $searcher->htmlToText($this->getLyrics()),
-        ];
-
-        $this->search = mb_strtolower(implode(' ', $values));
-    }
-
-    /**
-     * @ORM\PrePersist()
-     * @ORM\PreUpdate()
-     */
-    public function initializeSlug()
-    {
-        $slugify = new Slugify();
-        $vocalist = '';
-        if ($this->getVocalist()){
-            $vocalist = $this->getVocalist()->getFullName() . ' ';
-        }
-
-        $this->slug = $slugify->slugify($vocalist . $this->title);
-    }
-
-    /**
-     * Initialise une date de modification automatique
-     * @ORM\PrePersist()
-     * @ORM\PreUpdate()
-     */
-    public function initializeEditingDate()
-    {
-        $this->editingDate = new DateTime('now');
-    }
-
-    /**
-     * Initialise une date de publiction automatique
-     * @ORM\PrePersist()
-     */
-    public function initializePublicationDate()
-    {
-        $this->publicationDate = new DateTime('now');
     }
 
     public function getId(): ?int

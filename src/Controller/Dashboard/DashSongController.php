@@ -7,6 +7,7 @@ use App\Entity\Person;
 use App\Form\SongType;
 use App\Repository\SongRepository;
 use App\Repository\UserRepository;
+use App\Service\Initializer;
 use App\Service\Paginator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -88,11 +89,11 @@ class DashSongController extends AbstractController
     /**
      * @Route("/new/{person}", name="new", methods={"GET","POST"})
      * @param Request $request
-     * @param UserRepository $repo
+     * @param Initializer $initializer
      * @param null $person
      * @return Response
      */
-    public function new(Request $request, UserRepository $repo, $person = null): Response
+    public function new(Request $request, Initializer $initializer, $person = null): Response
     {
         $song = new Song();
 
@@ -102,23 +103,12 @@ class DashSongController extends AbstractController
         }
 
         $form = $this->createForm(SongType::class, $song)
-            ->add('save', SubmitType::class)
-            ->add('saveAndNew', SubmitType::class);
+                     ->add('save', SubmitType::class)
+                     ->add('saveAndNew', SubmitType::class);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $user = $repo->findOneBy(['username' => $this->getUser()->getUsername()]);
-            $song->setAuthor($user);
-
-            if ($song->getTags()) {
-                foreach ($song->getTags() as $tag) {
-                    $tag->setUpdatedAt(new \DateTime('now'));
-                }
-            }
-
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($song);
-            $entityManager->flush();
+            $initializer->initializeSongNew($song);
 
             if ($form->get('save')->isClicked()) {
                 return $this->redirectToRoute('dash_song_edit', [
@@ -145,17 +135,17 @@ class DashSongController extends AbstractController
      * @Route("/{id}/edit", name="edit", methods={"GET","POST"})
      * @param Request $request
      * @param Song $song
+     * @param Initializer $initializer
      * @return Response
      */
-    public function edit(Request $request, Song $song): Response
+    public function edit(Request $request, Song $song, Initializer $initializer): Response
     {
         $form = $this->createForm(SongType::class, $song)
             ->add('save', SubmitType::class);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
-            $this->getDoctrine()->getManager()->flush();
+            $initializer->initializeSongEdit($song);
 
             if ($form->get('save')->isClicked()) {
                 return $this->redirectToRoute('dash_song_edit', [

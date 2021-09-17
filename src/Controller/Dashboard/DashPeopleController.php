@@ -5,6 +5,7 @@ namespace App\Controller\Dashboard;
 use App\Entity\Person;
 use App\Form\PeopleType;
 use App\Repository\PeopleRepository;
+use App\Service\Initializer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -30,18 +31,17 @@ class DashPeopleController extends AbstractController
     /**
      * @Route("/new", name="new", methods={"GET","POST"})
      * @param Request $request
+     * @param Initializer $initializer
      * @return Response
      */
-    public function new(Request $request): Response
+    public function new(Request $request, Initializer $initializer): Response
     {
         $person = new Person();
         $form = $this->createForm(PeopleType::class, $person);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($person);
-            $entityManager->flush();
+            $initializer->initializeVocalistNew($person);
 
             return $this->redirectToRoute('dash_people_index');
         }
@@ -56,15 +56,16 @@ class DashPeopleController extends AbstractController
      * @Route("/{id}/edit", name="edit", methods={"GET","POST"})
      * @param Request $request
      * @param Person $person
+     * @param Initializer $initializer
      * @return Response
      */
-    public function edit(Request $request, Person $person): Response
+    public function edit(Request $request, Person $person, Initializer $initializer): Response
     {
         $form = $this->createForm(PeopleType::class, $person);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+            $initializer->initializeVocalistEdit($person);
 
             return $this->redirectToRoute('dash_people_index');
         }

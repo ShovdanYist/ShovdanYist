@@ -39,6 +39,7 @@ class DashTagController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $tag->setUpdatedAt(new \DateTime('now'));
             $em = $this->getDoctrine()->getManager();
             $em->persist($tag);
             $em->flush();

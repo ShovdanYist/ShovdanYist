@@ -75,10 +75,6 @@ class ArticleType extends AbstractType
                     ])
                 ]
             ])
-            ->add('description', TextareaType::class, [
-                'label' => 'description',
-                'attr' => ['rows' => 2]
-            ])
             ->add('tags', EntityType::class, [
                 'label' => 'categories',
                 'class' => Tag::class,

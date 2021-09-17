@@ -25,9 +25,6 @@ class Compiler
         ',' => ''
     ];
 
-    public function __construct() {
-    }
-
     public function htmlToText($html)
     {
         foreach ($this->symbols as $symbol => $replace) {

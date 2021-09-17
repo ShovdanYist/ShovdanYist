@@ -10,7 +10,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ActivityRepository")
- * @ORM\HasLifecycleCallbacks()
  * @MyAssert\UniqueTitleSlug(message="form.title.or.slug.exists")
  */
 class Activity

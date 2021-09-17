@@ -58,6 +58,9 @@
   .md-write-article-button {
     display: unset !important;
   }
+  .navbar-search-mobile, .navbar-search-mobile-hider {
+    display: unset !important;
+  }
 }
 
 @media only screen and (max-width: 768px) {

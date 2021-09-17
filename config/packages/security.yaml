@@ -82,6 +82,7 @@ security:
         # Authorized
          - { path: ^/deleteAccount, roles: ROLE_USER }
          - { path: ^/notifications, roles: ROLE_USER }
+         - { path: ^/playlist, roles: ROLE_USER }
          - { path: ^/article/add, roles: ROLE_USER }
          - { path: ^/bookmarks, roles: ROLE_USER }
          - { path: ^/settings, roles: ROLE_USER }

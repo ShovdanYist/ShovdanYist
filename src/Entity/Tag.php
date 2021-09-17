@@ -12,7 +12,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=TagRepository::class)
- * @ORM\HasLifecycleCallbacks()
  * @UniqueEntity("title")
  * @UniqueEntity("slug")
  * @Vich\Uploadable
@@ -68,15 +67,6 @@ class Tag
     {
         $this->songs = new ArrayCollection();
         $this->articles = new ArrayCollection();
-    }
-
-    /**
-     * Initialise un slug automatique
-     * @ORM\PrePersist()
-     */
-    public function initializeSlug()
-    {
-        $this->updatedAt = new \DateTime('now');
     }
 
     public function getId(): ?int

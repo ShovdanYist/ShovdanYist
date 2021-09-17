@@ -7,7 +7,10 @@ use App\Entity\Action;
 use App\Entity\Bookmark;
 use App\Entity\Article;
 use App\Entity\Tag;
+use App\Service\Compiler;
 use App\Service\Defender;
+use App\Service\Initializer;
+use Cocur\Slugify\Slugify;
 use DateTime;
 use App\Form\ArticleType;
 use App\Repository\UserRepository;
@@ -58,22 +61,17 @@ class ArticleController extends CustomAbstractController
     /**
      * @Route("/article/add", name="add")
      * @param Request $request
+     * @param Initializer $initializer
      * @return Response
      */
-    public function add(Request $request): Response
+    public function add(Request $request, Initializer $initializer): Response
     {
         $article = new Article();
         $form = $this->createForm(ArticleType::class, $article);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $article->setAuthor($this->user());
-            $article->setSection('articles');
-            $article->setViews(0);
-
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($article);
-            $em->flush();
+            $initializer->initializeArticleNew($article);
 
             return $this->redirectToRoute('article_show', ['slug' => $article->getSlug()]);
         }
@@ -97,8 +95,7 @@ class ArticleController extends CustomAbstractController
 
             if (!$defender->isGranted($this->getUser(),'ROLE_GUEST') && $this->getUser() !== $article->getAuthor() && !$this->isGranted('ROLE_ARTICLE_APPROVER')) {
                 $article->setViews($article->getViews() + 1);
-                $em = $this->getDoctrine()->getManager();
-                $em->flush();
+                $this->getDoctrine()->getManager()->flush();
             }
 
             return $this->render('interface/article/show.html.twig', [
@@ -114,9 +111,10 @@ class ArticleController extends CustomAbstractController
      * @Route("/article/{slug}/edit", name="edit", methods={"GET","POST"})
      * @param Request $request
      * @param Article $article
+     * @param Initializer $initializer
      * @return Response
      */
-    public function edit(Request $request, Article $article): Response
+    public function edit(Request $request, Article $article, Initializer $initializer): Response
     {
         if ($this->user() === $article->getAuthor() || $this->isGranted('ROLE_ARTICLE_APPROVER') || $this->isGranted('ROLE_ARTICLE_EDITOR') && $article->getStatus()) {
 
@@ -124,32 +122,7 @@ class ArticleController extends CustomAbstractController
             $form->handleRequest($request);
 
             if ($form->isSubmitted() && $form->isValid()) {
-                if ($this->user() === $article->getAuthor() && !$this->isGranted('ROLE_ARTICLE_APPROVER') || $this->user() === $article->getAuthor() && !$this->isGranted('ROLE_ARTICLE_EDITOR')) {
-                    $article->setUpdatedAt(new DateTime('now'));
-                    $article->setStatus(null);
-                }
-
-                if ($article->getStatus() !== true) {
-                    foreach ($article->getNotifications() as $value) {
-                        $value->setStatus(false);
-                    }
-                } else {
-                    foreach ($article->getNotifications() as $value) {
-                        $value->setStatus(true);
-                    }
-                }
-
-                $em = $this->getDoctrine()->getManager();
-
-                if ($article->getAuthor() !== $this->user()) {
-                    $action = new Action();
-                    $action->setModerator($this->user());
-                    $action->setArticle($article);
-                    $action->setType('article_edited');
-                    $em->persist($action);
-                }
-
-                $em->flush();
+                $initializer->initializeArticleEdit($article);
 
                 return $this->redirectToRoute('article_show', ['slug' => $article->getSlug()]);
             }
@@ -158,7 +131,6 @@ class ArticleController extends CustomAbstractController
                 'article' => $article,
                 'form' => $form->createView(),
             ]);
-
         } else {
             throw $this->createNotFoundException();
         }

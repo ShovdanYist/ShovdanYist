@@ -15,7 +15,6 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\PeopleRepository")
- * @ORM\HasLifecycleCallbacks()
  * @MyAssert\UniquePeople()
  * @Vich\Uploadable
  */
@@ -104,16 +103,6 @@ class Person
         $this->activity = new ArrayCollection();
         $this->featuring = new ArrayCollection();
         $this->actions = new ArrayCollection();
-    }
-
-    /**
-     * @ORM\PrePersist()
-     * @ORM\PreUpdate()
-     */
-    public function initializeSlug()
-    {
-        $slugifier = new Slugify();
-        $this->slug = $slugifier->slugify($this->getFullName());
     }
 
     /**

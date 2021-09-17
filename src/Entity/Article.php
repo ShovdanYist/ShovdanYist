@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\ArticleRepository;
+use App\Service\Compiler;
 use Cocur\Slugify\Slugify;
 use DateTime;
 use App\Validator\Constraints as MyAssert;
@@ -15,7 +16,6 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
  * @ORM\Entity(repositoryClass=ArticleRepository::class)
- * @ORM\HasLifecycleCallbacks()
  * @Vich\Uploadable
  * @MyAssert\UniqueTitleSlug(message="form.title.or.slug.exists")
  */
@@ -147,24 +147,6 @@ class Article
         $this->notifications = new ArrayCollection();
         $this->tags = new ArrayCollection();
         $this->actions = new ArrayCollection();
-    }
-
-    /**
-     * @ORM\PrePersist()
-     */
-    public function initializePrePersist()
-    {
-        $this->updatedAt = new DateTime('now');
-    }
-
-    /**
-     * @ORM\PrePersist()
-     * @ORM\PreUpdate()
-     */
-    public function initializePrePersistUpdate()
-    {
-        $slugifier = new Slugify();
-        $this->slug = $slugifier->slugify($this->getTitle());
     }
 
     public function getId(): ?int

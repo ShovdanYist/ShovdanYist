@@ -104,20 +104,12 @@ const navbarSearchCloser = document.getElementById('closeNavbarSearch');
 
 function openNavbarSearch(){
     document.querySelector('.navbar-search-mobile').style.opacity = '1';
-    document.querySelector('.navbar-search-closer').style.opacity = '1';
-    document.querySelector('.navbar-search-mobile input').style.padding = '0.375rem 0.75rem';
-    document.querySelector('.navbar-search-mobile input').style.width = '100%';
-    document.querySelector('.navbar-search-mobile .md-search-all-input').style.width = '100%';
-    document.querySelector('.navbar-search-mobile').style.zIndex = '200';
+    document.querySelector('.navbar-search-mobile').style.zIndex = '100';
     document.querySelector('.navbar-search-mobile input').focus();
 }
 
 function closeNavbarSearch(){
     document.querySelector('.navbar-search-mobile').style.opacity = '0';
-    document.querySelector('.navbar-search-closer').style.opacity = '0';
-    document.querySelector('.navbar-search-mobile input').style.padding = '0';
-    document.querySelector('.navbar-search-mobile input').style.width = '0';
-    document.querySelector('.navbar-search-mobile .md-search-all-input').style.width = '0';
     document.querySelector('.navbar-search-mobile').style.zIndex = 'unset';
 }
 
