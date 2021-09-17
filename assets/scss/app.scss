@@ -545,7 +545,7 @@ blockquote, .ck.ck-content blockquote {
   width: 50%;
 }
 .md-nav-logo {
-  z-index: 100;
+  z-index: 2;
   position: relative;
 }
 .md-nav-logo, .md-nav-item {
@@ -1770,7 +1770,7 @@ select {
   height: 100%;
   position: absolute;
   top: 0;
-  z-index: 10;
+  z-index: 1;
   display: none;
 }
 
