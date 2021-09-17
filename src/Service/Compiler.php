@@ -21,17 +21,26 @@ class Compiler
         'i' => '',
         '/' => '',
         '   ' => ' ',
-        '  ' => ' ',
-        ',' => ''
+        '  ' => ' '
     ];
 
-    public function htmlToText($html)
+    public function htmlToText($html, $lowercase = false)
     {
-        foreach ($this->symbols as $symbol => $replace) {
-            $html = str_replace($symbol,$replace,$html);
-        }
+        if ($lowercase === false) {
+            $this->symbols[','] = '';
 
-        return mb_strtolower($html);
+            foreach ($this->symbols as $symbol => $replace) {
+                $html = str_replace($symbol,$replace,$html);
+            }
+
+            return mb_strtolower($html);
+        } else {
+            foreach ($this->symbols as $symbol => $replace) {
+                $html = str_replace($symbol,$replace,$html);
+            }
+
+            return $html;
+        }
     }
 
     public function matchInText($text, $keyword): string

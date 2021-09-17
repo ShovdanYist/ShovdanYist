@@ -7,11 +7,15 @@ use App\Entity\User;
 use App\Repository\UserRepository;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Core\Authorization\AccessDecisionManagerInterface;
+use Symfony\Component\Security\Core\Security;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class Defender
 {
-    private $accessDecisionManager;
     private $userRepo;
+    private $accessDecisionManager;
+    private $translator;
+    private $user;
     private $roles = [
         'ROLE_ARTICLE_AUTHOR',
         'ROLE_ARTICLE_EDITOR',
@@ -26,8 +30,10 @@ class Defender
         'ROLE_USER_ACTIONS'
     ];
 
-    public function __construct(AccessDecisionManagerInterface $accessDecisionManager, UserRepository $userRepo) {
+    public function __construct(AccessDecisionManagerInterface $accessDecisionManager, UserRepository $userRepo, Security $security, UserRepository $users, TranslatorInterface $translator) {
+        $this->user = $users->findOneBy(['username' => $security->getUser()->getUsername()]);;
         $this->accessDecisionManager = $accessDecisionManager;
+        $this->translator = $translator;
         $this->userRepo = $userRepo;
     }
 
@@ -109,5 +115,30 @@ class Defender
         }
 
         return $right;
+    }
+
+    public function rightToSetUsername($username): array
+    {
+        $exist = $this->userRepo->findOneBy(['username' => $username]);
+        $message = null;
+        $status = false;
+
+        // Constraints for username
+        if (strlen($username) < 8 || strlen($username) > 28) {
+            $message = $this->translator->trans('forn.username.must.be.between');
+        } elseif (preg_match('/^[a-z1-9._]+$/i', $username) == 0) {
+            $message = $this->translator->trans('forn.username.can.consist.symbols');
+        } elseif ($exist) {
+            $message = $this->translator->trans('forn.username.already.exists') . ' "' . $username . '"';
+        } else {
+            $status = true;
+        }
+
+        // Skip constraints if this user already have this username
+        if ($exist === $this->user) {
+            $status = true;
+        }
+
+        return ['status' => $status, 'message' => $message];
     }
 }

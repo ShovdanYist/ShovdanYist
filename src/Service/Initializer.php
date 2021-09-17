@@ -67,7 +67,7 @@ class Initializer
 
     public function initializeArticleNew(Article $article)
     {
-        $article->setDescription(mb_substr($this->compiler->htmlToText($article->getContent()), 0, 120));
+        $article->setDescription(mb_substr($this->compiler->htmlToText($article->getContent(),true), 0, 120));
         $article->setSlug($this->slugify->slugify($article->getTitle()));
         $article->setUpdatedAt(new \DateTime('now'));
         $article->setSection('articles');
@@ -80,7 +80,7 @@ class Initializer
 
     public function initializeArticleEdit(Article $article)
     {
-        $article->setDescription(mb_substr($this->compiler->htmlToText($article->getContent()),0,120));
+        $article->setDescription(mb_substr($this->compiler->htmlToText($article->getContent(), true),0,120));
         $article->setSlug($this->slugify->slugify($article->getTitle()));
 
         if ($this->user === $article->getAuthor() && !$this->defender->isGranted($this->user,'ROLE_ARTICLE_APPROVER') || $this->user === $article->getAuthor() && !$this->defender->isGranted($this->user,'ROLE_ARTICLE_EDITOR')) {

@@ -110,12 +110,12 @@ class UserController extends CustomAbstractController
      * @Route("/settings", name="settings", methods={"GET","POST"})
      * @param Request $request
      * @param UserRepository $repo
-     * @param Constraints $constraints
      * @param Mailer $mailer
      * @param TokenGeneratorInterface $tokenGenerator
+     * @param Defender $defender
      * @return Response
      */
-    public function settings(Request $request, UserRepository $repo, Constraints $constraints, Mailer $mailer, TokenGeneratorInterface $tokenGenerator): Response
+    public function settings(Request $request, UserRepository $repo, Mailer $mailer, TokenGeneratorInterface $tokenGenerator, Defender $defender): Response
     {
         $user = $repo->findOneBy(['username' => $this->getUser()->getUsername()]);
         $form = $this->createFormBuilder($user)
@@ -145,7 +145,7 @@ class UserController extends CustomAbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $verification = $constraints->username($form->get('username')->getData());
+            $verification = $defender->rightToSetUsername($form->get('username')->getData());
 
             if ($verification['status'] == true) {
                 if ($user->getEmail() != $user->getConfirmedEmail()) {
