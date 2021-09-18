@@ -99,23 +99,23 @@ if (commentReply) {
 let searchInputs = document.querySelectorAll('.md-search-all-input');
 
 const navbarSearch = document.getElementById('navbarSearch');
+const navbarSearchInput = document.getElementById('navbarSearchInput');
 const navbarSearchOpener = document.getElementById('openNavbarSearch');
 const navbarSearchCloser = document.getElementById('closeNavbarSearch');
 
 function openNavbarSearch(){
-    document.querySelector('.navbar-search-mobile').style.opacity = '1';
-    document.querySelector('.navbar-search-mobile').style.zIndex = '100';
+    document.querySelector('.navbar-search-mobile').style.display = 'unset';
     document.querySelector('.navbar-search-mobile input').focus();
 }
 
 function closeNavbarSearch(){
-    document.querySelector('.navbar-search-mobile').style.opacity = '0';
-    document.querySelector('.navbar-search-mobile').style.zIndex = 'unset';
+    document.querySelector('.navbar-search-mobile').style.display = 'none';
 }
 
 if (navbarSearch) {
     navbarSearchOpener.addEventListener('click', openNavbarSearch);
     navbarSearchCloser.addEventListener('click', closeNavbarSearch);
+    navbarSearchInput.addEventListener('focusout', closeNavbarSearch);
 }
 
 searchInputs.forEach((inputBox,key) => {

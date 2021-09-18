@@ -1759,23 +1759,16 @@ select {
 .navbar-search-mobile {
   border-left: 1px solid #373737;
   position: absolute;
-  display: none;
-  opacity: 0;
   right: 0;
   top: 0;
-}
-
-.navbar-search-mobile-hider {
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 1;
+  z-index: 3;
+  height: 54px;
+  width: calc(100% - 54px);
+  padding: 9px 9px 0;
   display: none;
 }
 
-.navbar-search input {
+.navbar-search input, .navbar-search-mobile input {
   background: #333;
   border: 1px solid #333;
   border-radius: 6px;
@@ -1804,7 +1797,7 @@ select {
   float: right;
 }
 
-.navbar-search a {
+.navbar-search a, .navbar-search-mobile a {
   background: #333 !important;
   border: unset !important;
   border-radius: 100px;
@@ -1813,27 +1806,27 @@ select {
   color: #b0b0b0;
 }
 
-.navbar-search a:hover {
+.navbar-search a:hover, .navbar-search-mobile a:hover {
   background: #3b3b3b !important;
   color: #ccc;
 }
 
-.navbar-search a svg {
+.navbar-search a svg, .navbar-search-mobile a svg {
   top: 1px;
   position: relative;
   right: 1px;
 }
 
-.navbar-search input::placeholder {
+.navbar-search input::placeholder, .navbar-search-mobile input::placeholder {
   color: #888;
 }
 
-.navbar-search input:hover {
+.navbar-search input:hover, .navbar-search-mobile input:hover {
   background: #373737;
   border: 1px solid #373737;
 }
 
-.navbar-search input:focus {
+.navbar-search input:focus, .navbar-search-mobile input:focus {
   background: #3b3b3b;
   border: 1px solid #3b3b3b;
   border-radius: 6px;
@@ -1866,7 +1859,7 @@ select {
   color: #adadad !important;
 }
 
-.navbar-search .navbar-search-closer {
+.navbar-search-closer {
   position: absolute;
   right: 70px;
   color: #686868;
