@@ -12,9 +12,9 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class Defender
 {
-    private $userRepo;
     private $accessDecisionManager;
     private $translator;
+    private $usersRepo;
     private $user;
     private $roles = [
         'ROLE_ARTICLE_AUTHOR',
@@ -30,11 +30,11 @@ class Defender
         'ROLE_USER_ACTIONS'
     ];
 
-    public function __construct(AccessDecisionManagerInterface $accessDecisionManager, UserRepository $userRepo, Security $security, UserRepository $users, TranslatorInterface $translator) {
-        $this->user = $users->findOneBy(['username' => $security->getUser()->getUsername()]);;
+    public function __construct(Security $security, UserRepository $usersRepo, AccessDecisionManagerInterface $accessDecisionManager, TranslatorInterface $translator) {
+        $this->user = $security->getUser();
         $this->accessDecisionManager = $accessDecisionManager;
         $this->translator = $translator;
-        $this->userRepo = $userRepo;
+        $this->usersRepo = $usersRepo;
     }
 
     public function getRoles(): array
@@ -44,7 +44,7 @@ class Defender
 
     public function getActionUsers()
     {
-        return $this->userRepo->findActionUsers();
+        return $this->usersRepo->findActionUsers();
     }
 
     public function isGranted($user, $role, $object = null): bool
@@ -119,7 +119,7 @@ class Defender
 
     public function rightToSetUsername($username): array
     {
-        $exist = $this->userRepo->findOneBy(['username' => $username]);
+        $exist = $this->usersRepo->findOneBy(['username' => $username]);
         $message = null;
         $status = false;
 

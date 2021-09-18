@@ -16,6 +16,7 @@ class SongExtension extends AbstractExtension
     private $songs;
     private $letters = [
         'a' => 'а',
+        'b' => 'б',
         'v' => 'в',
         'g' => 'г',
         'd' => 'д',

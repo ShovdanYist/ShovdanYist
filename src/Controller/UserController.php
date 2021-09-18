@@ -3,7 +3,6 @@
 namespace App\Controller;
 
 use App\CustomAbstracts\CustomAbstractController;
-use App\Entity\Action;
 use App\Entity\EmailAddress;
 use App\Entity\Song;
 use App\Entity\Notification;
@@ -11,14 +10,11 @@ use App\Entity\Article;
 use App\Entity\User;
 use App\Form\ResetPasswordType;
 use App\Form\ProfileType;
-use App\Repository\EmailAddressRepository;
 use App\Repository\NotificationRepository;
 use App\Repository\UserRepository;
-use App\Service\Constraints;
 use App\Service\Defender;
 use App\Service\Mailer;
 use App\Service\Paginator;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormError;
