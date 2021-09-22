@@ -3,6 +3,7 @@
 namespace App\Twig;
 
 use App\Entity\Comment;
+use App\Entity\Song;
 use App\Entity\User;
 use App\Service\Defender;
 use Twig\Extension\AbstractExtension;
@@ -24,6 +25,9 @@ class ToolsExtension extends AbstractExtension
             new TwigFunction('rightToChangeUserRights', [$this, 'rightToChangeUserRights'], ['is_safe' => ['html']]),
             new TwigFunction('rightToDeleteComment', [$this, 'rightToDeleteComment'], ['is_safe' => ['html']]),
             new TwigFunction('rightToBlockUser', [$this, 'rightToBlockUser'], ['is_safe' => ['html']]),
+            new TwigFunction('rightToEditSong', [$this, 'rightToEditSong'], ['is_safe' => ['html']]),
+            new TwigFunction('hasOnlyAuthorRightsInSongs', [$this, 'hasOnlyAuthorRightsInSongs'], ['is_safe' => ['html']]),
+            new TwigFunction('rightToEditSongs', [$this, 'rightToEditSongs'], ['is_safe' => ['html']]),
         ];
     }
 
@@ -45,5 +49,20 @@ class ToolsExtension extends AbstractExtension
     public function rightToBlockUser($moderator, User $user): bool
     {
         return $this->defender->rightToBlockUser($moderator,$user);
+    }
+
+    public function rightToEditSongs(User $user): bool
+    {
+        return $this->defender->rightToEditSongs($user);
+    }
+
+    public function rightToEditSong(Song $song): bool
+    {
+        return $this->defender->rightToEditSong($song);
+    }
+
+    public function hasOnlyAuthorRightsInSongs(User $user): bool
+    {
+        return $this->defender->hasOnlyAuthorRightsInSongs($user);
     }
 }

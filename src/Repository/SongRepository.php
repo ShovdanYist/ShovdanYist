@@ -22,6 +22,31 @@ class SongRepository extends ServiceEntityRepository
         parent::__construct($registry, Song::class);
     }
 
+    public function findPendingSongs($criteria, $orderBy = ['id' => 'DESC'], $limit = null, $offset = 0)
+    {
+        $qb = $this->createQueryBuilder('s');
+
+        foreach ($criteria as $property => $value) {
+            if ($property == 'user') {
+                $qb
+                    ->where('s.author != :' . $property . '')
+                    ->setParameter($property,$value)
+                ;
+            }
+        }
+
+        $qb->andWhere('s.status IS null');
+
+        foreach ($orderBy as $key => $value) {
+            $qb->orderBy('s.'.$key,$value);
+        }
+
+        $qb ->setMaxResults($limit)
+            ->setFirstResult($offset);
+
+        return $qb->getQuery()->getResult();
+    }
+
     public function findByKeyword($keyword, $orderBy = ['id' => 'DESC'], $limit = null, $offset = 0)
     {
         $qb = $this->createQueryBuilder('s');
@@ -151,49 +176,6 @@ class SongRepository extends ServiceEntityRepository
             ->setFirstResult($offset);
 
         return $qb->getQuery()->getResult();
-    }
-
-    public function findByTag($criteria, $orderBy = ['id' => 'DESC'], $limit = null, $offset = 0)
-    {
-        $qb = $this->createQueryBuilder('s');
-
-        foreach ($criteria as $property => $value) {
-            if ($property == 'tag') {
-                $qb ->leftJoin('s.tags', 't')
-                    ->where('t = :' . $property . '')
-                    ->andWhere('s.status = true')
-                    ->setParameter($property,$value)
-                ;
-            } else {
-                $qb ->andWhere('s.'. $property .' = :' . $property . '')
-                    ->setParameter($property,$value)
-                ;
-            }
-        }
-
-        foreach ($orderBy as $key => $value) {
-            $qb->orderBy('s.'.$key,$value);
-        }
-
-        $qb ->setMaxResults($limit)
-            ->setFirstResult($offset);
-
-        return $qb->getQuery()->getResult();
-    }
-
-    public function findFeaturingCount($vocalist)
-    {
-        return $this->createQueryBuilder('s')
-            ->select('COUNT(s.id)')
-            ->join('s.vocalist','a')
-            ->join('s.featuring', 'f')
-            ->where('a = :vocalist')
-            ->andWhere('s.status = true')
-            ->setParameter('vocalist', $vocalist)
-            ->groupBy('s.id')
-            ->getQuery()
-            ->getResult()
-            ;
     }
 
     /*

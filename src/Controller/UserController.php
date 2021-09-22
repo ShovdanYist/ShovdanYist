@@ -42,7 +42,7 @@ class UserController extends CustomAbstractController
      */
     public function profile(User $user, $page, Paginator $paginator): Response
     {
-        if ($this->isGranted('IS_AUTHENTICATED_FULLY') && $user === $this->user() || $this->isGranted('ROLE_ARTICLE_APPROVER')) {
+        if ($this->isGranted('IS_AUTHENTICATED_FULLY') && $user === $this->user() || $this->isGranted('ROLE_POST_MODERATOR')) {
             $criteria = ['author' => $user];
         } else {
             $criteria = ['author' => $user, 'status' => true];

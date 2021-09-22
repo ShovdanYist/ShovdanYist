@@ -1,6 +1,6 @@
 {% extends 'interface/base.html.twig' %}
 
-{% block title %}Права пользователя{% endblock %}
+{% block title %}Права пользователя {{ user.username }}{% endblock %}
 
 {% block main %}
 
@@ -12,16 +12,23 @@
 
             {{ form_start(form) }}
 
-                {{ form_row(form.ROLE_ARTICLE_AUTHOR) }}
-                {{ form_row(form.ROLE_ARTICLE_EDITOR) }}
-                {{ form_row(form.ROLE_ARTICLE_COMMENT_REMOVER) }}
-                {{ form_row(form.ROLE_ARTICLE_APPROVER) }}
+                <div class="text-muted mb-2">{{ 'articles' | trans }}</div>
+                {{ form_row(form.ROLE_POST_AUTHOR) }}
+                {{ form_row(form.ROLE_POST_EDITOR) }}
+                {{ form_row(form.ROLE_POST_COMMENT_REMOVER) }}
+                {{ form_row(form.ROLE_POST_MODERATOR) }}
+                <div class="text-muted mb-2">{{ 'music' | trans }}</div>
+                {{ form_row(form.ROLE_SONG_AUTHOR) }}
                 {{ form_row(form.ROLE_SONG_EDITOR) }}
                 {{ form_row(form.ROLE_SONG_COMMENT_REMOVER) }}
-                {{ form_row(form.ROLE_VOCALIST_EDITOR) }}
-                {{ form_row(form.ROLE_USER_BLOCKER) }}
-                {{ form_row(form.ROLE_USER_ACTIONS) }}
+                {{ form_row(form.ROLE_SONG_MODERATOR) }}
+                <div class="text-muted mb-2">{{ 'people' | trans }}</div>
+                {{ form_row(form.ROLE_PEOPLE_EDITOR) }}
+                {{ form_row(form.ROLE_PEOPLE_MODERATOR) }}
+                <div class="text-muted mb-2">{{ 'users' | trans }}</div>
                 {{ form_row(form.ROLE_USER_ANALYST) }}
+                {{ form_row(form.ROLE_USER_ACTIONS) }}
+                {{ form_row(form.ROLE_USER_BLOCKER) }}
                 {{ form_row(form.ROLE_USER_MANAGER) }}
 
                 {% if is_granted('ROLE_OWNER') %}

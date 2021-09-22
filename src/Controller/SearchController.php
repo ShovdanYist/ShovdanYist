@@ -50,6 +50,7 @@ class SearchController extends CustomAbstractController
      * @param $page
      * @param Paginator $paginator
      * @param Searcher $searcher
+     * @param Compiler $compiler
      * @return Response
      */
     public function songs($keyword, $page, Paginator $paginator, Searcher $searcher, Compiler $compiler): Response

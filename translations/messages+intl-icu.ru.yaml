@@ -48,12 +48,13 @@ novelty: Новинки
 discussed: 'Самые обсуждаемые'
 see.all: 'Посмотреть всё'
 download.song: 'Скачать песню'
-release.date: 'Дата релиза'
+premiere.date: 'Дата премьеры'
+premiere.date.help: 'Дата когда песня была выпущена'
 featuring: Совместно
 publication.date: 'Дата публикации'
 author: Автор
-vocalists.for.letter.not.found: 'Исполнителей на букву "{ letter }" не найдено'
-vocalists.for.letter: 'Исполнители на букву "{ letter }"'
+people.for.letter.not.found: 'Исполнителей на букву "{ letter }" не найдено'
+people.for.letter: 'Исполнители на букву "{ letter }"'
 birth.date: 'Дата рождения'
 birthday: 'День рождения'
 title: Название
@@ -104,6 +105,8 @@ to.leave.a.comment: 'чтобы оставлять комментарии'
 sure.to.delete.comment: 'Вы уверены что хотите удалить этот комментарий?'
 sure.to.delete.notification: 'Вы уверены что хотите удалить это уведомление?'
 sure.to.delete.action: 'Вы уверены что хотите удалить это действие?'
+sure.to.delete.song: 'Вы уверены что хотите удалить эту песню?'
+sure.to.delete.person: 'Вы уверены что хотите удалить этого человека?'
 delete: Удалить
 password.recovery: 'Восстановление пароля'
 flash.registration.successful.completed: 'Регистрация успешно завершена'
@@ -115,9 +118,9 @@ password.resetting: 'Изменение пароля'
 you.also.can: 'Вы также можете'
 flash.password.is.wrong: 'Введен неверный пароль'
 enter.password: 'Введите пароль'
-forn.username.must.be.between: 'Имя пользователя может содержать только от 8-ми до 28-ми символов'
-forn.username.can.consist.symbols: 'Имя пользователя может состоять только из латинских букв, цифр, символов . и _'
-forn.username.already.exists: 'Уже существует аккаунт с именем пользователя'
+form.username.must.be.between: 'Имя пользователя может содержать только от 8-ми до 28-ми символов'
+form.username.can.consist.symbols: 'Имя пользователя может состоять только из латинских букв, цифр, символов . и _'
+form.username.already.exists: 'Уже существует аккаунт с именем пользователя'
 browse: Выбрать
 change: Изменить
 error404: 'Ошибка 404'
@@ -151,6 +154,11 @@ event.date: 'Дата события'
 feed: Лента
 playlist: Плейлист
 article.has.been.added: 'Статья успешно отправлена, и будет добавлена после подтверждения администрацией'
+song.sent.for.moderation: 'Песня отправлена на модерацию'
+no.songs.in.moderation: 'У вас пока нет песен в процессе'
+no.ready.songs.in.moderation: 'Пока нет песен на модерации'
+no.pending.songs.in.moderation: 'Пока нет песен в ожидании'
+no.articles.in.moderation: 'Пока нет статей на модерации'
 form.password.is.empty: 'Поле пароля не может быть пустым'
 form.password.not.same: 'Пароли не идентичны'
 form.password.min.length.message: 'Пароль должен состоять минимум из {{ limit }}-ти символов'
@@ -160,7 +168,7 @@ translation: Перевод
 featured: Избранное
 featureds: Избранные
 activated: Опубликовано
-vocalist: Артист
+vocalist: Вокалист
 first.name: Имя
 last.name: Фамилия
 biography: Биография
@@ -180,6 +188,7 @@ select.featuring: 'Выберите совместных'
 article.add: 'Добавить статью'
 section: Секция
 update: Обновить
+update.tags: 'Обновить теги'
 add.user: 'Добавить пользователя'
 role: Роль
 roles: Роли
@@ -195,6 +204,7 @@ are.you.sure.to.delete: 'Вы уверены что хотите удалить 
 statistics: Статистика
 dashboard: 'Панель управления'
 in.moderation: 'На модерации'
+pending: 'В ожидании'
 published: Опубликованные
 total: Всего
 status: Статус
@@ -221,12 +231,14 @@ additional: Дополнительно
 email.confirmation: 'Подтверждение электронной почты'
 send.for.moderation: 'Отправить на модерацию'
 send.for.moderation.help: 'Если не отметите этот пункт, то статья сохранится как черновик и вы сможете отправить её позже'
+send.song.for.moderation.help: 'Отметьте этот пункт, когда текст/песня будут готовы. Если не отметите то он сохранится как черновик и вы сможете отправить её позже'
 'Подтверждение почты на сайте ShovdanYist': 'Подтверждение почты на сайте ShovdanYist'
 tags: Теги
 add.tag: 'Добавить тег'
 tag.adding: 'Добавление тега'
 tag.editing: 'Изменение тега'
 select.tags: 'Выберите теги'
+select.author: 'Выберите автора'
 type: Тип
 categories: Категории
 select.categories: 'Выберите категории'
@@ -235,15 +247,18 @@ invited.by: 'По приглашению'
 'Composition with this alias already exists': 'Уже существует произведение с таким алиасом'
 rights: Права
 ROLE_ADMINISTRATOR: Администратор
-ROLE_ARTICLE_AUTHOR: 'Писать статьи'
-ROLE_ARTICLE_EDITOR: 'Редактировать статьи'
-ROLE_ARTICLE_COMMENT_REMOVER: 'Удалять комментарии статей'
-ROLE_ARTICLE_APPROVER: 'Утверждать статьи'
+ROLE_POST_AUTHOR: 'Писать статьи'
+ROLE_POST_EDITOR: 'Редакторовать публикации'
+ROLE_POST_COMMENT_REMOVER: 'Удалять комментарии публикаций'
+ROLE_POST_MODERATOR: 'Модератор раздела публикаций'
+ROLE_SONG_AUTHOR: 'Писать песни'
 ROLE_SONG_EDITOR: 'Редактировать песни'
 ROLE_SONG_COMMENT_REMOVER: 'Удалять комментарии песен'
-ROLE_VOCALIST_EDITOR: 'Редактировать исполнителей'
+ROLE_SONG_MODERATOR: 'Модератор раздела музыки'
+ROLE_PEOPLE_EDITOR: 'Редактировать биографию'
+ROLE_PEOPLE_MODERATOR: 'Модератор раздела людей'
 ROLE_USER_MANAGER: 'Назначение модераторов'
-ROLE_USER_BLOCKER: 'Блокировать пользователей'
+ROLE_USER_BLOCKER: 'Блокировка пользователей'
 ROLE_USER_ANALYST: 'Статистика пользователей'
 ROLE_USER_ACTIONS: 'Действия модераторов'
 actions: 'Действия'

@@ -98,8 +98,6 @@ class ModulesExtension extends AbstractExtension
      */
     public function breadcrumb(Environment $twig, $links, $entity = null, $name = null): string
     {
-//        $name = ($entity) ? strtolower((new \ReflectionClass($entity))->getShortName()) : null ;
-
         return $twig->render('interface/layouts/service/breadcrumb.html.twig', [
             'links' => $links,
             'entity' => $entity,

@@ -13,7 +13,7 @@
 
 {% block title %}{{ article.title }}{% endblock %}
 
-{% block pageclass %}{% if is_granted('ROLE_ARTICLE_APPROVER') or is_granted('ROLE_ARTICLE_EDITOR') or app.user == article.author %} moder-or-author{% endif %}{% endblock %}
+{% block pageclass %}{% if is_granted('ROLE_POST_MODERATOR') or is_granted('ROLE_POST_EDITOR') or app.user == article.author %} moder-or-author{% endif %}{% endblock %}
 
 {% block main_top %}
 
@@ -77,7 +77,7 @@
 
     </article>
 
-    {% if is_granted('ROLE_ARTICLE_AUTHOR') %}
+    {% if is_granted('ROLE_POST_AUTHOR') %}
         <a href="{{ path('article_add') }}" class="md-write-article-button">
             <i class="fas fa-feather-alt"></i>
         </a>

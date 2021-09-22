@@ -91,9 +91,9 @@ class ArticleController extends CustomAbstractController
      */
     public function show(Article $article, $page, Defender $defender): Response
     {
-        if ($article->getAuthor() === $this->getUser() || $this->isGranted('ROLE_ARTICLE_APPROVER') || $this->isGranted('ROLE_ARTICLE_EDITOR') && $article->getStatus() || $article->getStatus() === true) {
+        if ($article->getAuthor() === $this->getUser() || $this->isGranted('ROLE_POST_MODERATOR') || $this->isGranted('ROLE_POST_EDITOR') && $article->getStatus() || $article->getStatus() === true) {
 
-            if (!$defender->isGranted($this->getUser(),'ROLE_GUEST') && $this->getUser() !== $article->getAuthor() && !$this->isGranted('ROLE_ARTICLE_APPROVER')) {
+            if (!$defender->isGranted($this->getUser(),'ROLE_GUEST') && $this->getUser() !== $article->getAuthor() && !$this->isGranted('ROLE_POST_MODERATOR')) {
                 $article->setViews($article->getViews() + 1);
                 $this->getDoctrine()->getManager()->flush();
             }
@@ -116,7 +116,7 @@ class ArticleController extends CustomAbstractController
      */
     public function edit(Request $request, Article $article, Initializer $initializer): Response
     {
-        if ($this->user() === $article->getAuthor() || $this->isGranted('ROLE_ARTICLE_APPROVER') || $this->isGranted('ROLE_ARTICLE_EDITOR') && $article->getStatus()) {
+        if ($this->user() === $article->getAuthor() || $this->isGranted('ROLE_POST_MODERATOR') || $this->isGranted('ROLE_POST_EDITOR') && $article->getStatus()) {
 
             $form = $this->createForm(ArticleType::class, $article);
             $form->handleRequest($request);
@@ -174,7 +174,7 @@ class ArticleController extends CustomAbstractController
      */
     public function delete(Request $request, Article $article): Response
     {
-        if ($this->user() !== $article->getAuthor() && !$this->isGranted('ROLE_ARTICLE_APPROVER')) {
+        if ($this->user() !== $article->getAuthor() && !$this->isGranted('ROLE_POST_MODERATOR')) {
             throw $this->createNotFoundException();
         }
 

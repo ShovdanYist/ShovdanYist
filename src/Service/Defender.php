@@ -3,6 +3,7 @@
 namespace App\Service;
 
 use App\Entity\Comment;
+use App\Entity\Song;
 use App\Entity\User;
 use App\Repository\UserRepository;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
@@ -17,13 +18,16 @@ class Defender
     private $usersRepo;
     private $user;
     private $roles = [
-        'ROLE_ARTICLE_AUTHOR',
-        'ROLE_ARTICLE_EDITOR',
-        'ROLE_ARTICLE_COMMENT_REMOVER',
-        'ROLE_ARTICLE_APPROVER',
+        'ROLE_POST_AUTHOR',
+        'ROLE_POST_EDITOR',
+        'ROLE_POST_COMMENT_REMOVER',
+        'ROLE_POST_MODERATOR',
+        'ROLE_SONG_AUTHOR',
         'ROLE_SONG_EDITOR',
         'ROLE_SONG_COMMENT_REMOVER',
-        'ROLE_VOCALIST_EDITOR',
+        'ROLE_SONG_MODERATOR',
+        'ROLE_PEOPLE_EDITOR',
+        'ROLE_PEOPLE_MODERATOR',
         'ROLE_USER_MANAGER',
         'ROLE_USER_BLOCKER',
         'ROLE_USER_ANALYST',
@@ -87,7 +91,7 @@ class Defender
             $right = true;
         } elseif ($comment->getArticle()) {
 
-            if ($this->isGranted($user,'ROLE_ARTICLE_COMMENT_REMOVER')) {
+            if ($this->isGranted($user,'ROLE_POST_COMMENT_REMOVER')) {
                 $right = true;
             } elseif ($comment->getArticle()->getAuthor() === $user) {
                 $right = true;
@@ -117,6 +121,37 @@ class Defender
         return $right;
     }
 
+    public function rightToEditSongs(User $user): bool
+    {
+        if ($this->isGranted($user,'ROLE_SONG_MODERATOR') || $this->isGranted($user,'ROLE_SONG_EDITOR')) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function rightToEditSong(Song $song): bool
+    {
+        $right = false;
+
+        if ($song->getAuthor() === $this->user && $song->getStatus() === null) {
+            $right = true;
+        } elseif ($this->isGranted($this->user,'ROLE_SONG_MODERATOR') || $this->isGranted($this->user,'ROLE_SONG_EDITOR')) {
+            $right = true;
+        }
+
+        return $right;
+    }
+
+    public function hasOnlyAuthorRightsInSongs(User $user): bool
+    {
+        if ($this->isGranted($user,'ROLE_SONG_AUTHOR') && !$this->isGranted($user,'ROLE_SONG_EDITOR') && !$this->isGranted($user,'ROLE_SONG_MODERATOR')) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public function rightToSetUsername($username): array
     {
         $exist = $this->usersRepo->findOneBy(['username' => $username]);
@@ -125,11 +160,11 @@ class Defender
 
         // Constraints for username
         if (strlen($username) < 8 || strlen($username) > 28) {
-            $message = $this->translator->trans('forn.username.must.be.between');
+            $message = $this->translator->trans('form.username.must.be.between');
         } elseif (preg_match('/^[a-z1-9._]+$/i', $username) == 0) {
-            $message = $this->translator->trans('forn.username.can.consist.symbols');
+            $message = $this->translator->trans('form.username.can.consist.symbols');
         } elseif ($exist) {
-            $message = $this->translator->trans('forn.username.already.exists') . ' "' . $username . '"';
+            $message = $this->translator->trans('form.username.already.exists') . ' "' . $username . '"';
         } else {
             $status = true;
         }

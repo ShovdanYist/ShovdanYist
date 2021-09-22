@@ -3,9 +3,6 @@
 namespace App\Entity;
 
 use App\Repository\ArticleRepository;
-use App\Service\Compiler;
-use Cocur\Slugify\Slugify;
-use DateTime;
 use App\Validator\Constraints as MyAssert;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;

@@ -22,7 +22,7 @@
 
         {% if name == 'article' %}
 
-            {% if is_granted('ROLE_ARTICLE_APPROVER') or is_granted('ROLE_ARTICLE_EDITOR') or entity.author == app.user %}
+            {% if is_granted('ROLE_POST_MODERATOR') or is_granted('ROLE_POST_EDITOR') or entity.author == app.user %}
 
                 <button type="button" class="btn md-dot-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="right: 12px;top: 8px">
                     <i class="fas fa-ellipsis-h"></i>
@@ -34,7 +34,7 @@
                         <i class="fa fa-edit"></i> {{ 'edit' | trans }}
                     </a>
 
-                    {% if is_granted('ROLE_ARTICLE_APPROVER') or entity.author == app.user %}
+                    {% if is_granted('ROLE_POST_MODERATOR') or entity.author == app.user %}
                         <form method="post" action="{{ path('article_delete', {'id': entity.id}) }}" onsubmit="return confirm('{{ 'are.you.sure.to.delete' | trans }}');">
                             <input type="hidden" name="_method" value="DELETE">
                             <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ entity.id) }}">
@@ -62,13 +62,23 @@
                         <i class="fa fa-edit"></i> {{ 'edit' | trans }}
                     </a>
 
+                    {% if is_granted('ROLE_OWNER') %}
+                        <form method="post" action="{{ path('song_delete', {'id': entity.id}) }}" onsubmit="return confirm('{{ 'sure.to.delete.song' | trans }}');">
+                            <input type="hidden" name="_method" value="DELETE">
+                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ entity.id) }}">
+                            <button class="dropdown-item">
+                                <i class="fas fa-trash-alt"></i> {{ 'delete' | trans }}
+                            </button>
+                        </form>
+                    {% endif %}
+
                 </div>
 
             {% endif %}
 
-        {% elseif name == 'vocalist' %}
+        {% elseif name == 'person' %}
 
-            {% if is_granted('ROLE_VOCALIST_EDITOR') %}
+            {% if is_granted('ROLE_PEOPLE_EDITOR') %}
 
                 <button type="button" class="btn md-dot-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="right: 12px;top: 8px">
                     <i class="fas fa-ellipsis-h"></i>
@@ -76,12 +86,30 @@
 
                 <div class="dropdown-menu dropdown-menu-right">
 
-                    <a href="{{ path('vocalist_edit', {'slug':entity.slug}) }}" class="dropdown-item">
+                    <a href="{{ path('person_edit', {'slug':entity.slug}) }}" class="dropdown-item">
                         <i class="fa fa-edit"></i> {{ 'edit' | trans }}
                     </a>
 
+                    {% if is_granted('ROLE_OWNER') %}
+                        <form method="post" action="{{ path('person_delete', {'id': entity.id}) }}" onsubmit="return confirm('{{ 'sure.to.delete.person' | trans }}');">
+                            <input type="hidden" name="_method" value="DELETE">
+                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ entity.id) }}">
+                            <button class="dropdown-item">
+                                <i class="fas fa-trash-alt"></i> {{ 'delete' | trans }}
+                            </button>
+                        </form>
+                    {% endif %}
+
                 </div>
 
+            {% endif %}
+
+        {% elseif name == 'people' %}
+
+            {% if is_granted('ROLE_PEOPLE_MODERATOR') %}
+                <a class="breadcrumb-btn" href="{{ path('person_new') }}">
+                    <i class="fas fa-plus"></i>
+                </a>
             {% endif %}
 
         {% endif %}

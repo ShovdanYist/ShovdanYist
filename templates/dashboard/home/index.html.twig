@@ -38,7 +38,7 @@
 
                         <td>
                             {% if stat.moderation != 0 %}
-                                <a href="{% if stat.name == 'song' %}{{ path('dash_song_moderation' ) }}{% else %}{% endif %}">
+                                <a href="{% if stat.name == 'song' %}{{ path('song_index' ) }}{% else %}{% endif %}">
                                     <span class="badge badge-pill badge-danger">
                                         {{ stat.moderation }}
                                     </span>

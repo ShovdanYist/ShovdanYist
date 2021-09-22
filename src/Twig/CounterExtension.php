@@ -42,12 +42,12 @@ class CounterExtension extends AbstractExtension
     {
         return [
             new TwigFunction('featuring', [$this, 'vocalistFeaturing'], ['is_safe' => ['html']]),
-            new TwigFunction('featuringsCount', [$this, 'featuringsCount'], ['is_safe' => ['html']]),
             new TwigFunction('songsCount', [$this, 'songsCount'], ['is_safe' => ['html']]),
             new TwigFunction('userContainSong', [$this, 'userContainSong'], ['is_safe' => ['html']]),
             new TwigFunction('userContainArticle', [$this, 'userContainArticle'], ['is_safe' => ['html']]),
             new TwigFunction('notifyCount', [$this, 'notifyCount'], ['is_safe' => ['html']]),
             new TwigFunction('articleModerationCount', [$this, 'articleModerationCount'], ['is_safe' => ['html']]),
+            new TwigFunction('songModerationCount', [$this, 'songModerationCount'], ['is_safe' => ['html']]),
             new TwigFunction('notifyIndicator', [$this, 'notifyIndicator'], ['is_safe' => ['html']]),
             new TwigFunction('userHavePlaylistSongs', [$this, 'userHavePlaylistSongs'], ['is_safe' => ['html']]),
             new TwigFunction('songViewsCount', [$this, 'songViewsCount'], ['is_safe' => ['html']]),
@@ -74,34 +74,9 @@ class CounterExtension extends AbstractExtension
         return sprintf($template, $result);
     }
 
-    public function featuringsCount(Person $vocalist): ?string
+    public function songsCount(Person $person, $status = true): int
     {
-        $featurings = count($this->songRepo->findFeaturingCount($vocalist));
-        ($featurings == 1) ? $word = $this->translator->trans('featuring_singular') : $word = $this->translator->trans('featuring_plural');
-        $template = '<span class="badge badge-secondary">%s %s</span>';
-
-        if ($featurings == 0){
-            return null;
-        }
-
-        return sprintf(
-            $template,
-            $featurings,
-            $word
-        );
-    }
-
-    public function songsCount(Person $vocalist): string
-    {
-        $songs = $this->songRepo->count(['vocalist' => $vocalist,'status' => true]);
-        ($songs == 1) ? $word = $this->translator->trans('song') : (($songs < 5) ? $word = $this->translator->trans('two_songs') : $word = $this->translator->trans('songs_plural'));
-        $template = '<span class="badge badge-info">%s %s</span>';
-
-        return sprintf(
-            $template,
-            $songs,
-            $word
-        );
+        return $this->songRepo->count(['vocalist' => $person,'status' => $status]);
     }
 
     public function userContainSong($user, $song): ?PlaylistSong
@@ -129,13 +104,23 @@ class CounterExtension extends AbstractExtension
         return $this->articleRepo->count(['status' => null, 'moderation' => true]);
     }
 
+    public function songModerationCount(): int
+    {
+        return $this->songRepo->count(['status' => false]);
+    }
+
     public function notifyIndicator(User $user): int
     {
-        if ($this->security->isGranted('ROLE_ARTICLE_APPROVER')){
-            $result = $this->articleModerationCount() + $this->notifyCount($user);
-        } else {
-            $result = $this->notifyCount($user);
+        $result = $this->notifyCount($user);
+
+        if ($this->security->isGranted('ROLE_POST_MODERATOR')) {
+            $result += $this->articleModerationCount();
         }
+
+        if ($this->security->isGranted('ROLE_SONG_MODERATOR')) {
+            $result += $this->songModerationCount();
+        }
+
         return $result;
     }
 

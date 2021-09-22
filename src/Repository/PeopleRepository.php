@@ -19,11 +19,7 @@ class PeopleRepository extends ServiceEntityRepository
         parent::__construct($registry, Person::class);
     }
 
-    /**
-     * @param $activity
-     * @return Person[] Returns an array of Person objects
-     */
-    public function findByActivity($activity): array
+    public function findPeopleByActivity($activity): array
     {
         return $this->createQueryBuilder('p')
             ->join('p.activity', 'a')
@@ -34,7 +30,7 @@ class PeopleRepository extends ServiceEntityRepository
             ->getResult();
     }
 
-    public function findOneActiveVocalist($slug)
+    public function findActiveSongsPerson($slug)
     {
         return $this->createQueryBuilder('p')
             ->join('p.songs', 's')
@@ -46,38 +42,37 @@ class PeopleRepository extends ServiceEntityRepository
             ;
     }
 
-    /**
-     * @param $vocalist
-     * @return mixed
-     */
-    public function findAllVocalists($vocalist)
+    public function findActiveSongsPeopleByActivity($person)
     {
         return $this->createQueryBuilder('p')
             ->join('p.activity', 'a')
             ->join('p.songs', 's')
-            ->where('a.slug = :vocalist')
+            ->where('a.slug = :person')
             ->andWhere('s.status = true')
-            ->setParameter('vocalist', $vocalist)
+            ->setParameter('person', $person)
             ->getQuery()
             ->getResult()
             ;
     }
 
-    /**
-     * @param $letter
-     * @return Person[] Returns an array of Person objects
-     */
-    public function findVocalistByLetter($letter)
+    public function findPeopleByLetter($letter, $status = null)
     {
-        return $this->createQueryBuilder('p')
-            ->join('p.songs','s')
-            ->where('p.firstName like :letter')
-            ->andWhere('s.status = true')
+        $qb = $this->createQueryBuilder('p');
+
+        $qb->where('p.firstName like :letter')
             ->setParameter('letter', $letter . '%')
-            ->orderBy('p.firstName', 'ASC')
-            ->getQuery()
-            ->getResult()
             ;
+
+        if ($status) {
+            $qb->join('p.songs','s')
+               ->andWhere('s.status = :status')
+               ->setParameter('status', $status)
+            ;
+        }
+
+        $qb->orderBy('p.firstName', 'ASC');
+
+        return $qb->getQuery()->getResult();
     }
 
     /*

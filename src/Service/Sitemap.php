@@ -80,10 +80,10 @@ class Sitemap
             ];
         }
 
-        // Vocalists urls
-        foreach ($this->em->getRepository(Person::class)->findAllVocalists('vocalist') as $person) {
+        // People urls
+        foreach ($this->em->getRepository(Person::class)->findActiveSongsPeopleByActivity('vocalist') as $person) {
             $urls[] = [
-                'loc' => $this->generator->generate('song_vocalist', [
+                'loc' => $this->generator->generate('person_show', [
                     'slug' => $person->getSlug()
                 ]),
                 'lastmod' => $person->getUpdatedAt()->format('Y-m-d')

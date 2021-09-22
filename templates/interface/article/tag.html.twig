@@ -41,7 +41,7 @@
 
     {{ paginator.display(true) }}
 
-    {% if is_granted('ROLE_ARTICLE_AUTHOR') %}
+    {% if is_granted('ROLE_POST_AUTHOR') %}
         <a href="{{ path('article_add') }}" class="md-write-article-button">
             <i class="fas fa-feather-alt"></i>
         </a>

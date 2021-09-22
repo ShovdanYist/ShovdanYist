@@ -12,6 +12,7 @@ use App\Repository\SongRepository;
 use App\Repository\PeopleRepository;
 use App\Repository\PlaylistSongRepository;
 use App\Repository\UserRepository;
+use App\Service\Defender;
 use App\Service\Initializer;
 use App\Service\Paginator;
 use App\Twig\SongExtension;
@@ -80,6 +81,52 @@ class SongController extends CustomAbstractController
     }
 
     /**
+     * @Route("/song/new/{person}", name="song_new", methods={"GET","POST"})
+     * @Security("has_role('ROLE_SONG_MODERATOR')")
+     * @param Request $request
+     * @param Initializer $initializer
+     * @param null $person
+     * @return Response
+     */
+    public function songNew(Request $request, Initializer $initializer, $person = null): Response
+    {
+        $song = new Song();
+
+        if ($person) {
+            $person = $this->getDoctrine()->getRepository(Person::class)->findOneBy(['id' => $person]);
+            $song->setVocalist($person);
+        }
+
+        $form = $this->createForm(SongType::class, $song)
+                     ->add('save', SubmitType::class)
+                     ->add('saveAndNew', SubmitType::class);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $initializer->initializeSongNew($song, $form);
+
+            if ($form->get('save')->isClicked()) {
+                return $this->redirectToRoute('song_edit', [
+                    'slug' => $song->getSlug()
+                ]);
+            } elseif ($form->get('saveAndNew')->isClicked()) {
+                $person = $song->getVocalist()->getId();
+                return $this->redirectToRoute('song_new', [
+                    'person' => $person
+                ]);
+            }
+
+            return $this->redirectToRoute('moderation_music');
+        }
+
+        return $this->render('interface/song/song_new.html.twig', [
+            'song' => $song,
+            'form' => $form->createView(),
+            'person' => $person
+        ]);
+    }
+
+    /**
      * @Route("/song/{slug}/{page<\d+>?1}", name="song_show", methods={"GET", "POST"})
      * @param Song $song
      * @param $page
@@ -88,7 +135,7 @@ class SongController extends CustomAbstractController
      */
     public function song(Song $song, $page, Initializer $initializer): Response
     {
-        if ($song->getStatus() != true) {throw $this->createNotFoundException();}
+        if ($song->getStatus() != true && !$this->isGranted('ROLE_OWNER')) {throw $this->createNotFoundException();}
 
         $initializer->initializeSongShow($song);
 
@@ -99,21 +146,25 @@ class SongController extends CustomAbstractController
     }
 
     /**
-     * @Route("/song/{slug}/edit", name="song_edit", methods={"GET","POST"})
-     * @Security("has_role('ROLE_SONG_EDITOR')")
+     * @Route("/song/edit/{slug}", name="song_edit", methods={"GET","POST"})
      * @param Request $request
      * @param Song $song
      * @param Initializer $initializer
+     * @param Defender $defender
      * @return Response
      */
-    public function songEdit(Request $request, Song $song, Initializer $initializer): Response
+    public function songEdit(Request $request, Song $song, Initializer $initializer, Defender $defender): Response
     {
+        if (!$defender->rightToEditSong($song)) {
+            return $this->redirectToRoute('song_index');
+        }
+
         $form = $this->createForm(SongType::class, $song)
                      ->add('save', SubmitType::class);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $initializer->initializeSongEdit($song);
+            $initializer->initializeSongEdit($song, $form);
 
             if ($form->get('save')->isClicked()) {
                 return $this->redirectToRoute('song_edit', [
@@ -121,7 +172,15 @@ class SongController extends CustomAbstractController
                 ]);
             }
 
-            return $this->redirectToRoute('song_show',['slug' => $song->getSlug()]);
+            if ($song->getStatus() == true) {
+                return $this->redirectToRoute('song_show',['slug' => $song->getSlug()]);
+            } elseif ($song->getStatus() === false) {
+                return $this->redirectToRoute('moderation_ready');
+            } elseif ($song->getStatus() === null && $song->getAuthor() === $this->user()) {
+                return $this->redirectToRoute('moderation_music');
+            } else {
+                return $this->redirectToRoute('moderation_pending');
+            }
         }
 
         return $this->render('interface/song/song_edit.html.twig', [
@@ -129,6 +188,33 @@ class SongController extends CustomAbstractController
             'form' => $form->createView(),
             'person' => $song->getVocalist()
         ]);
+    }
+
+    /**
+     * @Route("/song/{id}", name="song_delete", methods={"DELETE"})
+     * @param Request $request
+     * @param Song $song
+     * @return Response
+     */
+    public function songDelete(Request $request, Song $song): Response
+    {
+        $status = $song->getStatus();
+        $author = $song->getAuthor()->getUsername();
+        if ($this->isGranted('ROLE_SONG_MODERATOR') && !$song->getStatus() || $this->isGranted('ROLE_OWNER')) {
+            if ($this->isCsrfTokenValid('delete'.$song->getId(), $request->request->get('_token'))) {
+                $em = $this->getDoctrine()->getManager();
+                $em->remove($song);
+                $em->flush();
+            }
+        }
+
+        if ($status === null && $author === $this->user()->getUsername()) {
+            return $this->redirectToRoute('moderation_music');
+        } elseif ($status === false) {
+            return $this->redirectToRoute('moderation_ready');
+        } else {
+            return $this->redirectToRoute('moderation_pending');
+        }
     }
 
     /**
@@ -159,74 +245,6 @@ class SongController extends CustomAbstractController
 
         return $this->json([
             'response' => $response
-        ]);
-    }
-
-    /**
-     * @Route("/vocalist/{slug}", name="song_vocalist", methods={"GET"})
-     * @param $slug
-     * @param SongRepository $songRepo
-     * @param PeopleRepository $people
-     * @return Response
-     */
-    public function vocalist($slug, SongRepository $songRepo, PeopleRepository $people): Response
-    {
-        try {
-            $vocalist = $people->findOneActiveVocalist($slug);
-        }
-        catch (NoResultException $e) {
-            throw $this->createNotFoundException();
-        }
-
-        $songs = $songRepo->findBy(['vocalist' => $vocalist, 'status' => true], ['releaseDate' => 'DESC']);
-
-        return $this->render('interface/song/vocalist.html.twig', [
-            'vocalist' => $vocalist,
-            'songs' => $songs
-        ]);
-    }
-
-    /**
-     * @Route("/vocalist/{slug}/edit", name="vocalist_edit", methods={"GET","POST"})
-     * @Security("has_role('ROLE_VOCALIST_EDITOR')")
-     * @param Request $request
-     * @param Person $person
-     * @param Initializer $initializer
-     * @return Response
-     */
-    public function vocalistEdit(Request $request, Person $person, Initializer $initializer): Response
-    {
-        $form = $this->createForm(PeopleType::class, $person);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $initializer->initializeVocalistEdit($person);
-
-            return $this->redirectToRoute('song_vocalist', ['slug' => $person->getSlug()]);
-        }
-
-        return $this->render('interface/song/vocalist_edit.html.twig', [
-            'person' => $person,
-            'form' => $form->createView(),
-        ]);
-    }
-
-    /**
-     * @Route("/vocalists/{letter}", name="song_vocalists", methods={"GET"})
-     * @param $letter
-     * @param PeopleRepository $people
-     * @param SongExtension $extension
-     * @return Response
-     */
-    public function vocalists($letter, PeopleRepository $people, SongExtension $extension): Response
-    {
-        if (!key_exists($letter,$extension->letters())) {
-            throw $this->createNotFoundException();
-        }
-
-        return $this->render('interface/song/vocalists.html.twig', [
-            'vocalists' => $people->findVocalistByLetter($extension->letters()[$letter]),
-            'letter' => $extension->letters()[$letter]
         ]);
     }
 }

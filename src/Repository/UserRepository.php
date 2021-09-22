@@ -51,10 +51,10 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
     public function findActionUsers()
     {
         $actionRoles = [
-            'ROLE_ARTICLE_COMMENT_REMOVER',
-            'ROLE_ARTICLE_EDITOR',
-            'ROLE_ARTICLE_APPROVER',
-            'ROLE_VOCALIST_EDITOR',
+            'ROLE_POST_COMMENT_REMOVER',
+            'ROLE_POST_EDITOR',
+            'ROLE_POST_MODERATOR',
+            'ROLE_PEOPLE_EDITOR',
             'ROLE_SONG_COMMENT_REMOVER',
             'ROLE_SONG_EDITOR',
             'ROLE_USER_BLOCKER'
@@ -66,6 +66,18 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
             $qb->orWhere('u.roles LIKE :role' . $key)
                ->setParameter('role' . $key, '%'. $role .'%');
         }
+
+        return $qb->getQuery()->getResult();
+    }
+
+    public function findByRole($role)
+    {
+        $qb = $this->createQueryBuilder('u');
+
+        $qb->where('u.roles LIKE :role')
+            ->orWhere('u.roles LIKE :owner')
+            ->setParameter('role', '%'. $role .'%')
+            ->setParameter('owner', '%ROLE_OWNER%');
 
         return $qb->getQuery()->getResult();
     }

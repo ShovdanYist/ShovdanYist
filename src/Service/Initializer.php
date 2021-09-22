@@ -10,57 +10,85 @@ use App\Entity\View;
 use App\Repository\UserRepository;
 use Cocur\Slugify\SlugifyInterface;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\Security\Core\Security;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class Initializer
+
 {
+    private $translator;
     private $compiler;
-    private $slugify;
+    private $security;
     private $defender;
-    private $user;
+    private $slugify;
+    private $users;
+    private $flash;
     private $em;
 
-    public function __construct(Security $security, UserRepository $users, Defender $defender, Compiler $compiler, SlugifyInterface $slugify, EntityManagerInterface $em)
+    public function __construct(TranslatorInterface $translator, Security $security, UserRepository $users, Defender $defender, Compiler $compiler, SlugifyInterface $slugify, EntityManagerInterface $em, FlashBagInterface $flash)
     {
-        $this->user = $users->findOneBy(['username' => $security->getUser()->getUsername()]);
+        $this->translator = $translator;
+        $this->security = $security;
         $this->defender = $defender;
         $this->compiler = $compiler;
         $this->slugify = $slugify;
+        $this->flash = $flash;
+        $this->users = $users;
         $this->em = $em;
     }
 
     public function initializeSongShow(Song $song)
     {
-        if (!$this->defender->isGranted($this->user, 'ROLE_GUEST')) {
-            $view = $this->em->getRepository(View::class)->findOneBy(['user' => $this->user, 'song' => $song]);
+        if (!$this->defender->isGranted($this->getUser(), 'ROLE_GUEST')) {
+            $view = $this->em->getRepository(View::class)->findOneBy(['user' => $this->getUser(), 'song' => $song]);
             if ($view) {
                 $this->updateView($view);
             } else {
                 $this->createView($song);
             }
         }
+
         $this->em->flush();
     }
 
-    public function initializeSongNew(Song $song)
+    public function initializeSongNewAndEdit(Song $song, $form)
     {
-        $song->setPublicationDate(new \DateTime('now'));
         $song->setEditingDate(new \DateTime('now'));
-        $song->setAuthor($this->user);
-        $this->updateTagsDate($song);
         $this->setSearchData($song);
         $this->setSlug($song);
+
+        if ($this->defender->isGranted($this->getUser(),'ROLE_SONG_MODERATOR') && $form->get('updateTags')->getData()) {
+            $this->updateTagsDate($song);
+        }
+    }
+
+    public function initializeSongNew(Song $song, $form = null)
+    {
+        $this->initializeSongNewAndEdit($song,$form);
+        $song->setPublicationDate(new \DateTime('now'));
+
+        if (!$song->getAuthor()) {
+            $song->setAuthor($this->getUser());
+        }
 
         $this->em->persist($song);
         $this->em->flush();
     }
 
-    public function initializeSongEdit(Song $song)
+    public function initializeSongEdit(Song $song, $form)
     {
-        $song->setEditingDate(new \DateTime('now'));
-        $this->createAction($song, 'song_edited');
-        $this->setSearchData($song);
-        $this->setSlug($song);
+        $this->initializeSongNewAndEdit($song,$form);
+
+        if ($song->getStatus()) {
+            $this->createAction($song, 'song_edited');
+        }
+
+        if ($this->defender->hasOnlyAuthorRightsInSongs($this->getUser()) && $form->get('sendForModeration')->getData()) {
+            $this->flash->add('success', $this->translator->trans('song.sent.for.moderation'));
+            $song->setPublicationDate(new \DateTime('now'));
+            $song->setStatus(0);
+        }
 
         $this->em->flush();
     }
@@ -71,7 +99,7 @@ class Initializer
         $article->setSlug($this->slugify->slugify($article->getTitle()));
         $article->setUpdatedAt(new \DateTime('now'));
         $article->setSection('articles');
-        $article->setAuthor($this->user);
+        $article->setAuthor($this->getUser());
         $article->setViews(0);
 
         $this->em->persist($article);
@@ -83,7 +111,7 @@ class Initializer
         $article->setDescription(mb_substr($this->compiler->htmlToText($article->getContent(), true),0,120));
         $article->setSlug($this->slugify->slugify($article->getTitle()));
 
-        if ($this->user === $article->getAuthor() && !$this->defender->isGranted($this->user,'ROLE_ARTICLE_APPROVER') || $this->user === $article->getAuthor() && !$this->defender->isGranted($this->user,'ROLE_ARTICLE_EDITOR')) {
+        if ($this->getUser() === $article->getAuthor() && !$this->defender->isGranted($this->getUser(),'ROLE_POST_MODERATOR') || $this->getUser() === $article->getAuthor() && !$this->defender->isGranted($this->getUser(),'ROLE_POST_EDITOR')) {
             $article->setUpdatedAt(new \DateTime('now'));
             $article->setStatus(null);
         }
@@ -98,14 +126,14 @@ class Initializer
             }
         }
 
-        if ($article->getAuthor() !== $this->user) {
+        if ($article->getAuthor() !== $this->getUser()) {
             $this->createAction($article,'article_edited');
         }
 
         $this->em->flush();
     }
 
-    public function initializeVocalistNew(Person $person)
+    public function initializePersonNew(Person $person)
     {
         $person->setUpdatedAt(new \DateTime('now'));
         $this->setSlug($person);
@@ -114,7 +142,7 @@ class Initializer
         $this->em->flush();
     }
 
-    public function initializeVocalistEdit(Person $person)
+    public function initializePersonEdit(Person $person)
     {
         $person->setUpdatedAt(new \DateTime('now'));
         $this->createAction($person,'person_edited');
@@ -127,7 +155,7 @@ class Initializer
     {
         $action = new Action();
         $action->setType($type);
-        $action->setModerator($this->user);
+        $action->setModerator($this->getUser());
 
         if ($entity instanceof Song) {
             $action->setSong($entity);
@@ -143,7 +171,7 @@ class Initializer
     private function createView(Song $song)
     {
         $view = new View();
-        $view->setUser($this->user);
+        $view->setUser($this->getUser());
         $view->setSong($song);
         $view->setViewedAt(new \DateTime('now'));
         $view->setQuantity(1);
@@ -187,6 +215,15 @@ class Initializer
             $entity->setSlug($this->slugify->slugify($vocalist . $entity->getTitle()));
         } elseif ($entity instanceof Person) {
             $entity->setSlug($this->slugify->slugify($entity->getFullName()));
+        }
+    }
+
+    private function getUser()
+    {
+        if ($this->defender->isGranted($this->security->getUser(),'ROLE_GUEST')) {
+            return $this->security->getUser();
+        } else {
+            return $this->users->findOneBy(['username' => $this->security->getUser()->getUsername()]);
         }
     }
 }

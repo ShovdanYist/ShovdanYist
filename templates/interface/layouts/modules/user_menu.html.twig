@@ -85,11 +85,31 @@
                         </a>
                     </li>
 
-{#                    {% if is_granted('ROLE_ARTICLE_APPROVER') or is_granted('ROLE_USER_ACTIONS') %}#}
+{#                    {% if is_granted('ROLE_POST_MODERATOR') or is_granted('ROLE_USER_ACTIONS') %}#}
 {#                        <span class="user-menu-separator text-muted">Модерация</span>#}
 {#                    {% endif %}#}
 
-                    {% if is_granted('ROLE_ARTICLE_APPROVER') %}
+                    {% if is_granted('ROLE_SONG_MODERATOR') or hasOnlyAuthorRightsInSongs(app.user) %}
+                        <li class="md-menu-item">
+                            <a href="{{ path('moderation_music') }}">
+                                <span>
+                                    <i class="fas fa-sliders-h"></i>
+                                </span>
+                                {{ 'music' | trans }}
+                                {% if songModerationCount() != 0 and is_granted('ROLE_SONG_MODERATOR') %}
+                                    <span class="badge badge-pill badge-danger float-right mt-1">
+                                        {% if songModerationCount() > 99 %}
+                                            99+
+                                        {% else %}
+                                            {{ songModerationCount() }}
+                                        {% endif %}
+                                    </span>
+                                {% endif %}
+                            </a>
+                        </li>
+                    {% endif %}
+
+                    {% if is_granted('ROLE_POST_MODERATOR') %}
                         <li class="md-menu-item">
                             <a href="{{ path('moderation_articles') }}">
                             <span>
@@ -98,12 +118,12 @@
                                 {{ 'articles' | trans }}
                                 {% if articleModerationCount() != 0 %}
                                     <span class="badge badge-pill badge-danger float-right mt-1">
-                                    {% if articleModerationCount() > 99 %}
-                                        99+
-                                    {% else %}
-                                        {{ articleModerationCount() }}
-                                    {% endif %}
-                                </span>
+                                        {% if articleModerationCount() > 99 %}
+                                            99+
+                                        {% else %}
+                                            {{ articleModerationCount() }}
+                                        {% endif %}
+                                    </span>
                                 {% endif %}
                             </a>
                         </li>

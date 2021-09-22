@@ -3,7 +3,6 @@
 namespace App\Entity;
 
 use Exception;
-use Cocur\Slugify\Slugify;
 use Doctrine\ORM\Mapping as ORM;
 use App\Validator\Constraints as MyAssert;
 use Doctrine\Common\Collections\Collection;

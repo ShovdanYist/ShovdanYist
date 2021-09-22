@@ -1,4 +1,4 @@
-{% extends 'dashboard/base.html.twig' %}
+{% extends 'interface/base.html.twig' %}
 
 {% block title %}{{ 'song.adding' | trans }}{% endblock %}
 
@@ -6,7 +6,7 @@
 
     <h1>{{ 'song.adding' | trans }}</h1>
 
-    {{ include('dashboard/song/_form.html.twig') }}
+    {{ include('interface/song/_form_song.html.twig') }}
 
 {% endblock %}
 

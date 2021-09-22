@@ -65,7 +65,7 @@
 
                     {% if is_role(profile.user,'ROLE_MODERATOR') %}
                         <span class="text-muted">Администрация ShovdanYist</span>
-                    {% elseif is_role(profile.user,'ROLE_ARTICLE_AUTHOR') %}
+                    {% elseif is_role(profile.user,'ROLE_POST_AUTHOR') %}
                         <span class="text-muted">Автор статей</span>
                     {% endif %}
 
@@ -98,7 +98,7 @@
                         </td>
 
                         <td>
-                            {% if app.user == user or is_granted('ROLE_ARTICLE_APPROVER') %}
+                            {% if app.user == user or is_granted('ROLE_POST_MODERATOR') %}
                                 <span style="font-size: 8px;top: -2px;position: relative;margin-right: 5px;">
                                     {{ articleStatus(article) }}
                                 </span>

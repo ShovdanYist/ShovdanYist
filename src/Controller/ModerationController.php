@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\CustomAbstracts\CustomAbstractController;
 use App\Entity\Action;
+use App\Entity\Song;
 use App\Entity\User;
 use App\Repository\EmailAddressRepository;
 use App\Service\Defender;
@@ -23,6 +24,77 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class ModerationController extends CustomAbstractController
 {
+    /**
+     * @Route("/music/{page<\d+>?1}", name="music")
+     * @param $page
+     * @param Paginator $paginator
+     * @return Response
+     */
+    public function music($page, Paginator $paginator): Response
+    {
+        $paginator
+            ->setClass(Song::class)
+            ->setType('song')
+            ->setPage($page)
+            ->setLimit(15)
+            ->setOrder(['publicationDate' => 'DESC'])
+            ->setCriteria(['author' => $this->user(), 'status' => null])
+        ;
+
+        return $this->render('interface/moderation/songs.html.twig', [
+            'songs' => $paginator->getData(),
+            'paginator' => $paginator
+        ]);
+    }
+
+    /**
+     * @Route("/ready/{page<\d+>?1}", name="ready")
+     * @Security("has_role('ROLE_SONG_MODERATOR')")
+     * @param $page
+     * @param Paginator $paginator
+     * @return Response
+     */
+    public function ready($page, Paginator $paginator): Response
+    {
+        $paginator
+            ->setClass(Song::class)
+            ->setType('song')
+            ->setPage($page)
+            ->setOrder(['publicationDate' => 'DESC'])
+        ;
+
+        $paginator->setCriteria(['status' => false]);
+
+        return $this->render('interface/moderation/songs.html.twig', [
+            'songs' => $paginator->getData(),
+            'paginator' => $paginator
+        ]);
+    }
+
+    /**
+     * @Route("/pending/{page<\d+>?1}", name="pending")
+     * @Security("has_role('ROLE_SONG_MODERATOR')")
+     * @param $page
+     * @param Paginator $paginator
+     * @return Response
+     */
+    public function pending($page, Paginator $paginator): Response
+    {
+        $paginator
+            ->setClass(Song::class)
+            ->setMethod('findPendingSongs')
+            ->setOrder(['publicationDate' => 'DESC'])
+            ->setCriteria(['user' => $this->user()])
+            ->setLimit(15)
+            ->setPage($page)
+        ;
+
+        return $this->render('interface/moderation/songs.html.twig', [
+            'songs' => $paginator->getData(),
+            'paginator' => $paginator
+        ]);
+    }
+
     /**
      * @Route("/actions/{page<\d+>?1}", name="actions")
      * @Security("has_role('ROLE_USER_ACTIONS')")

@@ -92,11 +92,32 @@
                 </span>
             </a>
 
-            {% if is_granted('ROLE_ARTICLE_APPROVER') or is_granted('ROLE_USER_ACTIONS') or is_granted('ROLE_OWNER') %}
+            {% if is_granted('ROLE_POST_MODERATOR') or is_granted('ROLE_USER_ACTIONS') or is_granted('ROLE_OWNER') or is_granted('ROLE_SONG_MODERATOR') or hasOnlyAuthorRightsInSongs(app.user) %}
                 <hr>
             {% endif %}
 
-            {% if is_granted('ROLE_ARTICLE_APPROVER') %}
+            {% if is_granted('ROLE_SONG_MODERATOR') or hasOnlyAuthorRightsInSongs(app.user) %}
+                <a class="sidenav-link" href="{{ path('moderation_music') }}">
+                    <span class="dashbar-nav-icon">
+                        <i class="fas fa-sliders-h"></i>
+                    </span>
+                    <span class="dashbar-nav-name">
+                        {{ 'music' | trans }}
+                    </span>
+
+                    {% if songModerationCount() != 0 and is_granted('ROLE_SONG_MODERATOR') %}
+                        <span class="badge badge-pill badge-danger mt-1 dashbar-nav-badge">
+                        {% if songModerationCount() > 99 %}
+                            99+
+                        {% else %}
+                            {{ songModerationCount() }}
+                        {% endif %}
+                    </span>
+                    {% endif %}
+                </a>
+            {% endif %}
+
+            {% if is_granted('ROLE_POST_MODERATOR') %}
                 <a class="sidenav-link" href="{{ path('moderation_articles') }}">
                     <span class="dashbar-nav-icon">
                         <i class="fas fa-tasks"></i>

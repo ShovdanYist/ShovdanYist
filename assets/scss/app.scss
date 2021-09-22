@@ -104,6 +104,23 @@ textarea, input, .form-control {
   padding: 0.375rem 0.75rem 0.400rem;
 }
 
+.breadcrumb-btn {
+  position: absolute;
+  right: 12px;
+  background: #3a5571;
+  height: 22px;
+  width: 22px;
+  text-align: center;
+  line-height: 22px;
+  border-radius: 3px;
+  font-size: 12px;
+  color: white !important;
+}
+
+.breadcrumb-btn:hover {
+  background: #426384;
+}
+
 ul {
   margin: 0;
   padding: 0;
@@ -841,24 +858,24 @@ td {
   border-radius: 100%;
 }
 
-// Vocalist card
+// Person card
 
-.md-cards-group .md-vocalist-card:last-child {
+.md-cards-group .md-person-card:last-child {
   margin: unset !important;
   border: unset !important;
   padding: unset !important;
 }
-.md-vocalist-card {
+.md-person-card {
   width: 100%;
   padding-bottom: 25px;
   margin-bottom: 25px;
   border-bottom: 1px solid rgba(0,0,0,0.1);
 }
-.md-one-vocalist {
+.md-one-person {
   border: unset;
   padding: unset !important;
 }
-.md-vocalist-image {
+.md-person-image {
   width: 125px;
   min-width: 125px;
   float: left;
@@ -868,25 +885,15 @@ td {
   border-radius: 3px;
   margin-right: 20px;
 }
-.md-vocalist-block {
+.md-person-block {
   display: table;
   width: 100%;
   border-radius: 8px 8px 0 0;
-}
-.md-vocalist-body {
-  float: left;
 }
 .md-small-span {
   width: 100%;
   display: table;
   padding-bottom: 20px;
-}
-.md-vocalist-cards .md-vocalist-block {
-  display: flex;
-  flex-direction: row-reverse;
-}
-.md-vocalist-cards .md-vocalist-body {
-  width: 100%;
 }
 
 // Songs menu
@@ -938,6 +945,14 @@ td {
 }
 .mejs__time-loaded {
   background: #cfdae5;
+}
+.player-box {
+  position: relative;
+}
+.player-box .md-dot-btn {
+  right: 10px;
+  top: 4px;
+  z-index: 10;
 }
 
 // Song sidebar
@@ -1788,7 +1803,7 @@ select {
 .tag-search-spoiler button {
   height: 41px;
 }
-.md-search-input .chosen-choices .default {
+.chosen-choices .default {
   min-width: 160px;
 }
 

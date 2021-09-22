@@ -1,4 +1,4 @@
-{% extends 'dashboard/base.html.twig' %}
+{% extends 'interface/base.html.twig' %}
 
 {% block title %}{{ 'person.adding' | trans }}{% endblock %}
 
@@ -6,6 +6,6 @@
 
     <h1>{{ 'person.adding' | trans }}</h1>
 
-    {{ include('dashboard/people/_form.html.twig') }}
+    {{ include('interface/person/_form.html.twig') }}
 
 {% endblock %}

@@ -26,9 +26,15 @@
     {{ button_label | default('add') | trans }}
 </button>
 
-<a class="btn btn-link float-right" href="{{ path('dash_people_index') }}">
-    {{ 'cancel' | trans }}
-</a>
+{% if person.id %}
+    <a class="btn btn-link float-right" href="{{ path('person_show', {'slug':person.slug}) }}">
+        {{ 'cancel' | trans }}
+    </a>
+{% else %}
+    <a class="btn btn-link float-right" href="{{ path('people_by_letter', {'letter':'a'}) }}">
+        {{ 'cancel' | trans }}
+    </a>
+{% endif %}
 
 {{ form_end(form) }}
 

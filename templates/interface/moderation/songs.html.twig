@@ -1,0 +1,108 @@
+{% extends 'interface/base.html.twig' %}
+
+{% block title %}{{ 'music' | trans }}{% endblock %}
+
+{% block pageclass %}{% if is_granted('ROLE_SONG_MODERATOR') %}two-sidebars{% endif %}{% endblock %}
+
+{% block main_top %}
+    {{ breadcrumb({
+        '' : 'moderation' | trans,
+        'active' : ('music' | trans),
+    }) }}
+{% endblock %}
+
+{% block body %}
+<div>
+
+    {% for key,song in songs %}
+        <div class="player-box">
+
+            {% if is_granted('ROLE_SONG_MODERATOR') %}
+                {{ player(song) }}
+            {% else %}
+                {{ player(song,false,false,'song') }}
+            {% endif %}
+
+            <button type="button" class="btn md-dot-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="fas fa-ellipsis-h"></i>
+            </button>
+
+            <div class="dropdown-menu dropdown-menu-right">
+                <a href="{{ path('song_edit', {'slug':song.slug}) }}" class="dropdown-item">
+                    <i class="fa fa-edit"></i> {{ 'edit' | trans }}
+                </a>
+
+                {% if is_granted('ROLE_SONG_MODERATOR') %}
+                    <form method="post" action="{{ path('song_delete', {'id': song.id}) }}" onsubmit="return confirm('{{ 'sure.to.delete.song' | trans }}');">
+                        <input type="hidden" name="_method" value="DELETE">
+                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ song.id) }}">
+                        <button class="dropdown-item">
+                            <i class="fas fa-trash-alt"></i> {{ 'delete' | trans }}
+                        </button>
+                    </form>
+                {% endif %}
+            </div>
+
+        </div>
+    {% else %}
+        {% if app.request.attributes.get('_route') == 'moderation_music' %}
+            {{ 'no.songs.in.moderation' | trans }}
+        {% elseif app.request.attributes.get('_route') == 'moderation_ready' %}
+            {{ 'no.ready.songs.in.moderation' | trans }}
+        {% elseif app.request.attributes.get('_route') == 'moderation_pending' %}
+            {{ 'no.pending.songs.in.moderation' | trans }}
+        {% endif %}
+    {% endfor %}
+
+</div>
+
+    {{ paginator.display() }}
+
+{% endblock %}
+
+{% block sidebar_b %}
+
+    {% if is_granted('ROLE_SONG_MODERATOR') %}
+
+        <div class="sidebar-b">
+            <div class="md-box sticky-top" style="padding: 12px">
+                <div class="md-menu">
+                    <ul>
+                        <li>
+                            <a style="width: 100%; margin-bottom: 14px" href="{{ path('song_new') }}" class="btn btn-primary">
+                                {{ 'add.song' | trans }}
+                            </a>
+                        </li>
+                        <li class="md-menu-item md-lined-menu {% if app.request.attributes.get('_route') == 'moderation_music' %}active{% endif %}">
+                            <a style="padding-left: 8px" href="{{ path('moderation_music') }}">
+                                {{ 'music' | trans }}
+                            </a>
+                        </li>
+                        <li class="md-menu-item md-lined-menu {% if app.request.attributes.get('_route') == 'moderation_ready' %}active{% endif %}">
+                            <a style="padding-left: 8px" href="{{ path('moderation_ready') }}">
+                                {{ 'in.moderation' | trans }}
+                                {% if songModerationCount() != 0 %}
+                                    <span class="badge badge-pill badge-danger float-right mt-1">
+                                        {% if songModerationCount() > 99 %}
+                                            99+
+                                        {% else %}
+                                            {{ songModerationCount() }}
+                                        {% endif %}
+                                    </span>
+                                {% endif %}
+                            </a>
+                        </li>
+                        <li class="md-menu-item md-lined-menu {% if app.request.attributes.get('_route') == 'moderation_pending' %}active{% endif %}">
+                            <a style="padding-left: 8px" href="{{ path('moderation_pending') }}">
+                                {{ 'pending' | trans }}
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+
+    {% endif %}
+
+{% endblock %}

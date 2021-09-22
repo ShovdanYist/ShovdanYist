@@ -2,10 +2,7 @@
 
 namespace App\Entity;
 
-use App\Service\Compiler;
-use DateTime;
 use Exception;
-use Cocur\Slugify\Slugify;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use App\Repository\SongRepository;
@@ -294,7 +291,7 @@ class Song
         return $this->status;
     }
 
-    public function setStatus(bool $status): self
+    public function setStatus(?bool $status): self
     {
         $this->status = $status;
 

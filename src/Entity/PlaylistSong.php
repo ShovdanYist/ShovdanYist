@@ -5,7 +5,6 @@ namespace App\Entity;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\PlaylistSongRepository;
-use App\Entity\User;
 
 /**
  * @ORM\Entity(repositoryClass=PlaylistSongRepository::class)

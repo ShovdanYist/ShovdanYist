@@ -1,6 +1,6 @@
 {% extends 'interface/base.html.twig' %}
 
-{% block title %}{{ 'home.page' | trans }}{% endblock %}
+{% block title %}{{ 'articles' | trans }}{% endblock %}
 
 {% block main_top %}
     {{ breadcrumb({
@@ -14,7 +14,7 @@
     {% for article in articles %}
         {{ articleView(article,'moderation') }}
     {% else%}
-        <div class="md-box md-content-padding">Пока нет статей на модерации</div>
+        <div class="md-box md-content-padding">{{ 'no.articles.in.moderation' | trans }}</div>
     {% endfor %}
 
     {{ paginator.display() }}
