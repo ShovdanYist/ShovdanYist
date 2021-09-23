@@ -1,15 +1,12 @@
-{% extends 'dashboard/base.html.twig' %}
+{% extends 'interface/base.html.twig' %}
 
 {% block title %}Dashboard{% endblock %}
 
 {% block main_top %}
-
-    <div class="container dash-crud-header">
-
-        <h1>{{ 'dashboard' | trans }}</h1>
-
-    </div>
-
+    {{ breadcrumb({
+        (path('app_home')) : ('home.page' | trans),
+        'active' : 'moderation' | trans
+    }) }}
 {% endblock %}
 
 {% block body %}
@@ -31,14 +28,14 @@
 
             <tbody>
 
-                {% for stat in article %}
+                {% for stat in stats %}
 
                     <tr>
                         <th scope="row">{{ stat.name | trans }}</th>
 
                         <td>
                             {% if stat.moderation != 0 %}
-                                <a href="{% if stat.name == 'song' %}{{ path('song_index' ) }}{% else %}{% endif %}">
+                                <a href="{% if stat.name == 'songs' %}{{ path('moderation_ready' ) }}{% elseif stat.name == 'posts' %}{{ path('moderation_articles' ) }}{% endif %}">
                                     <span class="badge badge-pill badge-danger">
                                         {{ stat.moderation }}
                                     </span>

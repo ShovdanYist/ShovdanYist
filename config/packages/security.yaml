@@ -90,6 +90,4 @@ security:
 
          - { path: ^/deleteAccount, roles: ROLE_USER }
          - { path: ^/article/add, roles: ROLE_USER }
-         - { path: ^/settings, roles: ROLE_USER }
          - { path: ^/reset, roles: ROLE_USER }
-         - { path: ^/edit, roles: ROLE_USER }

@@ -94,12 +94,13 @@
 
             {% if is_granted('ROLE_POST_MODERATOR') or is_granted('ROLE_USER_ACTIONS') or is_granted('ROLE_OWNER') or is_granted('ROLE_SONG_MODERATOR') or hasOnlyAuthorRightsInSongs(app.user) %}
                 <hr>
+                <span class="navbar-menu-separator">Модерация</span>
             {% endif %}
 
             {% if is_granted('ROLE_SONG_MODERATOR') or hasOnlyAuthorRightsInSongs(app.user) %}
                 <a class="sidenav-link" href="{{ path('moderation_music') }}">
                     <span class="dashbar-nav-icon">
-                        <i class="fas fa-sliders-h"></i>
+                        <i class="fas fa-play-circle"></i>
                     </span>
                     <span class="dashbar-nav-name">
                         {{ 'music' | trans }}
@@ -120,7 +121,7 @@
             {% if is_granted('ROLE_POST_MODERATOR') %}
                 <a class="sidenav-link" href="{{ path('moderation_articles') }}">
                     <span class="dashbar-nav-icon">
-                        <i class="fas fa-tasks"></i>
+                        <i class="fas fa-id-card"></i>
                     </span>
                     <span class="dashbar-nav-name">
                         {{ 'articles' | trans }}
@@ -149,18 +150,43 @@
                 </a>
             {% endif %}
 
+            <hr>
+
             {% if is_granted('ROLE_OWNER') %}
-                <a class="sidenav-link" href="{{ path('dash_index') }}">
+                <span class="navbar-menu-separator">Управление</span>
+
+                <a class="sidenav-link" href="{{ path('users_index') }}">
                     <span class="dashbar-nav-icon">
-                        <i class="fas fa-tools"></i>
+                        <i class="fas fa-users"></i>
                     </span>
-                    <span class="dashbar-nav-name">
-                        {{ 'manager' | trans }}
+
+                        <span class="dashbar-nav-name">
+                        {{ 'users' | trans }}
                     </span>
                 </a>
-            {% endif %}
 
-            <hr>
+                <a class="sidenav-link" href="{{ path('activities_index') }}">
+                    <span class="dashbar-nav-icon">
+                        <i class="fas fa-briefcase"></i>
+                    </span>
+
+                    <span class="dashbar-nav-name">
+                        {{ 'activities' | trans }}
+                    </span>
+                </a>
+
+                <a class="sidenav-link" href="{{ path('tags_index') }}">
+                    <span class="dashbar-nav-icon">
+                        <i class="fas fa-tag"></i>
+                    </span>
+
+                    <span class="dashbar-nav-name">
+                        {{ 'tags' | trans }}
+                    </span>
+                </a>
+
+                <hr>
+            {% endif %}
 
             <a class="sidenav-link" href="{{ path('app_logout') }}" onclick="return confirm('{{ 'are.you.sure.to.log.out' | trans }}')">
                 <span class="dashbar-nav-icon">

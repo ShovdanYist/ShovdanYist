@@ -1174,11 +1174,15 @@ td {
 // Custom menu
 
 .md-menu .user-menu-separator {
-  border-bottom: 1px solid #cad6d7;
   width: 100%;
   display: block;
-  margin: 4px 0 8px 0;
+  margin-top: 4px;
   padding-bottom: 4px;
+}
+.navbar-menu-separator {
+  color: #555;
+  display: block;
+  margin-bottom: 8px;
 }
 .md-menu-item span {
   width: 25px;
@@ -1197,6 +1201,9 @@ td {
 .md-menu-item a:hover, .md-menu-item a.active {
   background-color: rgba(0,0,0,0.05);
   color: inherit;
+}
+.songs-moderation-mobile-menu {
+  display: none;
 }
 
 // Lined menu

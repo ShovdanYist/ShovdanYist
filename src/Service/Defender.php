@@ -152,7 +152,7 @@ class Defender
         }
     }
 
-    public function rightToSetUsername($username): array
+    public function rightToSetUsername($username, $user): array
     {
         $exist = $this->usersRepo->findOneBy(['username' => $username]);
         $message = null;
@@ -170,7 +170,7 @@ class Defender
         }
 
         // Skip constraints if this user already have this username
-        if ($exist === $this->user) {
+        if ($exist === $user) {
             $status = true;
         }
 

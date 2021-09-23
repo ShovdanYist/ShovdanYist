@@ -4,10 +4,12 @@ namespace App\Controller;
 
 use App\CustomAbstracts\CustomAbstractController;
 use App\Entity\EmailAddress;
+use App\Entity\Profile;
 use App\Entity\Song;
 use App\Entity\Notification;
 use App\Entity\Article;
 use App\Entity\User;
+use App\Form\NewUserType;
 use App\Form\ResetPasswordType;
 use App\Form\ProfileType;
 use App\Repository\NotificationRepository;
@@ -15,6 +17,8 @@ use App\Repository\UserRepository;
 use App\Service\Defender;
 use App\Service\Mailer;
 use App\Service\Paginator;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormError;
@@ -26,15 +30,77 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Csrf\TokenGenerator\TokenGeneratorInterface;
 use Vich\UploaderBundle\Handler\UploadHandler;
 
-/**
- * Class UserController
- * @package App\Controller
- * @Route(name="user_")
- */
 class UserController extends CustomAbstractController
 {
     /**
-     * @Route("/user/{username}/{page<\d+>?1}", name="profile")
+     * @Route("/users/{page<\d+>?1}", name="users_index", methods={"GET"})
+     * @Security("has_role('ROLE_OWNER')")
+     * @param $page
+     * @param Paginator $paginator
+     * @return Response
+     */
+    public function index($page, Paginator $paginator): Response
+    {
+        $paginator
+            ->setClass(User::class)
+            ->setLimit(20)
+            ->setOrder(['registeredAt' => 'DESC'])
+            ->setPage($page)
+        ;
+
+        return $this->render('interface/user/index.html.twig', [
+            'users' => $paginator->getData(),
+            'paginator' => $paginator
+        ]);
+    }
+
+    /**
+     * @Route("/new", name="user_new", methods={"GET","POST"})
+     * @Security("has_role('ROLE_OWNER')")
+     * @param Request $request
+     * @param UserPasswordEncoderInterface $passwordEncoder
+     * @return Response
+     */
+    public function new(Request $request, UserPasswordEncoderInterface $passwordEncoder): Response
+    {
+        $user = new User();
+        $form = $this->createForm(NewUserType::class, $user);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $user->setPassword(
+                $passwordEncoder->encodePassword(
+                    $user,
+                    $form->get('password')->getData()
+                )
+            );
+
+            $profile = new Profile();
+            $user->setProfile($profile);
+            $user->setRoles(["ROLE_USER"]);
+            $user->getProfile()->setGender(0);
+            $user->getProfile()->setAvatar('avatar.jpg');
+            $user->setRegisteredAt(new \DateTime('now'));
+
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($user);
+            $em->flush();
+
+            $this->addFlash('success', 'Регистрация успешно завершена');
+
+            return $this->redirectToRoute('users_index');
+        }
+
+        return $this->render('interface/user/new.html.twig', [
+            'user' => $user,
+            'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/user/{username}/{page<\d+>?1}", name="user_profile")
      * @param User $user
      * @param $page
      * @param Paginator $paginator
@@ -67,16 +133,31 @@ class UserController extends CustomAbstractController
     }
 
     /**
-     * @Route("/edit", name="edit")
+     * @Route("/user/{username}/edit", name="user_edit")
+     * @Security("has_role('ROLE_USER')")
      * @param Request $request
-     * @param UserRepository $repo
+     * @param User $user
      * @param UploadHandler $handler
      * @return Response
      */
-    public function edit(Request $request, UserRepository $repo, UploadHandler $handler): Response
+    public function edit(Request $request, User $user, UploadHandler $handler): Response
     {
-        $user = $repo->findOneBy(['username' => $this->getUser()->getUsername()]);
+        if ($user !== $this->user() && !$this->isGranted('ROLE_OWNER')) {
+            return $this->redirectToRoute('user_edit', [
+                'username' => $this->user()->getUsername()
+            ]);
+        }
+
         $form = $this->createForm(ProfileType::class, $user->getProfile());
+
+        if ($this->isGranted('ROLE_OWNER')) {
+            $form->add('verified', CheckboxType::class, [
+                'label' => 'verified',
+                'required' => false,
+                'label_attr' => ['class' => 'switch-custom']
+            ]);
+        }
+
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -103,17 +184,23 @@ class UserController extends CustomAbstractController
     }
 
     /**
-     * @Route("/settings", name="settings", methods={"GET","POST"})
+     * @Route("/user/{username}/settings", name="user_settings", methods={"GET","POST"})
+     * @Security("has_role('ROLE_USER')")
      * @param Request $request
-     * @param UserRepository $repo
+     * @param User $user
      * @param Mailer $mailer
      * @param TokenGeneratorInterface $tokenGenerator
      * @param Defender $defender
      * @return Response
      */
-    public function settings(Request $request, UserRepository $repo, Mailer $mailer, TokenGeneratorInterface $tokenGenerator, Defender $defender): Response
+    public function settings(Request $request, User $user, Mailer $mailer, TokenGeneratorInterface $tokenGenerator, Defender $defender): Response
     {
-        $user = $repo->findOneBy(['username' => $this->getUser()->getUsername()]);
+        if ($user !== $this->user() && !$this->isGranted('ROLE_OWNER')) {
+            return $this->redirectToRoute('user_settings', [
+                'username' => $this->user()->getUsername()
+            ]);
+        }
+
         $form = $this->createFormBuilder($user)
             ->add('username', TextType::class, [
                 'label' => $this->trans('form.username'),
@@ -141,14 +228,14 @@ class UserController extends CustomAbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $verification = $defender->rightToSetUsername($form->get('username')->getData());
+            $verification = $defender->rightToSetUsername($form->get('username')->getData(), $user);
 
             if ($verification['status'] == true) {
                 if ($user->getEmail() != $user->getConfirmedEmail()) {
                     $user->setToken($tokenGenerator->generateToken());
                     $mailer->setTo($form->get('email')->getData())
                         ->setSubject($this->trans('Подтверждение почты на сайте ShovdanYist'))
-                        ->setTemplate('layouts/mailer/email_confirmation.html.twig')
+                        ->setTemplate('interface/layouts/mailer/email_confirmation.html.twig')
                         ->setVariables(['user' => $user])
                         ->notify();
 
@@ -176,7 +263,7 @@ class UserController extends CustomAbstractController
     }
 
     /**
-     * @Route("/reset", name="reset", methods={"GET", "POST"})
+     * @Route("/reset", name="user_reset", methods={"GET", "POST"})
      * @param Request $request
      * @param UserRepository $repo
      * @param UserPasswordEncoderInterface $encoder
@@ -210,7 +297,7 @@ class UserController extends CustomAbstractController
     }
 
     /**
-     * @Route("/notifications/{page<\d+>?1}", name="notifications")
+     * @Route("/notifications/{page<\d+>?1}", name="user_notifications")
      * @param $page
      * @param NotificationRepository $notifyRepo
      * @param UserRepository $userRepo
@@ -250,7 +337,7 @@ class UserController extends CustomAbstractController
     }
 
     /**
-     * @Route("/notification/{id}/delete", name="notification_delete", methods={"DELETE"})
+     * @Route("/notification/{id}/delete", name="user_notification_delete", methods={"DELETE"})
      * @param Request $request
      * @param Notification $notification
      * @return Response
@@ -271,7 +358,7 @@ class UserController extends CustomAbstractController
     }
 
     /**
-     * @Route("/playlist/{page<\d+>?1}", name="playlist")
+     * @Route("/playlist/{page<\d+>?1}", name="user_playlist")
      * @param $page
      * @param Paginator $paginator
      * @return Response
@@ -296,7 +383,7 @@ class UserController extends CustomAbstractController
     }
 
     /**
-     * @Route("/bookmarks/{page<\d+>?1}", name="bookmarks")
+     * @Route("/bookmarks/{page<\d+>?1}", name="user_bookmarks")
      * @param $page
      * @param Paginator $paginator
      * @return Response
@@ -322,7 +409,7 @@ class UserController extends CustomAbstractController
     }
 
     /**
-     * @Route("/deleteAccount", name="delete_account", methods={"GET","POST"})
+     * @Route("/deleteAccount", name="user_delete_account", methods={"GET","POST"})
      * @return Response
      */
     public function deleteAccount(): Response
@@ -331,7 +418,7 @@ class UserController extends CustomAbstractController
     }
 
     /**
-     * @Route("/userDelete/{id}", name="delete", methods={"DELETE"})
+     * @Route("/userDelete/{id}", name="user_delete", methods={"DELETE"})
      * @param Request $request
      * @param UserPasswordEncoderInterface $encoder
      * @param User $user
@@ -339,7 +426,16 @@ class UserController extends CustomAbstractController
      */
     public function delete(Request $request, UserPasswordEncoderInterface $encoder, User $user): Response
     {
-        if ($user === $this->user() && $this->isCsrfTokenValid('delete'.$user->getId(), $request->request->get('_token')) && $encoder->isPasswordValid($user, $request->request->get('password'))) {
+        $username = $user->getUsername();
+
+        if ($this->isCsrfTokenValid('delete'.$user->getId(), $request->request->get('_token')) && $this->isGranted('ROLE_OWNER')) {
+            $em = $this->getDoctrine()->getManager();
+            $em->remove($user);
+            $em->flush();
+            $this->addFlash('success', $this->trans('flash.user.deleted',['username' => $username]));
+
+            return $this->redirectToRoute('app_home');
+        } elseif ($user === $this->user() && $this->isCsrfTokenValid('delete'.$user->getId(), $request->request->get('_token')) && $encoder->isPasswordValid($user, $request->request->get('password'))) {
             $session = new Session();
             $session->invalidate();
 

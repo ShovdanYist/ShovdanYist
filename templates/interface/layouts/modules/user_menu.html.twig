@@ -85,15 +85,15 @@
                         </a>
                     </li>
 
-{#                    {% if is_granted('ROLE_POST_MODERATOR') or is_granted('ROLE_USER_ACTIONS') %}#}
-{#                        <span class="user-menu-separator text-muted">Модерация</span>#}
-{#                    {% endif %}#}
+                    {% if is_granted('ROLE_POST_MODERATOR') or is_granted('ROLE_USER_ACTIONS') or is_granted('ROLE_SONG_MODERATOR') or hasOnlyAuthorRightsInSongs(app.user) %}
+                        <span class="user-menu-separator text-muted">Модерация</span>
+                    {% endif %}
 
                     {% if is_granted('ROLE_SONG_MODERATOR') or hasOnlyAuthorRightsInSongs(app.user) %}
                         <li class="md-menu-item">
                             <a href="{{ path('moderation_music') }}">
                                 <span>
-                                    <i class="fas fa-sliders-h"></i>
+                                    <i class="fas fa-play-circle"></i>
                                 </span>
                                 {{ 'music' | trans }}
                                 {% if songModerationCount() != 0 and is_granted('ROLE_SONG_MODERATOR') %}
@@ -113,7 +113,7 @@
                         <li class="md-menu-item">
                             <a href="{{ path('moderation_articles') }}">
                             <span>
-                                <i class="fas fa-tasks"></i>
+                                <i class="fas fa-id-card"></i>
                             </span>
                                 {{ 'articles' | trans }}
                                 {% if articleModerationCount() != 0 %}
@@ -136,6 +136,37 @@
                                     <i class="fas fa-hand-point-up"></i>
                                 </span>
                                 {{ 'actions' | trans }}
+                            </a>
+                        </li>
+                    {% endif %}
+
+                    {% if is_granted('ROLE_OWNER') %}
+                        <span class="user-menu-separator text-muted">Управление</span>
+
+                        <li class="md-menu-item">
+                            <a href="{{ path('users_index') }}">
+                            <span>
+                                <i class="fas fa-users"></i>
+                            </span>
+                                {{ 'users' | trans }}
+                            </a>
+                        </li>
+
+                        <li class="md-menu-item">
+                            <a href="{{ path('activities_index') }}">
+                            <span>
+                                <i class="fas fa-briefcase"></i>
+                            </span>
+                                {{ 'activities' | trans }}
+                            </a>
+                        </li>
+
+                        <li class="md-menu-item">
+                            <a href="{{ path('tags_index') }}">
+                            <span>
+                                <i class="fas fa-tag"></i>
+                            </span>
+                                {{ 'tags' | trans }}
                             </a>
                         </li>
                     {% endif %}

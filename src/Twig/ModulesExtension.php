@@ -34,7 +34,6 @@ class ModulesExtension extends AbstractExtension
         return [
             new TwigFunction('tags', [$this, 'tags'], ['is_safe' => ['html']]),
             new TwigFunction('comments', [$this, 'comments'], ['is_safe' => ['html'], 'needs_environment' => true]),
-            new TwigFunction('crudActions', [$this, 'crudActions'], ['is_safe' => ['html'], 'needs_environment' => true]),
             new TwigFunction('breadcrumb', [$this, 'breadcrumb'], ['is_safe' => ['html'], 'needs_environment' => true]),
         ];
     }
@@ -72,22 +71,6 @@ class ModulesExtension extends AbstractExtension
             'paginator' => $this->paginator,
             'entity' => $entity,
             'name' => $name
-        ]);
-    }
-
-    /**
-     * @throws RuntimeError
-     * @throws SyntaxError
-     * @throws LoaderError
-     */
-    public function crudActions(Environment $twig, $entity, $name): string
-    {
-        ($entity instanceof User) ? $instance = true : $instance = false;
-
-        return $twig->render('dashboard/layouts/actions.html.twig', [
-            'entity' => $entity,
-            'name' => $name,
-            'user' => $instance
         ]);
     }
 

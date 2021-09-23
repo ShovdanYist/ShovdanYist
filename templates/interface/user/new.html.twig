@@ -1,4 +1,12 @@
-{{ form_start(form) }}
+{% extends 'interface/base.html.twig' %}
+
+{% block title %}{{ 'user.adding' | trans }}{% endblock %}
+
+{% block body %}
+
+    <h1>{{ 'user.adding' | trans }}</h1>
+
+    {{ form_start(form) }}
 
     <div class="row label-icons-form">
 
@@ -6,7 +14,6 @@
 
             {{ form_row(form.username) }}
             {{ form_row(form.email) }}
-            {{ form_row(form.roles) }}
             {{ form_row(form.password) }}
 
             <div class="mt-3">
@@ -15,7 +22,7 @@
                     {{ button_label | default('add') | trans }}
                 </button>
 
-                <a class="btn btn-link float-right" href="{{ path('dash_user_index') }}">
+                <a class="btn btn-link float-right" href="{{ path('users_index') }}">
                     {{ 'cancel' | trans }}
                 </a>
 
@@ -25,4 +32,10 @@
 
     </div>
 
-{{ form_end(form) }}
+    {{ form_end(form) }}
+
+{% endblock %}
+
+{% block scripts %}
+    {{ chosen() }}
+{% endblock %}

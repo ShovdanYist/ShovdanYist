@@ -20,14 +20,14 @@
                         {{ form_row(form.email) }}
 
                         <button class="btn btn-primary">
-                            {% if app.user.email != app.user.confirmedEmail %}
+                            {% if user.email != user.confirmedEmail %}
                                 Отправить снова
                             {% else %}
                                 {{ 'save' | trans }}
                             {% endif %}
                         </button>
 
-                        <a class="btn btn-link float-right" href="{{ path('user_profile', {'username': app.user.username}) }}">
+                        <a class="btn btn-link float-right" href="{{ path('user_profile', {'username': user.username}) }}">
                             {{ 'cancel' | trans }}
                         </a>
 
@@ -45,8 +45,10 @@
 
 {% block main_bottom %}
 
-    <div class="mx-5 my-3 text-center">
-        {{ 'you.also.can' | trans }} <a href="{{ path('user_reset') }}">{{ 'reset.password' | trans | lower }}</a> {{ 'or' | trans }} <a href="{{ path('user_delete_account') }}">{{ 'delete.account' | trans | lower }}.</a>
-    </div>
+    {% if user == app.user %}
+        <div class="mx-5 my-3 text-center">
+            {{ 'you.also.can' | trans }} <a href="{{ path('user_reset') }}">{{ 'reset.password' | trans | lower }}</a> {{ 'or' | trans }} <a href="{{ path('user_delete_account') }}">{{ 'delete.account' | trans | lower }}.</a>
+        </div>
+    {% endif %}
 
 {% endblock %}

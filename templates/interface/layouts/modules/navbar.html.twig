@@ -102,17 +102,6 @@
                                 {{ 'write.article' | trans }}
                             </a>
 
-                            {% if is_granted('ROLE_OWNER') %}
-
-                                <span class="dropdown-divider"></span>
-
-                                <a class="dropdown-item" href="{{ path('dash_index') }}">
-                                    <i class="fas fa-tools"></i>
-                                    {{ 'manager' | trans }}
-                                </a>
-
-                            {% endif %}
-
                             <span class="dropdown-divider"></span>
 
                             <a class="dropdown-item" href="{{ path('app_logout') }}" onclick="return confirm('{{ 'are.you.sure.to.log.out' | trans }}')">

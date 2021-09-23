@@ -15,13 +15,6 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class NewUserType extends AbstractType
 {
-    private $translator;
-
-    public function __construct(TranslatorInterface $translator)
-    {
-        $this->translator = $translator;
-    }
-
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -40,17 +33,6 @@ class NewUserType extends AbstractType
                     new NotBlank([
                         'message' => 'Пароль не введен',
                     ])
-                ]
-            ])
-            ->add('roles', ChoiceType::class, [
-                'label' => 'roles',
-                'choices' => [
-                    'Пользователь' => 'ROLE_USER',
-                    'Владелец' => 'ROLE_OWNER',
-                ],
-                'multiple' => true,
-                'attr' => [
-                    'data-placeholder' => $this->translator->trans('select.roles')
                 ]
             ])
         ;

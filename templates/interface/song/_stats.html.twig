@@ -16,7 +16,7 @@
         {% endif %}
 
         {% if song.releaseDate %}
-            <strong>{{ 'release.date' | trans }}</strong>
+            <strong>{{ 'premiere.date' | trans }}</strong>
             <span class="badge badge-primary">
                 {{ song.releaseDate ? song.releaseDate | format_datetime('medium', 'none', '', 'UTC') }}
             </span>
@@ -43,25 +43,10 @@
 <div class="md-article-info">
 
     <div>
-
-        {# TODO: date configuration in song #}
-
         {% if song.publicationDate %}
             <strong>{{ 'publication.date' | trans }}</strong><br>
             {{ song.publicationDate ? song.publicationDate | format_datetime('medium', 'none', '', 'UTC') }}
-{#            {{ song.publicationDate ? song.publicationDate | format_datetime('medium', 'none', '', 'UTC') }}#}
-{#            {{ song.publicationDate ? song.publicationDate | format_datetime(pattern="hh 'oclock' a, zzzz") }}#}
         {% endif %}
-
-{#        {% if song.author %}#}
-{#            <br><strong>{{ 'author' | trans }}</strong><br>#}
-{#            <a href="{{ path('user_profile', {'username': song.author.username }) }}">#}
-{#                <span class="avatar back-picture bp-24 mr-1" style="background-image: url('{{ vich_uploader_asset(song.author.profile) }}')">#}
-{#                </span>#}
-{#                <strong>{{ song.author.username }}</strong>#}
-{#            </a>#}
-{#        {% endif %}#}
-
     </div>
 
 </div>

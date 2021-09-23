@@ -1,34 +1,34 @@
 <?php
 
-namespace App\Controller\Dashboard;
+namespace App\Controller;
 
 use App\Entity\Tag;
 use App\Form\TagType;
 use App\Repository\TagRepository;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route("/dashboard", name="dash_tag_")
- */
-class DashTagController extends AbstractController
+class TagController extends AbstractController
 {
     /**
-     * @Route("/tags", name="index", methods={"GET"})
+     * @Route("/tags", name="tags_index", methods={"GET"})
+     * @Security("has_role('ROLE_OWNER')")
      * @param TagRepository $tagRepository
      * @return Response
      */
     public function index(TagRepository $tagRepository): Response
     {
-        return $this->render('dashboard/tag/index.html.twig', [
+        return $this->render('interface/tag/index.html.twig', [
             'tags' => $tagRepository->findBy([],['title' => 'ASC']),
         ]);
     }
 
     /**
-     * @Route("/tag/new", name="new", methods={"GET","POST"})
+     * @Route("/tag/new", name="tag_new", methods={"GET","POST"})
+     * @Security("has_role('ROLE_OWNER')")
      * @param Request $request
      * @return Response
      */
@@ -44,17 +44,18 @@ class DashTagController extends AbstractController
             $em->persist($tag);
             $em->flush();
 
-            return $this->redirectToRoute('dash_tag_index');
+            return $this->redirectToRoute('tags_index');
         }
 
-        return $this->render('dashboard/tag/new.html.twig', [
+        return $this->render('interface/tag/new.html.twig', [
             'tag' => $tag,
             'form' => $form->createView(),
         ]);
     }
 
     /**
-     * @Route("/tag/{id}/edit", name="edit", methods={"GET","POST"})
+     * @Route("/tag/{id}/edit", name="tag_edit", methods={"GET","POST"})
+     * @Security("has_role('ROLE_OWNER')")
      * @param Request $request
      * @param Tag $tag
      * @return Response
@@ -67,17 +68,18 @@ class DashTagController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('dash_tag_index');
+            return $this->redirectToRoute('tags_index');
         }
 
-        return $this->render('dashboard/tag/edit.html.twig', [
+        return $this->render('interface/tag/edit.html.twig', [
             'tag' => $tag,
             'form' => $form->createView(),
         ]);
     }
 
     /**
-     * @Route("/tag/{id}", name="delete", methods={"DELETE"})
+     * @Route("/tag/{id}", name="tag_delete", methods={"DELETE"})
+     * @Security("has_role('ROLE_OWNER')")
      * @param Request $request
      * @param Tag $tag
      * @return Response
@@ -90,6 +92,6 @@ class DashTagController extends AbstractController
             $em->flush();
         }
 
-        return $this->redirectToRoute('dash_tag_index');
+        return $this->redirectToRoute('tags_index');
     }
 }

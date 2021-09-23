@@ -1,34 +1,34 @@
 <?php
 
-namespace App\Controller\Dashboard;
+namespace App\Controller;
 
 use App\Entity\Activity;
 use App\Form\ActivityType;
 use App\Repository\ActivityRepository;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route("/dashboard/activity", name="dash_activity_")
- */
-class DashActivityController extends AbstractController
+class ActivityController extends AbstractController
 {
     /**
-     * @Route("/", name="index", methods={"GET"})
+     * @Route("/activities", name="activities_index", methods={"GET"})
+     * @Security("has_role('ROLE_OWNER')")
      * @param ActivityRepository $activityRepository
      * @return Response
      */
     public function index(ActivityRepository $activityRepository): Response
     {
-        return $this->render('dashboard/activity/index.html.twig', [
+        return $this->render('interface/activity/index.html.twig', [
             'activities' => $activityRepository->findAll(),
         ]);
     }
 
     /**
-     * @Route("/new", name="new", methods={"GET","POST"})
+     * @Route("/activity/new", name="activity_new", methods={"GET","POST"})
+     * @Security("has_role('ROLE_OWNER')")
      * @param Request $request
      * @return Response
      */
@@ -43,17 +43,18 @@ class DashActivityController extends AbstractController
             $entityManager->persist($activity);
             $entityManager->flush();
 
-            return $this->redirectToRoute('dash_activity_index');
+            return $this->redirectToRoute('activities_index');
         }
 
-        return $this->render('dashboard/activity/new.html.twig', [
+        return $this->render('interface/activity/new.html.twig', [
             'activity' => $activity,
             'form' => $form->createView(),
         ]);
     }
 
     /**
-     * @Route("/{id}/edit", name="edit", methods={"GET","POST"})
+     * @Route("/activity/{id}/edit", name="activity_edit", methods={"GET","POST"})
+     * @Security("has_role('ROLE_OWNER')")
      * @param Request $request
      * @param Activity $activity
      * @return Response
@@ -66,17 +67,18 @@ class DashActivityController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('dash_activity_index');
+            return $this->redirectToRoute('activities_index');
         }
 
-        return $this->render('dashboard/activity/edit.html.twig', [
+        return $this->render('interface/activity/edit.html.twig', [
             'activity' => $activity,
             'form' => $form->createView(),
         ]);
     }
 
     /**
-     * @Route("/{id}", name="delete", methods={"DELETE"})
+     * @Route("/activity/{id}", name="activity_delete", methods={"DELETE"})
+     * @Security("has_role('ROLE_OWNER')")
      * @param Request $request
      * @param Activity $activity
      * @return Response
@@ -89,6 +91,6 @@ class DashActivityController extends AbstractController
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('dash_activity_index');
+        return $this->redirectToRoute('activities_index');
     }
 }

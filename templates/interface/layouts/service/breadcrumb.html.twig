@@ -112,6 +112,12 @@
                 </a>
             {% endif %}
 
+        {% elseif name == 'song_add' %}
+
+            <a class="breadcrumb-btn" href="{{ path('song_new') }}">
+                <i class="fas fa-plus"></i>
+            </a>
+
         {% endif %}
 
     {% endif %}

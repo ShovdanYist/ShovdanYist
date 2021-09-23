@@ -1,0 +1,61 @@
+{% extends 'interface/base.html.twig' %}
+
+{% block title %}{{ 'activities' | trans }}{% endblock %}
+
+{% block main_top %}
+    {{ breadcrumb({
+        (is_granted('ROLE_OWNER')) ? path('moderation_index') : '' : 'moderation' | trans,
+        'active' : ('activities' | trans),
+    }) }}
+{% endblock %}
+
+{% block body %}
+
+    <a class="btn btn-primary float-right" href="{{ path('activity_new') }}">
+        {{ 'add.activity' | trans }}
+    </a>
+
+    <table class="table table-striped table-middle-aligned">
+        <thead>
+            <tr>
+                <th>{{ 'title' | trans }}</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for activity in activities %}
+            <tr>
+                <td>
+                    {{ activity.title }}
+
+                    <button type="button" class="btn md-dot-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fas fa-ellipsis-h"></i>
+                    </button>
+
+                    <div class="dropdown-menu">
+
+                        <a href="{{ path('activity_edit', {'id': activity.id}) }}" class="dropdown-item">
+                            <i class="fa fa-edit" aria-hidden="true"></i> {{ 'edit' | trans }}
+                        </a>
+
+                        <form method="post" action="{{ path('activity_delete', {'id': activity.id}) }}" onsubmit="return confirm('{{ 'are.you.sure.to.delete' | trans }}');">
+                            <input type="hidden" name="_method" value="DELETE">
+                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ activity.id) }}">
+                            <button class="dropdown-item">
+                                <i class="fas fa-trash-alt"></i> {{ 'delete' | trans }}
+                            </button>
+                        </form>
+
+                    </div>
+
+                    <br><span class="small text-muted">{{ activity.slug }}</span>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">{{ 'no.records.found' | trans }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}

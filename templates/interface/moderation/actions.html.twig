@@ -5,19 +5,19 @@
 {% block main_top %}
     {% if type is defined %}
         {{ breadcrumb({
-            '' : 'moderation' | trans,
+            (is_granted('ROLE_OWNER')) ? path('moderation_index') : '' : 'moderation' | trans,
             (path('moderation_actions')) : 'actions' | trans,
             'active' : ('type_' ~ type) | trans,
         }) }}
     {% elseif user is defined %}
         {{ breadcrumb({
-            '' : 'moderation' | trans,
+            (is_granted('ROLE_OWNER')) ? path('moderation_index') : '' : 'moderation' | trans,
             (path('moderation_actions')) : 'actions' | trans,
             'active' : user.username
         }) }}
     {% else %}
         {{ breadcrumb({
-            '' : 'moderation' | trans,
+            (is_granted('ROLE_OWNER')) ? path('moderation_index') : '' : 'moderation' | trans,
             'active' : ('actions' | trans),
         }) }}
     {% endif %}

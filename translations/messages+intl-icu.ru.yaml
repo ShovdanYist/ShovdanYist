@@ -40,6 +40,7 @@ featuring_plural: Совместных
 music: Музыка
 song: Песня
 songs: Песни
+my.songs: 'Мои песни'
 two_songs: Песни
 songs_plural: Песен
 trends: Тренды
@@ -117,6 +118,7 @@ form.reply.for_2: ' '
 password.resetting: 'Изменение пароля'
 you.also.can: 'Вы также можете'
 flash.password.is.wrong: 'Введен неверный пароль'
+flash.user.deleted: 'Пользователь { username } удалён'
 enter.password: 'Введите пароль'
 form.username.must.be.between: 'Имя пользователя может содержать только от 8-ми до 28-ми символов'
 form.username.can.consist.symbols: 'Имя пользователя может состоять только из латинских букв, цифр, символов . и _'
@@ -147,6 +149,7 @@ become.an.author: 'Стать автором'
 article.editing: 'Изменение статьи'
 article: Статья
 articles: Статьи
+posts: Публикации
 articles.from.category: 'Статьи из категории'
 sections: Секции
 select.sections: 'Выберите секции'

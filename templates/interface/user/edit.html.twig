@@ -12,7 +12,7 @@
 
             {% if not user.status == 0 or user.status is null %}
 
-                {% if app.user.status %}
+                {% if user.status %}
 
                     {{ form_start(form) }}
 
@@ -20,11 +20,16 @@
 
                             <div class="col-12 md-edit-form-block">
 
-                                <div id="output-content" style="background-image: url('{% if app.user.profile.avatar != 'avatar.jpg' %}{% if '.gif' in user.profile.avatar %}{{ vich_uploader_asset(app.user.profile) }}{% else %}{{ vich_uploader_asset(app.user.profile) | imagine_filter('avatar') }}{% endif %}{% else %}{{ asset('assets/images/avatar.jpg') }}{% endif %}')">
+                                <div id="output-content" style="background-image: url('{% if user.profile.avatar != 'avatar.jpg' %}{% if '.gif' in user.profile.avatar %}{{ vich_uploader_asset(user.profile) }}{% else %}{{ vich_uploader_asset(user.profile) | imagine_filter('avatar') }}{% endif %}{% else %}{{ asset('assets/images/avatar.jpg') }}{% endif %}')">
                                 </div>
                                 {{ form_row(form.avatarFile) }}
                                 {{ form_row(form.avatarDelete) }}
                                 {{ form_row(form.fullname) }}
+
+                                {% if is_granted('ROLE_OWNER') %}
+                                    {{ form_row(form.verified) }}
+                                {% endif %}
+
                                 {{ form_row(form.about) }}
                                 {{ form_row(form.url) }}
 
@@ -56,7 +61,7 @@
                 {% else %}
 
                     <div class="md-comment-guest md-alert md-alert-warning">
-                        <i class="fas fa-exclamation-triangle"></i> <a href="{{ path('user_settings') }}">Подтвердите свою электронную почту</a>, чтобы оформить свою страницу добавляя аватар, имя и прочее
+                        <i class="fas fa-exclamation-triangle"></i> <a href="{{ path('user_settings', {'username' : user.username}) }}">Подтвердите свою электронную почту</a>, чтобы оформить свою страницу добавляя аватар, имя и прочее
                     </div>
 
                 {% endif %}

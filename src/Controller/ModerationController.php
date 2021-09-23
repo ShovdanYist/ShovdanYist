@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\CustomAbstracts\CustomAbstractController;
 use App\Entity\Action;
+use App\Entity\Person;
 use App\Entity\Song;
 use App\Entity\User;
 use App\Repository\EmailAddressRepository;
@@ -24,6 +25,50 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class ModerationController extends CustomAbstractController
 {
+    /**
+     * @Route("/", name="index")
+     * @Security("has_role('ROLE_OWNER')")
+     * @return Response
+     */
+    public function index(): Response
+    {
+        $articles = $this->getDoctrine()->getRepository(Article::class);
+        $songs = $this->getDoctrine()->getRepository(Song::class);
+        $users = $this->getDoctrine()->getRepository(User::class);
+        $people = $this->getDoctrine()->getRepository(Person::class);
+
+        $stats = [
+            'users' => [
+                'name' => 'users',
+                'moderation' => null,
+                'published' => null,
+                'total' => $users->count([])
+            ],
+            'posts' => [
+                'name' => 'posts',
+                'moderation' => $articles->count(['status' => false]),
+                'published' => $articles->count(['status' => true]),
+                'total' => $articles->count([])
+            ],
+            'songs' => [
+                'name' => 'songs',
+                'moderation' => $songs->count(['status' => false]),
+                'published' => $songs->count(['status' => true]),
+                'total' => $songs->count([])
+            ],
+            'people' => [
+                'name' => 'people',
+                'moderation' => null,
+                'published' => null,
+                'total' => $people->count([])
+            ]
+        ];
+
+        return $this->render('interface/moderation/index.html.twig', [
+            'stats' => $stats
+        ]);
+    }
+
     /**
      * @Route("/music/{page<\d+>?1}", name="music")
      * @param $page
@@ -60,10 +105,10 @@ class ModerationController extends CustomAbstractController
             ->setClass(Song::class)
             ->setType('song')
             ->setPage($page)
+            ->setLimit(15)
             ->setOrder(['publicationDate' => 'DESC'])
+            ->setCriteria(['status' => false])
         ;
-
-        $paginator->setCriteria(['status' => false]);
 
         return $this->render('interface/moderation/songs.html.twig', [
             'songs' => $paginator->getData(),
@@ -82,11 +127,12 @@ class ModerationController extends CustomAbstractController
     {
         $paginator
             ->setClass(Song::class)
-            ->setMethod('findPendingSongs')
-            ->setOrder(['publicationDate' => 'DESC'])
-            ->setCriteria(['user' => $this->user()])
-            ->setLimit(15)
+            ->setType('song')
             ->setPage($page)
+            ->setLimit(15)
+            ->setOrder(['publicationDate' => 'DESC'])
+            ->setMethod('findPendingSongs')
+            ->setCriteria(['user' => $this->user()])
         ;
 
         return $this->render('interface/moderation/songs.html.twig', [

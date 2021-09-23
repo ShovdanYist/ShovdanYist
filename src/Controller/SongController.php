@@ -7,16 +7,11 @@ use App\Entity\Song;
 use App\Entity\Person;
 use App\Entity\PlaylistSong;
 use App\Form\SongType;
-use App\Form\PeopleType;
-use App\Repository\SongRepository;
-use App\Repository\PeopleRepository;
 use App\Repository\PlaylistSongRepository;
 use App\Repository\UserRepository;
 use App\Service\Defender;
 use App\Service\Initializer;
 use App\Service\Paginator;
-use App\Twig\SongExtension;
-use Doctrine\ORM\NoResultException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
@@ -88,7 +83,7 @@ class SongController extends CustomAbstractController
      * @param null $person
      * @return Response
      */
-    public function songNew(Request $request, Initializer $initializer, $person = null): Response
+    public function new(Request $request, Initializer $initializer, $person = null): Response
     {
         $song = new Song();
 
@@ -119,7 +114,7 @@ class SongController extends CustomAbstractController
             return $this->redirectToRoute('moderation_music');
         }
 
-        return $this->render('interface/song/song_new.html.twig', [
+        return $this->render('interface/song/new.html.twig', [
             'song' => $song,
             'form' => $form->createView(),
             'person' => $person
@@ -133,7 +128,7 @@ class SongController extends CustomAbstractController
      * @param Initializer $initializer
      * @return Response
      */
-    public function song(Song $song, $page, Initializer $initializer): Response
+    public function show(Song $song, $page, Initializer $initializer): Response
     {
         if ($song->getStatus() != true && !$this->isGranted('ROLE_OWNER')) {throw $this->createNotFoundException();}
 
@@ -153,7 +148,7 @@ class SongController extends CustomAbstractController
      * @param Defender $defender
      * @return Response
      */
-    public function songEdit(Request $request, Song $song, Initializer $initializer, Defender $defender): Response
+    public function edit(Request $request, Song $song, Initializer $initializer, Defender $defender): Response
     {
         if (!$defender->rightToEditSong($song)) {
             return $this->redirectToRoute('song_index');
@@ -183,7 +178,7 @@ class SongController extends CustomAbstractController
             }
         }
 
-        return $this->render('interface/song/song_edit.html.twig', [
+        return $this->render('interface/song/edit.html.twig', [
             'song' => $song,
             'form' => $form->createView(),
             'person' => $song->getVocalist()
@@ -196,7 +191,7 @@ class SongController extends CustomAbstractController
      * @param Song $song
      * @return Response
      */
-    public function songDelete(Request $request, Song $song): Response
+    public function delete(Request $request, Song $song): Response
     {
         $status = $song->getStatus();
         $author = $song->getAuthor()->getUsername();

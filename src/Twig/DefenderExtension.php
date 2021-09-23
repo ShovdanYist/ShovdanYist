@@ -9,7 +9,7 @@ use App\Service\Defender;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
-class ToolsExtension extends AbstractExtension
+class DefenderExtension extends AbstractExtension
 {
     private $defender;
 
