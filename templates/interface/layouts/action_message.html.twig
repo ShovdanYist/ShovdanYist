@@ -1,0 +1,75 @@
+{% if action.type == 'comment_deleted' %}
+
+    {% if action.moderator.profile.gender %}удалила{% else %}удалил{% endif %} комментарий "{{ action.content }}"
+    от пользователя <a href="{{ path('user_profile',{'username': action.user.username }) }}">{{ action.user.username }}</a>
+
+{% elseif action.type == 'user_blocked' or action.type == 'user_unblocked' %}
+
+    {% if action.type == 'user_blocked' %}
+
+        {% if action.moderator.profile.gender %}
+            {{ 'blocked.user.female' | trans }}
+        {% else %}
+            {{ 'blocked.user.male' | trans }}
+        {% endif %}
+
+    {% else %}
+
+        {% if action.moderator.profile.gender %}
+            {{ 'unblocked.user.female' | trans }}
+        {% else %}
+            {{ 'unblocked.user.male' | trans }}
+        {% endif %}
+
+    {% endif %}
+
+    <a href="{{ path('user_profile',{'username': action.user.username }) }}">{{ action.user.username }}</a>
+
+{% elseif action.type == 'post_approved' or action.type == 'post_rejected' %}
+
+    {% if action.type == 'post_approved' %}
+
+        {% if action.moderator.profile.gender %}
+            {{ ('approved.' ~ action.post.type ~ '.female') | trans }}
+        {% else %}
+            {{ ('approved.' ~ action.post.type ~ '.male') | trans }}
+        {% endif %}
+
+        {% if action.post.type == 'article' %}
+            <a href="{{ path('post_show',{'slug':action.post.slug}) }}">{{ action.post.title }}</a>
+        {% endif %}
+
+    {% elseif action.type == 'post_rejected' %}
+
+        {% if action.moderator.profile.gender %}
+            {{ ('rejected.' ~ action.post.type ~ '.female') | trans }}
+        {% else %}
+            {{ ('rejected.' ~ action.post.type ~ '.male') | trans }}
+        {% endif %}
+
+        {% if action.post.type == 'article' %}
+            <a href="{{ path('post_show',{'slug':action.post.slug}) }}">{{ action.post.title }}</a>
+        {% endif %}
+
+        {{ 'for.next.reason' | trans }}: <span style="font-weight: 500">{{ action.content }}</span>
+
+    {% endif %}
+
+{% elseif action.type == 'song_edited' %}
+
+    {% if action.moderator.profile.gender %}отредактировала{% else %}отредактировал{% endif %} песню <a href="{{ path( 'song_show', {'slug': action.song.slug}) }}">{{ action.song.fullTitle }}</a>
+
+{% elseif action.type == 'post_edited' %}
+
+    {% if action.moderator.profile.gender %}отредактировала{% else %}отредактировал{% endif %} статью <a href="{{ path( 'post_show', {'slug': action.post.slug}) }}">{{ action.post.title }}</a>
+
+{% elseif action.type == 'rights_changed' %}
+
+    {% if action.moderator.profile.gender %}поменяла{% else %}поменял{% endif %} права пользователя <a href="{{ path('user_profile',{'username': action.user.username }) }}">{{ action.user.username }}</a>:
+    {{ action.content | raw }}
+
+{% elseif action.type == 'person_edited' %}
+
+    {% if action.moderator.profile.gender %}отредактировала{% else %}отредактировал{% endif %} биографию <a href="{{ path( 'person_show', {'slug': action.person.slug}) }}">{{ action.person.fullName }}</a>
+
+{% endif %}

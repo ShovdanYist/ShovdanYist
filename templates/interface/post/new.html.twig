@@ -1,0 +1,26 @@
+{% extends 'interface/base.html.twig' %}
+
+{% block title %}
+
+    {% if not is_granted('ROLE_POST_AUTHOR') %}
+        {{ 'become.an.author' | trans }}
+    {% else %}
+        {{ 'add.post' | trans }}
+    {% endif %}
+
+{% endblock %}
+
+{% block body %}
+
+    <h1>{{ 'add.post' | trans }}</h1>
+
+    {{ include('interface/post/_form.html.twig') }}
+
+{% endblock %}
+
+{% block scripts %}
+    {{ ckeditor('user') }}
+    {{ chosen() }}
+    {{ chosen(10, '.chosen-music') }}
+    {{ chosen(3,'.chosen-date select') }}
+{% endblock %}

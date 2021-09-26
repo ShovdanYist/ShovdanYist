@@ -36,9 +36,9 @@ class Action
     private $moderator;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Article::class, inversedBy="actions")
+     * @ORM\ManyToOne(targetEntity=Post::class, inversedBy="actions")
      */
-    private $article;
+    private $post;
 
     /**
      * @ORM\ManyToOne(targetEntity=Song::class, inversedBy="actions")
@@ -109,14 +109,14 @@ class Action
         return $this;
     }
 
-    public function getArticle(): ?Article
+    public function getPost(): ?Post
     {
-        return $this->article;
+        return $this->post;
     }
 
-    public function setArticle(?Article $article): self
+    public function setPost(?Post $post): self
     {
-        $this->article = $article;
+        $this->post = $post;
 
         return $this;
     }

@@ -3,9 +3,12 @@
 namespace App\Service;
 
 use App\Entity\Comment;
+use App\Entity\Post;
 use App\Entity\Song;
 use App\Entity\User;
+use App\Repository\PostRepository;
 use App\Repository\UserRepository;
+use Cocur\Slugify\Slugify;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Core\Authorization\AccessDecisionManagerInterface;
 use Symfony\Component\Security\Core\Security;
@@ -17,6 +20,7 @@ class Defender
     private $translator;
     private $usersRepo;
     private $user;
+    private $postRepo;
     private $roles = [
         'ROLE_POST_AUTHOR',
         'ROLE_POST_EDITOR',
@@ -34,11 +38,12 @@ class Defender
         'ROLE_USER_ACTIONS'
     ];
 
-    public function __construct(Security $security, UserRepository $usersRepo, AccessDecisionManagerInterface $accessDecisionManager, TranslatorInterface $translator) {
+    public function __construct(Security $security, UserRepository $usersRepo, PostRepository $postRepo, AccessDecisionManagerInterface $accessDecisionManager, TranslatorInterface $translator) {
         $this->user = $security->getUser();
         $this->accessDecisionManager = $accessDecisionManager;
         $this->translator = $translator;
         $this->usersRepo = $usersRepo;
+        $this->postRepo = $postRepo;
     }
 
     public function getRoles(): array
@@ -89,11 +94,11 @@ class Defender
 
         if ($comment->getAuthor() === $user) {
             $right = true;
-        } elseif ($comment->getArticle()) {
+        } elseif ($comment->getPost()) {
 
             if ($this->isGranted($user,'ROLE_POST_COMMENT_REMOVER')) {
                 $right = true;
-            } elseif ($comment->getArticle()->getAuthor() === $user) {
+            } elseif ($comment->getPost()->getAuthor() === $user) {
                 $right = true;
             }
 
@@ -175,5 +180,29 @@ class Defender
         }
 
         return ['status' => $status, 'message' => $message];
+    }
+
+    public function rightToSetTitleSlug(Post $post): bool
+    {
+        $slugify  = new Slugify();
+        $right  = true;
+        $exist = null;
+
+        $bySlug = $this->postRepo->findOneBy(['slug' => $slugify->slugify($post->getTitle())]);
+        $byTitle = $this->postRepo->findOneBy(['title' => $post->getTitle()]);
+
+        if ($bySlug) {
+            $right = false;
+            $exist = $bySlug;
+        } elseif ($byTitle) {
+            $right = false;
+            $exist = $byTitle;
+        }
+
+        if ($exist === $post) {
+            $right = true;
+        }
+
+        return $right;
     }
 }

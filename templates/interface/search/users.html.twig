@@ -30,7 +30,7 @@
                     <a href="{{ path('search_index',{'keyword':keyword}) }}">Всё</a>
                     <a href="{{ path('search_songs',{'keyword':keyword}) }}">Музыка</a>
                     <a href="{{ path('search_users',{'keyword':keyword}) }}" class="active">Пользователи</a>
-                    <a href="{{ path('search_articles',{'keyword':keyword}) }}">Статьи</a>
+                    <a href="{{ path('search_posts',{'keyword':keyword}) }}">Статьи</a>
                 </div>
 
             </div>
@@ -117,8 +117,8 @@
                         </a>
                     </li>
                     <li class="md-menu-item md-lined-menu">
-                        <a style="padding-left: 8px" href="{{ path('search_articles',{'keyword':keyword}) }}">
-                            {{ 'articles' | trans }}
+                        <a style="padding-left: 8px" href="{{ path('search_posts',{'keyword':keyword}) }}">
+                            {{ 'posts' | trans }}
                         </a>
                     </li>
 

@@ -51,9 +51,9 @@ class Comment
     private $notifications;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Article::class, inversedBy="comments")
+     * @ORM\ManyToOne(targetEntity=Post::class, inversedBy="comments")
      */
-    private $article;
+    private $post;
 
     /**
      * @ORM\Column(type="boolean")
@@ -171,14 +171,14 @@ class Comment
         return $this;
     }
 
-    public function getArticle(): ?Article
+    public function getPost(): ?Post
     {
-        return $this->article;
+        return $this->post;
     }
 
-    public function setArticle(?Article $article): self
+    public function setPost(?Post $post): self
     {
-        $this->article = $article;
+        $this->post = $post;
 
         return $this;
     }

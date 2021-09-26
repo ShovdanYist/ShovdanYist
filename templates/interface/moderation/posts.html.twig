@@ -1,20 +1,20 @@
 {% extends 'interface/base.html.twig' %}
 
-{% block title %}{{ 'articles' | trans }}{% endblock %}
+{% block title %}{{ 'posts' | trans }}{% endblock %}
 
 {% block main_top %}
     {{ breadcrumb({
         (is_granted('ROLE_OWNER')) ? path('moderation_index') : '' : 'moderation' | trans,
-        'active' : ('articles' | trans),
+        'active' : ('posts' | trans),
     }) }}
 {% endblock %}
 
 {% block main %}
 
-    {% for article in articles %}
-        {{ articleView(article,'moderation') }}
+    {% for post in posts %}
+        {{ postPreview(post, 'moderation') }}
     {% else%}
-        <div class="md-box md-content-padding">{{ 'no.articles.in.moderation' | trans }}</div>
+        <div class="md-box md-content-padding">{{ 'no.posts.in.moderation' | trans }}</div>
     {% endfor %}
 
     {{ paginator.display() }}

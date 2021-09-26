@@ -81,16 +81,14 @@ $color-types: (
   }
 }
 
-// Article colors
+// Post colors
 
-$article-colors: (
+$post-colors: (
         'questions' : $gray-700,
-        'articles' : $gray-700
+        'posts' : $gray-700
 );
 
-//#168484
-
-@each $section, $color in $article-colors {
+@each $section, $color in $post-colors {
   .#{$section}-bg {
     background-color: $color;
   }

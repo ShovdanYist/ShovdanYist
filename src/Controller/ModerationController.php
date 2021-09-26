@@ -10,7 +10,7 @@ use App\Entity\User;
 use App\Repository\EmailAddressRepository;
 use App\Service\Defender;
 use DateTime;
-use App\Entity\Article;
+use App\Entity\Post;
 use App\Entity\Notification;
 use App\Form\NotificationType;
 use App\Service\Paginator;
@@ -32,7 +32,7 @@ class ModerationController extends CustomAbstractController
      */
     public function index(): Response
     {
-        $articles = $this->getDoctrine()->getRepository(Article::class);
+        $posts = $this->getDoctrine()->getRepository(Post::class);
         $songs = $this->getDoctrine()->getRepository(Song::class);
         $users = $this->getDoctrine()->getRepository(User::class);
         $people = $this->getDoctrine()->getRepository(Person::class);
@@ -46,9 +46,9 @@ class ModerationController extends CustomAbstractController
             ],
             'posts' => [
                 'name' => 'posts',
-                'moderation' => $articles->count(['status' => false]),
-                'published' => $articles->count(['status' => true]),
-                'total' => $articles->count([])
+                'moderation' => $posts->count(['status' => false]),
+                'published' => $posts->count(['status' => true]),
+                'total' => $posts->count([])
             ],
             'songs' => [
                 'name' => 'songs',
@@ -239,93 +239,76 @@ class ModerationController extends CustomAbstractController
     }
 
     /**
-     * @Route("/articles/{page<\d+>?1}", name="articles", methods={"GET"})
+     * @Route("/posts/{page<\d+>?1}", name="posts", methods={"GET"})
      * @param $page
      * @param Paginator $paginator
      * @return Response
      */
-    public function articles($page, Paginator $paginator): Response
+    public function posts($page, Paginator $paginator): Response
     {
         $paginator
-            ->setClass(Article::class)
+            ->setClass(Post::class)
             ->setOrder(['updatedAt' => 'ASC'])
             ->setCriteria(['status' => null, 'moderation' => true])
             ->setLimit(10)
             ->setPage($page)
         ;
 
-        return $this->render('interface/moderation/articles.html.twig', [
-            'articles' => $paginator->getData(),
+        return $this->render('interface/moderation/posts.html.twig', [
+            'posts' => $paginator->getData(),
             'paginator' => $paginator
         ]);
     }
 
     /**
-     * @Route("/publish/article/{id}", name="publish_article")
-     * @param Article $article
-     * @return Response
-     */
-    public function publishArticle(Article $article):Response
-    {
-        $notification = new Notification();
-        $notification->setReceiver($article->getAuthor());
-        $notification->setType('article_posted');
-        $notification->setArticle($article);
-
-        $article->setStatus(true);
-
-        if (!$article->getPublishedAt()) {
-            $article->setPublishedAt(new DateTime('now'));
-        }
-
-        $article->setUpdatedAt(new DateTime('now'));
-
-        foreach ($article->getNotifications() as $value) {
-            $value->setStatus(true);
-        }
-
-        $action = new Action();
-        $action->setModerator($this->user());
-        $action->setArticle($article);
-        $action->setType('article_published');
-
-        $em = $this->getDoctrine()->getManager();
-        $em->persist($action);
-        $em->persist($notification);
-        $em->flush();
-
-        return $this->redirectToRoute('moderation_articles');
-    }
-
-    /**
-     * @Route("/reject/article/{id}", name="reject_article")
+     * @Route("/validation/post/{id}", name="reject_post")
      * @param Request $request
-     * @param Article $article
+     * @param Post $post
      * @return Response
      */
-    public function rejectArticle(Request $request, Article $article): Response
+    public function postValidation(Request $request, Post $post): Response
     {
         $notification = new Notification();
-        $notification->setReceiver($article->getAuthor());
-        $notification->setType('article_rejected');
-        $notification->setArticle($article);
-        $article->setStatus(false);
+        $notification->setReceiver($post->getAuthor());
+        $notification->setPost($post);
 
         $form = $this->createForm(NotificationType::class, $notification);
         $form->handleRequest($request);
 
         $action = new Action();
         $action->setModerator($this->user());
-        $action->setArticle($article);
-        $action->setType('article_rejected');
-        $action->setContent($notification->getMessage());
+        $action->setPost($post);
+
+        if ($form->get('approve')->isClicked()) {
+
+            $notification->setType('post_approved');
+            $action->setType('post_approved');
+            $post->setStatus(true);
+
+            if ($post->getPublishedAt()->getTimestamp() === $post->getUpdatedAt()->getTimestamp()) {
+                $post->setPublishedAt(new DateTime('now'));
+            }
+
+        } elseif ($form->get('reject')->isClicked()) {
+
+            if (!$form->get('message')->getData()) {
+                $this->addFlash('danger', 'Вы не указали причину отказа');
+                return $this->redirectToRoute('moderation_posts');
+            }
+
+            $notification->setType('post_rejected');
+            $action->setContent($notification->getMessage());
+            $action->setType('post_rejected');
+            $post->setStatus(false);
+
+        }
 
         $em = $this->getDoctrine()->getManager();
         $em->persist($action);
         $em->persist($notification);
         $em->flush();
 
-        return $this->redirectToRoute('moderation_articles');
+        return $this->redirectToRoute('moderation_posts');
     }
 
     /**

@@ -3,7 +3,7 @@
 namespace App\Service;
 
 use App\Entity\Tag;
-use App\Repository\ArticleRepository;
+use App\Repository\PostRepository;
 use App\Repository\SongRepository;
 use App\Repository\TagRepository;
 use App\Repository\UserRepository;
@@ -21,18 +21,18 @@ class Searcher
     private $tagRepo;
     private $userRepo;
     private $songRepo;
-    private $articleRepo;
+    private $postRepo;
     private $requestStack;
     private $formFactory;
     private $keyword;
     private $translator;
     private $compiler;
 
-    public function __construct(TagRepository $tagRepo,UserRepository $userRepo, SongRepository $songRepo, ArticleRepository $articleRepo, RequestStack $requestStack, FormFactoryInterface $formFactory, TranslatorInterface $translator, Compiler $compiler) {
+    public function __construct(TagRepository $tagRepo,UserRepository $userRepo, SongRepository $songRepo, PostRepository $postRepo, RequestStack $requestStack, FormFactoryInterface $formFactory, TranslatorInterface $translator, Compiler $compiler) {
         $this->tagRepo = $tagRepo;
         $this->userRepo = $userRepo;
         $this->songRepo = $songRepo;
-        $this->articleRepo = $articleRepo;
+        $this->postRepo = $postRepo;
         $this->requestStack = $requestStack;
         $this->formFactory = $formFactory;
         $this->translator = $translator;
@@ -119,7 +119,7 @@ class Searcher
             if ($type === 'songs') {
                 $repo = $this->songRepo->findByKeyword($this->keyword, ['releaseDate' => 'DESC'],5);
             } else {
-                $repo = $this->articleRepo->findByKeyword($this->keyword, [],5);
+                $repo = $this->postRepo->findByKeyword($this->keyword, [],5);
             }
         } else {
             $repo = $data;

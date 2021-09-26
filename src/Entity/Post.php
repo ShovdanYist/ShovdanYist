@@ -2,7 +2,7 @@
 
 namespace App\Entity;
 
-use App\Repository\ArticleRepository;
+use App\Repository\PostRepository;
 use App\Validator\Constraints as MyAssert;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -12,11 +12,10 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
- * @ORM\Entity(repositoryClass=ArticleRepository::class)
+ * @ORM\Entity(repositoryClass=PostRepository::class)
  * @Vich\Uploadable
- * @MyAssert\UniqueTitleSlug(message="form.title.or.slug.exists")
  */
-class Article
+class Post
 {
     /**
      * @ORM\Id()
@@ -26,7 +25,7 @@ class Article
     private $id;
 
     /**
-     * @Vich\UploadableField(mapping="article_images", fileNameProperty="image")
+     * @Vich\UploadableField(mapping="post_images", fileNameProperty="image")
      * @Assert\File(mimeTypes={"image/jpeg","image/png","image/gif"}, mimeTypesMessage="image.have.to.be.jpg.or.png")
      * @var File|null
      */
@@ -38,8 +37,7 @@ class Article
     private $image;
 
     /**
-     * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank(message="article.title.required")
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $title;
 
@@ -62,7 +60,7 @@ class Article
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $section;
+    private $type;
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
@@ -91,28 +89,28 @@ class Article
     private $updatedAt;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Song::class, inversedBy="articles")
+     * @ORM\ManyToMany(targetEntity=Song::class, inversedBy="posts")
      */
     private $songs;
 
     /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="articles")
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="posts")
      * @ORM\JoinColumn(nullable=false)
      */
     private $author;
 
     /**
-     * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="article", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="post", orphanRemoval=true)
      */
     private $comments;
 
     /**
-     * @ORM\OneToMany(targetEntity=Bookmark::class, mappedBy="article", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=Bookmark::class, mappedBy="post", orphanRemoval=true)
      */
     private $bookmarks;
 
     /**
-     * @ORM\OneToMany(targetEntity=Notification::class, mappedBy="article", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=Notification::class, mappedBy="post", orphanRemoval=true)
      */
     private $notifications;
 
@@ -127,12 +125,12 @@ class Article
     private $views;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Tag::class, inversedBy="articles")
+     * @ORM\ManyToMany(targetEntity=Tag::class, inversedBy="posts")
      */
     private $tags;
 
     /**
-     * @ORM\OneToMany(targetEntity=Action::class, mappedBy="article", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=Action::class, mappedBy="post", orphanRemoval=true)
      */
     private $actions;
 
@@ -228,14 +226,14 @@ class Article
         return $this;
     }
 
-    public function getSection(): ?string
+    public function getType(): ?string
     {
-        return $this->section;
+        return $this->type;
     }
 
-    public function setSection(?string $section): self
+    public function setType(?string $type): self
     {
-        $this->section = $section;
+        $this->type = $type;
 
         return $this;
     }
@@ -350,7 +348,7 @@ class Article
     {
         if (!$this->comments->contains($comment)) {
             $this->comments[] = $comment;
-            $comment->setArticle($this);
+            $comment->setPost($this);
         }
 
         return $this;
@@ -361,8 +359,8 @@ class Article
         if ($this->comments->contains($comment)) {
             $this->comments->removeElement($comment);
             // set the owning side to null (unless already changed)
-            if ($comment->getArticle() === $this) {
-                $comment->setArticle(null);
+            if ($comment->getPost() === $this) {
+                $comment->setPost(null);
             }
         }
 
@@ -381,7 +379,7 @@ class Article
     {
         if (!$this->bookmarks->contains($bookmark)) {
             $this->bookmarks[] = $bookmark;
-            $bookmark->setArticle($this);
+            $bookmark->setPost($this);
         }
 
         return $this;
@@ -392,8 +390,8 @@ class Article
         if ($this->bookmarks->contains($bookmark)) {
             $this->bookmarks->removeElement($bookmark);
             // set the owning side to null (unless already changed)
-            if ($bookmark->getArticle() === $this) {
-                $bookmark->setArticle(null);
+            if ($bookmark->getPost() === $this) {
+                $bookmark->setPost(null);
             }
         }
 
@@ -412,7 +410,7 @@ class Article
     {
         if (!$this->notifications->contains($notification)) {
             $this->notifications[] = $notification;
-            $notification->setArticle($this);
+            $notification->setPost($this);
         }
 
         return $this;
@@ -423,8 +421,8 @@ class Article
         if ($this->notifications->contains($notification)) {
             $this->notifications->removeElement($notification);
             // set the owning side to null (unless already changed)
-            if ($notification->getArticle() === $this) {
-                $notification->setArticle(null);
+            if ($notification->getPost() === $this) {
+                $notification->setPost(null);
             }
         }
 
@@ -493,7 +491,7 @@ class Article
     {
         if (!$this->actions->contains($action)) {
             $this->actions[] = $action;
-            $action->setArticle($this);
+            $action->setPost($this);
         }
 
         return $this;
@@ -504,8 +502,8 @@ class Article
         if ($this->actions->contains($action)) {
             $this->actions->removeElement($action);
             // set the owning side to null (unless already changed)
-            if ($action->getArticle() === $this) {
-                $action->setArticle(null);
+            if ($action->getPost() === $this) {
+                $action->setPost(null);
             }
         }
 

@@ -19,6 +19,10 @@
                         {{ form_row(form.username) }}
                         {{ form_row(form.email) }}
 
+                        {% if is_granted('ROLE_OWNER') and user != app.user %}
+                            {{ form_row(form.password) }}
+                        {% endif %}
+
                         <button class="btn btn-primary">
                             {% if user.email != user.confirmedEmail %}
                                 Отправить снова

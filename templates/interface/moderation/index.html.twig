@@ -35,7 +35,7 @@
 
                         <td>
                             {% if stat.moderation != 0 %}
-                                <a href="{% if stat.name == 'songs' %}{{ path('moderation_ready' ) }}{% elseif stat.name == 'posts' %}{{ path('moderation_articles' ) }}{% endif %}">
+                                <a href="{% if stat.name == 'songs' %}{{ path('moderation_ready' ) }}{% elseif stat.name == 'posts' %}{{ path('moderation_posts' ) }}{% endif %}">
                                     <span class="badge badge-pill badge-danger">
                                         {{ stat.moderation }}
                                     </span>

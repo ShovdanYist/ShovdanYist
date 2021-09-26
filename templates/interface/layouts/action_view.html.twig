@@ -1,0 +1,71 @@
+<div class="md-notification md-comment-notification">
+
+    <div class="notify-sender-user">
+        <a href="{{ path('user_profile', {'username':action.moderator.username}) }}">
+            <span class="md-avatar md-avatar-50" style="background-image: url('{% if action.moderator.profile.avatar != 'avatar.jpg' %}{{ vich_uploader_asset(action.moderator.profile) | imagine_filter('thumbnail') }}{% else %}{{ asset('assets/images/avatar.jpg') | imagine_filter('thumbnail') }}{% endif %}')"></span>
+        </a>
+    </div>
+
+    <div class="notify-message-body">
+
+        <div class="notify-message">
+
+            <a class="notify-message-user" style="font-weight: 500" href="{{ path('user_profile', {'username':action.moderator.username}) }}">
+                {{ action.moderator.username }}
+            </a>
+
+            {% if action.moderator.profile.verified %}
+                <span class="md-comment-verified">
+                    <i class="fas fa-check-circle text-info"></i>
+                </span>
+            {% endif %}
+
+            {{ actionMessage(action) }}
+
+            <br>
+
+            <small class="text-muted">
+                {{ action.createdAt ? action.createdAt | format_datetime('medium', 'none', '', 'UTC') }}
+                в
+                {{ action.createdAt ? action.createdAt | date(' H:i') }}
+
+                {% if is_granted('ROLE_OWNER') %}
+                    <form class="md-comment-reply" style="display: contents" method="post" action="{{ path('moderation_action_delete', {'id': action.id}) }}" onsubmit="return confirm('{{ 'sure.to.delete.action' | trans }}');">
+                        <input type="hidden" name="_method" value="DELETE">
+                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ action.id) }}">
+                        <button class="comment-reply" style="display: contents">
+                            {{ 'delete' | trans }}
+                        </button>
+                    </form>
+                {% endif %}
+            </small>
+
+        </div>
+
+    </div>
+
+    <div class="notify-picture">
+        {% if action.post %}
+            <a href="{{ path('post_show', {'slug': action.post.slug}) }}">
+                <span class="back-picture bp-50" style="border-radius: 3px;margin-right: 14px;background-image: url('{% if action.post.image %}{{ vich_uploader_asset(action.post) | imagine_filter('thumbnail') }}{% else %}{{ asset('assets/images/question.jpg') }}{% endif %}')">
+                </span>
+            </a>
+        {% elseif action.song %}
+            <a href="{{ path( 'song_show', {'slug': action.song.slug}) }}">
+                <span class="back-picture bp-50" style="border-radius: 3px;margin-right: 14px;background-image: url('{{ vich_uploader_asset(action.song.vocalist) | imagine_filter('thumbnail') }}')">
+                </span>
+            </a>
+        {% elseif action.user %}
+            <a href="{{ path( 'user_profile', {'username':action.user.username}) }}">
+                <span class="back-picture bp-50" style="margin-right: 14px;background-image: url('{{ vich_uploader_asset(action.user.profile) | imagine_filter('thumbnail') }}')">
+                </span>
+            </a>
+        {% elseif action.person %}
+            <a href="{{ path( 'person_show', {'slug': action.person.slug}) }}">
+                <span class="back-picture bp-50" style="border-radius: 3px;margin-right: 14px;background-image: url('{{ vich_uploader_asset(action.person) | imagine_filter('thumbnail') }}')">
+                </span>
+            </a>
+        {% endif %}
+    </div>
+
+</div>

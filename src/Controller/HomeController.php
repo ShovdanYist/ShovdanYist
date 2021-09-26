@@ -4,7 +4,7 @@ namespace App\Controller;
 
 use App\CustomAbstracts\CustomAbstractController;
 use App\Entity\EmailAddress;
-use App\Entity\Article;
+use App\Entity\Post;
 use App\Entity\Profile;
 use App\Entity\User;
 use App\Form\RegistrationFormType;
@@ -43,7 +43,7 @@ class HomeController extends CustomAbstractController
     public function index($page, Paginator $paginator): Response
     {
         $paginator
-            ->setClass(Article::class)
+            ->setClass(Post::class)
             ->setOrder(['publishedAt' => 'DESC'])
             ->setCriteria(['status' => true, 'moderation' => true])
             ->setLimit(10)
@@ -51,7 +51,7 @@ class HomeController extends CustomAbstractController
         ;
 
         return $this->render('interface/home/index.html.twig', [
-            'articles' => $paginator->getData(),
+            'posts' => $paginator->getData(),
             'paginator' => $paginator
         ]);
     }

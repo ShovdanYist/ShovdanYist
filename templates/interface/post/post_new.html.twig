@@ -5,7 +5,7 @@
     {% if not is_granted('ROLE_POST_AUTHOR') %}
         {{ 'become.an.author' | trans }}
     {% else %}
-        {{ 'article.adding' | trans }}
+        {{ 'post.adding' | trans }}
     {% endif %}
 
 {% endblock %}
@@ -136,9 +136,9 @@
 
     {% else %}
 
-        <h1>{{ 'article.adding' | trans }}</h1>
+        <h1>{{ 'post.adding' | trans }}</h1>
 
-        {{ include('interface/article/_form.html.twig') }}
+        {{ include('interface/post/_form.html.twig') }}
 
     {% endif %}
 

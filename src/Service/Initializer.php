@@ -3,7 +3,7 @@
 namespace App\Service;
 
 use App\Entity\Action;
-use App\Entity\Article;
+use App\Entity\Post;
 use App\Entity\Person;
 use App\Entity\Song;
 use App\Entity\View;
@@ -93,41 +93,57 @@ class Initializer
         $this->em->flush();
     }
 
-    public function initializeArticleNew(Article $article)
+    public function initializePostNew(Post $post, $type = 'post')
     {
-        $article->setDescription(mb_substr($this->compiler->htmlToText($article->getContent(),true), 0, 120));
-        $article->setSlug($this->slugify->slugify($article->getTitle()));
-        $article->setUpdatedAt(new \DateTime('now'));
-        $article->setSection('articles');
-        $article->setAuthor($this->getUser());
-        $article->setViews(0);
-
-        $this->em->persist($article);
-        $this->em->flush();
-    }
-
-    public function initializeArticleEdit(Article $article)
-    {
-        $article->setDescription(mb_substr($this->compiler->htmlToText($article->getContent(), true),0,120));
-        $article->setSlug($this->slugify->slugify($article->getTitle()));
-
-        if ($this->getUser() === $article->getAuthor() && !$this->defender->isGranted($this->getUser(),'ROLE_POST_MODERATOR') || $this->getUser() === $article->getAuthor() && !$this->defender->isGranted($this->getUser(),'ROLE_POST_EDITOR')) {
-            $article->setUpdatedAt(new \DateTime('now'));
-            $article->setStatus(null);
+        if ($type === 'post') {
+            $post->setModeration(true);
+            $random = $this->getUser()->getId() * rand(1,147) . rand(784,1217) * rand(342,635) . chr(rand(97,122));
+            $post->setSlug($this->slugify->slugify($random));
+            $post->setTitle($random);
+        } else {
+            $post->setSlug($this->slugify->slugify($post->getTitle()));
         }
 
-        if ($article->getStatus() !== true) {
-            foreach ($article->getNotifications() as $value) {
+        $post->setDescription(mb_substr($this->compiler->htmlToText($post->getContent(),true), 0, 120));
+        $post->setUpdatedAt(new \DateTime('now'));
+        $post->setPublishedAt(new \DateTime('now'));
+        $post->setType($type);
+        $post->setAuthor($this->getUser());
+        $post->setViews(0);
+
+        $this->em->persist($post);
+
+        if ($this->defender->rightToSetTitleSlug($post)) {
+            $this->em->flush();
+        }
+    }
+
+    public function initializePostEdit(Post $post)
+    {
+        $post->setDescription(mb_substr($this->compiler->htmlToText($post->getContent(), true),0,120));
+        $post->setSlug($this->slugify->slugify($post->getTitle()));
+
+        if ($this->getUser() === $post->getAuthor() && !$this->defender->isGranted($this->getUser(),'ROLE_POST_MODERATOR') || $this->getUser() === $post->getAuthor() && !$this->defender->isGranted($this->getUser(),'ROLE_POST_EDITOR')) {
+            if ($post->getPublishedAt()->getTimestamp() === $post->getUpdatedAt()->getTimestamp()) {
+                $post->setPublishedAt(new \DateTime('now'));
+            }
+
+            $post->setUpdatedAt(new \DateTime('now'));
+            $post->setStatus(null);
+        }
+
+        if ($post->getStatus() !== true) {
+            foreach ($post->getNotifications() as $value) {
                 $value->setStatus(false);
             }
         } else {
-            foreach ($article->getNotifications() as $value) {
+            foreach ($post->getNotifications() as $value) {
                 $value->setStatus(true);
             }
         }
 
-        if ($article->getAuthor() !== $this->getUser()) {
-            $this->createAction($article,'article_edited');
+        if ($post->getAuthor() !== $this->getUser()) {
+            $this->createAction($post,'post_edited');
         }
 
         $this->em->flush();
@@ -161,8 +177,8 @@ class Initializer
             $action->setSong($entity);
         } elseif ($entity instanceof Person) {
             $action->setPerson($entity);
-        } elseif ($entity instanceof Article) {
-            $action->setArticle($entity);
+        } elseif ($entity instanceof Post) {
+            $action->setPost($entity);
         }
 
         $this->em->persist($action);

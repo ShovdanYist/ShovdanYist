@@ -138,12 +138,12 @@ li {
   margin-bottom: 14px;
 }
 
-.md-write-article-button:hover {
+.md-write-post-button:hover {
   color: #9d9d9d;
   background: #333;
 }
 
-.md-write-article-button {
+.md-write-post-button {
   display: none;
   border-radius: 100px;
   background: #282828;
@@ -228,7 +228,6 @@ blockquote, .ck.ck-content blockquote {
 }
 
 .ckeditor-content {
-  margin-top: 12px;
   word-break: break-word;
   -webkit-hyphens: auto;
   -moz-hyphens: auto;
@@ -320,7 +319,7 @@ blockquote, .ck.ck-content blockquote {
   min-height: 194px;
 }
 
-// CK editor for articles
+// CK editor for posts
 
 .ck.ck-toolbar {
   background: #fff !important;
@@ -460,7 +459,7 @@ blockquote, .ck.ck-content blockquote {
   margin: unset;
 }
 
-#articleImgOutput {
+#postImgOutput {
   display: block;
   width: 300px;
   margin: 0 auto;
@@ -1177,7 +1176,7 @@ td {
   width: 100%;
   display: block;
   margin-top: 4px;
-  padding-bottom: 4px;
+  padding-bottom: 7px;
 }
 .navbar-menu-separator {
   color: #555;
@@ -1213,6 +1212,7 @@ td {
 }
 .md-lined-menu:hover, .md-lined-menu.active {
   background-color: #f5f7fa;
+  border-radius: 0 3px 3px 0;
 }
 .md-lined-menu a:hover {
   background-color: unset !important;
@@ -1351,13 +1351,13 @@ td {
 .md-main-box-col-2 {
   display: flex;
   margin-top: 10px;
-  .md-song-stats, .md-article-info {
+  .md-song-stats, .md-post-info {
     width: 100%;
     padding: 15px;
   }
 }
 
-.md-box.md-main-box-col-2 .md-article-info {
+.md-box.md-main-box-col-2 .md-post-info {
   max-width: 60%;
 }
 .md-box.md-main-box-col-2 .md-song-stats {
@@ -1368,7 +1368,7 @@ td {
   display: none;
 }
 
-.md-article-info {
+.md-post-info {
   padding: 14px;
   div {
     background-color: #f2f2f2;
@@ -1377,7 +1377,7 @@ td {
   }
 }
 
-.md-article-info a {
+.md-post-info a {
   width: 100%;
   display: block;
   overflow: hidden;
@@ -2003,18 +2003,18 @@ select {
   color: #aaa;
 }
 
-// Article
+// Post
 
-.md-article {
+.md-post {
   margin-bottom: 12px;
   position: relative;
 }
 
-.md-article h3 {
+.md-post h3 {
   margin-bottom: unset;
 }
 
-.md-article .section {
+.md-post .section {
   position: absolute;
   right: 16px;
   top: 0;
@@ -2023,42 +2023,46 @@ select {
   border-radius: 0 0 3px 3px;
 }
 
-.article-tags {
+.last-margin-disable .md-post:last-child {
+  margin: unset;
+}
+
+.post-tags {
   margin-bottom: 8px;
   font-size: 12px;
 }
 
-.article-tags a {
+.post-tags a {
   text-transform: uppercase;
   font-weight: 500;
   font-size: 12px;
 }
 
-.article-info {
+.post-info {
   display: table;
   width: 100%;
   margin-bottom: 16px;
 }
 
-.article-info .avatar {
+.post-info .avatar {
   margin-right: 6px;
 }
 
-.article-info .username {
+.post-info .username {
   font-weight: 600;
 }
 
-.article-info .date {
+.post-info .date {
   font-size: 12px;
   color: #95a5a6;
 }
 
-.article-image {
-  margin-bottom: 8px;
+.post-image {
+  margin-bottom: 12px;
   border-radius: radius(full);
 }
 
-.article-actions {
+.post-actions {
   margin-bottom: -4px;
   position: relative;
   margin-top: 12px;
@@ -2068,39 +2072,39 @@ select {
   width: 100%;
 }
 
-.article-actions .stat {
+.post-actions .stat {
   font-size: 14px;
   float: left;
   margin-right: 10px;
 }
 
-.article-actions .count {
+.post-actions .count {
   margin-left: 6px;
   color: #2c3e50;
 }
 
-.article-actions a {
+.post-actions a {
   height: 22px;
   color: #737f8b;
   display: inline-flex;
 }
 
-.article-actions a:hover {
+.post-actions a:hover {
   color: #2c3e50;
 }
 
-.md-article-status {
+.md-post-status {
   width: 8px;
   height: 8px;
   display: block;
   border-radius: 10px;
 }
 
-.article-profile-views {
+.post-profile-views {
   min-width: 112px;
 }
 
-.article-views {
+.post-views {
   color: #a2a2a2;
 }
 

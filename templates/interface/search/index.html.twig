@@ -30,7 +30,7 @@
                     <a href="{{ path('search_index',{'keyword':keyword}) }}" class="active">Всё</a>
                     <a href="{{ path('search_songs',{'keyword':keyword}) }}">Музыка</a>
                     <a href="{{ path('search_users',{'keyword':keyword}) }}">Пользователи</a>
-                    <a href="{{ path('search_articles',{'keyword':keyword}) }}">Статьи</a>
+                    <a href="{{ path('search_posts',{'keyword':keyword}) }}">Статьи</a>
                 </div>
 
             </div>
@@ -120,36 +120,36 @@
 
         {% endif %}
 
-        {% if articles %}
+        {% if posts %}
 
             <div class="md-search-box md-box md-content-padding">
 
                 <h4 class="mb-3">
-                    {{ 'articles' | trans }}
+                    {{ 'posts' | trans }}
                 </h4>
 
-                {% for article in articles %}
+                {% for post in posts %}
 
                     {% if not loop.first %}<br>{% endif %}
 
-                    <div class="back-picture bp-50" style="background-image: url('{% if article.info.image %}{{ vich_uploader_asset(article.info) | imagine_filter('thumbnail') }}{% else %}{{ asset('assets/images/question.jpg') }}{% endif %}'); border-radius: 3px; margin-right: 10px">
+                    <div class="back-picture bp-50" style="background-image: url('{% if post.info.image %}{{ vich_uploader_asset(post.info) | imagine_filter('thumbnail') }}{% else %}{{ asset('assets/images/question.jpg') }}{% endif %}'); border-radius: 3px; margin-right: 10px">
                     </div>
 
                     <h5>
-                        <a href="{{ path('article_show',{'slug':article.info.slug}) }}">
-                            {{ article.info.title }}
+                        <a href="{{ path('post_show',{'slug':post.info.slug}) }}">
+                            {{ post.info.title }}
                         </a>
                     </h5>
 
                     <div>
-                        {{ article.words | raw}}
+                        {{ post.words | raw}}
                     </div>
 
                 {% endfor %}
 
-                {% if (articles | length) == 5 %}
+                {% if (posts | length) == 5 %}
                     <div class="see-all mt-3">
-                        <a href="{{ path('search_articles',{'keyword':keyword}) }}">
+                        <a href="{{ path('search_posts',{'keyword':keyword}) }}">
                             {{ 'see.all' | trans }}
                             <span><i class="fas fa-angle-right"></i></span>
                         </a>
@@ -160,21 +160,21 @@
 
         {% endif %}
 
-        {% if not articles or not songs or not users %}
+        {% if not posts or not songs or not users %}
 
             <div class="md-search-box md-box md-content-padding">
-                {% if not articles and songs and users %}
-                    {{ 'not.found.articles.for.keyword' | trans({'keyword':keyword}) }}
-                {% elseif not songs and articles and users %}
+                {% if not posts and songs and users %}
+                    {{ 'not.found.posts.for.keyword' | trans({'keyword':keyword}) }}
+                {% elseif not songs and posts and users %}
                     {{ 'not.found.songs.for.keyword' | trans({'keyword':keyword}) }}
-                {% elseif not users and articles and songs %}
+                {% elseif not users and posts and songs %}
                     {{ 'not.found.users.for.keyword' | trans({'keyword':keyword}) }}
-                {% elseif not users and not articles and songs %}
-                    {{ 'not.found.users.articles.for.keyword' | trans({'keyword':keyword}) }}
-                {% elseif not users and not songs and articles %}
+                {% elseif not users and not posts and songs %}
+                    {{ 'not.found.users.posts.for.keyword' | trans({'keyword':keyword}) }}
+                {% elseif not users and not songs and posts %}
                     {{ 'not.found.users.songs.for.keyword' | trans({'keyword':keyword}) }}
-                {% elseif not songs and not articles and users %}
-                    {{ 'not.found.songs.articles.for.keyword' | trans({'keyword':keyword}) }}
+                {% elseif not songs and not posts and users %}
+                    {{ 'not.found.songs.posts.for.keyword' | trans({'keyword':keyword}) }}
                 {% else %}
                     {{ 'not.found.for.keyword' | trans({'keyword':keyword}) }}
                 {% endif %}
@@ -211,8 +211,8 @@
                         </a>
                     </li>
                     <li class="md-menu-item md-lined-menu">
-                        <a style="padding-left: 8px" href="{{ path('search_articles',{'keyword':keyword}) }}">
-                            {{ 'articles' | trans }}
+                        <a style="padding-left: 8px" href="{{ path('search_posts',{'keyword':keyword}) }}">
+                            {{ 'posts' | trans }}
                         </a>
                     </li>
 

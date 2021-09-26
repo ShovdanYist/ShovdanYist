@@ -1,17 +1,17 @@
 {% extends 'interface/base.html.twig' %}
 
-{% block title %}{{ 'article.editing' | trans }}{% endblock %}
+{% block title %}{{ 'post.editing' | trans }}{% endblock %}
 
 {% block body %}
 
-    <h1>{{ 'article.editing' | trans }}</h1>
+    <h1>{{ 'post.editing' | trans }}</h1>
 
-    {{ include('interface/article/_form.html.twig') }}
+    {{ include('interface/post/_form.html.twig') }}
 
 {% endblock %}
 
 {% block scripts %}
-    {{ ckeditor('author') }}
+    {{ ckeditor('user') }}
     {{ chosen() }}
     {{ chosen(10, '.chosen-music') }}
     {{ chosen(3,'.chosen-date select') }}

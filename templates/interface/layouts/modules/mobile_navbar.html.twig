@@ -34,7 +34,7 @@
                 </span>
 
                 <span class="dashbar-nav-name">
-                    {{ 'articles' | trans }}
+                    {{ 'posts' | trans }}
                 </span>
             </a>
 
@@ -119,20 +119,20 @@
             {% endif %}
 
             {% if is_granted('ROLE_POST_MODERATOR') %}
-                <a class="sidenav-link" href="{{ path('moderation_articles') }}">
+                <a class="sidenav-link" href="{{ path('moderation_posts') }}">
                     <span class="dashbar-nav-icon">
                         <i class="fas fa-id-card"></i>
                     </span>
                     <span class="dashbar-nav-name">
-                        {{ 'articles' | trans }}
+                        {{ 'posts' | trans }}
                     </span>
 
-                    {% if articleModerationCount() != 0 %}
+                    {% if postModerationCount() != 0 %}
                         <span class="badge badge-pill badge-danger mt-1 dashbar-nav-badge">
-                        {% if articleModerationCount() > 99 %}
+                        {% if postModerationCount() > 99 %}
                             99+
                         {% else %}
-                            {{ articleModerationCount() }}
+                            {{ postModerationCount() }}
                         {% endif %}
                     </span>
                     {% endif %}
@@ -222,7 +222,7 @@
                 </span>
 
                 <span class="dashbar-nav-name">
-                    {{ 'articles' | trans }}
+                    {{ 'posts' | trans }}
                 </span>
             </a>
 

@@ -36,7 +36,7 @@
                             <span>
                                 <i class="fas fa-heading"></i>
                             </span>
-                            {{ 'articles' | trans }}
+                            {{ 'posts' | trans }}
                         </a>
                     </li>
 
@@ -111,17 +111,17 @@
 
                     {% if is_granted('ROLE_POST_MODERATOR') %}
                         <li class="md-menu-item">
-                            <a href="{{ path('moderation_articles') }}">
+                            <a href="{{ path('moderation_posts') }}">
                             <span>
                                 <i class="fas fa-id-card"></i>
                             </span>
-                                {{ 'articles' | trans }}
-                                {% if articleModerationCount() != 0 %}
+                                {{ 'posts' | trans }}
+                                {% if postModerationCount() != 0 %}
                                     <span class="badge badge-pill badge-danger float-right mt-1">
-                                        {% if articleModerationCount() > 99 %}
+                                        {% if postModerationCount() > 99 %}
                                             99+
                                         {% else %}
-                                            {{ articleModerationCount() }}
+                                            {{ postModerationCount() }}
                                         {% endif %}
                                     </span>
                                 {% endif %}
@@ -136,37 +136,6 @@
                                     <i class="fas fa-hand-point-up"></i>
                                 </span>
                                 {{ 'actions' | trans }}
-                            </a>
-                        </li>
-                    {% endif %}
-
-                    {% if is_granted('ROLE_OWNER') %}
-                        <span class="user-menu-separator text-muted">Управление</span>
-
-                        <li class="md-menu-item">
-                            <a href="{{ path('users_index') }}">
-                            <span>
-                                <i class="fas fa-users"></i>
-                            </span>
-                                {{ 'users' | trans }}
-                            </a>
-                        </li>
-
-                        <li class="md-menu-item">
-                            <a href="{{ path('activities_index') }}">
-                            <span>
-                                <i class="fas fa-briefcase"></i>
-                            </span>
-                                {{ 'activities' | trans }}
-                            </a>
-                        </li>
-
-                        <li class="md-menu-item">
-                            <a href="{{ path('tags_index') }}">
-                            <span>
-                                <i class="fas fa-tag"></i>
-                            </span>
-                                {{ 'tags' | trans }}
                             </a>
                         </li>
                     {% endif %}
@@ -194,7 +163,7 @@
                             <span>
                                 <i class="fas fa-heading"></i>
                             </span>
-                            {{ 'articles' | trans }}
+                            {{ 'posts' | trans }}
                         </a>
                     </li>
 

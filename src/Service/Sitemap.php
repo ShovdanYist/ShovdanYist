@@ -2,7 +2,7 @@
 
 namespace App\Service;
 
-use App\Entity\Article;
+use App\Entity\Post;
 use App\Entity\Person;
 use App\Entity\Song;
 use Doctrine\ORM\EntityManagerInterface;
@@ -70,13 +70,13 @@ class Sitemap
             ];
         }
 
-        // Articles urls
-        foreach ($this->em->getRepository(Article::class)->findBy(['status' => true]) as $article) {
+        // Posts urls
+        foreach ($this->em->getRepository(Post::class)->findBy(['status' => true]) as $post) {
             $urls[] = [
-                'loc' => $this->generator->generate('article_show', [
-                    'slug' => $article->getSlug()
+                'loc' => $this->generator->generate('post_show', [
+                    'slug' => $post->getSlug()
                 ]),
-                'lastmod' => $article->getUpdatedAt()->format('Y-m-d')
+                'lastmod' => $post->getUpdatedAt()->format('Y-m-d')
             ];
         }
 

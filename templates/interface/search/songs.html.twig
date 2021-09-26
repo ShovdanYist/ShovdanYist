@@ -60,7 +60,7 @@
                 <a href="{{ path('search_index',{'keyword':(tags) ? tags.string : keyword}) }}">Всё</a>
                 <a href="{{ path('search_songs',{'keyword':keyword}) }}" class="active">Музыка</a>
                 <a href="{{ path('search_users',{'keyword':(tags) ? tags.string : keyword}) }}">Пользователи</a>
-                <a href="{{ path('search_articles',{'keyword':(tags) ? tags.string : keyword}) }}">Статьи</a>
+                <a href="{{ path('search_posts',{'keyword':(tags) ? tags.string : keyword}) }}">Статьи</a>
             </div>
 
         </div>
@@ -168,8 +168,8 @@
                         </a>
                     </li>
                     <li class="md-menu-item md-lined-menu">
-                        <a style="padding-left: 8px" href="{{ path('search_articles',{'keyword':(tags) ? tags.string : keyword}) }}">
-                            {{ 'articles' | trans }}
+                        <a style="padding-left: 8px" href="{{ path('search_posts',{'keyword':(tags) ? tags.string : keyword}) }}">
+                            {{ 'posts' | trans }}
                         </a>
                     </li>
 

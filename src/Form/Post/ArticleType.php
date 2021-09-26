@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Form;
+namespace App\Form\Post;
 
 use App\Entity\Song;
-use App\Entity\Article;
+use App\Entity\Post;
 use App\Entity\Tag;
 use App\Repository\PlaylistSongRepository;
 use App\Repository\SongRepository;
@@ -62,7 +62,7 @@ class ArticleType extends AbstractType
                 ]
             ])
             ->add('content', TextareaType::class, [
-                'label' => 'article',
+                'label' => 'post',
                 'required' => false,
                 'attr' => [
                     'class' => 'ckeditor',
@@ -81,7 +81,7 @@ class ArticleType extends AbstractType
                 'multiple' => true,
                 'required' => false,
                 'choice_label' => 'title',
-                'choices' => $this->tags->findBy(['type' => 'article']),
+                'choices' => $this->tags->findBy(['type' => 'post']),
                 'label_attr' => ['class' => 'checkbox-custom'],
                 'attr' => [
                     'data-placeholder' => $this->translator->trans('select.categories'),
@@ -112,10 +112,10 @@ class ArticleType extends AbstractType
             ])
         ;
 
-        $article = $builder->getData();
+        $post = $builder->getData();
         $userPlaylist = $this->playlistSongs->findOneBy(['user' => $this->user]);
 
-        if (!$article->getId() && $userPlaylist !== null || $article->getAuthor() == $this->user && $userPlaylist !== null ) {
+        if (!$post->getId() && $userPlaylist !== null || $post->getAuthor() == $this->user && $userPlaylist !== null ) {
             $builder
                 ->add('songs', EntityType::class, [
                     'label' => 'music',
@@ -150,7 +150,7 @@ class ArticleType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => Article::class
+            'data_class' => Post::class
         ]);
     }
 }

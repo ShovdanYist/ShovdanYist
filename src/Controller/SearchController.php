@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use App\CustomAbstracts\CustomAbstractController;
-use App\Entity\Article;
+use App\Entity\Post;
 use App\Entity\Song;
 use App\Entity\User;
 use App\Service\Compiler;
@@ -14,7 +14,6 @@ use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @Route(name="search_")
- * Class ArticleController
  * @package App\Controller
  */
 class SearchController extends CustomAbstractController
@@ -39,7 +38,7 @@ class SearchController extends CustomAbstractController
             'form' => $form->createView(),
             'keyword' => mb_strtolower($keyword),
             'songs' => $searcher->getData('songs'),
-            'articles' => $searcher->getData('articles'),
+            'posts' => $searcher->getData('posts'),
             'users' => $searcher->getData('users')
         ]);
     }
@@ -96,26 +95,26 @@ class SearchController extends CustomAbstractController
     }
 
     /**
-     * @Route("/search/articles/{keyword}/{page<\d+>?1}", name="articles", methods={"POST","GET"})
+     * @Route("/search/posts/{keyword}/{page<\d+>?1}", name="posts", methods={"POST","GET"})
      * @param $keyword
      * @param $page
      * @param Paginator $paginator
      * @param Searcher $searcher
      * @return Response
      */
-    public function articles($keyword, $page, Paginator $paginator, Searcher $searcher): Response
+    public function posts($keyword, $page, Paginator $paginator, Searcher $searcher): Response
     {
         $searcher->setKeyword($keyword);
         $form = $searcher->searchForm($keyword);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            return $this->redirectToRoute('search_articles',[
+            return $this->redirectToRoute('search_posts',[
                 'keyword' => $form->get('keyword')->getData()
             ]);
         }
 
         $paginator
-            ->setClass(Article::class)
+            ->setClass(Post::class)
             ->setMethod('findByKeyword')
             ->setOrder([])
             ->setParameters(['keyword' => $keyword])
@@ -124,10 +123,10 @@ class SearchController extends CustomAbstractController
             ->setPage($page)
         ;
 
-        return $this->render('interface/search/articles.html.twig', [
+        return $this->render('interface/search/posts.html.twig', [
             'keyword' => $keyword,
             'page' => $page,
-            'articles' => $searcher->getData('articles', $paginator->getData()),
+            'posts' => $searcher->getData('posts', $paginator->getData()),
             'paginator' => $paginator,
             'form' => $form->createView()
         ]);

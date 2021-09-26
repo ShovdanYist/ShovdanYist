@@ -19,9 +19,9 @@
                         {{ 'all' | trans }}
                     </a>
                 </li>
-                {% for item in tags('article') %}
+                {% for item in tags('post') %}
                     <li class="md-menu-item md-lined-menu">
-                        <a style="padding-left: 10px" href="{{ path('article_tag', {'slug':item.slug}) }}">
+                        <a style="padding-left: 10px" href="{{ path('post_tag', {'slug':item.slug}) }}">
                             {{ item.title }}
                         </a>
                     </li>
@@ -32,7 +32,7 @@
     </div>
 
     {% if is_granted('ROLE_POST_AUTHOR') %}
-        <a href="{{ path('article_add') }}" class="md-write-article-button">
+        <a href="{{ path('post_new') }}" class="md-write-post-button">
             <i class="fas fa-feather-alt"></i>
         </a>
     {% endif %}
@@ -41,8 +41,8 @@
 
 {% block main %}
 
-    {% for article in articles %}
-        {{ articleView(article) }}
+    {% for post in posts %}
+        {{ postPreview(post) }}
     {% endfor %}
 
     {{ paginator.display(true) }}
@@ -63,9 +63,9 @@
                             {{ 'all' | trans }}
                         </a>
                     </li>
-                    {% for item in tags('article') %}
+                    {% for item in tags('post') %}
                         <li class="md-menu-item md-lined-menu">
-                            <a style="padding-left: 8px" href="{{ path('article_tag', {'slug':item.slug}) }}">
+                            <a style="padding-left: 8px" href="{{ path('post_tag', {'slug':item.slug}) }}">
                                 {{ item.title }}
                             </a>
                         </li>

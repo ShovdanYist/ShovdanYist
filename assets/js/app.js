@@ -36,11 +36,11 @@ import './player';
 // Image on change
 if (document.querySelector('.custom-file-input')) {
     let fileInput = document.querySelector('.custom-file-input');
-    if (document.getElementById('articleImgOutput')) {
-        let articleImgOutput = document.getElementById('articleImgOutput');
+    if (document.getElementById('postImgOutput')) {
+        let postImgOutput = document.getElementById('postImgOutput');
         fileInput.onchange = () => {
-            articleImgOutput.src = window.URL.createObjectURL(fileInput.files[0]);
-            articleImgOutput.style.marginBottom = '8px';
+            postImgOutput.src = window.URL.createObjectURL(fileInput.files[0]);
+            postImgOutput.style.marginBottom = '8px';
         };
     } else if (document.getElementById('output-content')) {
         let outputContent = document.getElementById('output-content');

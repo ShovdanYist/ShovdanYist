@@ -9,6 +9,17 @@ liip_imagine:
             quality: 80
             filters:
                 auto_rotate: ~
+                relative_resize:
+                    heighten: 520
+                    widen: 520
+                thumbnail:
+                    size: [520, 520]
+                    mode: outbound
+
+        avatar_thumbnail:
+            quality: 80
+            filters:
+                auto_rotate: ~
                 thumbnail:
                     size: [260, 260]
                     mode: outbound
@@ -21,12 +32,12 @@ liip_imagine:
                     size: [100, 100]
                     mode: outbound
 
-        article:
+        post:
             quality: 80
             filters:
                 auto_rotate: ~
                 relative_resize:
                     heighten: 850
                 watermark_image:
-                    image: public/assets/images/article-watermark.png
+                    image: public/assets/images/post-watermark.png
                     position: bottomright

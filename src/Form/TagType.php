@@ -41,7 +41,7 @@ class TagType extends AbstractType
                 'label' => 'type',
                 'choices' => [
                     'song' => 'song',
-                    'article' => 'article',
+                    'post' => 'post',
                 ]
             ])
         ;

@@ -20,7 +20,7 @@
 
     {% if name %}
 
-        {% if name == 'article' %}
+        {% if name == 'post' %}
 
             {% if is_granted('ROLE_POST_MODERATOR') or is_granted('ROLE_POST_EDITOR') or entity.author == app.user %}
 
@@ -30,12 +30,12 @@
 
                 <div class="dropdown-menu dropdown-menu-right">
 
-                    <a href="{{ path('article_edit', {'slug':entity.slug}) }}" class="dropdown-item">
+                    <a href="{{ path('post_edit', {'slug':entity.slug}) }}" class="dropdown-item">
                         <i class="fa fa-edit"></i> {{ 'edit' | trans }}
                     </a>
 
                     {% if is_granted('ROLE_POST_MODERATOR') or entity.author == app.user %}
-                        <form method="post" action="{{ path('article_delete', {'id': entity.id}) }}" onsubmit="return confirm('{{ 'are.you.sure.to.delete' | trans }}');">
+                        <form method="post" action="{{ path('post_delete', {'id': entity.id}) }}" onsubmit="return confirm('{{ 'are.you.sure.to.delete' | trans }}');">
                             <input type="hidden" name="_method" value="DELETE">
                             <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ entity.id) }}">
                             <button class="dropdown-item">

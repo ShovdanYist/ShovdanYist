@@ -54,9 +54,9 @@ class Tag
     private $type;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Article::class, mappedBy="tags")
+     * @ORM\ManyToMany(targetEntity=Post::class, mappedBy="tags")
      */
-    private $articles;
+    private $posts;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
@@ -66,7 +66,7 @@ class Tag
     public function __construct()
     {
         $this->songs = new ArrayCollection();
-        $this->articles = new ArrayCollection();
+        $this->posts = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -151,28 +151,28 @@ class Tag
     }
 
     /**
-     * @return Collection|Article[]
+     * @return Collection|Post[]
      */
-    public function getArticles(): Collection
+    public function getPosts(): Collection
     {
-        return $this->articles;
+        return $this->posts;
     }
 
-    public function addArticle(Article $article): self
+    public function addPost(Post $post): self
     {
-        if (!$this->articles->contains($article)) {
-            $this->articles[] = $article;
-            $article->addTag($this);
+        if (!$this->posts->contains($post)) {
+            $this->posts[] = $post;
+            $post->addTag($this);
         }
 
         return $this;
     }
 
-    public function removeArticle(Article $article): self
+    public function removePost(Post $post): self
     {
-        if ($this->articles->contains($article)) {
-            $this->articles->removeElement($article);
-            $article->removeTag($this);
+        if ($this->posts->contains($post)) {
+            $this->posts->removeElement($post);
+            $post->removeTag($this);
         }
 
         return $this;

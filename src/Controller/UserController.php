@@ -7,7 +7,7 @@ use App\Entity\EmailAddress;
 use App\Entity\Profile;
 use App\Entity\Song;
 use App\Entity\Notification;
-use App\Entity\Article;
+use App\Entity\Post;
 use App\Entity\User;
 use App\Form\NewUserType;
 use App\Form\ResetPasswordType;
@@ -20,6 +20,7 @@ use App\Service\Paginator;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
@@ -55,7 +56,7 @@ class UserController extends CustomAbstractController
     }
 
     /**
-     * @Route("/new", name="user_new", methods={"GET","POST"})
+     * @Route("/user/new", name="user_new", methods={"GET","POST"})
      * @Security("has_role('ROLE_OWNER')")
      * @param Request $request
      * @param UserPasswordEncoderInterface $passwordEncoder
@@ -115,7 +116,7 @@ class UserController extends CustomAbstractController
         }
 
         $paginator
-            ->setClass(Article::class)
+            ->setClass(Post::class)
             ->setOrder(['publishedAt' => 'DESC'])
             ->setCriteria($criteria)
             ->setParameters(['username' => $user->getUsername()])
@@ -125,7 +126,7 @@ class UserController extends CustomAbstractController
 
         return $this->render('interface/user/profile.html.twig', [
             'invitees' => $this->getDoctrine()->getRepository(User::class)->count(['invitedBy' => $user, 'status' => true]),
-            'articles' => $paginator->getData(),
+            'posts' => $paginator->getData(),
             'paginator' => $paginator,
             'profile' => $user->getProfile(),
             'user' => $user,
@@ -193,7 +194,7 @@ class UserController extends CustomAbstractController
      * @param Defender $defender
      * @return Response
      */
-    public function settings(Request $request, User $user, Mailer $mailer, TokenGeneratorInterface $tokenGenerator, Defender $defender): Response
+    public function settings(Request $request, User $user, Mailer $mailer, TokenGeneratorInterface $tokenGenerator, Defender $defender, UserPasswordEncoderInterface $passwordEncoder): Response
     {
         if ($user !== $this->user() && !$this->isGranted('ROLE_OWNER')) {
             return $this->redirectToRoute('user_settings', [
@@ -221,6 +222,14 @@ class UserController extends CustomAbstractController
             ])
             ->getForm();
 
+        if ($this->isGranted('ROLE_OWNER') && $user !== $this->user()) {
+            $form->add('password', PasswordType::class, [
+                'label' => 'password',
+                'mapped' => false,
+                'required' => false
+            ]);
+        }
+
         if ($user->getEmail() != $user->getConfirmedEmail()) {
             $form->get('email')->addError(new FormError('Электронная почта не подтверждена'));
         }
@@ -228,6 +237,14 @@ class UserController extends CustomAbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            $user->setPassword(
+                $passwordEncoder->encodePassword(
+                    $user,
+                    $form->get('password')->getData()
+                )
+            );
+
             $verification = $defender->rightToSetUsername($form->get('username')->getData(), $user);
 
             if ($verification['status'] == true) {
@@ -396,14 +413,14 @@ class UserController extends CustomAbstractController
             ->setMethod('findUserBookmarks')
             ->setOrder(['addedAt' => 'DESC'])
             ->setCriteria(['user' => $user])
-            ->setClass(Article::class)
+            ->setClass(Post::class)
             ->setType('bookmark')
             ->setLimit(10)
             ->setPage($page)
         ;
 
         return $this->render('interface/user/bookmarks.html.twig', [
-            'articles' => $paginator->getData(),
+            'posts' => $paginator->getData(),
             'paginator' => $paginator
         ]);
     }
@@ -434,7 +451,7 @@ class UserController extends CustomAbstractController
             $em->flush();
             $this->addFlash('success', $this->trans('flash.user.deleted',['username' => $username]));
 
-            return $this->redirectToRoute('app_home');
+            return $this->redirectToRoute('users_index');
         } elseif ($user === $this->user() && $this->isCsrfTokenValid('delete'.$user->getId(), $request->request->get('_token')) && $encoder->isPasswordValid($user, $request->request->get('password'))) {
             $session = new Session();
             $session->invalidate();

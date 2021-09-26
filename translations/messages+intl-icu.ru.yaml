@@ -1,4 +1,4 @@
-flash.comment.added: 'Комментарий успешно добавлен'
+flash.comment.added: 'Комментарий добавлен'
 flash.comment.adding.error: 'Ошибка при добавлении пароля'
 flash.comment.deleted: 'Комментарий удален'
 flash.comment.deleting.error: 'Ошибка при удалении комментария'
@@ -76,12 +76,47 @@ profile.editing: 'Редактирование страницы'
 save: Сохранить
 cancel: Отмена
 notifications: Уведомлении
+
+post.in.moderation: 'Публикация на модерации'
+post.is.rejected: 'Публикация отклонена'
+article.in.moderation: 'Статья на модерации'
+article.is.rejected: 'Статья отклонена'
+
 replied.you.with.comment.male: 'ответил на ваш комментарий:'
 replied.you.with.comment.female: 'ответила на ваш комментарий:'
 replied.you.with.comment.users: 'и другие ответили на ваш комментарий'
+
+commented.your.post.male : 'оставил комментарий на вашу публикацию'
+commented.your.post.female : 'оставила комментарий на вашу публикацию'
+commented.your.post.users : 'и другие оставили комментарии на вашу публикацию'
+
 commented.your.article.male : 'оставил комментарий на вашу статью'
 commented.your.article.female : 'оставила комментарий на вашу статью'
 commented.your.article.users : 'и другие оставили комментарии на вашу статью'
+
+rejected.your.post : 'отклонил вашу публикацию'
+rejected.your.article : 'отклонил вашу статью'
+approved.your.post : 'утвердил вашу публикацию'
+approved.your.article : 'утвердил вашу статью'
+
+approved.post.male : 'утвердил публикацию'
+approved.post.female : 'утвердила публикацию'
+approved.article.male : 'утвердил статью'
+approved.article.female : 'утвердила статью'
+
+rejected.post.male : 'отклонил публикацию'
+rejected.post.female : 'отклонила публикацию'
+rejected.article.male : 'отклонил статью'
+rejected.article.female : 'отклонила статью'
+
+blocked.user.male: 'заблокировал пользователя'
+blocked.user.female: 'заблокировала пользователя'
+unblocked.user.male: 'разблокировал пользователя'
+unblocked.user.female: 'разблокировала пользователя'
+
+user.have.no.actions: 'У администратора { username } нет действий'
+
+for.next.reason: 'по следующей причине'
 you.have.no.notifications: 'У вас нет уведомлений'
 account.deleting: 'Удаление аккаунта'
 account.deleting.warning.message: 'Все данные связанные с вашим аккаунтом будут безвозвратно удалены.'
@@ -142,26 +177,25 @@ nothing.found.for: 'Ничего не найдено по запросу:'
 select.roles: 'Выберите роли'
 heading: Заголовок
 select.song: 'Выберите песни'
-song.help: 'Выберите песни из своего плейлиста'
+song.help: 'Вы можете прикрепить песни из своего плейлиста к публикации'
 event.date.help: 'Не забудьте указать, если речь идет о знаковой дате'
-article.adding: 'Добавление статьи'
 become.an.author: 'Стать автором'
-article.editing: 'Изменение статьи'
+post.editing: 'Изменение публикации'
+post: Публикация
 article: Статья
-articles: Статьи
 posts: Публикации
-articles.from.category: 'Статьи из категории'
+posts.from.category: 'Публикации из категории'
 sections: Секции
 select.sections: 'Выберите секции'
 event.date: 'Дата события'
 feed: Лента
 playlist: Плейлист
-article.has.been.added: 'Статья успешно отправлена, и будет добавлена после подтверждения администрацией'
+post.has.been.added: 'Публикация успешно отправлена, и будет добавлена после подтверждения администрацией'
 song.sent.for.moderation: 'Песня отправлена на модерацию'
 no.songs.in.moderation: 'У вас пока нет песен в процессе'
 no.ready.songs.in.moderation: 'Пока нет песен на модерации'
 no.pending.songs.in.moderation: 'Пока нет песен в ожидании'
-no.articles.in.moderation: 'Пока нет статей на модерации'
+no.posts.in.moderation: 'Пока нет статей на модерации'
 form.password.is.empty: 'Поле пароля не может быть пустым'
 form.password.not.same: 'Пароли не идентичны'
 form.password.min.length.message: 'Пароль должен состоять минимум из {{ limit }}-ти символов'
@@ -188,7 +222,7 @@ song.editing: 'Изменение песни'
 song.adding: 'Добавление песни'
 save.and.close: 'Сохранить и закрыть'
 select.featuring: 'Выберите совместных'
-article.add: 'Добавить статью'
+add.post: 'Новая публикация'
 section: Секция
 update: Обновить
 update.tags: 'Обновить теги'
@@ -213,27 +247,27 @@ total: Всего
 status: Статус
 add.to.bookmarks: 'Добавить в закладки'
 remove.from.bookmarks: 'Удалить из закладок'
-flash.removed.from.bookmarks: 'Статья удалена из закладок'
-flash.added.to.bookmarks: 'Статья добавлена в закладки'
 bookmarks: Закладки
 moderation: Модерация
 moderators: Модераторы
 are.you.sure.to.log.out: 'Вы уверены что хотите выйти?'
 are.you.sure.to.block.user: 'Вы уверены что хотите заблокировать этого пользователя?'
 are.you.sure.to.unblock.user: 'Вы уверены что хотите разблокировать этого пользователя?'
-are.you.sure.to.publish.it: 'Вы уверены что хотите опубликовать?'
+are.you.sure.to.publish.it: 'Вы уверены что хотите утвердить публикацию?'
+are.you.sure.to.reject.it: 'Вы уверены что хотите отклонить публикацию?'
 are.you.sure.to.change.it: 'Вы уверены что хотите изменить?'
 publish: Опубликовать
 approve: Утвердить
-are.you.sure.to.reject.it: 'Вы уверены что хотите отклонить публикацию?'
 remember.me: 'Запомнить меня'
 all: Всё
-write.article: 'Написать статью'
 you.have.not.bookmarks: 'У вас нет закладок'
 additional: Дополнительно
 email.confirmation: 'Подтверждение электронной почты'
+
+
 send.for.moderation: 'Отправить на модерацию'
-send.for.moderation.help: 'Если не отметите этот пункт, то статья сохранится как черновик и вы сможете отправить её позже'
+send.for.moderation.help: 'Если не отметите этот пункт, то публикация сохранится как черновик и вы сможете отправить её позже'
+
 send.song.for.moderation.help: 'Отметьте этот пункт, когда текст/песня будут готовы. Если не отметите то он сохранится как черновик и вы сможете отправить её позже'
 'Подтверждение почты на сайте ShovdanYist': 'Подтверждение почты на сайте ShovdanYist'
 tags: Теги
@@ -253,13 +287,13 @@ ROLE_ADMINISTRATOR: Администратор
 ROLE_POST_AUTHOR: 'Писать статьи'
 ROLE_POST_EDITOR: 'Редакторовать публикации'
 ROLE_POST_COMMENT_REMOVER: 'Удалять комментарии публикаций'
-ROLE_POST_MODERATOR: 'Модератор раздела публикаций'
+ROLE_POST_MODERATOR: 'Модерировать раздел публикаций'
 ROLE_SONG_AUTHOR: 'Писать песни'
 ROLE_SONG_EDITOR: 'Редактировать песни'
 ROLE_SONG_COMMENT_REMOVER: 'Удалять комментарии песен'
-ROLE_SONG_MODERATOR: 'Модератор раздела музыки'
+ROLE_SONG_MODERATOR: 'Модерировать раздел музыки'
 ROLE_PEOPLE_EDITOR: 'Редактировать биографию'
-ROLE_PEOPLE_MODERATOR: 'Модератор раздела людей'
+ROLE_PEOPLE_MODERATOR: 'Модерировать раздел людей'
 ROLE_USER_MANAGER: 'Назначение модераторов'
 ROLE_USER_BLOCKER: 'Блокировка пользователей'
 ROLE_USER_ANALYST: 'Статистика пользователей'
@@ -268,24 +302,24 @@ actions: 'Действия'
 type_user_blocked: 'Блокировка пользователей'
 type_user_unblocked: 'Разблокировка пользователей'
 type_comment_deleted: 'Удаление комментариев'
-type_article_edited: 'Редактирование статей'
-type_article_published: 'Утверждение статей'
-type_article_rejected: 'Отклонение статей'
+type_post_edited: 'Редактирование публикации'
+type_post_approved: 'Утверждение публикации'
+type_post_rejected: 'Отклонение публикации'
 type_song_edited: 'Редактирование песен'
 type_person_edited: 'Редактирование биографии'
 search: 'Поиск'
 search.by.tags: 'Поиск по тегам'
 music.search: 'Поиск по музыке..'
-not.found.articles.for.keyword: 'По запросу «{ keyword }» статей не найдено'
+not.found.posts.for.keyword: 'По запросу «{ keyword }» статей не найдено'
 not.found.songs.for.keyword: 'По запросу «{ keyword }» песен не найдено'
 not.found.songs.for.tags: 'По тегу «{ tags }» песен не найдено'
 not.found.songs.for.tags1: 'По тегам «{ tags }» песен не найдено'
 songs.for.tag: 'Песни по тегу'
 songs.for.tag1: 'Песни по тегам'
 not.found.users.for.keyword: 'По запросу «{ keyword }» пользователей не найдено'
-not.found.users.articles.for.keyword: 'По запросу «{ keyword }» пользователей и статей не найдено'
+not.found.users.posts.for.keyword: 'По запросу «{ keyword }» пользователей и статей не найдено'
 not.found.users.songs.for.keyword: 'По запросу «{ keyword }» пользователей и песен не найдено'
-not.found.songs.articles.for.keyword: 'По запросу «{ keyword }» песен и статей не найдено'
+not.found.songs.posts.for.keyword: 'По запросу «{ keyword }» песен и статей не найдено'
 not.found.for.keyword: 'По запросу «{ keyword }» ничего не найдено'
 search.for.keyword: 'Поиск с запросом «{ keyword }»'
 songs.for.keyword: 'Песни по запросу «{ keyword }»'
@@ -293,5 +327,6 @@ song.results.for.keyword: 'Результаты музыки по запросу
 song.results.for.tag: 'Результаты музыки по тегу'
 song.results.for.tags: 'Результаты музыки по тегам'
 users.for.keyword: 'Пользователи по запросу «{ keyword }»'
-articles.for.keyword: 'Статьи по запросу «{ keyword }»'
+posts.for.keyword: 'Публикации по запросу «{ keyword }»'
 in.page: 'на странице «{ page }»'
+title.or.slug.exists: 'Публикация с таким названием уже существует'

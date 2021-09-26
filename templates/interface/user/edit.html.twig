@@ -20,7 +20,7 @@
 
                             <div class="col-12 md-edit-form-block">
 
-                                <div id="output-content" style="background-image: url('{% if user.profile.avatar != 'avatar.jpg' %}{% if '.gif' in user.profile.avatar %}{{ vich_uploader_asset(user.profile) }}{% else %}{{ vich_uploader_asset(user.profile) | imagine_filter('avatar') }}{% endif %}{% else %}{{ asset('assets/images/avatar.jpg') }}{% endif %}')">
+                                <div id="output-content" style="background-image: url('{% if user.profile.avatar != 'avatar.jpg' %}{% if '.gif' in user.profile.avatar %}{{ vich_uploader_asset(user.profile) }}{% else %}{{ vich_uploader_asset(user.profile) | imagine_filter('avatar_thumbnail') }}{% endif %}{% else %}{{ asset('assets/images/avatar.jpg') }}{% endif %}')">
                                 </div>
                                 {{ form_row(form.avatarFile) }}
                                 {{ form_row(form.avatarDelete) }}

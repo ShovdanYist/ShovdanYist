@@ -1,4 +1,4 @@
-<div class="article-actions">
+<div class="post-actions">
 
 {#    <span class="stat">#}
 {#        <a href="#">#}
@@ -16,9 +16,9 @@
 
     {% if comments %}
         <span class="stat">
-            <a href="{{ path( 'article_show', {'slug': article.slug}) }}#comments">
+            <a href="{{ path( 'post_show', {'slug': post.slug}) }}#comments">
                 <i class="far fa-comment-alt" style="font-size: 22px;"></i>
-                <span class="count">{{ article.comments.count }}</span>
+                <span class="count">{{ post.comments.count }}</span>
             </a>
         </span>
     {% endif %}
@@ -26,7 +26,7 @@
     <span class="stat float-right m-0">
 
         {% if app.user %}
-            <a class="bookmark-toggle bk-toggle{% if userContainArticle(app.user, article) %} added{% endif %}" href="{{ path('article_bookmarker', {'slug': article.slug}) }}">
+            <a class="bookmark-toggle bk-toggle{% if userContainPost(app.user, post) %} added{% endif %}" href="{{ path('post_bookmarker', {'slug': post.slug}) }}">
                 <span class="bookmark-icon"></span>
             </a>
         {% else %}

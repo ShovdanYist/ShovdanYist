@@ -114,9 +114,9 @@ class Song
     private $playlistSongs;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Article::class, mappedBy="songs")
+     * @ORM\ManyToMany(targetEntity=Post::class, mappedBy="songs")
      */
-    private $articles;
+    private $posts;
 
     /**
      * @ORM\OneToMany(targetEntity=Notification::class, mappedBy="song")
@@ -153,7 +153,7 @@ class Song
         $this->featuring = new ArrayCollection();
         $this->comments = new ArrayCollection();
         $this->playlistSongs = new ArrayCollection();
-        $this->articles = new ArrayCollection();
+        $this->posts = new ArrayCollection();
         $this->notifications = new ArrayCollection();
         $this->tags = new ArrayCollection();
         $this->actions = new ArrayCollection();
@@ -411,28 +411,28 @@ class Song
     }
 
     /**
-     * @return Collection|Article[]
+     * @return Collection|Post[]
      */
-    public function getArticles(): Collection
+    public function getPosts(): Collection
     {
-        return $this->articles;
+        return $this->posts;
     }
 
-    public function addArticle(Article $article): self
+    public function addPost(Post $post): self
     {
-        if (!$this->articles->contains($article)) {
-            $this->articles[] = $article;
-            $article->addSong($this);
+        if (!$this->posts->contains($post)) {
+            $this->posts[] = $post;
+            $post->addSong($this);
         }
 
         return $this;
     }
 
-    public function removeArticle(Article $article): self
+    public function removePost(Post $post): self
     {
-        if ($this->articles->contains($article)) {
-            $this->articles->removeElement($article);
-            $article->removeSong($this);
+        if ($this->posts->contains($post)) {
+            $this->posts->removeElement($post);
+            $post->removeSong($this);
         }
 
         return $this;

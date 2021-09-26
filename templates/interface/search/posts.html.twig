@@ -7,7 +7,7 @@
 {% block main_top %}
     {{ breadcrumb({
         (path('app_home')) : ('home.page' | trans),
-        'active' : ('articles.for.keyword' | trans({'keyword': keyword})),
+        'active' : ('posts.for.keyword' | trans({'keyword': keyword})),
     }) }}
 {% endblock %}
 
@@ -30,32 +30,32 @@
                     <a href="{{ path('search_index',{'keyword':keyword}) }}">Всё</a>
                     <a href="{{ path('search_songs',{'keyword':keyword}) }}">Музыка</a>
                     <a href="{{ path('search_users',{'keyword':keyword}) }}">Пользователи</a>
-                    <a href="{{ path('search_articles',{'keyword':keyword}) }}" class="active">Статьи</a>
+                    <a href="{{ path('search_posts',{'keyword':keyword}) }}" class="active">Статьи</a>
                 </div>
 
             </div>
 
         {{ form_end(form) }}
 
-        {% if articles %}
+        {% if posts %}
 
             <div class="md-search-box md-box md-content-padding">
 
-                {% for article in articles %}
+                {% for post in posts %}
 
                     {% if not loop.first %}<br>{% endif %}
 
-                    <div class="back-picture bp-50" style="background-image: url('{% if article.info.image %}{{ vich_uploader_asset(article.info) | imagine_filter('thumbnail') }}{% else %}{{ asset('assets/images/question.jpg') }}{% endif %}'); border-radius: 3px; margin-right: 10px">
+                    <div class="back-picture bp-50" style="background-image: url('{% if post.info.image %}{{ vich_uploader_asset(post.info) | imagine_filter('thumbnail') }}{% else %}{{ asset('assets/images/question.jpg') }}{% endif %}'); border-radius: 3px; margin-right: 10px">
                     </div>
 
                     <h5>
-                        <a href="{{ path('article_show',{'slug':article.info.slug}) }}">
-                            {{ article.info.title }}
+                        <a href="{{ path('post_show',{'slug':post.info.slug}) }}">
+                            {{ post.info.title }}
                         </a>
                     </h5>
 
                     <div>
-                        {{ article.words | raw}}
+                        {{ post.words | raw}}
                     </div>
 
                 {% endfor %}
@@ -66,13 +66,13 @@
 
         {% endif %}
 
-        {% if not articles %}
+        {% if not posts %}
 
             <div class="md-search-box md-box md-content-padding">
                 {% if page > 1 %}
-                    {{ 'not.found.articles.for.keyword' | trans({'keyword':keyword}) }} {{ 'in.page' | trans({'page':page}) }}
+                    {{ 'not.found.posts.for.keyword' | trans({'keyword':keyword}) }} {{ 'in.page' | trans({'page':page}) }}
                 {% else %}
-                    {{ 'not.found.articles.for.keyword' | trans({'keyword':keyword}) }}
+                    {{ 'not.found.posts.for.keyword' | trans({'keyword':keyword}) }}
                 {% endif %}
             </div>
 
@@ -107,8 +107,8 @@
                         </a>
                     </li>
                     <li class="md-menu-item md-lined-menu active">
-                        <a style="padding-left: 8px" href="{{ path('search_articles',{'keyword':keyword}) }}">
-                            {{ 'articles' | trans }}
+                        <a style="padding-left: 8px" href="{{ path('search_posts',{'keyword':keyword}) }}">
+                            {{ 'posts' | trans }}
                         </a>
                     </li>
 

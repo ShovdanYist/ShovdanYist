@@ -7,7 +7,7 @@ use App\Entity\Action;
 use App\Entity\Comment;
 use App\Entity\Song;
 use App\Entity\Notification;
-use App\Entity\Article;
+use App\Entity\Post;
 use App\Form\CommentType;
 use App\Repository\UserRepository;
 use App\Service\Defender;
@@ -31,7 +31,7 @@ class CommentController extends CustomAbstractController
         if ($type == 'song') {
             $entity = $this->getDoctrine()->getRepository(Song::class)->findOneBy(['id' => $id]);
         } else {
-            $entity = $this->getDoctrine()->getRepository(Article::class)->findOneBy(['id' => $id]);
+            $entity = $this->getDoctrine()->getRepository(Post::class)->findOneBy(['id' => $id]);
         }
 
         $user = $userRepo->findOneBy(['username' => $this->getUser()->getUsername()]);
@@ -69,7 +69,7 @@ class CommentController extends CustomAbstractController
                     if ($type == 'song') {
                         $notification->setSong($entity);
                     } else {
-                        $notification->setArticle($entity);
+                        $notification->setPost($entity);
                     }
                     $em->persist($notification);
                 }
@@ -77,9 +77,9 @@ class CommentController extends CustomAbstractController
                 $comment->setReplyTo($receiver);
             }
 
-            $existNotify = $this->getDoctrine()->getRepository(Notification::class)->findOneBy(['type' => 'article_comment', 'article' => $comment->getArticle()]);
+            $existNotify = $this->getDoctrine()->getRepository(Notification::class)->findOneBy(['type' => 'post_comment', 'post' => $comment->getPost()]);
 
-            if ($type == 'article' && $existNotify && $this->user() !== $comment->getArticle()->getAuthor() && $form->get('replyTo')->getData() !== $comment->getArticle()->getAuthor()->getUsername()) {
+            if ($type == 'post' && $existNotify && $this->user() !== $comment->getPost()->getAuthor() && $form->get('replyTo')->getData() !== $comment->getPost()->getAuthor()->getUsername()) {
                 if ($existNotify->getSeen()) {
                     $existNotify->setSeen(false);
                     $existNotify->setQuantity(1);
@@ -88,13 +88,13 @@ class CommentController extends CustomAbstractController
                 }
                 $existNotify->setPublishedAt(new \DateTime('now'));
                 $existNotify->setComment($comment);
-            } elseif ($type == 'article' && $this->user() !== $comment->getArticle()->getAuthor() && $form->get('replyTo')->getData() !== $comment->getArticle()->getAuthor()->getUsername()) {
+            } elseif ($type == 'post' && $this->user() !== $comment->getPost()->getAuthor() && $form->get('replyTo')->getData() !== $comment->getPost()->getAuthor()->getUsername()) {
                 $notify = new Notification();
-                $notify->setReceiver($comment->getArticle()->getAuthor());
+                $notify->setReceiver($comment->getPost()->getAuthor());
                 $notify->setComment($comment);
                 $notify->setQuantity(1);
-                $notify->setArticle($comment->getArticle());
-                $notify->setType('article_comment');
+                $notify->setPost($comment->getPost());
+                $notify->setType('post_comment');
                 $em->persist($notify);
             }
 
@@ -108,7 +108,7 @@ class CommentController extends CustomAbstractController
                     'slug' => $entity->getSlug()
                 ]);
             } else {
-                return $this->redirectToRoute('article_show', [
+                return $this->redirectToRoute('post_show', [
                     'slug' => $entity->getSlug()
                 ]);
             }
@@ -121,7 +121,7 @@ class CommentController extends CustomAbstractController
                 'slug' => $entity->getSlug()
             ]);
         } else {
-            return $this->redirectToRoute('article_show', [
+            return $this->redirectToRoute('post_show', [
                 'slug' => $entity->getSlug(),
             ]);
         }
@@ -140,7 +140,7 @@ class CommentController extends CustomAbstractController
 
             $em = $this->getDoctrine()->getManager();
 
-            if ($comment->getArticle() && $comment->getArticle()->getAuthor() !== $this->user() && $comment->getAuthor() !== $this->user() || $comment->getSong() && $comment->getSong()->getAuthor() !== $this->user() && $comment->getAuthor() !== $this->user()) {
+            if ($comment->getPost() && $comment->getPost()->getAuthor() !== $this->user() && $comment->getAuthor() !== $this->user() || $comment->getSong() && $comment->getSong()->getAuthor() !== $this->user() && $comment->getAuthor() !== $this->user()) {
                 $action = new Action();
                 $action->setModerator($this->user());
                 $action->setContent($comment->getMessage());
@@ -149,8 +149,8 @@ class CommentController extends CustomAbstractController
 
                 if ($comment->getSong()) {
                     $action->setSong($comment->getSong());
-                } elseif ($comment->getArticle()) {
-                    $action->setArticle($comment->getArticle());
+                } elseif ($comment->getPost()) {
+                    $action->setPost($comment->getPost());
                 }
 
                 $em->persist($action);
@@ -169,8 +169,8 @@ class CommentController extends CustomAbstractController
                 'slug' => $comment->getSong()->getSlug()
             ]);
         } else {
-            return $this->redirectToRoute('article_show', [
-                'slug' => $comment->getArticle()->getSlug()
+            return $this->redirectToRoute('post_show', [
+                'slug' => $comment->getPost()->getSlug()
             ]);
         }
     }

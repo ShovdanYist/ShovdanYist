@@ -1,6 +1,6 @@
 {% extends 'interface/base.html.twig' %}
 
-{% block title %}{{ 'articles.from.category' | trans }} «{{ tag.title }}»{% endblock %}
+{% block title %}{{ 'posts.from.category' | trans }} «{{ tag.title }}»{% endblock %}
 
 {% block pageclass %}two-sidebars{% endblock %}
 
@@ -19,9 +19,9 @@
                         {{ 'all' | trans }}
                     </a>
                 </li>
-                {% for item in tags('article') %}
+                {% for item in tags('post') %}
                     <li class="md-menu-item md-lined-menu{% if item.slug == tag.slug %} active{% endif %}">
-                        <a style="padding-left: 10px" href="{{ path('article_tag', {'slug':item.slug}) }}">
+                        <a style="padding-left: 10px" href="{{ path('post_tag', {'slug':item.slug}) }}">
                             {{ item.title }}
                         </a>
                     </li>
@@ -35,14 +35,14 @@
 
 {% block main %}
 
-    {% for article in articles %}
-        {{ articleView(article) }}
+    {% for post in posts %}
+        {{ postPreview(post) }}
     {% endfor %}
 
     {{ paginator.display(true) }}
 
     {% if is_granted('ROLE_POST_AUTHOR') %}
-        <a href="{{ path('article_add') }}" class="md-write-article-button">
+        <a href="{{ path('post_new') }}" class="md-write-post-button">
             <i class="fas fa-feather-alt"></i>
         </a>
     {% endif %}
@@ -63,9 +63,9 @@
                             {{ 'all' | trans }}
                         </a>
                     </li>
-                    {% for item in tags('article') %}
+                    {% for item in tags('post') %}
                         <li class="md-menu-item md-lined-menu{% if item.slug == tag.slug %} active{% endif %}">
-                            <a style="padding-left: 8px" href="{{ path('article_tag', {'slug':item.slug}) }}">
+                            <a style="padding-left: 8px" href="{{ path('post_tag', {'slug':item.slug}) }}">
                                 {{ item.title }}
                             </a>
                         </li>

@@ -1,0 +1,28 @@
+<div class="mt-3">
+
+    {{ form_start(form, {action: path('moderation_reject_post', {'id': post.id})}) }}
+
+        <hr>
+
+        <div class="mb-3">
+            {{ form_widget(form.message) }}
+        </div>
+
+        {{ form_widget(form.approve) }}
+        {{ form_widget(form.reject) }}
+
+    {{ form_end(form) }}
+
+</div>
+
+
+
+
+
+{#    {{ form_widget(form.featured) }}#}
+
+    {#    <a href="{{ path('moderation_publish_post', {'id':post.id}) }}" class="btn btn-primary mt-2" onclick="return confirm('{{ 'are.you.sure.to.publish.it' | trans }}')">{{ 'approve' | trans }}</a>#}
+
+    {#    <button class="btn btn-link float-right" onclick="return confirm('{{ 'are.you.sure.to.reject.it' | trans }}')">#}
+    {#        {{ 'reject' | trans }}#}
+    {#    </button>#}

@@ -1,0 +1,67 @@
+<div class="md-post">
+
+    <div class="md-{{ post.type }}-post md-box md-content-padding">
+
+        {{ postInfo(post) }}
+
+        {% if type == 'article' %}
+            {% if view == 'feed' %}
+                {{ postTitle(post) }}
+            {% else %}
+                <h1 class="mb-0">{{ post.title }}</h1>
+            {% endif %}
+        {% endif %}
+
+        {{ postTags(post) }}
+        {{ postImage(post) }}
+
+        {% if post.songs.count %}
+            <div {% if view == 'show' %}class="md-margin-bottom"{% else %}style="margin-bottom: 4px" {% endif %}>
+                {% for song in post.songs %}
+                    {{ player(song,null,null,null) }}
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <div class="ckeditor-content">
+            {{ post.content | raw }}
+        </div>
+
+        {% if post.status == true %}
+            {% if view == 'show' %}
+                {{ postActions(post,false) }}
+            {% else %}
+                {{ postActions(post,true) }}
+            {% endif %}
+        {% endif %}
+
+        {% if view == 'moderation' %}
+            {{ postValidation(post) }}
+        {% endif %}
+
+{#        {% if type == 'moderation' %}#}
+{#            <div class="mb-2">#}
+{#                {{ post.content | raw }}#}
+{#            </div>#}
+{#            {{ postValidation(post) }}#}
+{#        {% else %}#}
+{#            {{ postActions(post) }}#}
+{#        {% endif %}#}
+
+{#        {% if post.status == true %}#}
+{#            {{ postActions(post,false) }}#}
+{#        {% endif %}#}
+
+
+        {#        {% if type == 'moderation' %}#}
+{#            <div class="mb-2">#}
+{#                {{ post.content | raw }}#}
+{#            </div>#}
+{#            {{ postValidation(post) }}#}
+{#        {% else %}#}
+{#            {{ postActions(post) }}#}
+{#        {% endif %}#}
+
+    </div>
+
+</div>
