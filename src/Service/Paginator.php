@@ -35,7 +35,7 @@ class Paginator
      * @throws RuntimeError
      * @throws LoaderError
      */
-    public function display($box = false)
+    public function display($box = null)
     {
         $this->twig->display('interface/layouts/service/pagination.html.twig', [
             'page'  => $this->page,

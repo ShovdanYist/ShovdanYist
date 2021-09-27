@@ -9,20 +9,9 @@ liip_imagine:
             quality: 80
             filters:
                 auto_rotate: ~
-                relative_resize:
-                    heighten: 520
-                    widen: 520
-                thumbnail:
-                    size: [520, 520]
-                    mode: outbound
-
-        avatar_thumbnail:
-            quality: 80
-            filters:
-                auto_rotate: ~
-                thumbnail:
-                    size: [260, 260]
-                    mode: outbound
+                fixed:
+                    width: 260
+                    height: 260
 
         thumbnail:
             quality: 80

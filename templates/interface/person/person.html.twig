@@ -35,7 +35,7 @@
 
         <div class="md-person-block">
 
-            <div class="md-person-image" style="background-image: url('{% if person.picture %}{{ vich_uploader_asset(person) | imagine_filter('avatar_thumbnail') }}{% else %}{{ asset('assets/images/avatar.jpg') }}{% endif %}')"></div>
+            <div class="md-person-image" style="background-image: url('{% if person.picture %}{{ vich_uploader_asset(person) | imagine_filter('avatar') }}{% else %}{{ asset('assets/images/avatar.jpg') }}{% endif %}')"></div>
 
             <p>
 

@@ -330,3 +330,4 @@ users.for.keyword: 'Пользователи по запросу «{ keyword }»
 posts.for.keyword: 'Публикации по запросу «{ keyword }»'
 in.page: 'на странице «{ page }»'
 title.or.slug.exists: 'Публикация с таким названием уже существует'
+animated.image: 'Анимированное изображение'

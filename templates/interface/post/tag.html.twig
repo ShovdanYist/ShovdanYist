@@ -39,7 +39,7 @@
         {{ postPreview(post) }}
     {% endfor %}
 
-    {{ paginator.display(true) }}
+    {{ paginator.display('box') }}
 
     {% if is_granted('ROLE_POST_AUTHOR') %}
         <a href="{{ path('post_new') }}" class="md-write-post-button">

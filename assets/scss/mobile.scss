@@ -61,6 +61,20 @@
   .songs-moderation-mobile-menu {
     display: block !important;
   }
+  .md-grid-posts {
+    padding: 10px 10px 0 !important;
+  }
+  .md-grid-post {
+    flex-basis: calc(20% - 8px) !important;
+    margin-right: 10px !important;
+    margin-bottom: 10px !important;
+  }
+  .md-grid-post:nth-child(5n+5) {
+    margin: unset !important;
+  }
+  .md-custom-paginator .md-pagination-box {
+    padding-bottom: 10px !important;
+  }
 }
 
 @media only screen and (max-width: 768px) {
@@ -177,6 +191,20 @@
   }
   .form-spoiler.mb-3 {
     margin-bottom: 12px !important;
+  }
+
+  .md-grid-posts {
+    padding: 10px 10px 0 !important;
+  }
+  .md-grid-post {
+    flex-basis: calc(25% - 8px) !important;
+  }
+  .md-grid-post:nth-child(5n+5) {
+    margin-right: 10px !important;
+    margin-bottom: 10px !important;
+  }
+  .md-grid-post:nth-child(4n+4) {
+    margin: unset !important;
   }
 }
 

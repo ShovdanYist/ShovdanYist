@@ -25,6 +25,8 @@ class PostExtension extends AbstractExtension
     public function getFunctions(): array
     {
         return [
+            new TwigFunction('actionMessage', [$this, 'actionMessage'], ['is_safe' => ['html'], 'needs_environment' => true]),
+            new TwigFunction('actionView', [$this, 'actionView'], ['is_safe' => ['html'], 'needs_environment' => true]),
             new TwigFunction('postValidation', [$this, 'postValidation'], ['is_safe' => ['html'], 'needs_environment' => true]),
             new TwigFunction('postInfo', [$this, 'postInfo'], ['is_safe' => ['html'], 'needs_environment' => true]),
             new TwigFunction('postTitle', [$this, 'postTitle'], ['is_safe' => ['html'], 'needs_environment' => true]),
@@ -33,15 +35,36 @@ class PostExtension extends AbstractExtension
             new TwigFunction('postDescription', [$this, 'postDescription'], ['is_safe' => ['html'], 'needs_environment' => true]),
             new TwigFunction('postActions', [$this, 'postActions'], ['is_safe' => ['html'], 'needs_environment' => true]),
             new TwigFunction('postPreview', [$this, 'postPreview'], ['is_safe' => ['html'], 'needs_environment' => true]),
-            new TwigFunction('actionMessage', [$this, 'actionMessage'], ['is_safe' => ['html'], 'needs_environment' => true]),
-            new TwigFunction('actionView', [$this, 'actionView'], ['is_safe' => ['html'], 'needs_environment' => true]),
-            new TwigFunction('postStatus', [$this, 'postStatus'], ['is_safe' => ['html']]),
         ];
     }
 
-    public function createForm(string $type, $data = null, array $options = []): FormInterface
+    private function createForm(string $type, $data = null, array $options = []): FormInterface
     {
         return $this->container->get('form.factory')->create($type, $data, $options);
+    }
+
+    /**
+     * @throws SyntaxError
+     * @throws RuntimeError
+     * @throws LoaderError
+     */
+    public function actionMessage(Environment $twig, $action): string
+    {
+        return $twig->render('interface/layouts/action_message.html.twig', [
+            'action' => $action
+        ]);
+    }
+
+    /**
+     * @throws SyntaxError
+     * @throws RuntimeError
+     * @throws LoaderError
+     */
+    public function actionView(Environment $twig, $action): string
+    {
+        return $twig->render('interface/layouts/action_view.html.twig', [
+            'action' => $action
+        ]);
     }
 
     /**
@@ -137,30 +160,6 @@ class PostExtension extends AbstractExtension
      * @throws RuntimeError
      * @throws LoaderError
      */
-    public function actionMessage(Environment $twig, $action): string
-    {
-        return $twig->render('interface/layouts/action_message.html.twig', [
-            'action' => $action
-        ]);
-    }
-
-    /**
-     * @throws SyntaxError
-     * @throws RuntimeError
-     * @throws LoaderError
-     */
-    public function actionView(Environment $twig, $action): string
-    {
-        return $twig->render('interface/layouts/action_view.html.twig', [
-            'action' => $action
-        ]);
-    }
-
-    /**
-     * @throws SyntaxError
-     * @throws RuntimeError
-     * @throws LoaderError
-     */
     public function postPreview(Environment $twig, Post $post, $view = 'feed'): string
     {
         return $twig->render('interface/layouts/post/post_preview.html.twig',[
@@ -168,27 +167,5 @@ class PostExtension extends AbstractExtension
             'type' => $post->getType(),
             'view' => $view
         ]);
-    }
-
-    public function postStatus(Post $post): string
-    {
-        if (!$post->getModeration()) {
-            $badge = 'info';
-        } else {
-            if ($post->getStatus() === null) {
-                $badge = 'warning';
-            } elseif ($post->getStatus() === false) {
-                $badge = 'danger';
-            } else {
-                $badge = 'success';
-            }
-        }
-
-        $template = '<i class="fas fa-circle text-%s"></i>';
-
-        return sprintf(
-            $template,
-            $badge
-        );
     }
 }

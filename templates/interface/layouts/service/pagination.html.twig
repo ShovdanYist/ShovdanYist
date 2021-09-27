@@ -1,6 +1,6 @@
 {% if pages != 0 and pages != 1 and page <= pages %}
 
-    <div {% if box %}class="md-box md-pagination"{% endif %}>
+    <div {% if box == 'box' %}class="md-box md-pagination" {% elseif box == 'grid' %}class="md-custom-paginator"{% endif %}>
 
         <div class="d-flex justify-content-center md-pagination-box">
 

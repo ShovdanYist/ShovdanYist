@@ -120,7 +120,7 @@ class UserController extends CustomAbstractController
             ->setOrder(['publishedAt' => 'DESC'])
             ->setCriteria($criteria)
             ->setParameters(['username' => $user->getUsername()])
-            ->setLimit(10)
+            ->setLimit(40)
             ->setPage($page)
         ;
 
@@ -460,7 +460,7 @@ class UserController extends CustomAbstractController
             $em->remove($user);
             $em->flush();
 
-            return $this->render('@Twig/Exception/user_deleted.html.twig');
+            return $this->render('bundles/TwigBundle/Exception/user_deleted.html.twig');
         }
 
         $this->addFlash('danger', $this->trans('flash.password.is.wrong'));
