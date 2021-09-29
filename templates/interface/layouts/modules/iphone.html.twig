@@ -1,0 +1,5 @@
+{% set agent = app.request.headers.get('User-Agent') %}
+
+{% if 'iPhone' in agent and not 'Safari' in agent %}
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/chosen.css') }}">
+{% endif %}
