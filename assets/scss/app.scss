@@ -20,9 +20,12 @@ html, body {
 }
 
 .body-wrapper {
+  position: absolute;
+  padding-top: 70px;
   overflow: auto;
   height: 100%;
-  padding-top: 15px;
+  width: 100%;
+  top: 0;
 }
 
 a:focus, a:active, a:hover {
