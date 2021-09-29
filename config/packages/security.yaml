@@ -88,6 +88,7 @@ security:
          - { path: ^/playlist, roles: ROLE_USER }
          - { path: ^/bookmarks, roles: ROLE_USER }
 
+         - { path: ^/emailValidation, roles: ROLE_USER }
          - { path: ^/deleteAccount, roles: ROLE_USER }
          - { path: ^/post/add, roles: ROLE_USER }
          - { path: ^/reset, roles: ROLE_USER }

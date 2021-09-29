@@ -23,7 +23,12 @@ class Notification
     private $seen;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="notifications")
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="sentNotifications")
+     */
+    private $sender;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="receivedNotifications")
      * @ORM\JoinColumn(nullable=false)
      */
     private $receiver;
@@ -69,6 +74,11 @@ class Notification
     private $quantity;
 
     /**
+     * @ORM\ManyToOne(targetEntity=Follow::class, inversedBy="notifications")
+     */
+    private $follow;
+
+    /**
      * @ORM\PrePersist()
      */
     public function initialize()
@@ -91,6 +101,18 @@ class Notification
     public function setSeen(bool $seen): self
     {
         $this->seen = $seen;
+
+        return $this;
+    }
+
+    public function getSender(): ?User
+    {
+        return $this->sender;
+    }
+
+    public function setSender(?User $sender): self
+    {
+        $this->sender = $sender;
 
         return $this;
     }
@@ -199,6 +221,18 @@ class Notification
     public function setQuantity(?int $quantity): self
     {
         $this->quantity = $quantity;
+
+        return $this;
+    }
+
+    public function getFollow(): ?Follow
+    {
+        return $this->follow;
+    }
+
+    public function setFollow(?Follow $follow): self
+    {
+        $this->follow = $follow;
 
         return $this;
     }

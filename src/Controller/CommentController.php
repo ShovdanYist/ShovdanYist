@@ -65,6 +65,7 @@ class CommentController extends CustomAbstractController
                     $notification->setReceiver($receiver);
                     $notification->setComment($comment);
                     $notification->setQuantity(1);
+                    $notification->setSender($this->user());
 
                     if ($type == 'song') {
                         $notification->setSong($entity);
@@ -94,6 +95,7 @@ class CommentController extends CustomAbstractController
                 $notify->setComment($comment);
                 $notify->setQuantity(1);
                 $notify->setPost($comment->getPost());
+                $notify->setSender($this->user());
                 $notify->setType('post_comment');
                 $em->persist($notify);
             }

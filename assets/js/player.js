@@ -19,6 +19,8 @@ const axios = require('axios').default;
 
 let playlister = document.querySelectorAll('.playlist-toggle');
 let bookmarker = document.querySelectorAll('.bookmark-toggle');
+let follow = document.querySelectorAll('.follow-toggle');
+let unfollow = document.querySelectorAll('.unfollow-toggle');
 
 function switcher(event) {
     event.preventDefault();
@@ -70,4 +72,65 @@ playlister.forEach((playlister) => {
 
 bookmarker.forEach((bookmarker) => {
     bookmarker.addEventListener('click', switcher);
+});
+
+function follows(event) {
+    event.preventDefault();
+    let url = this.href;
+
+    axios.get(url).then((response) => {
+        let status = String(response.data.response.status);
+
+        if (status === 'added') {
+            this.classList.remove('btn-info');
+            this.classList.add('btn-light');
+            this.classList.add('followed');
+
+            if (document.getElementById('profileFollowers')) {
+                let followers = document.getElementById('profileFollowers').querySelector('.number').innerHTML;
+                document.getElementById('profileFollowers').querySelector('.number').innerHTML = (parseInt(followers, 10) + 1).toString();
+            }
+        } else {
+            this.classList.remove('btn-light');
+            this.classList.remove('followed');
+            this.classList.add('btn-info');
+
+            if (document.getElementById('profileFollowers')) {
+                let followers = document.getElementById('profileFollowers').querySelector('.number').innerHTML;
+                document.getElementById('profileFollowers').querySelector('.number').innerHTML = (parseInt(followers, 10) - 1).toString();
+            }
+        }
+
+        this.dataset.originalTitle = response.data.response.title;
+        this.style.pointerEvents = 'none';
+
+        setTimeout(() => {
+            [this].forEach((switcher) => {
+                switcher.style.pointerEvents = 'auto';
+            })
+        }, 100);
+    })
+}
+
+follow.forEach((follow) => {
+    follow.addEventListener('click', follows);
+});
+
+function unfollows(event) {
+    event.preventDefault();
+    if (confirm(this.title)) {
+        let url = this.href;
+        let followerBlock = 'u' + this.id.split('u').pop().split('t')[0] + 'l';
+
+        axios.get(url).then((response) => {
+            let status = String(response.data.response.status);
+            if (status === 'removed') {
+                document.getElementById(followerBlock).remove();
+            }
+        })
+    }
+}
+
+unfollow.forEach((unfollow) => {
+    unfollow.addEventListener('click', unfollows);
 });

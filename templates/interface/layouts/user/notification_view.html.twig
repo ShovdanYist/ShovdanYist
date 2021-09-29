@@ -1,0 +1,69 @@
+<div class="md-notification md-comment-notification">
+
+    <div class="notify-sender-user">
+        <a href="{{ path('user_profile', {'username': sender.username}) }}">
+            <span class="md-avatar md-avatar-50" style="background-image: url('{% if sender.profile.avatar != 'avatar.jpg' %}{{ vich_uploader_asset(sender.profile) | imagine_filter('thumbnail') }}{% else %}{{ asset('assets/images/avatar.jpg') | imagine_filter('thumbnail') }}{% endif %}')"></span>
+        </a>
+    </div>
+
+    <div class="notify-message-body">
+
+        <div class="notify-message">
+
+            <a class="notify-message-user" style="font-weight: 500" href="{{ path('user_profile', {'username': sender.username}) }}">
+                {{ sender.username }}
+            </a>
+
+            {% if sender.profile.verified %}
+                <span class="md-comment-verified">
+                    <i class="fas fa-check-circle text-info"></i>
+                </span>
+            {% endif %}
+
+            {{ notificationMessage(notification,sender) }}
+
+            <br>
+
+            <small class="text-muted">
+                {{ notification.publishedAt ? notification.publishedAt | format_datetime('medium', 'none', '', 'UTC') }}
+                в
+                {{ notification.publishedAt ? notification.publishedAt | date(' H:i') }}
+
+                <form class="md-comment-reply" style="display: contents" method="post" action="{{ path('user_notification_delete', {'id': notification.id}) }}" onsubmit="return confirm('{{ 'sure.to.delete.notification' | trans }}');">
+                    <input type="hidden" name="_method" value="DELETE">
+                    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ notification.id) }}">
+                    <button class="comment-reply" style="display: contents">
+                        {{ 'delete' | trans }}
+                    </button>
+                </form>
+            </small>
+
+        </div>
+
+    </div>
+
+    <div class="notify-picture">
+
+        {% if notification.type == 'user_follow' %}
+
+            {#    TODO: follow button    #}
+
+        {% elseif notification.type == 'comment_reply' and notification.song %}
+
+            <a href="{{ path('song_show',{'slug':notification.song.slug}) }}">
+                <span class="back-picture bp-50" style="border-radius: 3px;margin-right: 14px;background-image: url('{% if notification.song.vocalist.picture %}{{ vich_uploader_asset(notification.song.vocalist) | imagine_filter('thumbnail') }}{% else %}{{ asset('assets/images/avatar.jpg') | imagine_filter('thumbnail') }}{% endif %}')">
+                </span>
+            </a>
+
+        {% elseif notification.type == 'post_approved' or notification.type == 'post_rejected' or notification.type == 'post_comment' or notification.type == 'comment_reply' and notification.post %}
+
+            <a href="{{ path('post_show',{'slug':notification.post.slug}) }}">
+                <span class="back-picture bp-50" style="border-radius: 3px;margin-right: 14px;background-image: url('{% if notification.post.image %}{{ vich_uploader_asset(notification.post) | imagine_filter('thumbnail') }}{% else %}{{ asset('assets/images/question.jpg') | imagine_filter('thumbnail') }}{% endif %}')">
+                </span>
+            </a>
+
+        {% endif %}
+
+    </div>
+
+</div>

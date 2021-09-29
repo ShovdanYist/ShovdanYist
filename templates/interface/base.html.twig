@@ -24,56 +24,71 @@
         {{ encore_entry_link_tags('app') }}
     </head>
 
+    <style>
+        html, body {
+            height: 100%;
+            overflow: hidden;
+        }
+        .body-wrapper {
+            overflow: auto;
+            height: 100%;
+        }
+    </style>
+
     <body class="front {% block pageclass %}{% endblock %}">
 
-        {% block navbar %}
-            {% include 'interface/layouts/modules/navbar.html.twig' %}
-            {% include 'interface/layouts/modules/mobile_navbar.html.twig' %}
-        {% endblock %}
+        <div class="body-wrapper">
 
-        {% block letters %}
-            {{ lettersMenu() }}
-        {% endblock %}
+            {% block navbar %}
+                {% include 'interface/layouts/modules/navbar.html.twig' %}
+                {% include 'interface/layouts/modules/mobile_navbar.html.twig' %}
+            {% endblock %}
 
-        <div class="container md-container">
+            {% block letters %}
+                {{ lettersMenu() }}
+            {% endblock %}
 
-            {% block top_a %}{% endblock %}
+            <div class="container md-container">
 
-            <div class="row">
+                {% block top_a %}{% endblock %}
 
-                {% block sidebar_a %}
+                <div class="row">
 
-                    <div class="sidebar-a">
-                        {% include 'interface/layouts/modules/user_menu.html.twig' %}
-                        {% block sideblock_a %}
-                        {% endblock %}
-                    </div>
+                    {% block sidebar_a %}
 
-                {% endblock %}
-
-                <main>
-                    {% block main_top %}{% endblock %}
-                    {% include 'interface/layouts/modules/flash.html.twig' %}
-
-                    {% block main %}
-                        <div class="md-box md-content-padding">
-                            {% block body %}{% endblock %}
+                        <div class="sidebar-a">
+                            {% include 'interface/layouts/modules/user_menu.html.twig' %}
+                            {% block sideblock_a %}
+                            {% endblock %}
                         </div>
+
                     {% endblock %}
 
-                    {% block main_bottom %}{% endblock %}
-                    {% include 'interface/layouts/modules/footer.html.twig' %}
-                </main>
+                    <main>
+                        {% block main_top %}{% endblock %}
+                        {% include 'interface/layouts/modules/flash.html.twig' %}
 
-                {% block sidebar_b %}
-                {% endblock %}
+                        {% block main %}
+                            <div class="md-box md-content-padding">
+                                {% block body %}{% endblock %}
+                            </div>
+                        {% endblock %}
+
+                        {% block main_bottom %}{% endblock %}
+                        {% include 'interface/layouts/modules/footer.html.twig' %}
+                    </main>
+
+                    {% block sidebar_b %}
+                    {% endblock %}
+
+                </div>
 
             </div>
 
-        </div>
+            {{ encore_entry_script_tags('app') }}
+            {% block scripts %}{% endblock %}
 
-        {{ encore_entry_script_tags('app') }}
-        {% block scripts %}{% endblock %}
+        </div>
 
     </body>
 

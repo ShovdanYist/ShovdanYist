@@ -39,7 +39,7 @@
 {% block main %}
 
     <div class="last-margin-disable">
-        {{ postPreview(post, 'show') }}
+        {{ postView(post, 'show') }}
     </div>
 
     {% if is_granted('ROLE_POST_AUTHOR') %}

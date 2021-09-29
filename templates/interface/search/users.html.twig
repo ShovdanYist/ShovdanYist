@@ -42,32 +42,7 @@
             <div class="md-search-box md-box md-content-padding">
 
                 {% for user in users %}
-
-                    <div class="user-line">
-
-                        <div class="back-picture bp-45" style="background-image: url('{% if user.profile.avatar != 'avatar.jpg' %}{{ vich_uploader_asset(user.profile) | imagine_filter('thumbnail') }}{% else %}{{ asset('assets/images/avatar.jpg') | imagine_filter('thumbnail') }}{% endif %}'); margin-right: 10px">
-                        </div>
-
-                        <div class="user-line-username" {% if user.profile.fullName %}style="line-height: unset"{% endif %}>
-                            <span class="md-username">
-                                <a href="{{ path('user_profile', {'username' : user.username }) }}">
-                                    {{ user.username }}
-                                </a>
-                            </span>
-
-                            {% if user.profile.verified %}
-                                <span class="md-verified">
-                                <i class="fas fa-check-circle text-info"></i>
-                            </span>
-                            {% endif %}
-                        </div>
-
-                        <span class="user-line-fullname">
-                            {{ user.profile.fullName }}
-                        </span>
-
-                    </div>
-
+                    {{ userLine(user) }}
                 {% endfor %}
 
                 {{ paginator.display() }}

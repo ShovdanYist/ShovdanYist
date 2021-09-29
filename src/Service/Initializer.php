@@ -143,7 +143,7 @@ class Initializer
         }
 
         if ($post->getAuthor() !== $this->getUser()) {
-            $this->createAction($post,'post_edited');
+            $this->createAction($post,$post->getType() . '_edited');
         }
 
         $this->em->flush();

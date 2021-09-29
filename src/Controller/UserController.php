@@ -192,6 +192,7 @@ class UserController extends CustomAbstractController
      * @param Mailer $mailer
      * @param TokenGeneratorInterface $tokenGenerator
      * @param Defender $defender
+     * @param UserPasswordEncoderInterface $passwordEncoder
      * @return Response
      */
     public function settings(Request $request, User $user, Mailer $mailer, TokenGeneratorInterface $tokenGenerator, Defender $defender, UserPasswordEncoderInterface $passwordEncoder): Response
@@ -238,12 +239,14 @@ class UserController extends CustomAbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $user->setPassword(
-                $passwordEncoder->encodePassword(
-                    $user,
-                    $form->get('password')->getData()
-                )
-            );
+            if ($this->isGranted('ROLE_OWNER') && $user !== $this->user()) {
+                $user->setPassword(
+                    $passwordEncoder->encodePassword(
+                        $user,
+                        $form->get('password')->getData()
+                    )
+                );
+            }
 
             $verification = $defender->rightToSetUsername($form->get('username')->getData(), $user);
 
@@ -328,7 +331,7 @@ class UserController extends CustomAbstractController
         if ($notifyRepo->count(['receiver' => $user]) > 100) {
             $notifications = $notifyRepo->findBy(['receiver' => $user], ['id' => 'DESC'], null, 100);
             foreach ($notifications as $notification) {
-                $user->removeNotification($notification);
+                $user->removeReceivedNotification($notification);
             }
             $this->getDoctrine()->getManager()->flush();
         }

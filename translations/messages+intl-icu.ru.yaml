@@ -82,6 +82,9 @@ post.is.rejected: 'Публикация отклонена'
 article.in.moderation: 'Статья на модерации'
 article.is.rejected: 'Статья отклонена'
 
+followed.to.you.male: 'подписался на вас'
+followed.to.you.female: 'подписалась на вас'
+
 replied.you.with.comment.male: 'ответил на ваш комментарий:'
 replied.you.with.comment.female: 'ответила на ваш комментарий:'
 replied.you.with.comment.users: 'и другие ответили на ваш комментарий'
@@ -99,6 +102,14 @@ rejected.your.article : 'отклонил вашу статью'
 approved.your.post : 'утвердил вашу публикацию'
 approved.your.article : 'утвердил вашу статью'
 
+deleted.comment.male: 'удалил комментарий от пользователя'
+deleted.comment.female: 'удалила комментарий от пользователя'
+
+blocked.user.male: 'заблокировал пользователя'
+blocked.user.female: 'заблокировала пользователя'
+unblocked.user.male: 'разблокировал пользователя'
+unblocked.user.female: 'разблокировала пользователя'
+
 approved.post.male : 'утвердил публикацию'
 approved.post.female : 'утвердила публикацию'
 approved.article.male : 'утвердил статью'
@@ -109,15 +120,25 @@ rejected.post.female : 'отклонила публикацию'
 rejected.article.male : 'отклонил статью'
 rejected.article.female : 'отклонила статью'
 
-blocked.user.male: 'заблокировал пользователя'
-blocked.user.female: 'заблокировала пользователя'
-unblocked.user.male: 'разблокировал пользователя'
-unblocked.user.female: 'разблокировала пользователя'
+edited.post.male: 'отредактировал публикацию'
+edited.post.female: 'отредактировала публикацию'
+edited.article.male: 'отредактировал статью'
+edited.article.female: 'отредактировала статью'
+
+edited.song.male: 'отредактировал песню'
+edited.song.female: 'отредактировала песню'
+
+edited.person.male: 'отредактировал биографию'
+edited.person.female: 'отредактировала биографию'
+
+changed.rights.male: 'поменял права пользователя'
+changed.rights.female: 'поменяла права пользователя'
 
 user.have.no.actions: 'У администратора { username } нет действий'
+no.actions.in: 'Нет действий в разделе "{ section }"'
+no.actions: 'Действий еще нет'
 
 for.next.reason: 'по следующей причине'
-you.have.no.notifications: 'У вас нет уведомлений'
 account.deleting: 'Удаление аккаунта'
 account.deleting.warning.message: 'Все данные связанные с вашим аккаунтом будут безвозвратно удалены.'
 are.you.sure.to.delete.account: 'Вы уверены что хотите удалить свой аккаунт навсегда?'
@@ -128,7 +149,7 @@ block: Заблокировать
 unblock: Разблокировать
 reset.password: 'Изменить свой пароль'
 playlist.of: 'Плейлист {username}'
-not.songs.in.your.playlist: 'У вас нет песен в плейлисте'
+not.songs.in.your.playlist: 'У вас еще нет песен в плейлисте'
 user.has.not.songs.in.playlist: 'У пользователя {username} нет песен в плейлисте'
 manager: Менеджер
 my.page: 'Моя страница'
@@ -143,6 +164,7 @@ sure.to.delete.notification: 'Вы уверены что хотите удали
 sure.to.delete.action: 'Вы уверены что хотите удалить это действие?'
 sure.to.delete.song: 'Вы уверены что хотите удалить эту песню?'
 sure.to.delete.person: 'Вы уверены что хотите удалить этого человека?'
+sure.to.delete.follower: 'Вы уверены что хотите удалить подписчика { username }?'
 delete: Удалить
 password.recovery: 'Восстановление пароля'
 flash.registration.successful.completed: 'Регистрация успешно завершена'
@@ -185,7 +207,6 @@ post: Публикация
 article: Статья
 posts: Публикации
 posts.from.category: 'Публикации из категории'
-sections: Секции
 select.sections: 'Выберите секции'
 event.date: 'Дата события'
 feed: Лента
@@ -243,7 +264,6 @@ dashboard: 'Панель управления'
 in.moderation: 'На модерации'
 pending: 'В ожидании'
 published: Опубликованные
-total: Всего
 status: Статус
 add.to.bookmarks: 'Добавить в закладки'
 remove.from.bookmarks: 'Удалить из закладок'
@@ -260,10 +280,23 @@ publish: Опубликовать
 approve: Утвердить
 remember.me: 'Запомнить меня'
 all: Всё
-you.have.not.bookmarks: 'У вас нет закладок'
+you.have.no.notifications: 'У вас еще нет уведомлений'
+you.have.not.bookmarks: 'У вас еще нет закладок'
+you.have.not.followers: 'У вас еще нет подписчиков'
+you.have.not.following: 'У вас еще нет подписок'
+you.have.not.posts: 'У вас еще нет публикаций'
+user.have.not.posts: 'У пользователя { username } еще нет публикаций'
+user.have.not.followers: 'У пользователя { username } еще нет подписчиков'
+user.have.not.following: 'У пользователя { username } еще нет подписок'
+points: 'Баллы'
+followers: 'Подписчики'
+following: 'Подписки'
+follow: 'Подписаться'
+unfollow: 'Отписаться'
+write: 'Написать'
+have.not.posts: 'Пока нет публикаций'
 additional: Дополнительно
 email.confirmation: 'Подтверждение электронной почты'
-
 
 send.for.moderation: 'Отправить на модерацию'
 send.for.moderation.help: 'Если не отметите этот пункт, то публикация сохранится как черновик и вы сможете отправить её позже'
@@ -331,3 +364,7 @@ posts.for.keyword: 'Публикации по запросу «{ keyword }»'
 in.page: 'на странице «{ page }»'
 title.or.slug.exists: 'Публикация с таким названием уже существует'
 animated.image: 'Анимированное изображение'
+
+you.are.blocked.and.you.cant.edit.profile: 'Вы заблокированы и не можете редактировать свою страницу'
+confirm.your.email: 'Подтвердите свою электронную почту'
+to.customize.your.profile: 'чтобы оформить свою страницу'

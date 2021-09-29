@@ -12,7 +12,7 @@
 {% block main %}
 
     {% for post in posts %}
-        {{ postPreview(post, 'moderation') }}
+        {{ postView(post, 'moderation') }}
     {% else%}
         <div class="md-box md-content-padding">{{ 'no.posts.in.moderation' | trans }}</div>
     {% endfor %}

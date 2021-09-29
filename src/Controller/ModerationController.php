@@ -268,9 +268,12 @@ class ModerationController extends CustomAbstractController
      */
     public function postValidation(Request $request, Post $post): Response
     {
+        $sender = $this->getDoctrine()->getRepository(User::class)->findOneBy(['id' => 2]);
+
         $notification = new Notification();
         $notification->setReceiver($post->getAuthor());
         $notification->setPost($post);
+        $notification->setSender($sender);
 
         $form = $this->createForm(NotificationType::class, $notification);
         $form->handleRequest($request);

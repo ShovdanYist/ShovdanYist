@@ -33,7 +33,10 @@
 
     {% else %}
 
-        <div class="md-box md-content-padding">{{ 'you.have.not.bookmarks' | trans }}</div>
+        <div class="md-box md-content-padding text-center">
+            <i class="far fa-bookmark" style="margin-right: 3px"></i>
+            {{ 'you.have.not.bookmarks' | trans }}
+        </div>
 
     {% endfor %}
 

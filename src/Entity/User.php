@@ -95,9 +95,14 @@ class User implements UserInterface
     private $replies;
 
     /**
+     * @ORM\OneToMany(targetEntity=Notification::class, mappedBy="sender")
+     */
+    private $sentNotifications;
+
+    /**
      * @ORM\OneToMany(targetEntity="App\Entity\Notification", mappedBy="receiver", orphanRemoval=true)
      */
-    private $notifications;
+    private $receivedNotifications;
 
     /**
      * @ORM\OneToMany(targetEntity=Post::class, mappedBy="author", orphanRemoval=true)
@@ -149,19 +154,32 @@ class User implements UserInterface
      */
     private $views;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Follow::class, mappedBy="follower", orphanRemoval=true)
+     */
+    private $following;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Follow::class, mappedBy="followed", orphanRemoval=true)
+     */
+    private $followers;
+
     public function __construct()
     {
         $this->songs = new ArrayCollection();
         $this->comments = new ArrayCollection();
         $this->playlistSongs = new ArrayCollection();
         $this->replies = new ArrayCollection();
-        $this->notifications = new ArrayCollection();
+        $this->sentNotifications = new ArrayCollection();
+        $this->receivedNotifications = new ArrayCollection();
         $this->posts = new ArrayCollection();
         $this->bookmarks = new ArrayCollection();
         $this->invitees = new ArrayCollection();
         $this->actions = new ArrayCollection();
         $this->remarks = new ArrayCollection();
         $this->views = new ArrayCollection();
+        $this->following = new ArrayCollection();
+        $this->followers = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -426,28 +444,59 @@ class User implements UserInterface
     /**
      * @return Collection|Notification[]
      */
-    public function getNotifications(): Collection
+    public function getSentNotifications(): Collection
     {
-        return $this->notifications;
+        return $this->sentNotifications;
     }
 
-    public function addNotification(Notification $notification): self
+    public function addSentNotification(Notification $sentNotification): self
     {
-        if (!$this->notifications->contains($notification)) {
-            $this->notifications[] = $notification;
-            $notification->setReceiver($this);
+        if (!$this->sentNotifications->contains($sentNotification)) {
+            $this->sentNotifications[] = $sentNotification;
+            $sentNotification->setSender($this);
         }
 
         return $this;
     }
 
-    public function removeNotification(Notification $notification): self
+    public function removeSentNotification(Notification $sentNotification): self
     {
-        if ($this->notifications->contains($notification)) {
-            $this->notifications->removeElement($notification);
+        if ($this->sentNotifications->contains($sentNotification)) {
+            $this->sentNotifications->removeElement($sentNotification);
             // set the owning side to null (unless already changed)
-            if ($notification->getReceiver() === $this) {
-                $notification->setReceiver(null);
+            if ($sentNotification->getSender() === $this) {
+                $sentNotification->setSender(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Notification[]
+     */
+    public function getReceivedNotifications(): Collection
+    {
+        return $this->receivedNotifications;
+    }
+
+    public function addReceivedNotification(Notification $receivedNotification): self
+    {
+        if (!$this->receivedNotifications->contains($receivedNotification)) {
+            $this->receivedNotifications[] = $receivedNotification;
+            $receivedNotification->setReceiver($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReceivedNotification(Notification $receivedNotification): self
+    {
+        if ($this->receivedNotifications->contains($receivedNotification)) {
+            $this->receivedNotifications->removeElement($receivedNotification);
+            // set the owning side to null (unless already changed)
+            if ($receivedNotification->getReceiver() === $this) {
+                $receivedNotification->setReceiver(null);
             }
         }
 
@@ -686,5 +735,39 @@ class User implements UserInterface
         }
 
         return $this;
+    }
+
+    /**
+     * @return Collection|Follow[]
+     */
+    public function getFollowers(): Collection
+    {
+        return $this->followers;
+    }
+
+    /**
+     * @return Collection|Follow[]
+     */
+    public function getFollowing(): Collection
+    {
+        return $this->following;
+    }
+
+    public function removeFollow(Follow $follow): self
+    {
+        if ($this->following->contains($follow)) {
+            $this->following->removeElement($follow);
+        }
+
+        return $this;
+    }
+
+    public function addFollow($followed): Follow
+    {
+        $follow = new Follow();
+        $follow->setFollower($this);
+        $follow->setFollowed($followed);
+
+        return $follow;
     }
 }

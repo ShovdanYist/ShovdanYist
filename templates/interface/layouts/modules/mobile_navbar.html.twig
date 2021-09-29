@@ -94,7 +94,7 @@
 
             {% if is_granted('ROLE_POST_MODERATOR') or is_granted('ROLE_USER_ACTIONS') or is_granted('ROLE_OWNER') or is_granted('ROLE_SONG_MODERATOR') or hasOnlyAuthorRightsInSongs(app.user) %}
                 <hr>
-                <span class="navbar-menu-separator">Модерация</span>
+{#                <span class="navbar-menu-separator">Модерация</span>#}
             {% endif %}
 
             {% if is_granted('ROLE_SONG_MODERATOR') or hasOnlyAuthorRightsInSongs(app.user) %}
@@ -153,35 +153,14 @@
             <hr>
 
             {% if is_granted('ROLE_OWNER') %}
-                <span class="navbar-menu-separator">Управление</span>
 
-                <a class="sidenav-link" href="{{ path('users_index') }}">
+                <a class="sidenav-link" href="{{ path('moderation_index') }}">
                     <span class="dashbar-nav-icon">
-                        <i class="fas fa-users"></i>
-                    </span>
-
-                        <span class="dashbar-nav-name">
-                        {{ 'users' | trans }}
-                    </span>
-                </a>
-
-                <a class="sidenav-link" href="{{ path('activities_index') }}">
-                    <span class="dashbar-nav-icon">
-                        <i class="fas fa-briefcase"></i>
+                        <i class="fas fa-toolbox"></i>
                     </span>
 
                     <span class="dashbar-nav-name">
-                        {{ 'activities' | trans }}
-                    </span>
-                </a>
-
-                <a class="sidenav-link" href="{{ path('tags_index') }}">
-                    <span class="dashbar-nav-icon">
-                        <i class="fas fa-tag"></i>
-                    </span>
-
-                    <span class="dashbar-nav-name">
-                        {{ 'tags' | trans }}
+                        {{ 'manager' | trans }}
                     </span>
                 </a>
 

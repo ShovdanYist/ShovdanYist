@@ -7,24 +7,29 @@
         (path('app_home')) : ('home.page' | trans),
         'active' : 'moderation' | trans
     }) }}
+
+    <div class="md-box md-content-padding md-margin-bottom manager-menu">
+
+        <a href="{{ path('users_index') }}" class="btn">
+            {{ 'users' | trans }}
+        </a>
+
+        <a href="{{ path('activities_index') }}" class="btn">
+            {{ 'activities' | trans }}
+        </a>
+
+        <a href="{{ path('tags_index') }}" class="btn">
+            {{ 'tags' | trans }}
+        </a>
+
+    </div>
 {% endblock %}
 
 {% block body %}
 
-    <h2>{{ 'statistics' | trans }}</h2>
-
     <div class="scrollable-table">
 
-        <table class="table table-striped table-center md-table-carved">
-
-            <thead class="thead-dark">
-                <tr>
-                    <th scope="col">{{ 'sections' | trans }}</th>
-                    <th scope="col"><i class="fas fa-tasks"></i></th>
-                    <th scope="col"><i class="fas fa-check"></i></th>
-                    <th scope="col">{{ 'total' | trans }}</th>
-                </tr>
-            </thead>
+        <table class="table table-center">
 
             <tbody>
 

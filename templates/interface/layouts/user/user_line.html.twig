@@ -1,0 +1,47 @@
+<div class="user-line" id="u{{ (follower.id * 14 / 3 + 91) | round }}l">
+
+    <div class="back-picture bp-45" style="background-image: url('{% if follower.profile.avatar != 'avatar.jpg' %}{{ vich_uploader_asset(follower.profile) | imagine_filter('thumbnail') }}{% else %}{{ asset('assets/images/avatar.jpg') | imagine_filter('thumbnail') }}{% endif %}'); margin-right: 10px">
+    </div>
+
+    <div class="user-line-info">
+        <div class="user-line-username" {% if follower.profile.fullName %}style="line-height: unset"{% endif %}>
+            <span class="md-username">
+                <a href="{{ path('user_profile', {'username' : follower.username }) }}">
+                    {{ follower.username }}
+                </a>
+            </span>
+
+            {% if follower.profile.verified %}
+                <span class="md-verified">
+                    <i class="fas fa-check-circle text-info"></i>
+                </span>
+            {% endif %}
+        </div>
+
+        <span class="user-line-fullname">
+            {{ follower.profile.fullName }}
+        </span>
+    </div>
+
+    <style>
+        .user-line-follow .btn::before {
+            content: "{{ 'follow' | trans }}";
+        }
+        .user-line-follow .btn.followed::before {
+            content: "{{ 'unfollow' | trans }}";
+        }
+    </style>
+
+    {% if app.user != follower %}
+        <div class="user-line-follow">
+            {% if unfollow == app.user %}
+                <a href="{{ path('user_unfollow',{'username':follower.username}) }}" class="unfollow unfollow-toggle" id="u{{ (follower.id * 14 / 3 + 91) | round }}t" title="{{ 'sure.to.delete.follower' | trans({'username':follower.username}) }}">
+                    <i class="fas fa-times"></i>
+                </a>
+            {% endif %}
+
+            <a class="btn follow-toggle{% if userIsFollowed(follower) %} btn-light followed{% else %} btn-info{% endif %}" href="{{ path('user_follow',{'username':follower.username}) }}"></a>
+        </div>
+    {% endif %}
+
+</div>

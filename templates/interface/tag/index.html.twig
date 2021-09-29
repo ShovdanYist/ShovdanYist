@@ -6,69 +6,62 @@
     {{ breadcrumb({
         (is_granted('ROLE_OWNER')) ? path('moderation_index') : '' : 'moderation' | trans,
         'active' : ('tags' | trans),
-    }) }}
+    }, null, 'tag_add') }}
 {% endblock %}
 
 {% block body %}
-    <a class="btn btn-primary float-right" href="{{ path('tag_new') }}">
-        {{ 'add.tag' | trans }}
-    </a>
 
     <table class="table table-striped table-middle-aligned">
-        <thead>
-            <tr>
-                <th>{{ 'title' | trans }}</th>
-                <th>{{ 'type' | trans }}</th>
-            </tr>
-        </thead>
+
         <tbody>
-        {% for tag in tags %}
-            <tr>
-                <td>
-                    {{ tag.title }}
 
-                    <button type="button" class="btn md-dot-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <i class="fas fa-ellipsis-h"></i>
-                    </button>
+            {% for tag in tags %}
 
-                    <div class="dropdown-menu">
+                <tr>
+                    <td>
+                        {{ tag.title }}
 
-                        <a href="{{ path('tag_edit', {'id': tag.id}) }}" class="dropdown-item">
-                            <i class="fa fa-edit" aria-hidden="true"></i> {{ 'edit' | trans }}
-                        </a>
+                        <button type="button" class="btn md-dot-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fas fa-ellipsis-h"></i>
+                        </button>
 
-                        <form method="post" action="{{ path('tag_delete', {'id': tag.id}) }}" onsubmit="return confirm('{{ 'are.you.sure.to.delete' | trans }}');">
-                            <input type="hidden" name="_method" value="DELETE">
-                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ tag.id) }}">
-                            <button class="dropdown-item">
-                                <i class="fas fa-trash-alt"></i> {{ 'delete' | trans }}
-                            </button>
-                        </form>
+                        <div class="dropdown-menu">
 
-                    </div>
+                            <a href="{{ path('tag_edit', {'id': tag.id}) }}" class="dropdown-item">
+                                <i class="fa fa-edit" aria-hidden="true"></i> {{ 'edit' | trans }}
+                            </a>
 
-                    <br><span class="small text-muted">{{ tag.slug }}</span>
-                </td>
+                            <form method="post" action="{{ path('tag_delete', {'id': tag.id}) }}" onsubmit="return confirm('{{ 'are.you.sure.to.delete' | trans }}');">
+                                <input type="hidden" name="_method" value="DELETE">
+                                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ tag.id) }}">
+                                <button class="dropdown-item">
+                                    <i class="fas fa-trash-alt"></i> {{ 'delete' | trans }}
+                                </button>
+                            </form>
 
-                <td>
-                    {% if tag.type == 'song' %}
-                        <span class="badge badge-success">
-                            {{ tag.type }}
-                        </span>
-                    {% elseif tag.type == 'post' %}
-                        <span class="badge badge-info">
-                            {{ tag.type }}
-                        </span>
-                    {% endif %}
-                </td>
+                        </div>
 
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="3">{{ 'no.records.found' | trans }}</td>
-            </tr>
-        {% endfor %}
+                        <br><span class="small text-muted">{{ tag.slug }}</span>
+                    </td>
+
+                    <td>
+                        {% if tag.type == 'song' %}
+                            <span class="badge badge-success">
+                                {{ tag.type }}
+                            </span>
+                        {% elseif tag.type == 'post' %}
+                            <span class="badge badge-info">
+                                {{ tag.type }}
+                            </span>
+                        {% endif %}
+                    </td>
+
+                </tr>
+
+            {% endfor %}
+
         </tbody>
+
     </table>
 
 {% endblock %}

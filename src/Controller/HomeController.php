@@ -155,7 +155,7 @@ class HomeController extends CustomAbstractController
 
             $mailer->setTo($form->get('email')->getData())
                 ->setSubject($this->trans('mailer.shovdanyist.signup'))
-                ->setTemplate('layouts/mailer/registration.html.twig')
+                ->setTemplate('interface/layouts/mailer/registration.html.twig')
                 ->setVariables(['user' => $user])
                 ->notify();
 
@@ -203,7 +203,7 @@ class HomeController extends CustomAbstractController
 
             $mailer ->setTo($form->getData()['email'])
                 ->setSubject($this->trans('mailer.shovdanyist.account.recovery'))
-                ->setTemplate('layouts/mailer/reset_password.html.twig')
+                ->setTemplate('interface/layouts/mailer/reset_password.html.twig')
                 ->setVariables(['user' => $user])
                 ->notify();
 
@@ -276,6 +276,12 @@ class HomeController extends CustomAbstractController
      */
     public function emailValidation(User $user, $token): Response
     {
+        if ($this->user()->getStatus()) {
+            return $this->redirectToRoute('user_profile', [
+                'username' => $this->user()->getUsername()
+            ]);
+        }
+
         if ($user->getToken() == $token) {
             $user->setToken(null);
             if ($user->getStatus() !== false) {

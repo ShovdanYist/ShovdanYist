@@ -1,6 +1,6 @@
 {% extends 'interface/base.html.twig' %}
 
-{% block title %}{{ 'playlist.of' | trans({'username':user.username}) }}{% endblock %}
+{% block title %}{{ 'playlist' | trans }}{% endblock %}
 
 {% block description %}В ShovdanYist вы найдете тексты всех чеченских песен, их переводы, а также сможете скачать их или добавлять в свой плейлист.{% endblock %}
 
@@ -21,11 +21,15 @@
 
     {% else %}
 
-        {% if user.username == app.user.username %}
-            {{ 'not.songs.in.your.playlist' | trans }}
-        {% else %}
-            {{ 'user.has.not.songs.in.playlist' | trans({'username':user.username}) }}
-        {% endif %}
+        <div class="text-center">
+            <i class="fas fa-headphones-alt" style="margin-right: 3px"></i>
+
+            {% if user.username == app.user.username %}
+                {{ 'not.songs.in.your.playlist' | trans }}
+            {% else %}
+                {{ 'user.has.not.songs.in.playlist' | trans({'username':user.username}) }}
+            {% endif %}
+        </div>
 
     {% endfor %}
 

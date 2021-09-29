@@ -36,7 +36,7 @@
 {% block main %}
 
     {% for post in posts %}
-        {{ postPreview(post) }}
+        {{ postView(post) }}
     {% endfor %}
 
     {{ paginator.display('box') }}

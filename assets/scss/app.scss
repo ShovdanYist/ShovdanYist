@@ -190,12 +190,14 @@ li {
 }
 
 .user-line {
-  display: block;
+  display: flex;
   height: 45px;
+  position: relative;
+  margin-bottom: 12px;
 }
 
-.user-line {
-  margin-bottom: 12px;
+.user-line-info {
+  flex: 1 auto;
 }
 
 .user-line:last-child {
@@ -215,6 +217,50 @@ li {
 
 .user-line-username .md-verified {
   top: unset;
+}
+
+.user-line-follow {
+  position: absolute;
+  right: 0;
+  top: 9px;
+}
+
+.user-line-follow .btn {
+  font-weight: 500;
+  font-size: 13px;
+  padding: 2px 6px 3px 5px;
+  width: 100px;
+}
+
+.profile-buttons {
+  display: flex;
+  justify-content: space-evenly;
+  margin-top: 14px;
+}
+
+.profile-button .btn {
+  font-weight: 500;
+  font-size: 14px;
+  padding: 4px 8px 6px 8px;
+}
+
+.profile-follow a {
+  width: 109px;
+}
+
+.profile-button.un-width .btn {
+  width: unset !important;
+}
+
+.unfollow {
+  color: #adb5bd;
+  right: 3px;
+  top: 1px;
+  position: relative;
+}
+
+.unfollow:hover {
+  color: #9aa7b5;
 }
 
 // CK Editor Content
@@ -1225,6 +1271,9 @@ td {
   width: 100%;
   position: relative;
 }
+.md-profile-info {
+  margin-top: 24px;
+}
 .md-profile-info .md-fullname, .md-profile-info .md-link {
   font-weight: 600;
 }
@@ -1235,6 +1284,28 @@ td {
   display: inherit;
   width: calc(100% - 40px);
   margin-top: -14px;
+}
+
+.follows-block {
+  display: flex;
+  justify-content: space-around;
+}
+
+.follows-block a div {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+}
+
+.follows-block .number {
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+.follows-block .title {
+  color: #95a5a6;
+  font-size: 13px;
+  text-transform: lowercase;
 }
 
 .md-grid-posts {
@@ -1289,16 +1360,24 @@ td {
   padding: 1px 3px;
 }
 
+.profile-no-posts {
+  padding: 24px;
+  margin-bottom: 15px;
+  width: 100%;
+  text-align: center;
+}
+
 .md-profile-posts-menu {
   justify-content: space-around;
-  border-top: 1px solid #e8e9ec;
-  border-bottom: 1px solid #e8e9ec;
+  border-top: 1px solid #eef1f5;
+  border-bottom: 1px solid #eef1f5;
   display: flex;
   padding: 10px;
 }
 
 .md-profile-posts-menu a {
   color: #adb5bd;
+  font-weight: 500;
 }
 
 .md-profile-posts-menu a:hover {
@@ -1306,11 +1385,11 @@ td {
 }
 
 .md-profile-posts-menu a.active {
-  color: #333;
+  color: #555;
 }
 
 .md-profile-posts-menu a.active:hover {
-  color: #555;
+  color: #777;
 }
 
 // Breadcrumbs
@@ -1380,6 +1459,18 @@ td {
 
 .md-margin-bottom {
   margin-bottom: 12px;
+}
+
+.md-margin-top {
+  margin-top: 12px;
+}
+
+.md-margin-right {
+  margin-right: 12px;
+}
+
+.md-margin-left {
+  margin-left: 12px;
 }
 
 .user-title-block {
@@ -2205,4 +2296,18 @@ select {
 
 .bk-toggle.added .bookmark-icon::before {
   font-weight: 800;
+}
+
+// Other
+
+.manager-menu {
+  display: none;
+  justify-content: space-between;
+}
+
+.manager-menu a {
+  background: #f2f4f6;
+  border-radius: 100px;
+  padding: 4px 10px 5px 10px;
+  font-weight: 500;
 }

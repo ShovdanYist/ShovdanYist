@@ -1,0 +1,139 @@
+{% if action.type == 'comment_deleted' %}                                                                                {# ---------- COMMENT DELETED ---------- #}
+
+    {% if action.moderator.profile.gender %}
+        {{ 'deleted.comment.female' | trans }}
+    {% else %}
+        {{ 'deleted.comment.male' | trans }}
+    {% endif %}
+
+    <a href="{{ path('user_profile',{'username': action.user.username }) }}">
+        {{ action.user.username }}:
+    </a>
+
+    <span style="font-weight: 500">
+        {{ action.content }}
+    </span>
+
+{% elseif action.type == 'user_blocked' or action.type == 'user_unblocked' %}                                            {# ---------- USER BLOCK / UNBLOCK ---------- #}
+
+    {% if action.type == 'user_blocked' %}
+
+        {% if action.moderator.profile.gender %}
+            {{ 'blocked.user.female' | trans }}
+        {% else %}
+            {{ 'blocked.user.male' | trans }}
+        {% endif %}
+
+    {% else %}
+
+        {% if action.moderator.profile.gender %}
+            {{ 'unblocked.user.female' | trans }}
+        {% else %}
+            {{ 'unblocked.user.male' | trans }}
+        {% endif %}
+
+    {% endif %}
+
+    <a href="{{ path('user_profile',{'username': action.user.username }) }}">
+        {{ action.user.username }}
+    </a>
+
+{% elseif action.type == 'post_approved' or action.type == 'post_rejected' %}                                            {# ---------- POST APPROVE / REJECT ---------- #}
+
+    {% if action.type == 'post_approved' %}
+
+        {% if action.moderator.profile.gender %}
+            {{ ('approved.' ~ action.post.type ~ '.female') | trans }}
+        {% else %}
+            {{ ('approved.' ~ action.post.type ~ '.male') | trans }}
+        {% endif %}
+
+        {% if action.post.type == 'article' %}
+            <a href="{{ path('post_show',{'slug':action.post.slug}) }}">
+                {{ action.post.title }}
+            </a>
+        {% else %}
+            <a href="{{ path('user_profile',{'username': action.post.author.username }) }}">
+                {{ action.post.author.username }}
+            </a>
+        {% endif %}
+
+    {% elseif action.type == 'post_rejected' %}
+
+        {% if action.moderator.profile.gender %}
+            {{ ('rejected.' ~ action.post.type ~ '.female') | trans }}
+        {% else %}
+            {{ ('rejected.' ~ action.post.type ~ '.male') | trans }}
+        {% endif %}
+
+        {% if action.post.type == 'article' %}
+            <a href="{{ path('post_show',{'slug':action.post.slug}) }}">
+                {{ action.post.title }}
+            </a>
+        {% endif %}
+
+        {{ 'for.next.reason' | trans }}:
+
+        <span style="font-weight: 500">
+            {{ action.content }}
+        </span>
+
+    {% endif %}
+
+{% elseif action.type == 'post_edited' or action.type == 'article_edited' %}                                             {# ---------- POST / ARTICLE EDIT ---------- #}
+
+    {% if action.moderator.profile.gender %}
+        {{ ('edited.' ~ action.post.type ~ '.female') | trans }}
+    {% else %}
+        {{ ('edited.' ~ action.post.type ~ '.male') | trans }}
+    {% endif %}
+
+    {% if action.type == 'article_edited' %}
+        <a href="{{ path( 'post_show', {'slug': action.post.slug}) }}">
+            {{ action.post.title }}
+        </a>
+    {% else %}
+        <a href="{{ path('user_profile',{'username': action.post.author.username }) }}">
+            {{ action.post.author.username }}
+        </a>
+    {% endif %}
+
+{% elseif action.type == 'song_edited' %}                                                                                {# ---------- SONG EDIT ---------- #}
+
+    {% if action.moderator.profile.gender %}
+        {{ 'edited.song.female' | trans }}
+    {% else %}
+        {{ 'edited.song.male' | trans }}
+    {% endif %}
+
+    <a href="{{ path( 'song_show', {'slug': action.song.slug}) }}">
+        {{ action.song.fullTitle }}
+    </a>
+
+{% elseif action.type == 'person_edited' %}                                                                              {# ---------- PERSON EDIT ---------- #}
+
+    {% if action.moderator.profile.gender %}
+        {{ 'edited.person.female' | trans }}
+    {% else %}
+        {{ 'edited.person.male' | trans }}
+    {% endif %}
+
+    <a href="{{ path( 'person_show', {'slug': action.person.slug}) }}">
+        {{ action.person.fullName }}
+    </a>
+
+{% elseif action.type == 'rights_changed' %}                                                                             {# ---------- RIGHTS CHANGED ---------- #}
+
+    {% if action.moderator.profile.gender %}
+        {{ 'changed.rights.female' | trans }}
+    {% else %}
+        {{ 'changed.rights.male' | trans }}
+    {% endif %}
+
+    <a href="{{ path('user_profile',{'username': action.user.username }) }}">
+        {{ action.user.username }}:
+    </a>
+
+    {{ action.content | raw }}
+
+{% endif %}

@@ -6,50 +6,19 @@
     {{ breadcrumb({
         (is_granted('ROLE_OWNER')) ? path('moderation_index') : '' : 'moderation' | trans,
         'active' : ('users' | trans),
-    }) }}
+    }, null, 'user_add') }}
 {% endblock %}
 
 {% block body %}
-    <div class="text-right mb-2">
-        <a class="btn btn-primary" href="{{ path('user_new') }}">
-            {{ 'add.user' | trans }}
-        </a>
-    </div>
 
     <div class="md-search-box">
 
         {% for user in users %}
-            <div class="user-line">
-
-                <div class="back-picture bp-45" style="background-image: url('{% if user.profile.avatar != 'avatar.jpg' %}{{ vich_uploader_asset(user.profile) | imagine_filter('thumbnail') }}{% else %}{{ asset('assets/images/avatar.jpg') | imagine_filter('thumbnail') }}{% endif %}'); margin-right: 10px">
-                </div>
-
-                <div class="user-line-username" {% if user.profile.fullName %}style="line-height: unset"{% endif %}>
-                    <span class="md-username">
-                        <a href="{{ path('user_profile', {'username' : user.username }) }}">
-                            {{ user.username }}
-                        </a>
-                    </span>
-
-                    {% if user.profile.verified %}
-                        <span class="md-verified">
-                            <i class="fas fa-check-circle text-info"></i>
-                        </span>
-                    {% endif %}
-                </div>
-
-                <span class="user-line-fullname">
-                    {{ user.profile.fullName }}
-                </span>
-
-            </div>
-        {% else %}
-            <tr>
-                <td colspan="5">{{ 'no.records.found' | trans }}</td>
-            </tr>
+            {{ userLine(user) }}
         {% endfor %}
 
         {{ paginator.display() }}
 
     </div>
+
 {% endblock %}

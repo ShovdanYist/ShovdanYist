@@ -75,6 +75,9 @@
   .md-custom-paginator .md-pagination-box {
     padding-bottom: 10px !important;
   }
+  .manager-menu {
+    display: flex !important;
+  }
 }
 
 @media only screen and (max-width: 768px) {
@@ -113,6 +116,9 @@
   }
   .md-content-padding {
     padding: 16px !important;
+  }
+  .md-profile-info {
+    margin-top: 16px !important;
   }
   .md-form-padding {
     padding: 14px 16px 16px !important;
@@ -206,6 +212,10 @@
   .md-grid-post:nth-child(4n+4) {
     margin: unset !important;
   }
+  .profile-no-posts {
+    padding: 16px !important;
+    margin-bottom: 10px !important;
+  }
 }
 
 @media only screen and (max-width: 576px) {
@@ -293,6 +303,14 @@
   .md-search-pages-menu {
     margin-left: 2px !important;
     margin-right: 0 !important;
+  }
+  .profile-buttons {
+    margin-top: 10px !important;
+  }
+  .profile-button .btn {
+    font-size: 13px !important;
+    padding: 2px 6px 4px 5px !important;
+    width: 100px !important;
   }
 }
 
