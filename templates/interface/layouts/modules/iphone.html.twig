@@ -1,5 +1,5 @@
 {% set agent = app.request.headers.get('User-Agent') %}
 
 {% if 'iPhone' in agent and 'Safari' in agent == false %}
-    <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/chosen.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/iphone.css') }}">
 {% endif %}
