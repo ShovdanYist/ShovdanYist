@@ -14,7 +14,7 @@
 
 			{% if user.status is null %}
 				<div class="md-alert md-alert-warning md-box-mb mb-0">
-					<i class="fas fa-exclamation-triangle"></i> Время ссылки истёк, <a href="{{ path('user_settings') }}">отправьте на почту</a> новую ссылку
+					<i class="fas fa-exclamation-triangle"></i> Время ссылки истёк, <a href="{{ path('user_settings',{'username' : app.user.username}) }}">отправьте на почту</a> новую ссылку
 				</div>
 			{% elseif user.status == false %}
 				<div class="md-alert md-alert-danger md-box-mb mb-0">

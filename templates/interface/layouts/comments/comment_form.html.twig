@@ -39,7 +39,7 @@
 
         <div class="md-comment-guest md-alert md-alert-warning md-box-mb">
 
-            <i class="fas fa-exclamation-triangle"></i> <a href="{{ path('user_settings') }}">Подтвердите электронную почту</a>, чтобы писать комментарии
+            <i class="fas fa-exclamation-triangle"></i> <a href="{{ path('user_settings',{'username' : app.user.username}) }}">Подтвердите электронную почту</a>, чтобы писать комментарии
 
         </div>
 
