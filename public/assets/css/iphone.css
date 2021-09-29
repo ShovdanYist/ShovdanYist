@@ -1,19 +1,19 @@
 .md-nav {
-    height: 100px
+    height: 100px !important;
 }
 
 .md-nav .container {
-    padding-top: 45px
+    padding-top: 45px !important;
 }
 
 #sideNavOpener {
-    top: 45px
+    top: 45px !important;
 }
 
 .navbar-search-opener {
-    top: 54px
+    top: 54px !important;
 }
 
 .body-wrapper {
-    padding-top: 115px
+    padding-top: 115px !important;
 }
