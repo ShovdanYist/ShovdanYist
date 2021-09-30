@@ -3,10 +3,12 @@
 namespace App\Service;
 
 use App\Entity\Action;
+use App\Entity\Notification;
 use App\Entity\Post;
 use App\Entity\Person;
 use App\Entity\Song;
 use App\Entity\View;
+use App\Repository\NotificationRepository;
 use App\Repository\UserRepository;
 use Cocur\Slugify\SlugifyInterface;
 use Doctrine\ORM\EntityManagerInterface;
@@ -17,6 +19,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class Initializer
 
 {
+    private $notifications;
     private $translator;
     private $compiler;
     private $security;
@@ -26,8 +29,9 @@ class Initializer
     private $flash;
     private $em;
 
-    public function __construct(TranslatorInterface $translator, Security $security, UserRepository $users, Defender $defender, Compiler $compiler, SlugifyInterface $slugify, EntityManagerInterface $em, FlashBagInterface $flash)
+    public function __construct(TranslatorInterface $translator, Security $security, UserRepository $users, NotificationRepository $notifications, Defender $defender, Compiler $compiler, SlugifyInterface $slugify, EntityManagerInterface $em, FlashBagInterface $flash)
     {
+        $this->notifications = $notifications;
         $this->translator = $translator;
         $this->security = $security;
         $this->defender = $defender;
@@ -118,35 +122,46 @@ class Initializer
         }
     }
 
-    public function initializePostEdit(Post $post)
+    public function initializePostEdit(Post $post, $form)
     {
         $post->setDescription(mb_substr($this->compiler->htmlToText($post->getContent(), true),0,120));
         $post->setSlug($this->slugify->slugify($post->getTitle()));
 
         if ($this->getUser() === $post->getAuthor() && !$this->defender->isGranted($this->getUser(),'ROLE_POST_MODERATOR') || $this->getUser() === $post->getAuthor() && !$this->defender->isGranted($this->getUser(),'ROLE_POST_EDITOR')) {
-            if ($post->getPublishedAt()->getTimestamp() === $post->getUpdatedAt()->getTimestamp()) {
-                $post->setPublishedAt(new \DateTime('now'));
-            }
-
-            $post->setUpdatedAt(new \DateTime('now'));
-            $post->setStatus(null);
+            $this->disablePost($post);
         }
 
-        if ($post->getStatus() !== true) {
-            foreach ($post->getNotifications() as $value) {
-                $value->setStatus(false);
-            }
-        } else {
-            foreach ($post->getNotifications() as $value) {
-                $value->setStatus(true);
-            }
-        }
+//        if ($post->getStatus() !== true) {
+//            foreach ($post->getNotifications() as $value) {
+//                $value->setStatus(false);
+//            }
+//        } else {
+//            foreach ($post->getNotifications() as $value) {
+//                $value->setStatus(true);
+//            }
+//        }
 
         if ($post->getAuthor() !== $this->getUser()) {
             $this->createAction($post,$post->getType() . '_edited');
         }
 
+        if ($post->getId() && $this->defender->isGranted($this->getUser(),'ROLE_POST_MODERATOR') && $form->get('moderation')) {
+            $post->setStatus(null);
+        }
+
         $this->em->flush();
+    }
+
+    private function disablePost(Post $post) {
+        if ($post->getPublishedAt()->getTimestamp() === $post->getUpdatedAt()->getTimestamp()) {
+            $post->setPublishedAt(new \DateTime('now'));
+        }
+        $post->setUpdatedAt(new \DateTime('now'));
+        $post->setStatus(null);
+
+        foreach ($this->notifications->findPostNotifications($post) as $notification) {
+            $this->em->remove($notification);
+        }
     }
 
     public function initializePersonNew(Person $person)

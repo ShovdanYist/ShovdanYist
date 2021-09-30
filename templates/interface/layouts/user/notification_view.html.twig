@@ -55,7 +55,7 @@
                 </span>
             </a>
 
-        {% elseif notification.type == 'post_approved' or notification.type == 'post_rejected' or notification.type == 'post_comment' or notification.type == 'comment_reply' and notification.post %}
+        {% elseif notification.type == 'post_approved' or notification.type == 'user_tagged' or notification.type == 'post_rejected' or notification.type == 'post_comment' or notification.type == 'comment_reply' and notification.post %}
 
             <a href="{{ path('post_show',{'slug':notification.post.slug}) }}">
                 <span class="back-picture bp-50" style="border-radius: 3px;margin-right: 14px;background-image: url('{% if notification.post.image %}{{ vich_uploader_asset(notification.post) | imagine_filter('thumbnail') }}{% else %}{{ asset('assets/images/question.jpg') | imagine_filter('thumbnail') }}{% endif %}')">

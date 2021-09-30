@@ -105,11 +105,12 @@ class UserController extends CustomAbstractController
      * @param User $user
      * @param $page
      * @param Paginator $paginator
+     * @param Defender $defender
      * @return Response
      */
-    public function profile(User $user, $page, Paginator $paginator): Response
+    public function profile(User $user, $page, Paginator $paginator, Defender $defender): Response
     {
-        if ($this->isGranted('IS_AUTHENTICATED_FULLY') && $user === $this->user() || $this->isGranted('ROLE_POST_MODERATOR')) {
+        if (!$defender->isGranted($this->user(),'ROLE_GUEST') && $user === $this->user() || $this->isGranted('ROLE_POST_MODERATOR')) {
             $criteria = ['author' => $user];
         } else {
             $criteria = ['author' => $user, 'status' => true];
@@ -365,7 +366,7 @@ class UserController extends CustomAbstractController
     public function deleteNotification(Request $request, Notification $notification): Response
     {
         if ($this->user() !== $notification->getReceiver()) {
-            throw $this->createNotFoundException();
+            return $this->redirectToRoute('app_home');
         }
 
         if ($this->isCsrfTokenValid('delete'.$notification->getId(), $request->request->get('_token'))) {

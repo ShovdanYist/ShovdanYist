@@ -14,20 +14,6 @@
   outline: none !important;
 }
 
-html, body {
-  height: 100%;
-  overflow: hidden;
-}
-
-.body-wrapper {
-  position: absolute;
-  padding-top: 70px;
-  overflow: auto;
-  height: 100%;
-  width: 100%;
-  top: 0;
-}
-
 a:focus, a:active, a:hover {
   box-shadow: unset !important;
 }
@@ -84,6 +70,7 @@ h3, .h3 {
   line-height: 32px;
   font-size: 26px;
   margin-bottom: 12px;
+  margin-top: -8px;
 }
 
 p {
@@ -590,6 +577,7 @@ blockquote, .ck.ck-content blockquote {
 
 .md-nav {
   background: url("https://shovdanyist.com/assets/images/container-border.png") repeat-x scroll 0 100% / auto 1px rgba(30, 30, 30, 0.95);
+  margin-bottom: 15px;
   z-index: 1100;
   height: 55px;
   width: 100%;
@@ -1512,7 +1500,7 @@ td {
 }
 
 .md-box.sticky-top, .sidebar.sticky-top {
-  top: -4px
+  top: 67px
 }
 
 .md-box-mt {

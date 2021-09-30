@@ -29,7 +29,7 @@ class PostController extends CustomAbstractController
     public function category(Tag $tag, $page, Paginator $paginator): Response
     {
         if ($tag->getType() !== 'post') {
-            throw $this->createNotFoundException();
+            return $this->redirectToRoute('app_home');
         }
 
         $paginator
@@ -101,7 +101,7 @@ class PostController extends CustomAbstractController
             ]);
         }
 
-        throw $this->createNotFoundException();
+        return $this->redirectToRoute('app_home');
     }
 
     /**
@@ -113,13 +113,13 @@ class PostController extends CustomAbstractController
      */
     public function edit(Request $request, Post $post, Initializer $initializer): Response
     {
-        if ($this->user() === $post->getAuthor() || $this->isGranted('ROLE_POST_MODERATOR') || $this->isGranted('ROLE_POST_EDITOR') && $post->getStatus()) {
+        if ($this->getUser() && $this->user() === $post->getAuthor() || $this->isGranted('ROLE_POST_MODERATOR') || $this->isGranted('ROLE_POST_EDITOR') && $post->getStatus()) {
 
             $form = $this->createForm(PostType::class, $post);
             $form->handleRequest($request);
 
             if ($form->isSubmitted() && $form->isValid()) {
-                $initializer->initializePostEdit($post);
+                $initializer->initializePostEdit($post, $form);
 
                 return $this->redirectToRoute('post_show', ['slug' => $post->getSlug()]);
             }
@@ -128,8 +128,10 @@ class PostController extends CustomAbstractController
                 'post' => $post,
                 'form' => $form->createView(),
             ]);
+        } elseif ($this->getUser()) {
+            return $this->redirectToRoute('app_home');
         } else {
-            throw $this->createNotFoundException();
+            return $this->redirectToRoute('app_login');
         }
     }
 
@@ -172,8 +174,10 @@ class PostController extends CustomAbstractController
     public function delete(Request $request, Post $post): Response
     {
         if ($this->user() !== $post->getAuthor() && !$this->isGranted('ROLE_POST_MODERATOR')) {
-            throw $this->createNotFoundException();
+            return $this->redirectToRoute('app_home');
         }
+
+        $username = $post->getAuthor()->getUsername();
 
         if ($this->isCsrfTokenValid('delete'.$post->getId(), $request->request->get('_token'))) {
             $em = $this->getDoctrine()->getManager();
@@ -181,6 +185,8 @@ class PostController extends CustomAbstractController
             $em->flush();
         }
 
-        return $this->redirectToRoute('app_home');
+        return $this->redirectToRoute('user_profile', [
+            'username' => $username
+        ]);
     }
 }

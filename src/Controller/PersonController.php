@@ -27,7 +27,7 @@ class PersonController extends CustomAbstractController
     public function people($letter, PeopleRepository $personRepo, SongExtension $extension): Response
     {
         if (!key_exists($letter,$extension->letters())) {
-            throw $this->createNotFoundException();
+            return $this->redirectToRoute('song_index');
         }
 
         if ($this->isGranted('ROLE_PEOPLE_MODERATOR')) {
@@ -83,7 +83,7 @@ class PersonController extends CustomAbstractController
                 $person = $people->findActiveSongsPerson($slug);
             }
             catch (NoResultException $e) {
-                throw $this->createNotFoundException();
+                return $this->redirectToRoute('song_index');
             }
         } else {
             $person = $this->getDoctrine()->getRepository(Person::class)->findOneBy(['slug' => $slug]);

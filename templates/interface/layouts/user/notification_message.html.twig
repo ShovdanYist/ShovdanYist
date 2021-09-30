@@ -6,6 +6,14 @@
         {{ 'followed.to.you.male' | trans }}
     {% endif %}
 
+{% elseif notification.type == 'user_tagged' %}
+
+    {% if notification.sender.profile.gender %}
+        {{ ('tagged.you.in.' ~ notification.post.type ~ '.female') | trans }}
+    {% else %}
+        {{ ('tagged.you.in.' ~ notification.post.type ~ '.male') | trans }}
+    {% endif %}
+
 {% elseif notification.type == 'comment_reply' %}
 
     {% if notification.quantity > 1 %}

@@ -77,6 +77,11 @@ save: Сохранить
 cancel: Отмена
 notifications: Уведомлении
 
+post.is.already.approved: 'Данная публикация уже утверждена другим модератором'
+post.is.already.rejected: 'Данная публикация уже отклонена другим модератором'
+article.is.already.approved: 'Данная статья уже утверждена другим модератором'
+article.is.already.rejected: 'Данная статья уже отклонена другим модератором'
+
 post.in.moderation: 'Публикация на модерации'
 post.is.rejected: 'Публикация отклонена'
 article.in.moderation: 'Статья на модерации'
@@ -84,6 +89,11 @@ article.is.rejected: 'Статья отклонена'
 
 followed.to.you.male: 'подписался на вас'
 followed.to.you.female: 'подписалась на вас'
+
+tagged.you.in.post.male: 'отметил вас в публикации'
+tagged.you.in.post.female: 'отметила вас в публикации'
+tagged.you.in.article.male: 'отметил вас в статье'
+tagged.you.in.article.female: 'отметила вас в статье'
 
 replied.you.with.comment.male: 'ответил на ваш комментарий:'
 replied.you.with.comment.female: 'ответила на ваш комментарий:'
@@ -199,7 +209,9 @@ nothing.found.for: 'Ничего не найдено по запросу:'
 select.roles: 'Выберите роли'
 heading: Заголовок
 select.song: 'Выберите песни'
-song.help: 'Вы можете прикрепить песни из своего плейлиста к публикации'
+select.users: 'Выберите пользователей'
+song.help: 'Вы можете прикрепить песни из своего плейлиста'
+tagged.users.help: 'Вы можете отметить пользователей на которых вы подписаны'
 event.date.help: 'Не забудьте указать, если речь идет о знаковой дате'
 become.an.author: 'Стать автором'
 post.editing: 'Изменение публикации'
@@ -262,6 +274,7 @@ are.you.sure.to.delete: 'Вы уверены что хотите удалить 
 statistics: Статистика
 dashboard: 'Панель управления'
 in.moderation: 'На модерации'
+to.moderation: 'На модерацию'
 pending: 'В ожидании'
 published: Опубликованные
 status: Статус

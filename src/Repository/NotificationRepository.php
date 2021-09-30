@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Notification;
+use App\Entity\Post;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -17,6 +18,18 @@ class NotificationRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Notification::class);
+    }
+
+    public function findPostNotifications(Post $post)
+    {
+        return $this->createQueryBuilder('n')
+            ->where('n.type = \'post_approved\'')
+            ->orWhere('n.type = \'post_rejected\'')
+            ->orWhere('n.type = \'user_tagged\'')
+            ->andWhere('n.post = :post')
+            ->setParameter('post', $post)
+            ->getQuery()
+            ->getResult();
     }
 
     // /**

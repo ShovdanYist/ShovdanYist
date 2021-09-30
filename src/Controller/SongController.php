@@ -49,7 +49,7 @@ class SongController extends CustomAbstractController
         } elseif ($chart == 'discussed') {
             $paginator->setCriteria(['status' => true])->setMethod('findByDiscussed');
         } else {
-            throw $this->createNotFoundException();
+            return $this->redirectToRoute('song_index');
         }
 
         ($page > 1) ? $page = ' | Страница ' . $page : $page = '';
@@ -130,7 +130,11 @@ class SongController extends CustomAbstractController
      */
     public function show(Song $song, $page, Initializer $initializer): Response
     {
-        if ($song->getStatus() != true && !$this->isGranted('ROLE_OWNER')) {throw $this->createNotFoundException();}
+        if ($song->getStatus() != true && !$this->isGranted('ROLE_OWNER')) {
+            return $this->redirectToRoute('person_show', [
+                'slug' => $song->getVocalist()->getSlug()
+            ]);
+        }
 
         $initializer->initializeSongShow($song);
 

@@ -164,6 +164,11 @@ class User implements UserInterface
      */
     private $followers;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=Post::class, mappedBy="taggedUsers")
+     */
+    private $taggedPosts;
+
     public function __construct()
     {
         $this->songs = new ArrayCollection();
@@ -180,6 +185,7 @@ class User implements UserInterface
         $this->views = new ArrayCollection();
         $this->following = new ArrayCollection();
         $this->followers = new ArrayCollection();
+        $this->taggedPosts = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -769,5 +775,33 @@ class User implements UserInterface
         $follow->setFollowed($followed);
 
         return $follow;
+    }
+
+    /**
+     * @return Collection|Post[]
+     */
+    public function getTaggedPosts(): Collection
+    {
+        return $this->taggedPosts;
+    }
+
+    public function addTaggedPost(Post $taggedPost): self
+    {
+        if (!$this->taggedPosts->contains($taggedPost)) {
+            $this->taggedPosts[] = $taggedPost;
+            $taggedPost->addUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTaggedPost(Post $taggedPost): self
+    {
+        if ($this->taggedPosts->contains($taggedPost)) {
+            $this->taggedPosts->removeElement($taggedPost);
+            $taggedPost->removeUser($this);
+        }
+
+        return $this;
     }
 }

@@ -3,9 +3,6 @@
 namespace App\Twig;
 
 use App\Entity\Notification;
-use App\Entity\Post;
-use App\Entity\Profile;
-use App\Entity\Song;
 use App\Entity\User;
 use App\Repository\FollowRepository;
 use App\Repository\UserRepository;
@@ -23,14 +20,14 @@ class UserExtension extends AbstractExtension
     private $users;
     private $security;
     private $defender;
-    private $followers;
+    private $follows;
 
-    public function __construct(UserRepository $users, Security $security, Defender $defender, FollowRepository $followers)
+    public function __construct(UserRepository $users, Security $security, Defender $defender, FollowRepository $follows)
     {
         $this->users = $users;
         $this->security = $security;
         $this->defender = $defender;
-        $this->followers = $followers;
+        $this->follows = $follows;
     }
 
     public function getFunctions(): array
@@ -60,7 +57,7 @@ class UserExtension extends AbstractExtension
 
     public function userIsFollowed(User $follower): bool
     {
-        if ($this->followers->findOneBy(['follower' => $this->getUser(), 'followed' => $follower])) {
+        if ($this->follows->findOneBy(['follower' => $this->getUser(), 'followed' => $follower])) {
             $followed = true;
         } else {
             $followed = false;

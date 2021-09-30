@@ -268,48 +268,60 @@ class ModerationController extends CustomAbstractController
      */
     public function postValidation(Request $request, Post $post): Response
     {
-        $sender = $this->getDoctrine()->getRepository(User::class)->findOneBy(['id' => 2]);
+        if ($post->getStatus() === null) {
+            $em = $this->getDoctrine()->getManager();
+            $sender = $this->getDoctrine()->getRepository(User::class)->findOneBy(['id' => 2]);
 
-        $notification = new Notification();
-        $notification->setReceiver($post->getAuthor());
-        $notification->setPost($post);
-        $notification->setSender($sender);
+            $notification = new Notification();
+            $notification->setReceiver($post->getAuthor());
+            $notification->setPost($post);
+            $notification->setSender($sender);
 
-        $form = $this->createForm(NotificationType::class, $notification);
-        $form->handleRequest($request);
+            $form = $this->createForm(NotificationType::class, $notification);
+            $form->handleRequest($request);
 
-        $action = new Action();
-        $action->setModerator($this->user());
-        $action->setPost($post);
+            $action = new Action();
+            $action->setModerator($this->user());
+            $action->setPost($post);
 
-        if ($form->get('approve')->isClicked()) {
+            if ($form->get('approve')->isClicked()) {
+                $notification->setType('post_approved');
+                $action->setType('post_approved');
+                $post->setStatus(true);
 
-            $notification->setType('post_approved');
-            $action->setType('post_approved');
-            $post->setStatus(true);
+                if ($post->getTaggedUsers()) {
+                    foreach ($post->getTaggedUsers()->getValues() as $user) {
+                        $notify = new Notification();
+                        $notify->setReceiver($user);
+                        $notify->setPost($post);
+                        $notify->setSender($post->getAuthor());
+                        $notify->setType('user_tagged');
+                        $em->persist($notify);
+                    }
+                }
 
-            if ($post->getPublishedAt()->getTimestamp() === $post->getUpdatedAt()->getTimestamp()) {
-                $post->setPublishedAt(new DateTime('now'));
+                if ($post->getPublishedAt()->getTimestamp() === $post->getUpdatedAt()->getTimestamp()) {
+                    $post->setPublishedAt(new DateTime('now'));
+                }
+            } elseif ($form->get('reject')->isClicked()) {
+                if (!$form->get('message')->getData()) {
+                    $this->addFlash('danger', 'Вы не указали причину отказа');
+                    return $this->redirectToRoute('moderation_posts');
+                }
+
+                $notification->setType('post_rejected');
+                $action->setContent($notification->getMessage());
+                $action->setType('post_rejected');
+                $post->setStatus(false);
             }
 
-        } elseif ($form->get('reject')->isClicked()) {
-
-            if (!$form->get('message')->getData()) {
-                $this->addFlash('danger', 'Вы не указали причину отказа');
-                return $this->redirectToRoute('moderation_posts');
-            }
-
-            $notification->setType('post_rejected');
-            $action->setContent($notification->getMessage());
-            $action->setType('post_rejected');
-            $post->setStatus(false);
-
+            $em->persist($action);
+            $em->persist($notification);
+            $em->flush();
+        } else {
+            ($post->getStatus() === true) ? $status = 'approved' : $status = 'rejected';
+            $this->addFlash('info', $this->trans( $post->getType() . '.is.already.' . $status));
         }
-
-        $em = $this->getDoctrine()->getManager();
-        $em->persist($action);
-        $em->persist($notification);
-        $em->flush();
 
         return $this->redirectToRoute('moderation_posts');
     }

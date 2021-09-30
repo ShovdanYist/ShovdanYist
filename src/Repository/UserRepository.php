@@ -39,7 +39,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $qb->setParameter('user', $criteria['user']);
 
         foreach ($orderBy as $key => $value) {
-            $qb->orderBy('u.'.$key,$value);
+            $qb->orderBy('f.'.$key,$value);
         }
 
         $qb ->setMaxResults($limit)

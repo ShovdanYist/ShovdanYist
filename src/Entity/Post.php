@@ -134,6 +134,11 @@ class Post
      */
     private $actions;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=User::class, inversedBy="taggedPosts")
+     */
+    private $taggedUsers;
+
     public function __construct()
     {
         $this->songs = new ArrayCollection();
@@ -142,6 +147,7 @@ class Post
         $this->notifications = new ArrayCollection();
         $this->tags = new ArrayCollection();
         $this->actions = new ArrayCollection();
+        $this->taggedUsers = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -505,6 +511,32 @@ class Post
             if ($action->getPost() === $this) {
                 $action->setPost(null);
             }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|User[]
+     */
+    public function getTaggedUsers(): Collection
+    {
+        return $this->taggedUsers;
+    }
+
+    public function addTaggedUser(User $taggedUser): self
+    {
+        if (!$this->taggedUsers->contains($taggedUser)) {
+            $this->taggedUsers[] = $taggedUser;
+        }
+
+        return $this;
+    }
+
+    public function removeTaggedUser(User $taggedUser): self
+    {
+        if ($this->taggedUsers->contains($taggedUser)) {
+            $this->taggedUsers->removeElement($taggedUser);
         }
 
         return $this;

@@ -4,17 +4,16 @@ namespace App\Form\Post;
 
 use App\Entity\Song;
 use App\Entity\Post;
-use App\Entity\Tag;
+use App\Entity\User;
+use App\Repository\FollowRepository;
 use App\Repository\PlaylistSongRepository;
 use App\Repository\SongRepository;
 use App\Repository\TagRepository;
+use App\Repository\UserRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
@@ -31,8 +30,10 @@ class PostType extends AbstractType
     private $role;
     private $tags;
     private $playlistSongs;
+    private $follows;
+    private $users;
 
-    public function __construct(Security $security, AuthorizationCheckerInterface $authorizationChecker, TranslatorInterface $translator, SongRepository $songs, TagRepository $tags, PlaylistSongRepository $playlistSongs)
+    public function __construct(Security $security, AuthorizationCheckerInterface $authorizationChecker, TranslatorInterface $translator, SongRepository $songs, TagRepository $tags, PlaylistSongRepository $playlistSongs, FollowRepository $follows, UserRepository $users)
     {
         $this->user = $security->getUser();
         $this->role = $authorizationChecker;
@@ -40,6 +41,8 @@ class PostType extends AbstractType
         $this->songs = $songs;
         $this->tags = $tags;
         $this->playlistSongs = $playlistSongs;
+        $this->follows = $follows;
+        $this->users = $users;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -84,6 +87,7 @@ class PostType extends AbstractType
 
         $post = $builder->getData();
         $userPlaylist = $this->playlistSongs->findOneBy(['user' => $this->user]);
+        $userFollowing = $this->follows->findOneBy(['follower' => $this->user]);
 
         if (!$post->getId() && $userPlaylist !== null || $post->getAuthor() == $this->user && $userPlaylist !== null ) {
             $builder
@@ -103,17 +107,33 @@ class PostType extends AbstractType
                 ]);
         }
 
-        if ($this->role->isGranted('ROLE_POST_MODERATOR')) {
+        if (!$post->getId() && $userFollowing !== null || $post->getAuthor() == $this->user && $userFollowing !== null ) {
             $builder
-                ->add('status', ChoiceType::class, [
-                    'label' => 'activated',
-                    'choices' => [
-                        'На модерации' => null,
-                        'Опубликована' => true,
-                        'Отклонена' => false
-                    ],
-                    'attr' => ['class' => 'chosen']
+                ->add('taggedUsers', EntityType::class, [
+                    'label' => 'users',
+                    'help' => 'tagged.users.help',
+                    'class' => User::class,
+                    'multiple' => true,
+                    'required' => false,
+                    'choice_label' => 'username',
+                    'label_attr' => ['class' => 'checkbox-custom'],
+                    'choices' => $this->users->findFollows(['user' => $this->user, 'type' => 'following']),
+                    'attr' => [
+                        'data-placeholder' => $this->translator->trans('select.users'),
+                        'class' => 'chosen-users'
+                    ]
                 ]);
+        }
+
+        if ($post->getId() && $post->getStatus() !== null && $this->role->isGranted('ROLE_POST_MODERATOR')) {
+            $builder
+                ->add('moderation', CheckboxType::class, [
+                    'label' => 'to.moderation',
+                    'required' => false,
+                    'mapped' => false,
+                    'label_attr' => ['class' => 'switch-custom']
+                ])
+            ;
         }
     }
 

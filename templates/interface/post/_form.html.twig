@@ -28,21 +28,31 @@
             {{ form_row(form.content) }}
 {#            {{ form_row(form.moderation) }}#}
 
-                {% if not post.id and userHavePlaylistSongs(app.user) or post.author == app.user and userHavePlaylistSongs(app.user) %}
-                    {{ form_row(form.songs) }}
-                {% elseif not post.id and not userHavePlaylistSongs(app.user) or post.author == app.user and not userHavePlaylistSongs(app.user) %}
-                    <div class="form-group">
-                        <label class="form-label" for="disabled_input">{{ 'music' | trans }}</label>
-                        <input class="form-control" id="disabled_input" type="text" placeholder="{{ 'not.songs.in.your.playlist' | trans }}" disabled="">
-                        <small class="form-text text-muted">{{ 'song.help' | trans }}</small>
-                    </div>
-                {% endif %}
+            {% if not post.id and userHavePlaylistSongs(app.user) or post.author == app.user and userHavePlaylistSongs(app.user) %}
+                {{ form_row(form.songs) }}
+            {% elseif not post.id and not userHavePlaylistSongs(app.user) or post.author == app.user and not userHavePlaylistSongs(app.user) %}
+                <div class="form-group">
+                    <label class="form-label" for="disabled_input">{{ 'music' | trans }}</label>
+                    <input class="form-control" id="disabled_input" type="text" placeholder="{{ 'not.songs.in.your.playlist' | trans }}" disabled="">
+                    <small class="form-text text-muted">{{ 'song.help' | trans }}</small>
+                </div>
+            {% endif %}
 
-                {% if is_granted('ROLE_POST_MODERATOR') %}
-                    <div class="chosen-search-off">
-                        {{ form_widget(form.status) }}
-                    </div>
-                {% endif %}
+            {% if not post.id and app.user.following.count or post.author == app.user and app.user.following.count %}
+                {{ form_row(form.taggedUsers) }}
+            {% elseif not post.id and not app.user.following.count or post.author == app.user and not app.user.following.count %}
+                <div class="form-group">
+                    <label class="form-label" for="disabled_input">{{ 'users' | trans }}</label>
+                    <input class="form-control" id="disabled_input" type="text" placeholder="{{ 'you.have.not.following' | trans }}" disabled="">
+                    <small class="form-text text-muted">{{ 'tagged.users.help' | trans }}</small>
+                </div>
+            {% endif %}
+
+            {% if post.id and not post.status is null and is_granted('ROLE_POST_MODERATOR') %}
+                <div class="chosen-search-off">
+                    {{ form_widget(form.moderation) }}
+                </div>
+            {% endif %}
 
             <div class="mt-3">
 
