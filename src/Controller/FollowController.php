@@ -5,7 +5,6 @@ namespace App\Controller;
 use App\CustomAbstracts\CustomAbstractController;
 use App\Entity\Follow;
 use App\Entity\Notification;
-use App\Entity\Post;
 use App\Entity\User;
 use App\Service\Paginator;
 use Doctrine\ORM\EntityManagerInterface;
