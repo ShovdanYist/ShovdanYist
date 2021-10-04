@@ -97,21 +97,13 @@ class Initializer
         $this->em->flush();
     }
 
-    public function initializePostNew(Post $post, $type = 'post')
+    public function initializePostNew(Post $post)
     {
-        if ($type === 'post') {
-            $post->setModeration(true);
-            $random = $this->getUser()->getId() * rand(1,147) . rand(784,1217) * rand(342,635) . chr(rand(97,122));
-            $post->setSlug($this->slugify->slugify($random));
-            $post->setTitle($random);
-        } else {
-            $post->setSlug($this->slugify->slugify($post->getTitle()));
-        }
+        $this->generatePostSlug($post);
 
         $post->setDescription(mb_substr($this->compiler->htmlToText($post->getContent(),true), 0, 120));
         $post->setUpdatedAt(new \DateTime('now'));
         $post->setPublishedAt(new \DateTime('now'));
-        $post->setType($type);
         $post->setAuthor($this->getUser());
         $post->setViews(0);
 
@@ -124,43 +116,53 @@ class Initializer
 
     public function initializePostEdit(Post $post, $form)
     {
+        $this->generatePostSlug($post);
         $post->setDescription(mb_substr($this->compiler->htmlToText($post->getContent(), true),0,120));
-        $post->setSlug($this->slugify->slugify($post->getTitle()));
 
-        if ($this->getUser() === $post->getAuthor() && !$this->defender->isGranted($this->getUser(),'ROLE_POST_MODERATOR') || $this->getUser() === $post->getAuthor() && !$this->defender->isGranted($this->getUser(),'ROLE_POST_EDITOR')) {
+        if ($this->getUser() === $post->getAuthor()) {
             $this->disablePost($post);
+        } elseif ($this->defender->isGranted($this->getUser(),'ROLE_POST_MODERATOR') && $form->get('moderation')->getData()) {
+            $this->disablePost($post, true);
         }
-
-//        if ($post->getStatus() !== true) {
-//            foreach ($post->getNotifications() as $value) {
-//                $value->setStatus(false);
-//            }
-//        } else {
-//            foreach ($post->getNotifications() as $value) {
-//                $value->setStatus(true);
-//            }
-//        }
 
         if ($post->getAuthor() !== $this->getUser()) {
-            $this->createAction($post,$post->getType() . '_edited');
-        }
-
-        if ($post->getId() && $this->defender->isGranted($this->getUser(),'ROLE_POST_MODERATOR') && $form->get('moderation')) {
-            $post->setStatus(null);
+            $this->createAction($post,'post_edited');
         }
 
         $this->em->flush();
     }
 
-    private function disablePost(Post $post) {
-        if ($post->getPublishedAt()->getTimestamp() === $post->getUpdatedAt()->getTimestamp()) {
-            $post->setPublishedAt(new \DateTime('now'));
+    private function generatePostSlug(Post $post)
+    {
+        if ($post->getTitle()) {
+            $post->setSlug($this->slugify->slugify($post->getTitle()));
+        } else {
+            $random = $this->getUser()->getId() * rand(1,147) . rand(784,1217) * rand(342,635) . chr(rand(97,122));
+            $post->setSlug($this->slugify->slugify($random));
         }
-        $post->setUpdatedAt(new \DateTime('now'));
+    }
+
+    private function disablePost(Post $post, $moderator = false) {
+        /**
+         * Post have always identical publishedAt & updatedAt dates
+         * (When a user creates or edits before a moderator approves)
+         * But updatedAt date changes, when a moderator approves or user edits after approval
+         */
+        if (!$moderator) {
+            if ($post->getPublishedAt()->getTimestamp() === $post->getUpdatedAt()->getTimestamp()) {
+                $post->setPublishedAt(new \DateTime('now'));
+            }
+            $post->setUpdatedAt(new \DateTime('now'));
+        }
+
         $post->setStatus(null);
 
         foreach ($this->notifications->findPostNotifications($post) as $notification) {
             $this->em->remove($notification);
+        }
+
+        foreach ($post->getNotifications() as $notification) {
+            $notification->setStatus(false);
         }
     }
 

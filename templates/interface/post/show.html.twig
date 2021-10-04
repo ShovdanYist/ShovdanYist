@@ -1,6 +1,6 @@
 {% extends 'interface/base.html.twig' %}
 
-{% block og_title %}{{ post.title }}{% endblock %}
+{% block og_title %}{{ post.slug }}{% endblock %}
 
 {% block og_image %}{% if post.image %}{{ vich_uploader_asset(post) | imagine_filter('post') }}{% endif %}{% endblock %}
 
@@ -11,26 +11,26 @@
     <meta property="post:author" content="{{ post.author.profile.fullname }}">
 {% endblock %}
 
-{% block title %}{{ post.title }}{% endblock %}
+{% block title %}{{ post.slug }}{% endblock %}
 
-{% block pageclass %}{% if is_granted('ROLE_POST_MODERATOR') or is_granted('ROLE_POST_EDITOR') or app.user == post.author %} moder-or-author{% endif %}{% endblock %}
+{% block pageclass %}{% if is_granted('ROLE_POST_MODERATOR') or app.user == post.author %} moder-or-author{% endif %}{% endblock %}
 
 {% block main_top %}
 
     {{ breadcrumb({
         (path('user_profile', {'username':post.author.username})) : post.author.username,
-        'active' : (post.type | trans | lower),
+        'active' : 'post' | trans | lower,
     }, post, 'post') }}
 
     {% if post.status is null %}
         <div class="md-alert md-alert-info md-box-mb">
             <i class="fas fa-history"></i>
-            {{ (post.type ~ '.in.moderation') | trans }}
+            {{ 'post.in.moderation' | trans }}
         </div>
     {% elseif post.status == false %}
         <div class="md-alert md-alert-danger md-box-mb">
             <i class="fas fa-ban"></i>
-            {{ (post.type ~ '.is.rejected') | trans }}
+            {{ 'post.is.rejected' | trans }}
         </div>
     {% endif %}
 
@@ -42,11 +42,9 @@
         {{ postView(post, 'show') }}
     </div>
 
-    {% if is_granted('ROLE_POST_AUTHOR') %}
-        <a href="{{ path('post_new') }}" class="md-write-post-button">
-            <i class="fas fa-feather-alt"></i>
-        </a>
-    {% endif %}
+    <a href="{{ path('post_new') }}" class="md-write-post-button">
+        <i class="fas fa-plus"></i>
+    </a>
 
 {% endblock %}
 

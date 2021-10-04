@@ -19,18 +19,38 @@ class PostRepository extends ServiceEntityRepository
         parent::__construct($registry, Post::class);
     }
 
+    public function findUserTaggedPosts($criteria, $orderBy = ['id' => 'DESC'], $limit = 10, $offset = 0)
+    {
+        $qb = $this->createQueryBuilder('p');
+
+        $qb->join('p.taggedUsers', 'u')
+            ->where('u.id IN (:user)')
+            ->andWhere('p.status = true')
+            ->setParameter('user', $criteria['user'])
+        ;
+
+        foreach ($orderBy as $key => $value) {
+            $qb->orderBy('p.'.$key,$value);
+        }
+
+        $qb ->setMaxResults($limit)
+            ->setFirstResult($offset);
+
+        return $qb->getQuery()->getResult();
+    }
+
     public function findByKeyword($keyword, $orderBy = ['id' => 'DESC'], $limit = null, $offset = 0)
     {
-        $qb = $this->createQueryBuilder('a');
+        $qb = $this->createQueryBuilder('p');
 
-        $qb ->where('a.content LIKE :keyword')
-            ->orWhere('a.title LIKE :keyword')
-            ->andWhere('a.status = true')
+        $qb ->where('p.content LIKE :keyword')
+            ->orWhere('p.title LIKE :keyword')
+            ->andWhere('p.status = true')
             ->setParameter('keyword','%'. $keyword .'%')
         ;
 
         foreach ($orderBy as $key => $value) {
-            $qb->orderBy('a.'.$key,$value);
+            $qb->orderBy('p.'.$key,$value);
         }
 
         $qb ->setMaxResults($limit)
@@ -41,14 +61,14 @@ class PostRepository extends ServiceEntityRepository
 
     public function findUserBookmarks($criteria, $orderBy = ['id' => 'DESC'], $limit = 10, $offset = 0)
     {
-        $qb = $this->createQueryBuilder('a');
+        $qb = $this->createQueryBuilder('p');
 
         foreach ($criteria as $property => $value) {
             if ($property == 'user') {
                 $qb
-                    ->join('a.bookmarks', 'b')
+                    ->join('p.bookmarks', 'b')
                     ->join('b.user', 'u')
-                    ->where('a.status = true')
+                    ->where('p.status = true')
                     ->andWhere('u = :' . $property . '')
                     ->setParameter($property,$value)
                 ;
@@ -72,23 +92,23 @@ class PostRepository extends ServiceEntityRepository
 
     public function findPosts($criteria = [], $orderBy = ['id' => 'DESC'], $limit = 10, $offset = 0)
     {
-        $qb = $this->createQueryBuilder('a');
+        $qb = $this->createQueryBuilder('p');
 
         foreach ($criteria as $key => $value) {
             if ($key == 'tag') {
-                $qb ->join('a.tags', 't')
+                $qb ->join('p.tags', 't')
                     ->andWhere('t.slug = :' . $key . '')
                     ->setParameter($key,$value->getSlug())
                 ;
             } else {
-                $qb->andWhere('a.'. $key .' = :' . $key . '')
+                $qb->andWhere('p.'. $key .' = :' . $key . '')
                     ->setParameter($key,$value)
                 ;
             }
         }
 
         foreach ($orderBy as $key => $value) {
-            $qb->orderBy('a.'. $key, $value);
+            $qb->orderBy('p.'. $key, $value);
         }
 
         $qb ->setMaxResults($limit)

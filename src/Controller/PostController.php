@@ -3,16 +3,13 @@
 namespace App\Controller;
 
 use App\CustomAbstracts\CustomAbstractController;
-use App\Entity\Bookmark;
 use App\Entity\Post;
 use App\Entity\Tag;
 use App\Service\Defender;
 use App\Service\Initializer;
-use App\Form\Post\PostType;
-use App\Repository\UserRepository;
+use App\Form\PostType;
 use App\Service\Paginator;
 use Symfony\Component\Form\FormError;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -88,7 +85,7 @@ class PostController extends CustomAbstractController
      */
     public function show(Post $post, $page, Defender $defender): Response
     {
-        if ($post->getAuthor() === $this->getUser() || $this->isGranted('ROLE_POST_MODERATOR') || $this->isGranted('ROLE_POST_EDITOR') && $post->getStatus() || $post->getStatus() === true) {
+        if ($post->getAuthor() === $this->getUser() || $this->isGranted('ROLE_POST_MODERATOR') || $post->getStatus() === true) {
 
             if (!$defender->isGranted($this->getUser(),'ROLE_GUEST') && $this->getUser() !== $post->getAuthor() && !$this->isGranted('ROLE_POST_MODERATOR')) {
                 $post->setViews($post->getViews() + 1);
@@ -113,7 +110,7 @@ class PostController extends CustomAbstractController
      */
     public function edit(Request $request, Post $post, Initializer $initializer): Response
     {
-        if ($this->getUser() && $this->user() === $post->getAuthor() || $this->isGranted('ROLE_POST_MODERATOR') || $this->isGranted('ROLE_POST_EDITOR') && $post->getStatus()) {
+        if ($this->getUser() && $this->user() === $post->getAuthor() || $this->isGranted('ROLE_POST_MODERATOR') && $post->getStatus() != null) {
 
             $form = $this->createForm(PostType::class, $post);
             $form->handleRequest($request);
@@ -133,36 +130,6 @@ class PostController extends CustomAbstractController
         } else {
             return $this->redirectToRoute('app_login');
         }
-    }
-
-    /**
-     * @Route("/bookmarker/{slug}", name="post_bookmarker", methods={"POST", "GET"})
-     * @param Post $post
-     * @param UserRepository $users
-     * @return JsonResponse
-     */
-    public function bookmarker(Post $post, UserRepository $users): Response
-    {
-        $user = $users->findOneBy(['username' => $this->getUser()->getUsername()]);
-        $contains = $this->getDoctrine()->getRepository(Bookmark::class)->findOneBy(['user' => $user, 'post' => $post]);
-        $em = $this->getDoctrine()->getManager();
-
-        if ($contains) {
-            $user->removeBookmark($contains);
-            $response = ['status' => 'removed'];
-        } else {
-            $bookmark = new Bookmark();
-            $bookmark->setUser($user);
-            $bookmark->setPost($post);
-            $em->persist($bookmark);
-            $response = ['status' => 'added'];
-        }
-
-        $em->flush();
-
-        return $this->json([
-            'response' => $response
-        ]);
     }
 
     /**

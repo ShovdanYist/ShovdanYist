@@ -1133,7 +1133,7 @@ td {
 .md-comment-send {
   margin-left: 8px;
 }
-.md-autosizer {
+.md-auto-sizer {
   max-height: 82px;
   margin-bottom: 8px;
 }
@@ -2275,13 +2275,25 @@ select {
   min-width: 112px;
 }
 
-.post-views {
-  color: #a2a2a2;
+.tagged-users {
+  display: table;
+  width: 100%;
+  margin-top: 18px;
+}
+
+.tagged-user {
+  background: #eee;
+  border-radius: 100px;
+  display: table;
+  padding: 5px 12px 5px 6px;
+  margin-bottom: 5px;
+  float: left;
+  margin-right: 6px;
 }
 
 // Bookmark toggle
 
-.bk-toggle .bookmark-icon::before {
+.bookmark-toggle .bookmark-icon::before, .guest-bookmark-toggle .bookmark-icon::before {
   content: "\f02e";
   font-family: "Font Awesome 5 Free", sans-serif;
   font-size: 22px;
@@ -2294,8 +2306,47 @@ select {
   line-height: 1;
 }
 
-.bk-toggle.added .bookmark-icon::before {
+.bookmark-toggle.added .bookmark-icon::before {
   font-weight: 800;
+}
+
+// Featured post toggle
+
+.featured-action {
+  float: right;
+}
+
+.featured-action a {
+  height: 22px;
+  color: #737f8b;
+  display: inline-flex;
+}
+
+.featured-action a:hover {
+  color: #2c3e50;
+}
+
+.featured-toggle .featured-icon::before {
+  content: "\f005";
+  font-family: "Font Awesome 5 Free", sans-serif;
+  font-size: 22px;
+  position: relative;
+  font-weight: 400;
+  -moz-osx-font-smoothing: grayscale;
+  font-style: normal;
+  font-variant: normal;
+  text-rendering: auto;
+  line-height: 1;
+  top: -1px;
+}
+
+.featured-toggle.added .featured-icon::before {
+  font-weight: 900;
+  color: #ffbb50;
+}
+
+.featured-toggle.added:hover .featured-icon::before {
+  color: #ffc365;
 }
 
 // Other

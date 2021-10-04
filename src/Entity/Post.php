@@ -37,35 +37,15 @@ class Post
     private $image;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="text", nullable=true)
      */
-    private $title;
+    private $content;
 
     /**
      * @ORM\Column(type="text", nullable=true)
      * @Assert\Length(max="150", maxMessage="form.max.message")
      */
     private $description;
-
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private $content;
-
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
-    private $eventDate;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $type;
-
-    /**
-     * @ORM\Column(type="boolean", nullable=true)
-     */
-    private $anonymous;
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
@@ -115,16 +95,6 @@ class Post
     private $notifications;
 
     /**
-     * @ORM\Column(type="boolean")
-     */
-    private $moderation;
-
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private $views;
-
-    /**
      * @ORM\ManyToMany(targetEntity=Tag::class, inversedBy="posts")
      */
     private $tags;
@@ -138,6 +108,21 @@ class Post
      * @ORM\ManyToMany(targetEntity=User::class, inversedBy="taggedPosts")
      */
     private $taggedUsers;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $featured;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $gender;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $title;
 
     public function __construct()
     {
@@ -184,30 +169,6 @@ class Post
         return $this;
     }
 
-    public function getTitle(): ?string
-    {
-        return $this->title;
-    }
-
-    public function setTitle(string $title): self
-    {
-        $this->title = $title;
-
-        return $this;
-    }
-
-    public function getDescription(): ?string
-    {
-        return $this->description;
-    }
-
-    public function setDescription(?string $description): self
-    {
-        $this->description = $description;
-
-        return $this;
-    }
-
     public function getContent(): ?string
     {
         return $this->content;
@@ -220,38 +181,14 @@ class Post
         return $this;
     }
 
-    public function getEventDate(): ?\DateTimeInterface
+    public function getDescription(): ?string
     {
-        return $this->eventDate;
+        return $this->description;
     }
 
-    public function setEventDate(?\DateTimeInterface $eventDate): self
+    public function setDescription(?string $description): self
     {
-        $this->eventDate = $eventDate;
-
-        return $this;
-    }
-
-    public function getType(): ?string
-    {
-        return $this->type;
-    }
-
-    public function setType(?string $type): self
-    {
-        $this->type = $type;
-
-        return $this;
-    }
-
-    public function getAnonymous(): ?bool
-    {
-        return $this->anonymous;
-    }
-
-    public function setAnonymous(?bool $anonymous): self
-    {
-        $this->anonymous = $anonymous;
+        $this->description = $description;
 
         return $this;
     }
@@ -435,18 +372,6 @@ class Post
         return $this;
     }
 
-    public function getModeration(): ?bool
-    {
-        return $this->moderation;
-    }
-
-    public function setModeration(bool $moderation): self
-    {
-        $this->moderation = $moderation;
-
-        return $this;
-    }
-
     public function getViews(): ?int
     {
         return $this->views;
@@ -538,6 +463,42 @@ class Post
         if ($this->taggedUsers->contains($taggedUser)) {
             $this->taggedUsers->removeElement($taggedUser);
         }
+
+        return $this;
+    }
+
+    public function getFeatured(): ?bool
+    {
+        return $this->featured;
+    }
+
+    public function setFeatured(bool $featured): self
+    {
+        $this->featured = $featured;
+
+        return $this;
+    }
+
+    public function getGender(): ?bool
+    {
+        return $this->gender;
+    }
+
+    public function setGender(?bool $gender): self
+    {
+        $this->gender = $gender;
+
+        return $this;
+    }
+
+    public function getTitle(): ?string
+    {
+        return $this->title;
+    }
+
+    public function setTitle(?string $title): self
+    {
+        $this->title = $title;
 
         return $this;
     }

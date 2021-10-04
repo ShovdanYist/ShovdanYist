@@ -31,6 +31,7 @@ class PostExtension extends AbstractExtension
             new TwigFunction('postTags', [$this, 'postTags'], ['is_safe' => ['html'], 'needs_environment' => true]),
             new TwigFunction('postImage', [$this, 'postImage'], ['is_safe' => ['html'], 'needs_environment' => true]),
             new TwigFunction('postDescription', [$this, 'postDescription'], ['is_safe' => ['html'], 'needs_environment' => true]),
+            new TwigFunction('postTaggedUsers', [$this, 'postTaggedUsers'], ['is_safe' => ['html'], 'needs_environment' => true]),
             new TwigFunction('postActions', [$this, 'postActions'], ['is_safe' => ['html'], 'needs_environment' => true]),
             new TwigFunction('postView', [$this, 'postView'], ['is_safe' => ['html'], 'needs_environment' => true]),
         ];
@@ -46,11 +47,11 @@ class PostExtension extends AbstractExtension
      * @throws RuntimeError
      * @throws LoaderError
      */
-    public function postValidation(Environment $twig, $post): string
+    public function postValidation(Environment $twig, Post $post): string
     {
-        $form = $this->createForm(NotificationType::class);
+        $form = $this->createForm(NotificationType::class, null,['gender' => $post->getGender()]);
 
-        return $twig->render('interface/layouts/post/_post_reject.html.twig', [
+        return $twig->render('interface/post/layouts/post_validation.html.twig', [
             'post' => $post,
             'form' => $form->createView(),
         ]);
@@ -63,19 +64,19 @@ class PostExtension extends AbstractExtension
      */
     public function postInfo(Environment $twig, $post): string
     {
-        return $twig->render('interface/layouts/post/post_info.html.twig', [
+        return $twig->render('interface/post/layouts/post_info.html.twig', [
             'post' => $post
         ]);
     }
 
     /**
-     * @throws SyntaxError
      * @throws RuntimeError
+     * @throws SyntaxError
      * @throws LoaderError
      */
     public function postTitle(Environment $twig, $post): string
     {
-        return $twig->render('interface/layouts/post/post_title.html.twig', [
+        return $twig->render('interface/post/layouts/post_title.html.twig', [
             'post' => $post
         ]);
     }
@@ -87,7 +88,7 @@ class PostExtension extends AbstractExtension
      */
     public function postTags(Environment $twig, $post): string
     {
-        return $twig->render('interface/layouts/post/post_tags.html.twig', [
+        return $twig->render('interface/post/layouts/post_tags.html.twig', [
             'post' => $post
         ]);
     }
@@ -97,10 +98,11 @@ class PostExtension extends AbstractExtension
      * @throws RuntimeError
      * @throws LoaderError
      */
-    public function postImage(Environment $twig, $post): string
+    public function postImage(Environment $twig, $post, $view = 'feed'): string
     {
-        return $twig->render('interface/layouts/post/post_image.html.twig', [
-            'post' => $post
+        return $twig->render('interface/post/layouts/post_image.html.twig', [
+            'post' => $post,
+            'view' => $view
         ]);
     }
 
@@ -111,7 +113,19 @@ class PostExtension extends AbstractExtension
      */
     public function postDescription(Environment $twig, $post): string
     {
-        return $twig->render('interface/layouts/post/post_description.html.twig', [
+        return $twig->render('interface/post/layouts/post_description.html.twig', [
+            'post' => $post
+        ]);
+    }
+
+    /**
+     * @throws SyntaxError
+     * @throws RuntimeError
+     * @throws LoaderError
+     */
+    public function postTaggedUsers(Environment $twig, $post): string
+    {
+        return $twig->render('interface/post/layouts/post_tagged_users.html.twig', [
             'post' => $post
         ]);
     }
@@ -123,7 +137,7 @@ class PostExtension extends AbstractExtension
      */
     public function postActions(Environment $twig, $post, $comments = true): string
     {
-        return $twig->render('interface/layouts/post/post_actions.html.twig', [
+        return $twig->render('interface/post/layouts/post_actions.html.twig', [
             'post' => $post,
             'comments' => $comments
         ]);
@@ -136,9 +150,8 @@ class PostExtension extends AbstractExtension
      */
     public function postView(Environment $twig, Post $post, $view = 'feed'): string
     {
-        return $twig->render('interface/layouts/post/post_view.html.twig',[
+        return $twig->render('interface/post/layouts/post_view.html.twig',[
             'post' => $post,
-            'type' => $post->getType(),
             'view' => $view
         ]);
     }

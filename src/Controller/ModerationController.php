@@ -249,7 +249,7 @@ class ModerationController extends CustomAbstractController
         $paginator
             ->setClass(Post::class)
             ->setOrder(['updatedAt' => 'ASC'])
-            ->setCriteria(['status' => null, 'moderation' => true])
+            ->setCriteria(['status' => null])
             ->setLimit(10)
             ->setPage($page)
         ;
@@ -261,7 +261,7 @@ class ModerationController extends CustomAbstractController
     }
 
     /**
-     * @Route("/validation/post/{id}", name="reject_post")
+     * @Route("/validation/post/{id}", name="post_validation")
      * @param Request $request
      * @param Post $post
      * @return Response
@@ -288,6 +288,7 @@ class ModerationController extends CustomAbstractController
                 $notification->setType('post_approved');
                 $action->setType('post_approved');
                 $post->setStatus(true);
+                $post->setGender($form->get('gender')->getData());
 
                 if ($post->getTaggedUsers()) {
                     foreach ($post->getTaggedUsers()->getValues() as $user) {
@@ -297,6 +298,12 @@ class ModerationController extends CustomAbstractController
                         $notify->setSender($post->getAuthor());
                         $notify->setType('user_tagged');
                         $em->persist($notify);
+                    }
+                }
+
+                if ($post->getNotifications()) {
+                    foreach ($post->getNotifications() as $notification) {
+                        $notification->setStatus(true);
                     }
                 }
 
@@ -320,7 +327,7 @@ class ModerationController extends CustomAbstractController
             $em->flush();
         } else {
             ($post->getStatus() === true) ? $status = 'approved' : $status = 'rejected';
-            $this->addFlash('info', $this->trans( $post->getType() . '.is.already.' . $status));
+            $this->addFlash('info', $this->trans( 'post.is.already.' . $status));
         }
 
         return $this->redirectToRoute('moderation_posts');
@@ -349,7 +356,7 @@ class ModerationController extends CustomAbstractController
                     'mapped' => false,
                     'required' => false,
                     'data' => $defender->isGranted($user,$role),
-                    'disabled' => $role === 'ROLE_USER_MANAGER' && !$defender->isGranted($this->user(),'ROLE_ADMINISTRATOR'),
+                    'disabled' => $role === 'ROLE_USER_RIGHTS' && !$defender->isGranted($this->user(),'ROLE_ADMINISTRATOR'),
                     'label_attr' => ['class' => 'switch-custom']
                 ]);
             } else {
@@ -434,7 +441,6 @@ class ModerationController extends CustomAbstractController
 
     /**
      * @Route("/blockUser/{id}", name="block_user", methods={"GET","POST"})
-     * @Security("has_role('ROLE_USER_BLOCKER')")
      * @param User $user
      * @param EmailAddressRepository $emails
      * @param Defender $defender
@@ -474,7 +480,6 @@ class ModerationController extends CustomAbstractController
 
     /**
      * @Route("/unblockUser/{id}", name="unblock_user", methods={"GET","POST"})
-     * @Security("has_role('ROLE_USER_BLOCKER')")
      * @param User $user
      * @param EmailAddressRepository $emails
      * @return Response

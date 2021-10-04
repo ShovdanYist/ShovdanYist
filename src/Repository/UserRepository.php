@@ -76,12 +76,12 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
     {
         $actionRoles = [
             'ROLE_POST_COMMENT_REMOVER',
-            'ROLE_POST_EDITOR',
-            'ROLE_POST_MODERATOR',
-            'ROLE_PEOPLE_EDITOR',
             'ROLE_SONG_COMMENT_REMOVER',
+            'ROLE_PEOPLE_MODERATOR',
+            'ROLE_POST_MODERATOR',
             'ROLE_SONG_EDITOR',
-            'ROLE_USER_BLOCKER'
+            'ROLE_USER_RIGHTS',
+            'ROLE_USER_BAN'
         ];
 
         $qb = $this->createQueryBuilder('u');

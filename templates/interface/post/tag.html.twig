@@ -41,11 +41,9 @@
 
     {{ paginator.display('box') }}
 
-    {% if is_granted('ROLE_POST_AUTHOR') %}
-        <a href="{{ path('post_new') }}" class="md-write-post-button">
-            <i class="fas fa-feather-alt"></i>
-        </a>
-    {% endif %}
+    <a href="{{ path('post_new') }}" class="md-write-post-button">
+        <i class="fas fa-plus"></i>
+    </a>
 
 {% endblock %}
 

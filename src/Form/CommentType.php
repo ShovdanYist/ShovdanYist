@@ -17,7 +17,7 @@ class CommentType extends AbstractType
         $builder
             ->add('message', TextareaType::class,[
                 'attr' => [
-                    'class' => 'md-autosizer',
+                    'class' => 'md-auto-sizer',
                     'placeholder' => 'write.comment',
                     'rows' => 1
                 ],

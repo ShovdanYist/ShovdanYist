@@ -1,5 +1,6 @@
 // Prevent scroll
 
+const $ = require("jquery");
 let keys = {37: 1, 38: 1, 39: 1, 40: 1};
 
 function preventDefault(e) {
@@ -62,6 +63,25 @@ if (sideNav) {
     sideNavOpener.addEventListener('click', openNav);
     sideNavCloser.addEventListener('click', closeNav);
 }
+
+// MediaElement Player
+
+require('mediaelement/build/mediaelement-and-player.min');
+
+$(document).ready(function() {
+    $('.audio-player audio').mediaelementplayer({
+        success: function(player, node) {
+            // Optional
+            $(player).closest('.mejs__container').attr('lang', mejs.i18n.language());
+            $('html').attr('lang', mejs.i18n.language());
+            // More code
+        },
+        startVolume: 1,
+        autoRewind: true,
+        enableProgressTooltip: false,
+        features: ['playpause','[feature_name]','current','progress','duration']
+    })
+});
 
 // Comment reply
 
@@ -129,4 +149,51 @@ searchInputs.forEach((inputBox,key) => {
             }
         }
     );
+});
+
+// Enable tooltip
+$(function () {
+    $('[data-toggle="tooltip"]').tooltip({
+        trigger : 'hover'
+    })
+});
+
+// Image on change
+if (document.querySelector('.custom-file-input')) {
+    let fileInput = document.querySelector('.custom-file-input');
+    if (document.getElementById('postImgOutput')) {
+        let postImgOutput = document.getElementById('postImgOutput');
+        fileInput.onchange = () => {
+            postImgOutput.src = window.URL.createObjectURL(fileInput.files[0]);
+            postImgOutput.style.marginBottom = '8px';
+        };
+    } else if (document.getElementById('output-content')) {
+        let outputContent = document.getElementById('output-content');
+        fileInput.onchange = () => {
+            outputContent.style.backgroundImage = 'url(\'' + window.URL.createObjectURL(fileInput.files[0]) + '\')';
+        };
+    }
+}
+
+// Textarea autosize
+if (document.querySelector('.md-auto-sizer')) {
+    let textarea = document.querySelector('.md-auto-sizer');
+    textarea.oninput = () => {
+        textarea.style.height = textarea.scrollHeight + 2 + "px";
+    };
+}
+
+// Auto close alerts
+$(".md-alert-auto-hide").fadeTo(5000, 500).slideUp(500, function(){
+    $(".md-alert-auto-hide").slideUp(500);
+});
+
+// Prevent username symbols
+$('.username-input').on('keypress', function (event) {
+    let regex = new RegExp("^[a-zA-Z0-9._]+$");
+    let key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
+    if (!regex.test(key)) {
+        event.preventDefault();
+        return false;
+    }
 });

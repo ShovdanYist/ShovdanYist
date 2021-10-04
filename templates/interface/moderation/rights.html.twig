@@ -12,24 +12,20 @@
 
             {{ form_start(form) }}
 
-                <div class="text-muted mb-2">{{ 'posts' | trans }}</div>
-                {{ form_row(form.ROLE_POST_AUTHOR) }}
-                {{ form_row(form.ROLE_POST_EDITOR) }}
-                {{ form_row(form.ROLE_POST_COMMENT_REMOVER) }}
-                {{ form_row(form.ROLE_POST_MODERATOR) }}
-                <div class="text-muted mb-2">{{ 'music' | trans }}</div>
+                <div class="text-muted mb-2">{{ 'management' | trans }}</div>
                 {{ form_row(form.ROLE_SONG_AUTHOR) }}
                 {{ form_row(form.ROLE_SONG_EDITOR) }}
-                {{ form_row(form.ROLE_SONG_COMMENT_REMOVER) }}
+                {{ form_row(form.ROLE_POST_MODERATOR) }}
                 {{ form_row(form.ROLE_SONG_MODERATOR) }}
-                <div class="text-muted mb-2">{{ 'people' | trans }}</div>
-                {{ form_row(form.ROLE_PEOPLE_EDITOR) }}
                 {{ form_row(form.ROLE_PEOPLE_MODERATOR) }}
+                <div class="text-muted mb-2">{{ 'comments' | trans }}</div>
+                {{ form_row(form.ROLE_POST_COMMENT_REMOVER) }}
+                {{ form_row(form.ROLE_SONG_COMMENT_REMOVER) }}
                 <div class="text-muted mb-2">{{ 'users' | trans }}</div>
                 {{ form_row(form.ROLE_USER_ANALYST) }}
                 {{ form_row(form.ROLE_USER_ACTIONS) }}
-                {{ form_row(form.ROLE_USER_BLOCKER) }}
-                {{ form_row(form.ROLE_USER_MANAGER) }}
+                {{ form_row(form.ROLE_USER_BAN) }}
+                {{ form_row(form.ROLE_USER_RIGHTS) }}
 
                 {% if is_granted('ROLE_OWNER') %}
                     {{ form_row(form.ROLE_ADMINISTRATOR) }}

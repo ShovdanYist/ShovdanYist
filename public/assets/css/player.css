@@ -843,7 +843,7 @@ Reference: http://blog.rrwd.nl/2015/04/04/the-screen-reader-text-class-why-and-h
     display: none;
 }
 .audio-player:hover .mejs__button.mejs__playpause-button.mejs__play button {
-    display: unset;
+    display: unset !important;
 }
 .md-player-vocalist {
     font-weight: 500;

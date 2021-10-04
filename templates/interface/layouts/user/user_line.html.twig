@@ -34,13 +34,13 @@
 
     {% if app.user != follower %}
         <div class="user-line-follow">
-            {% if unfollow == app.user %}
+            {% if app.user and unfollow == app.user %}
                 <a href="{{ path('user_unfollow',{'username':follower.username}) }}" class="unfollow unfollow-toggle" id="u{{ (follower.id * 14 / 3 + 91) | round }}t" title="{{ 'sure.to.delete.follower' | trans({'username':follower.username}) }}">
                     <i class="fas fa-times"></i>
                 </a>
             {% endif %}
 
-            <a class="btn follow-toggle{% if userIsFollowed(follower) %} btn-light followed{% else %} btn-info{% endif %}" href="{{ path('user_follow',{'username':follower.username}) }}"></a>
+            <a class="btn {% if app.user %}follow-toggle{% endif %}{% if userIsFollowed(follower) %} btn-light followed{% else %} btn-info{% endif %}" href="{% if app.user %}{{ path('user_follow',{'username':follower.username}) }}{% else %}{{ path('app_login') }}{% endif %}"></a>
         </div>
     {% endif %}
 

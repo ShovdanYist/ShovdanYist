@@ -96,12 +96,12 @@ class CounterExtension extends AbstractExtension
 
     public function notifyCount($user): int
     {
-        return $this->notifyRepo->count(['receiver' => $user, 'seen' => false]);
+        return $this->notifyRepo->count(['receiver' => $user, 'seen' => false, 'status' => true]);
     }
 
     public function postModerationCount(): int
     {
-        return $this->postRepo->count(['status' => null, 'moderation' => true]);
+        return $this->postRepo->count(['status' => null]);
     }
 
     public function songModerationCount(): int

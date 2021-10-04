@@ -215,35 +215,4 @@ class SongController extends CustomAbstractController
             return $this->redirectToRoute('moderation_pending');
         }
     }
-
-    /**
-     * @Route("/playlister/{slug}", name="song_playlister", methods={"POST", "GET"})
-     * @param Song $song
-     * @param UserRepository $userRepo
-     * @param PlaylistSongRepository $playlistSongRepo
-     * @return Response
-     */
-    public function playlister(Song $song, UserRepository $userRepo, PlaylistSongRepository $playlistSongRepo): Response
-    {
-        $user = $userRepo->findOneBy(['username' => $this->getUser()->getUsername()]);
-        $contains = $playlistSongRepo->findOneBy(['user' => $user, 'song' => $song]);
-        $em = $this->getDoctrine()->getManager();
-
-        if ($contains) {
-            $user->removePlaylistSong($contains);
-            $response = ['status' => 'removed', 'title' => $this->trans('add.to.playlist'), 'message' => $this->trans('flash.removed.from.playlist')];
-        } else {
-            $playlistSong = new PlaylistSong();
-            $playlistSong->setUser($user);
-            $playlistSong->setSong($song);
-            $em->persist($playlistSong);
-            $response = ['status' => 'added', 'title' => $this->trans('remove.from.playlist'), 'message' => $this->trans('flash.added.to.playlist')];
-        }
-
-        $em->flush();
-
-        return $this->json([
-            'response' => $response
-        ]);
-    }
 }

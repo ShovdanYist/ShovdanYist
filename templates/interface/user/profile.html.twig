@@ -1,6 +1,6 @@
 {% extends 'interface/base.html.twig' %}
 
-{% block og_title %}{{ user.username }} | Профиль{% endblock %}
+{% block og_title %}{{ user.username }} | {{ type | trans }}{% endblock %}
 
 {% block og_image %}{% if user.profile.avatar != 'avatar.jpg' %}{{ vich_uploader_asset(profile) }}{% else %}{{ asset('assets/images/avatar.jpg') }}{% endif %}{% endblock %}
 
@@ -10,7 +10,7 @@
     <meta property="profile:gender" content="{{ user.profile.gender ? 'female' : 'male' }}">
 {% endblock %}
 
-{% block title %}{{ user.username }} | Профиль{% endblock %}
+{% block title %}{{ user.username }} | {{ type | trans }}{% endblock %}
 
 {% block description %}Страница пользователя {{ user.username }} на сайте ShovdanYist, здесь вы найдете тексты всех чеченских песен, их переводы, а также сможете скачать их или добавлять в свой плейлист.{% endblock %}
 
@@ -108,7 +108,7 @@
                         </div>
                     {% else %}
                         <div class="profile-button profile-follow md-margin-right">
-                            <a class="btn {% if userIsFollowed(user) %}btn-light followed{% else %}btn-info{% endif %} follow-toggle" href="{{ path('user_follow',{'username':user.username}) }}"></a>
+                            <a class="btn {% if userIsFollowed(user) %}btn-light followed{% else %}btn-info{% endif %} {% if app.user %}follow-toggle{% endif %}" href="{% if app.user %}{{ path('user_follow',{'username':user.username}) }}{% else %}{{ path('app_login') }}{% endif %}"></a>
                         </div>
 
                         <div class="profile-button">
@@ -127,8 +127,6 @@
 
                 {% if is_role(profile.user,'ROLE_MODERATOR') %}
                     <span class="text-muted">Администрация ShovdanYist</span>
-                {% elseif is_role(profile.user,'ROLE_POST_AUTHOR') %}
-                    <span class="text-muted">Автор статей</span>
                 {% endif %}
 
                 <div class="md-bio">
@@ -173,10 +171,10 @@
         {% endif %}
 
         <div class="md-profile-posts-menu">
-            <a href="" class="active">
+            <a href="{{ path('user_profile', {'username':user.username}) }}" {% if type == 'profile' %}class="active"{% endif %}>
                 <i class="fas fa-th"></i>
             </a>
-            <a href="">
+            <a href="{{ path('user_tagged', {'username':user.username}) }}" {% if type == 'tagged' %}class="active"{% endif %}>
                 <i class="fas fa-user-tag"></i>
             </a>
         </div>
@@ -189,13 +187,13 @@
 
                     <a href="{{ path('post_show', {'slug':post.slug}) }}">
 
-                        <img src="{% if post.image %}{{ vich_uploader_asset(post) | imagine_filter('avatar') }}{% else %}{{ asset('assets/images/question.jpg') | imagine_filter('avatar') }}{% endif %}" alt="{{ post.title }}">
+                        <img src="{% if post.image %}{{ vich_uploader_asset(post) | imagine_filter('avatar') }}{% else %}{{ asset('assets/images/question.jpg') | imagine_filter('avatar') }}{% endif %}" alt="{{ post.slug }}">
 
                         <div class="md-grid-post-actions">
 
                             {% if not post.status %}
 
-                                <span class="status-icon" data-toggle="tooltip" title="{% if post.status is null %}{{ (post.type ~ '.in.moderation') | trans }}{% else %}{{ (post.type ~ '.is.rejected') | trans }}{% endif %}">
+                                <span class="status-icon" data-toggle="tooltip" title="{% if post.status is null %}{{ 'post.in.moderation' | trans }}{% else %}{{ 'post.is.rejected' | trans }}{% endif %}">
                                     {% if post.status is null %}
                                         <i class="fas fa-history"></i>
                                     {% else %}
@@ -205,16 +203,10 @@
 
                             {% endif %}
 
-                            {% if post.type == 'article' or '.gif' in post.image %}
-
-                                <span class="type-icon" data-toggle="tooltip" title="{% if post.type == 'article' %}{{ 'article' | trans }}{% elseif '.gif' in post.image %}{{ 'animated.image' | trans }}{% endif %}">
-                                    {% if post.type == 'article' %}
-                                        <i class="fas fa-heading" ></i>
-                                    {% elseif '.gif' in post.image %}
-                                        <i class="fas fa-magic"></i>
-                                    {% endif %}
+                            {% if '.gif' in post.image %}
+                                <span class="type-icon" data-toggle="tooltip" title="{{ 'animated.image' | trans }}">
+                                    <i class="fas fa-magic"></i>
                                 </span>
-
                             {% endif %}
 
                         </div>
@@ -227,10 +219,18 @@
 
                 <div class="profile-no-posts">
                     <i class="far fa-clone" style="margin-right: 3px"></i>
-                    {% if app.user == user %}
-                        {{ 'you.have.not.posts' | trans }}
+                    {% if type == 'profile' %}
+                        {% if app.user == user %}
+                            {{ 'you.have.not.posts' | trans }}
+                        {% else %}
+                            {{ 'user.have.not.posts' | trans({'username':user.username}) }}
+                        {% endif %}
                     {% else %}
-                        {{ 'user.have.not.posts' | trans({'username':user.username}) }}
+                        {% if app.user == user %}
+                            {{ 'you.have.not.tagged.posts' | trans }}
+                        {% else %}
+                            {{ 'user.have.not.tagged.posts' | trans({'username':user.username}) }}
+                        {% endif %}
                     {% endif %}
                 </div>
 

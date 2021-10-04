@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Entity\Notification;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -27,17 +28,11 @@ class NotificationType extends AbstractType
             ->add('message', TextareaType::class,[
                 'required' => false,
                 'attr' => [
-                    'class' => 'md-autosizer',
+                    'class' => 'md-auto-sizer',
                     'placeholder' => 'Напишите причину отказа',
                     'rows' => 1
                 ]
             ])
-//            ->add('featured', CheckboxType::class, [
-//                'label' => 'featured',
-//                'required' => false,
-//                'mapped' => false,
-//                'label_attr' => ['class' => 'switch-custom']
-//            ])
             ->add('approve', SubmitType::class, [
                 'label' => 'approve',
                 'attr' => [
@@ -51,6 +46,17 @@ class NotificationType extends AbstractType
                     'class' => 'btn-link float-right'
                 ]
             ])
+            ->add('gender', ChoiceType::class, [
+                'label' => 'content.for',
+                'mapped' => false,
+                'choices' => [
+                    'content.for.all' => null,
+                    'content.for.male.audience' => false,
+                    'content.for.female.audience' => true
+                ],
+                'data' => $options['gender']
+//                'attr' => ['class' => 'chosen']
+            ])
         ;
     }
 
@@ -58,6 +64,7 @@ class NotificationType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Notification::class,
+            'gender' => null
         ]);
     }
 }

@@ -6,14 +6,14 @@
 
     <h1>{{ 'post.editing' | trans }}</h1>
 
-    {{ include('interface/post/_form.html.twig') }}
+    {{ include('interface/post/layouts/post_form.html.twig') }}
 
 {% endblock %}
 
 {% block scripts %}
-    {{ ckeditor('user') }}
+    {{ ckeditor(4000) }}
     {{ chosen() }}
-    {{ chosen(10, '.chosen-music') }}
+    {{ chosen(10, '.chosen-songs') }}
     {{ chosen(10, '.chosen-users') }}
     {{ chosen(3,'.chosen-date select') }}
 {% endblock %}

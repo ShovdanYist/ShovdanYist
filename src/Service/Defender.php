@@ -22,18 +22,15 @@ class Defender
     private $user;
     private $postRepo;
     private $roles = [
-        'ROLE_POST_AUTHOR',
-        'ROLE_POST_EDITOR',
         'ROLE_POST_COMMENT_REMOVER',
         'ROLE_POST_MODERATOR',
         'ROLE_SONG_AUTHOR',
         'ROLE_SONG_EDITOR',
         'ROLE_SONG_COMMENT_REMOVER',
         'ROLE_SONG_MODERATOR',
-        'ROLE_PEOPLE_EDITOR',
         'ROLE_PEOPLE_MODERATOR',
-        'ROLE_USER_MANAGER',
-        'ROLE_USER_BLOCKER',
+        'ROLE_USER_RIGHTS',
+        'ROLE_USER_BAN',
         'ROLE_USER_ANALYST',
         'ROLE_USER_ACTIONS'
     ];
@@ -81,7 +78,7 @@ class Defender
             $right = true;
         } elseif ($this->isGranted($moderator,'ROLE_ADMINISTRATOR') && !$this->isGranted($user,'ROLE_ADMINISTRATOR') && !$this->isGranted($user,'ROLE_OWNER')) {
             $right = true;
-        } elseif ($this->isGranted($moderator,'ROLE_USER_MANAGER') && !$this->isGranted($user,'ROLE_SUPER_MODERATOR')) {
+        } elseif ($this->isGranted($moderator,'ROLE_USER_RIGHTS') && !$this->isGranted($user,'ROLE_SUPER_MODERATOR')) {
             $right = true;
         }
 
@@ -119,7 +116,7 @@ class Defender
     {
         $right = false;
 
-        if ($this->isGranted($moderator,'ROLE_USER_BLOCKER') && !$this->isGranted($user,'ROLE_USER_BLOCKER') && $user->getProfile()->getVerified() !== true || $this->isGranted($moderator,'ROLE_OWNER') && $moderator !== $user) {
+        if ($this->isGranted($moderator,'ROLE_USER_BAN') && !$this->isGranted($user,'ROLE_USER_BAN') && $user->getProfile()->getVerified() !== true || $this->isGranted($moderator,'ROLE_OWNER') && $moderator !== $user) {
             $right = true;
         }
 
@@ -184,11 +181,10 @@ class Defender
 
     public function rightToSetTitleSlug(Post $post): bool
     {
-        $slugify  = new Slugify();
         $right  = true;
         $exist = null;
 
-        $bySlug = $this->postRepo->findOneBy(['slug' => $slugify->slugify($post->getTitle())]);
+        $bySlug = $this->postRepo->findOneBy(['slug' => $post->getSlug()]);
         $byTitle = $this->postRepo->findOneBy(['title' => $post->getTitle()]);
 
         if ($bySlug) {

@@ -110,7 +110,7 @@ class UserController extends CustomAbstractController
      */
     public function profile(User $user, $page, Paginator $paginator, Defender $defender): Response
     {
-        if (!$defender->isGranted($this->user(),'ROLE_GUEST') && $user === $this->user() || $this->isGranted('ROLE_POST_MODERATOR')) {
+        if (!$defender->isGranted($this->getUser(),'ROLE_GUEST') && $user === $this->user() || $this->isGranted('ROLE_POST_MODERATOR')) {
             $criteria = ['author' => $user];
         } else {
             $criteria = ['author' => $user, 'status' => true];
@@ -131,6 +131,36 @@ class UserController extends CustomAbstractController
             'paginator' => $paginator,
             'profile' => $user->getProfile(),
             'user' => $user,
+            'type' => 'profile'
+        ]);
+    }
+
+    /**
+     * @Route("/user/{username}/tagged/{page<\d+>?1}", name="user_tagged", methods={"GET"})
+     * @param User $user
+     * @param $page
+     * @param Paginator $paginator
+     * @return Response
+     */
+    public function tagged(User $user, $page, Paginator $paginator): Response
+    {
+        $paginator
+            ->setClass(Post::class)
+            ->setMethod('findUserTaggedPosts')
+            ->setOrder(['publishedAt' => 'DESC'])
+            ->setCriteria(['user' => $user])
+            ->setParameters(['username' => $user->getUsername()])
+            ->setLimit(40)
+            ->setPage($page)
+        ;
+
+        return $this->render('interface/user/profile.html.twig', [
+            'invitees' => $this->getDoctrine()->getRepository(User::class)->count(['invitedBy' => $user, 'status' => true]),
+            'posts' => $paginator->getData(),
+            'paginator' => $paginator,
+            'profile' => $user->getProfile(),
+            'user' => $user,
+            'type' => 'tagged'
         ]);
     }
 
@@ -337,7 +367,7 @@ class UserController extends CustomAbstractController
             $this->getDoctrine()->getManager()->flush();
         }
 
-        foreach ($notifyRepo->findBy(['receiver' => $user]) as $notification) {
+        foreach ($notifyRepo->findBy(['receiver' => $user, 'status' => true]) as $notification) {
             $notification->setSeen(true);
         }
 

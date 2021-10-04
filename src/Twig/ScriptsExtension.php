@@ -35,10 +35,10 @@ class ScriptsExtension extends AbstractExtension
      * @throws SyntaxError
      * @throws LoaderError
      */
-    public function ckeditor(Environment $twig, $type = 'user'): string
+    public function ckeditor(Environment $twig, int $limit = null): string
     {
         return $twig->render('interface/layouts/scripts/ckeditor.html.twig', [
-            'type' => $type
+            'limit' => $limit
         ]);
     }
 

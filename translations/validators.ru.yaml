@@ -116,5 +116,4 @@ audio.have.to.be.mpeg.or.wav: 'Аудио файл должен быть фор�
 no.account.with.such.email: 'Аккаунт с такой почтой не найден'
 email.in.blacklist: 'Указанная почта в черном списке'
 post.image.required: 'Изображение для статьи обязательна'
-post.title.required: 'Заголовок для статьи обязателен'
 birthday.required: 'Вы забыли указать день рождения'

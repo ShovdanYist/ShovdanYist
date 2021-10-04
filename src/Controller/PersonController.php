@@ -99,7 +99,7 @@ class PersonController extends CustomAbstractController
 
     /**
      * @Route("/person/{slug}/edit", name="person_edit", methods={"GET","POST"})
-     * @Security("has_role('ROLE_PEOPLE_EDITOR')")
+     * @Security("has_role('ROLE_PEOPLE_MODERATOR')")
      * @param Request $request
      * @param Person $person
      * @param Initializer $initializer

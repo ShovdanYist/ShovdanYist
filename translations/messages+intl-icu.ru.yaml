@@ -79,21 +79,15 @@ notifications: Уведомлении
 
 post.is.already.approved: 'Данная публикация уже утверждена другим модератором'
 post.is.already.rejected: 'Данная публикация уже отклонена другим модератором'
-article.is.already.approved: 'Данная статья уже утверждена другим модератором'
-article.is.already.rejected: 'Данная статья уже отклонена другим модератором'
 
 post.in.moderation: 'Публикация на модерации'
 post.is.rejected: 'Публикация отклонена'
-article.in.moderation: 'Статья на модерации'
-article.is.rejected: 'Статья отклонена'
 
 followed.to.you.male: 'подписался на вас'
 followed.to.you.female: 'подписалась на вас'
 
 tagged.you.in.post.male: 'отметил вас в публикации'
 tagged.you.in.post.female: 'отметила вас в публикации'
-tagged.you.in.article.male: 'отметил вас в статье'
-tagged.you.in.article.female: 'отметила вас в статье'
 
 replied.you.with.comment.male: 'ответил на ваш комментарий:'
 replied.you.with.comment.female: 'ответила на ваш комментарий:'
@@ -103,14 +97,8 @@ commented.your.post.male : 'оставил комментарий на вашу 
 commented.your.post.female : 'оставила комментарий на вашу публикацию'
 commented.your.post.users : 'и другие оставили комментарии на вашу публикацию'
 
-commented.your.article.male : 'оставил комментарий на вашу статью'
-commented.your.article.female : 'оставила комментарий на вашу статью'
-commented.your.article.users : 'и другие оставили комментарии на вашу статью'
-
 rejected.your.post : 'отклонил вашу публикацию'
-rejected.your.article : 'отклонил вашу статью'
 approved.your.post : 'утвердил вашу публикацию'
-approved.your.article : 'утвердил вашу статью'
 
 deleted.comment.male: 'удалил комментарий от пользователя'
 deleted.comment.female: 'удалила комментарий от пользователя'
@@ -122,18 +110,12 @@ unblocked.user.female: 'разблокировала пользователя'
 
 approved.post.male : 'утвердил публикацию'
 approved.post.female : 'утвердила публикацию'
-approved.article.male : 'утвердил статью'
-approved.article.female : 'утвердила статью'
 
 rejected.post.male : 'отклонил публикацию'
 rejected.post.female : 'отклонила публикацию'
-rejected.article.male : 'отклонил статью'
-rejected.article.female : 'отклонила статью'
 
 edited.post.male: 'отредактировал публикацию'
 edited.post.female: 'отредактировала публикацию'
-edited.article.male: 'отредактировал статью'
-edited.article.female: 'отредактировала статью'
 
 edited.song.male: 'отредактировал песню'
 edited.song.female: 'отредактировала песню'
@@ -162,6 +144,7 @@ playlist.of: 'Плейлист {username}'
 not.songs.in.your.playlist: 'У вас еще нет песен в плейлисте'
 user.has.not.songs.in.playlist: 'У пользователя {username} нет песен в плейлисте'
 manager: Менеджер
+management: Управление
 my.page: 'Моя страница'
 log.out: Выйти
 reply.for: 'Ответ для'
@@ -216,7 +199,6 @@ event.date.help: 'Не забудьте указать, если речь иде
 become.an.author: 'Стать автором'
 post.editing: 'Изменение публикации'
 post: Публикация
-article: Статья
 posts: Публикации
 posts.from.category: 'Публикации из категории'
 select.sections: 'Выберите секции'
@@ -256,6 +238,7 @@ song.adding: 'Добавление песни'
 save.and.close: 'Сохранить и закрыть'
 select.featuring: 'Выберите совместных'
 add.post: 'Новая публикация'
+post.title.help: 'Поле необязательное, при желании можно заполнить: на пример если пишите статью'
 section: Секция
 update: Обновить
 update.tags: 'Обновить теги'
@@ -278,6 +261,9 @@ to.moderation: 'На модерацию'
 pending: 'В ожидании'
 published: Опубликованные
 status: Статус
+content.for.male.audience: 'Контент для мужской аудитории'
+content.for.female.audience: 'Контент для женской аудитории'
+content.for.all: 'Контент для всех'
 add.to.bookmarks: 'Добавить в закладки'
 remove.from.bookmarks: 'Удалить из закладок'
 bookmarks: Закладки
@@ -297,11 +283,16 @@ you.have.no.notifications: 'У вас еще нет уведомлений'
 you.have.not.bookmarks: 'У вас еще нет закладок'
 you.have.not.followers: 'У вас еще нет подписчиков'
 you.have.not.following: 'У вас еще нет подписок'
+profile: 'Профиль'
+tagged: 'Отмеченные'
 you.have.not.posts: 'У вас еще нет публикаций'
 user.have.not.posts: 'У пользователя { username } еще нет публикаций'
+you.have.not.tagged.posts: 'Еще нет публикаций на которых вы отмечены'
+user.have.not.tagged.posts: 'Еще нет публикаций на которых отмечен пользователь { username }'
 user.have.not.followers: 'У пользователя { username } еще нет подписчиков'
 user.have.not.following: 'У пользователя { username } еще нет подписок'
 points: 'Баллы'
+edited: 'Отредактировано'
 followers: 'Подписчики'
 following: 'Подписки'
 follow: 'Подписаться'
@@ -330,18 +321,15 @@ invited.by: 'По приглашению'
 'Composition with this alias already exists': 'Уже существует произведение с таким алиасом'
 rights: Права
 ROLE_ADMINISTRATOR: Администратор
-ROLE_POST_AUTHOR: 'Писать статьи'
-ROLE_POST_EDITOR: 'Редакторовать публикации'
-ROLE_POST_COMMENT_REMOVER: 'Удалять комментарии публикаций'
-ROLE_POST_MODERATOR: 'Модерировать раздел публикаций'
-ROLE_SONG_AUTHOR: 'Писать песни'
-ROLE_SONG_EDITOR: 'Редактировать песни'
-ROLE_SONG_COMMENT_REMOVER: 'Удалять комментарии песен'
-ROLE_SONG_MODERATOR: 'Модерировать раздел музыки'
-ROLE_PEOPLE_EDITOR: 'Редактировать биографию'
-ROLE_PEOPLE_MODERATOR: 'Модерировать раздел людей'
-ROLE_USER_MANAGER: 'Назначение модераторов'
-ROLE_USER_BLOCKER: 'Блокировка пользователей'
+ROLE_SONG_AUTHOR: 'Автор текстов песен'
+ROLE_SONG_EDITOR: 'Редактор песен'
+ROLE_POST_MODERATOR: 'Модератор раздела публикаций'
+ROLE_SONG_MODERATOR: 'Модератор раздела музыки'
+ROLE_PEOPLE_MODERATOR: 'Модератор раздела людей'
+ROLE_SONG_COMMENT_REMOVER: 'Удаление комментариев песен'
+ROLE_POST_COMMENT_REMOVER: 'Удаление комментариев публикаций'
+ROLE_USER_RIGHTS: 'Назначение прав'
+ROLE_USER_BAN: 'Бан пользователей'
 ROLE_USER_ANALYST: 'Статистика пользователей'
 ROLE_USER_ACTIONS: 'Действия модераторов'
 actions: 'Действия'

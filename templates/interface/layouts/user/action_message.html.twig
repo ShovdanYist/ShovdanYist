@@ -43,33 +43,21 @@
     {% if action.type == 'post_approved' %}
 
         {% if action.moderator.profile.gender %}
-            {{ ('approved.' ~ action.post.type ~ '.female') | trans }}
+            {{ 'approved.post.female' | trans }}
         {% else %}
-            {{ ('approved.' ~ action.post.type ~ '.male') | trans }}
+            {{ 'approved.post.male' | trans }}
         {% endif %}
 
-        {% if action.post.type == 'article' %}
-            <a href="{{ path('post_show',{'slug':action.post.slug}) }}">
-                {{ action.post.title }}
-            </a>
-        {% else %}
-            <a href="{{ path('user_profile',{'username': action.post.author.username }) }}">
-                {{ action.post.author.username }}
-            </a>
-        {% endif %}
+        <a href="{{ path('user_profile',{'username': action.post.author.username }) }}">
+            {{ action.post.author.username }}
+        </a>
 
     {% elseif action.type == 'post_rejected' %}
 
         {% if action.moderator.profile.gender %}
-            {{ ('rejected.' ~ action.post.type ~ '.female') | trans }}
+            {{ 'rejected.post.female' | trans }}
         {% else %}
-            {{ ('rejected.' ~ action.post.type ~ '.male') | trans }}
-        {% endif %}
-
-        {% if action.post.type == 'article' %}
-            <a href="{{ path('post_show',{'slug':action.post.slug}) }}">
-                {{ action.post.title }}
-            </a>
+            {{ 'rejected.post.male' | trans }}
         {% endif %}
 
         {{ 'for.next.reason' | trans }}:
@@ -80,23 +68,17 @@
 
     {% endif %}
 
-{% elseif action.type == 'post_edited' or action.type == 'article_edited' %}                                             {# ---------- POST / ARTICLE EDIT ---------- #}
+{% elseif action.type == 'post_edited' %}                                                                                {# ---------- POST EDIT ---------- #}
 
     {% if action.moderator.profile.gender %}
-        {{ ('edited.' ~ action.post.type ~ '.female') | trans }}
+        {{ 'edited.post.female' | trans }}
     {% else %}
-        {{ ('edited.' ~ action.post.type ~ '.male') | trans }}
+        {{ 'edited.post.male' | trans }}
     {% endif %}
 
-    {% if action.type == 'article_edited' %}
-        <a href="{{ path( 'post_show', {'slug': action.post.slug}) }}">
-            {{ action.post.title }}
-        </a>
-    {% else %}
-        <a href="{{ path('user_profile',{'username': action.post.author.username }) }}">
-            {{ action.post.author.username }}
-        </a>
-    {% endif %}
+    <a href="{{ path('user_profile',{'username': action.post.author.username }) }}">
+        {{ action.post.author.username }}
+    </a>
 
 {% elseif action.type == 'song_edited' %}                                                                                {# ---------- SONG EDIT ---------- #}
 

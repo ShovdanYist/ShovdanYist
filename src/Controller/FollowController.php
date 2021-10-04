@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\CustomAbstracts\CustomAbstractController;
 use App\Entity\Follow;
 use App\Entity\Notification;
+use App\Entity\Post;
 use App\Entity\User;
 use App\Service\Paginator;
 use Doctrine\ORM\EntityManagerInterface;
@@ -29,7 +30,7 @@ class FollowController extends CustomAbstractController
             ->setCriteria(['user' => $user, 'type' => 'followers'])
             ->setParameters(['username' => $user->getUsername()])
             ->setOrder(['id' => 'DESC'])
-            ->setLimit(20)
+            ->setLimit(30)
             ->setPage($page)
         ;
 
@@ -57,7 +58,7 @@ class FollowController extends CustomAbstractController
             ->setCriteria(['user' => $user, 'type' => 'following'])
             ->setParameters(['username' => $user->getUsername()])
             ->setOrder(['id' => 'DESC'])
-            ->setLimit(20)
+            ->setLimit(30)
             ->setPage($page)
         ;
 
