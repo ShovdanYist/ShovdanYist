@@ -124,6 +124,11 @@ class Post
      */
     private $title;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Like::class, mappedBy="post", orphanRemoval=true)
+     */
+    private $likes;
+
     public function __construct()
     {
         $this->songs = new ArrayCollection();
@@ -133,6 +138,7 @@ class Post
         $this->tags = new ArrayCollection();
         $this->actions = new ArrayCollection();
         $this->taggedUsers = new ArrayCollection();
+        $this->likes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -499,6 +505,37 @@ class Post
     public function setTitle(?string $title): self
     {
         $this->title = $title;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Like[]
+     */
+    public function getLikes(): Collection
+    {
+        return $this->likes;
+    }
+
+    public function addLike(Like $like): self
+    {
+        if (!$this->likes->contains($like)) {
+            $this->likes[] = $like;
+            $like->setPost($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLike(Like $like): self
+    {
+        if ($this->likes->contains($like)) {
+            $this->likes->removeElement($like);
+            // set the owning side to null (unless already changed)
+            if ($like->getPost() === $this) {
+                $like->setPost(null);
+            }
+        }
 
         return $this;
     }

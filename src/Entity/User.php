@@ -169,6 +169,11 @@ class User implements UserInterface
      */
     private $taggedPosts;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Like::class, mappedBy="user", orphanRemoval=true)
+     */
+    private $likes;
+
     public function __construct()
     {
         $this->songs = new ArrayCollection();
@@ -186,6 +191,7 @@ class User implements UserInterface
         $this->following = new ArrayCollection();
         $this->followers = new ArrayCollection();
         $this->taggedPosts = new ArrayCollection();
+        $this->likes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -800,6 +806,37 @@ class User implements UserInterface
         if ($this->taggedPosts->contains($taggedPost)) {
             $this->taggedPosts->removeElement($taggedPost);
             $taggedPost->removeUser($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Like[]
+     */
+    public function getLikes(): Collection
+    {
+        return $this->likes;
+    }
+
+    public function addLike(Like $like): self
+    {
+        if (!$this->likes->contains($like)) {
+            $this->likes[] = $like;
+            $like->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLike(Like $like): self
+    {
+        if ($this->likes->contains($like)) {
+            $this->likes->removeElement($like);
+            // set the owning side to null (unless already changed)
+            if ($like->getUser() === $this) {
+                $like->setUser(null);
+            }
         }
 
         return $this;

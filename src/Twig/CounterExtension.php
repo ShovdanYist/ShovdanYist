@@ -3,11 +3,13 @@
 namespace App\Twig;
 
 use App\Entity\Bookmark;
+use App\Entity\Like;
 use App\Entity\PlaylistSong;
 use App\Entity\Song;
 use App\Entity\Person;
 use App\Entity\User;
 use App\Repository\BookmarkRepository;
+use App\Repository\LikeRepository;
 use App\Repository\SongRepository;
 use App\Repository\NotificationRepository;
 use App\Repository\PostRepository;
@@ -24,15 +26,17 @@ class CounterExtension extends AbstractExtension
     private $notifyRepo;
     private $translator;
     private $bookmarks;
+    private $likes;
     private $postRepo;
     private $security;
 
-    public function __construct(SongRepository $songRepository, PostRepository $postRepo, BookmarkRepository $bookmarks, PlaylistSongRepository $playlistSongRepo, NotificationRepository $notifyRepo, TranslatorInterface $translator, Security $security)
+    public function __construct(SongRepository $songRepository, PostRepository $postRepo, BookmarkRepository $bookmarks, LikeRepository $likes, PlaylistSongRepository $playlistSongRepo, NotificationRepository $notifyRepo, TranslatorInterface $translator, Security $security)
     {
         $this->songRepo = $songRepository;
         $this->postRepo = $postRepo;
         $this->playlistSongRepo = $playlistSongRepo;
         $this->bookmarks = $bookmarks;
+        $this->likes = $likes;
         $this->notifyRepo = $notifyRepo;
         $this->translator = $translator;
         $this->security = $security;
@@ -44,7 +48,8 @@ class CounterExtension extends AbstractExtension
             new TwigFunction('featuring', [$this, 'vocalistFeaturing'], ['is_safe' => ['html']]),
             new TwigFunction('songsCount', [$this, 'songsCount'], ['is_safe' => ['html']]),
             new TwigFunction('userContainSong', [$this, 'userContainSong'], ['is_safe' => ['html']]),
-            new TwigFunction('userContainPost', [$this, 'userContainPost'], ['is_safe' => ['html']]),
+            new TwigFunction('userBookmarkedPost', [$this, 'userBookmarkedPost'], ['is_safe' => ['html']]),
+            new TwigFunction('userLikedPost', [$this, 'userLikedPost'], ['is_safe' => ['html']]),
             new TwigFunction('notifyCount', [$this, 'notifyCount'], ['is_safe' => ['html']]),
             new TwigFunction('postModerationCount', [$this, 'postModerationCount'], ['is_safe' => ['html']]),
             new TwigFunction('songModerationCount', [$this, 'songModerationCount'], ['is_safe' => ['html']]),
@@ -84,9 +89,14 @@ class CounterExtension extends AbstractExtension
         return $this->playlistSongRepo->findOneBy(['user' => $user, 'song' => $song]);
     }
 
-    public function userContainPost($user, $post): ?Bookmark
+    public function userBookmarkedPost($user, $post): ?Bookmark
     {
         return $this->bookmarks->findOneBy(['user' => $user, 'post' => $post]);
+    }
+
+    public function userLikedPost($user, $post): ?Like
+    {
+        return $this->likes->findOneBy(['user' => $user, 'post' => $post]);
     }
 
     public function userHavePlaylistSongs($user): bool

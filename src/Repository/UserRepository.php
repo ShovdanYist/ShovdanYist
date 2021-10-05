@@ -24,6 +24,25 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         parent::__construct($registry, User::class);
     }
 
+    public function findLikes($criteria, $orderBy = ['id' => 'DESC'], $limit = null, $offset = 0)
+    {
+        $qb = $this->createQueryBuilder('u');
+
+        $qb->join('u.likes', 'l')
+            ->where('l.post = :post');
+
+        $qb->setParameter('post', $criteria['post']);
+
+        foreach ($orderBy as $key => $value) {
+            $qb->orderBy('u.'.$key,$value);
+        }
+
+        $qb ->setMaxResults($limit)
+            ->setFirstResult($offset);
+
+        return $qb->getQuery()->getResult();
+    }
+
     public function findFollows($criteria, $orderBy = ['id' => 'DESC'], $limit = null, $offset = 0)
     {
         $qb = $this->createQueryBuilder('u');

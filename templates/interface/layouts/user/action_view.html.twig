@@ -46,7 +46,7 @@
 
     <div class="notify-picture">
         {% if action.post %}
-            <a href="{{ path('post_show', {'slug': action.post.slug}) }}">
+            <a href="{{ path('post_show', {'id': action.post.id}) }}">
                 <span class="back-picture bp-50" style="border-radius: 3px;margin-right: 14px;background-image: url('{% if action.post.image %}{{ vich_uploader_asset(action.post) | imagine_filter('thumbnail') }}{% else %}{{ asset('assets/images/question.jpg') }}{% endif %}')">
                 </span>
             </a>

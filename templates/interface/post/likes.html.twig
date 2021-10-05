@@ -1,0 +1,33 @@
+{% extends 'interface/base.html.twig' %}
+
+{% block title %}
+    {% if post.title %}
+        {{ post.title }} | {{ 'like.marks' | trans }}
+    {% else %}
+        {{ 'post' | trans }} #{{ post.id }} | {{ 'like.marks' | trans }}
+    {% endif %}
+{% endblock %}
+
+{% block main_top %}
+    {% if post.title %}
+        {{ breadcrumb({
+            (path('user_profile', {'username':post.author.username})) : post.author.username,
+            (path('post_show', {'id':post.id})) : post.title,
+            'active' : 'like.marks' | trans,
+        }, post, 'post') }}
+    {% else %}
+        {{ breadcrumb({
+            (path('user_profile', {'username':post.author.username})) : post.author.username,
+            (path('post_show', {'id':post.id})) : ('post' | trans) ~ ' #' ~ post.id,
+            'active' : 'like.marks' | trans,
+        }, post, 'post') }}
+    {% endif %}
+{% endblock %}
+
+{% block body %}
+    {% for user in users %}
+        {{ userLine(user) }}
+    {% endfor %}
+
+    {{ paginator.display() }}
+{% endblock %}

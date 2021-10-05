@@ -1,4 +1,4 @@
-<div class="md-notification md-comment-notification">
+<div class="md-notification md-comment-notification{% if notification.type == 'user_follow' %} user-follow-notification{% endif %}">
 
     <div class="notify-sender-user">
         <a href="{{ path('user_profile', {'username': sender.username}) }}">
@@ -42,28 +42,32 @@
 
     </div>
 
-    <div class="notify-picture">
+    {% if notification.type != 'user_follow' %}
 
-        {% if notification.type == 'user_follow' %}
+        <div class="notify-picture">
 
-            {#    TODO: follow button    #}
+            {% if notification.type == 'user_follow' %}
 
-        {% elseif notification.type == 'comment_reply' and notification.song %}
+                {#    TODO: follow button    #}
 
-            <a href="{{ path('song_show',{'slug':notification.song.slug}) }}">
-                <span class="back-picture bp-50" style="border-radius: 3px;margin-right: 14px;background-image: url('{% if notification.song.vocalist.picture %}{{ vich_uploader_asset(notification.song.vocalist) | imagine_filter('thumbnail') }}{% else %}{{ asset('assets/images/avatar.jpg') | imagine_filter('thumbnail') }}{% endif %}')">
-                </span>
-            </a>
+            {% elseif notification.type == 'comment_reply' and notification.song %}
 
-        {% elseif notification.type == 'post_approved' or notification.type == 'user_tagged' or notification.type == 'post_rejected' or notification.type == 'post_comment' or notification.type == 'comment_reply' and notification.post %}
+                <a href="{{ path('song_show',{'slug':notification.song.slug}) }}">
+                    <span class="back-picture bp-50" style="border-radius: 3px;margin-right: 14px;background-image: url('{% if notification.song.vocalist.picture %}{{ vich_uploader_asset(notification.song.vocalist) | imagine_filter('thumbnail') }}{% else %}{{ asset('assets/images/avatar.jpg') | imagine_filter('thumbnail') }}{% endif %}')">
+                    </span>
+                </a>
 
-            <a href="{{ path('post_show',{'slug':notification.post.slug}) }}">
-                <span class="back-picture bp-50" style="border-radius: 3px;margin-right: 14px;background-image: url('{% if notification.post.image %}{{ vich_uploader_asset(notification.post) | imagine_filter('thumbnail') }}{% else %}{{ asset('assets/images/question.jpg') | imagine_filter('thumbnail') }}{% endif %}')">
-                </span>
-            </a>
+            {% elseif notification.type == 'post_approved' or notification.type == 'user_tagged' or notification.type == 'post_rejected' or notification.type == 'post_comment' or notification.type == 'comment_reply' and notification.post %}
 
-        {% endif %}
+                <a href="{{ path('post_show',{'id':notification.post.id}) }}">
+                    <span class="back-picture bp-50" style="border-radius: 3px;margin-right: 14px;background-image: url('{% if notification.post.image %}{{ vich_uploader_asset(notification.post) | imagine_filter('thumbnail') }}{% else %}{{ asset('assets/images/question.jpg') | imagine_filter('thumbnail') }}{% endif %}')">
+                    </span>
+                </a>
 
-    </div>
+            {% endif %}
+
+        </div>
+
+    {% endif %}
 
 </div>

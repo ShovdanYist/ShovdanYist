@@ -77,7 +77,7 @@ class PostController extends CustomAbstractController
     }
 
     /**
-     * @Route("/post/{slug}/{page<\d+>?1}", name="post_show")
+     * @Route("/post/{id}/{page<\d+>?1}", name="post_show")
      * @param Post $post
      * @param $page
      * @param Defender $defender

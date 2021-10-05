@@ -1,22 +1,28 @@
+<style>
+    .likes-count {
+        display: table;
+        width: 100%;
+        font-weight: 500;
+    }
+</style>
+
+<div class="likes-count">
+    <a href="{{ path('post_likes', {'id':post.id}) }}">
+        Нравится: <span id="post-like-counter-{{ post.id }}" class="count">{{ post.likes.count }}</span>
+    </a>
+</div>
+
 <div class="post-actions">
 
-{#    <span class="stat">#}
-{#        <a href="#">#}
-{#            {% set num = random(0,1) %}#}
-
-{#            {% if num == 0 %}#}
-{#                <i class="far fa-heart" style="font-size: 24px; top: -2px; position: relative"></i>#}
-{#            {% else %}#}
-{#                <i class="fas fa-heart" style="color: #d54b43;font-size: 24px; top: -2px; position: relative"></i>#}
-{#            {% endif %}#}
-
-{#            <span class="count">{{ random(94, 234) }}</span>#}
-{#        </a>#}
-{#    </span>#}
+    <span class="stat mr-3">
+        <a class="like-toggle{% if userLikedPost(app.user, post) %} added{% endif %}" id="post-like-{{ post.id }}" href="{{ path('post_like', {'slug':post.slug}) }}">
+            <span class="like-icon"></span>
+        </a>
+    </span>
 
     {% if comments %}
         <span class="stat">
-            <a href="{{ path( 'post_show', {'slug': post.slug}) }}#comments">
+            <a href="{{ path( 'post_show', {'id': post.id}) }}#comments">
                 <i class="far fa-comment-alt" style="font-size: 22px;"></i>
                 <span class="count">{{ post.comments.count }}</span>
             </a>
@@ -26,7 +32,7 @@
     <span class="stat float-right m-0">
 
         {% if app.user %}
-            <a class="bookmark-toggle{% if userContainPost(app.user, post) %} added{% endif %}" href="{{ path('post_bookmark', {'slug': post.slug}) }}">
+            <a class="bookmark-toggle{% if userBookmarkedPost(app.user, post) %} added{% endif %}" href="{{ path('post_bookmark', {'slug': post.slug}) }}">
                 <span class="bookmark-icon"></span>
             </a>
         {% else %}

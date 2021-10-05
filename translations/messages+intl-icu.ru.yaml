@@ -83,8 +83,8 @@ post.is.already.rejected: 'Данная публикация уже отклон
 post.in.moderation: 'Публикация на модерации'
 post.is.rejected: 'Публикация отклонена'
 
-followed.to.you.male: 'подписался на вас'
-followed.to.you.female: 'подписалась на вас'
+followed.to.you.male: 'подписался на ваши обновлении'
+followed.to.you.female: 'подписалась на ваши обновлении'
 
 tagged.you.in.post.male: 'отметил вас в публикации'
 tagged.you.in.post.female: 'отметила вас в публикации'
@@ -199,6 +199,7 @@ event.date.help: 'Не забудьте указать, если речь иде
 become.an.author: 'Стать автором'
 post.editing: 'Изменение публикации'
 post: Публикация
+article: Статья
 posts: Публикации
 posts.from.category: 'Публикации из категории'
 select.sections: 'Выберите секции'
@@ -369,3 +370,5 @@ animated.image: 'Анимированное изображение'
 you.are.blocked.and.you.cant.edit.profile: 'Вы заблокированы и не можете редактировать свою страницу'
 confirm.your.email: 'Подтвердите свою электронную почту'
 to.customize.your.profile: 'чтобы оформить свою страницу'
+
+like.marks: 'Отметки "Нравится"'

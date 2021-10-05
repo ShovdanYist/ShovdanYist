@@ -6,6 +6,17 @@
         {{ 'followed.to.you.male' | trans }}
     {% endif %}
 
+    <style>
+        .notification-follow.btn::before {
+            content: "{{ 'follow' | trans }}";
+        }
+        .notification-follow.btn.followed::before {
+            content: "{{ 'unfollow' | trans }}";
+        }
+    </style>
+
+    <a class="notification-follow btn {% if userIsFollowed(notification.sender) %}btn-light followed{% else %}btn-info{% endif %} {% if app.user %}follow-toggle{% endif %}" href="{% if app.user %}{{ path('user_follow',{'username':notification.sender.username}) }}{% else %}{{ path('app_login') }}{% endif %}"></a>
+
 {% elseif notification.type == 'user_tagged' %}
 
     {% if notification.sender.profile.gender %}
@@ -21,7 +32,7 @@
         {{ 'replied.you.with.comment.users' | trans }}
 
         {% if notification.post %}
-            {{ 'в статье' }} <a href="{{ path('post_show',{'slug':notification.post.slug}) }}">{{ notification.post.title }}</a>
+            {{ 'в статье' }} <a href="{{ path('post_show',{'id':notification.post.id}) }}">{{ notification.post.title }}</a>
         {% elseif notification.song %}
             {{ 'в песне' }} <a href="{{ path('song_show', {'slug': notification.song.slug}) }}">{{ notification.song.fulltitle }}</a>
         {% endif %}
@@ -38,7 +49,7 @@
                 <span style="font-weight: 500">{{ notification.comment.message }}</span>
             </a>
         {% else %}
-            <a class="notify-message-link" href="{{ path( 'post_show', {'slug': notification.comment.post.slug}) }}">
+            <a class="notify-message-link" href="{{ path( 'post_show', {'id': notification.comment.post.id}) }}">
                 <span style="font-weight: 500">{{ notification.comment.message }}</span>
             </a>
         {% endif %}
@@ -60,7 +71,7 @@
                 <span style="font-weight: 500">{{ notification.comment.message }}</span>
             </a>
         {% else %}
-            <a class="notify-message-link" href="{{ path( 'post_show', {'slug': notification.comment.post.slug}) }}">
+            <a class="notify-message-link" href="{{ path( 'post_show', {'id': notification.comment.post.id}) }}">
                 <span style="font-weight: 500">{{ notification.comment.message }}</span>
             </a>
         {% endif %}

@@ -9,7 +9,7 @@
     {% if view == 'show' %}
         <img class="post-image" width="100%" src="{{ post_image_link }}" alt="{{ post.slug }}">
     {% else %}
-        <a href="{{ path('post_show', {'slug':post.slug}) }}">
+        <a href="{{ path('post_show', {'id':post.id}) }}">
             <img class="post-image" width="100%" src="{{ post_image_link }}" alt="{{ post.slug }}">
         </a>
     {% endif %}

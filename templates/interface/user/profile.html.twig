@@ -185,7 +185,7 @@
 
                 <div class="md-grid-post">
 
-                    <a href="{{ path('post_show', {'slug':post.slug}) }}">
+                    <a href="{{ path('post_show', {'id':post.id}) }}">
 
                         <img src="{% if post.image %}{{ vich_uploader_asset(post) | imagine_filter('avatar') }}{% else %}{{ asset('assets/images/question.jpg') | imagine_filter('avatar') }}{% endif %}" alt="{{ post.slug }}">
 

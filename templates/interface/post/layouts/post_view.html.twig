@@ -4,7 +4,11 @@
 
         {{ postInfo(post) }}
         {% if post.title %}
-            {{ postTitle(post) }}
+            {% if view =='show' %}
+                <h3>{{ post.title }}</h3>
+            {% else %}
+                {{ postTitle(post) }}
+            {% endif %}
         {% endif %}
         {{ postTags(post) }}
         {{ postImage(post,view) }}

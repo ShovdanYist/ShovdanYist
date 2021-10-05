@@ -146,3 +146,36 @@ function featuredPost(event) {
 featured.forEach((featured) => {
     featured.addEventListener('click', featuredPost);
 });
+
+// Post like
+
+let like = document.querySelectorAll('.like-toggle');
+
+function likePost(event) {
+    event.preventDefault();
+    let url = this.href;
+
+    axios.get(url).then((response) => {
+        let status = String(response.data.response.status);
+        (status === 'added') ? this.classList.add('added') : this.classList.remove('added');
+
+        let postLikeCounter = 'post-like-counter-' + this.id.replace('post-like-','');
+        let currentLikes = parseInt(document.getElementById(postLikeCounter).innerHTML);
+
+        if (status === 'added') {
+            document.getElementById(postLikeCounter).innerHTML = currentLikes + 1;
+        } else  {
+            document.getElementById(postLikeCounter).innerHTML = currentLikes - 1;
+        }
+
+        setTimeout(() => {
+            [this].forEach((switcher) => {
+                switcher.style.pointerEvents = 'auto';
+            })
+        }, 100);
+    })
+}
+
+like.forEach((like) => {
+    like.addEventListener('click', likePost);
+});
