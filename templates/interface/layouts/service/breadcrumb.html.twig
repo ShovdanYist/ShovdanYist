@@ -114,9 +114,11 @@
 
         {% elseif name == 'song_add' %}
 
-            <a class="breadcrumb-btn" href="{{ path('song_new') }}">
-                <i class="fas fa-plus"></i>
-            </a>
+            {% if is_granted('ROLE_SONG_MODERATOR') %}
+                <a class="breadcrumb-btn" href="{{ path('song_new') }}">
+                    <i class="fas fa-plus"></i>
+                </a>
+            {% endif %}
 
         {% elseif name == 'user_add' %}
 

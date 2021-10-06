@@ -74,7 +74,7 @@ class SongController extends CustomAbstractController
 
     /**
      * @Route("/song/new/{person}", name="song_new", methods={"GET","POST"})
-     * @Security("has_role('ROLE_SONG_MODERATOR')")
+     * @Security("is_granted('ROLE_SONG_MODERATOR')")
      * @param Request $request
      * @param Initializer $initializer
      * @param null $person

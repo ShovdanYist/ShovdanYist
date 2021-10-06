@@ -35,7 +35,7 @@ class UserController extends CustomAbstractController
 {
     /**
      * @Route("/users/{page<\d+>?1}", name="users_index", methods={"GET"})
-     * @Security("has_role('ROLE_OWNER')")
+     * @Security("is_granted('ROLE_OWNER')")
      * @param $page
      * @param Paginator $paginator
      * @return Response
@@ -57,7 +57,7 @@ class UserController extends CustomAbstractController
 
     /**
      * @Route("/user/new", name="user_new", methods={"GET","POST"})
-     * @Security("has_role('ROLE_OWNER')")
+     * @Security("is_granted('ROLE_OWNER')")
      * @param Request $request
      * @param UserPasswordEncoderInterface $passwordEncoder
      * @return Response
@@ -166,7 +166,7 @@ class UserController extends CustomAbstractController
 
     /**
      * @Route("/user/{username}/edit", name="user_edit")
-     * @Security("has_role('ROLE_USER')")
+     * @Security("is_granted('ROLE_USER')")
      * @param Request $request
      * @param User $user
      * @param UploadHandler $handler
@@ -217,7 +217,7 @@ class UserController extends CustomAbstractController
 
     /**
      * @Route("/user/{username}/settings", name="user_settings", methods={"GET","POST"})
-     * @Security("has_role('ROLE_USER')")
+     * @Security("is_granted('ROLE_USER')")
      * @param Request $request
      * @param User $user
      * @param Mailer $mailer
@@ -315,6 +315,7 @@ class UserController extends CustomAbstractController
 
     /**
      * @Route("/reset", name="user_reset", methods={"GET", "POST"})
+     * @Security("is_granted('ROLE_USER')")
      * @param Request $request
      * @param UserRepository $repo
      * @param UserPasswordEncoderInterface $encoder
@@ -349,6 +350,7 @@ class UserController extends CustomAbstractController
 
     /**
      * @Route("/notifications/{page<\d+>?1}", name="user_notifications")
+     * @Security("is_granted('ROLE_USER')")
      * @param $page
      * @param NotificationRepository $notifyRepo
      * @param UserRepository $userRepo
@@ -389,6 +391,7 @@ class UserController extends CustomAbstractController
 
     /**
      * @Route("/notification/{id}/delete", name="user_notification_delete", methods={"DELETE"})
+     * @Security("is_granted('ROLE_USER')")
      * @param Request $request
      * @param Notification $notification
      * @return Response
@@ -410,6 +413,7 @@ class UserController extends CustomAbstractController
 
     /**
      * @Route("/playlist/{page<\d+>?1}", name="user_playlist")
+     * @Security("is_granted('ROLE_USER')")
      * @param $page
      * @param Paginator $paginator
      * @return Response
@@ -435,6 +439,7 @@ class UserController extends CustomAbstractController
 
     /**
      * @Route("/bookmarks/{page<\d+>?1}", name="user_bookmarks")
+     * @Security("is_granted('ROLE_USER')")
      * @param $page
      * @param Paginator $paginator
      * @return Response
@@ -461,6 +466,7 @@ class UserController extends CustomAbstractController
 
     /**
      * @Route("/deleteAccount", name="user_delete_account", methods={"GET","POST"})
+     * @Security("is_granted('ROLE_USER')")
      * @return Response
      */
     public function deleteAccount(): Response
@@ -470,6 +476,7 @@ class UserController extends CustomAbstractController
 
     /**
      * @Route("/userDelete/{id}", name="user_delete", methods={"DELETE"})
+     * @Security("is_granted('ROLE_OWNER')")
      * @param Request $request
      * @param UserPasswordEncoderInterface $encoder
      * @param User $user

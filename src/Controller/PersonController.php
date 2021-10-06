@@ -44,7 +44,7 @@ class PersonController extends CustomAbstractController
 
     /**
      * @Route("/person/new", name="person_new", methods={"GET","POST"})
-     * @Security("has_role('ROLE_PEOPLE_MODERATOR')")
+     * @Security("is_granted('ROLE_PEOPLE_MODERATOR')")
      * @param Request $request
      * @param Initializer $initializer
      * @return Response
@@ -99,7 +99,7 @@ class PersonController extends CustomAbstractController
 
     /**
      * @Route("/person/{slug}/edit", name="person_edit", methods={"GET","POST"})
-     * @Security("has_role('ROLE_PEOPLE_MODERATOR')")
+     * @Security("is_granted('ROLE_PEOPLE_MODERATOR')")
      * @param Request $request
      * @param Person $person
      * @param Initializer $initializer
@@ -124,7 +124,7 @@ class PersonController extends CustomAbstractController
 
     /**
      * @Route("/{id}", name="person_delete", methods={"DELETE"})
-     * @Security("has_role('ROLE_OWNER')")
+     * @Security("is_granted('ROLE_OWNER')")
      * @param Request $request
      * @param Person $person
      * @return Response

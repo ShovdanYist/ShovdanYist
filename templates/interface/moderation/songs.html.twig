@@ -5,46 +5,47 @@
 {% block pageclass %}{% if is_granted('ROLE_SONG_MODERATOR') %}two-sidebars{% endif %}{% endblock %}
 
 {% block main_top %}
+
     {{ breadcrumb({
         (is_granted('ROLE_OWNER')) ? path('moderation_index') : '' : 'moderation' | trans,
         'active' : ('music' | trans),
     }, null, 'song_add') }}
 
     {% if is_granted('ROLE_SONG_MODERATOR') %}
+        <div class="md-box md-margin-bottom songs-moderation-mobile-menu" style="padding: 12px">
+            <div class="md-menu">
+                <ul>
 
-            <div class="md-box md-margin-bottom songs-moderation-mobile-menu" style="padding: 12px">
-                <div class="md-menu">
-                    <ul>
-                        <li class="md-menu-item md-lined-menu {% if app.request.attributes.get('_route') == 'moderation_music' %}active{% endif %}">
-                            <a style="padding-left: 8px" href="{{ path('moderation_music') }}">
-                                {{ 'my.songs' | trans }}
-                            </a>
-                        </li>
-                        <li class="md-menu-item md-lined-menu {% if app.request.attributes.get('_route') == 'moderation_ready' %}active{% endif %}">
-                            <a style="padding-left: 8px" href="{{ path('moderation_ready') }}">
-                                {{ 'in.moderation' | trans }}
-                                {% if songModerationCount() != 0 %}
-                                    <span class="badge badge-pill badge-danger float-right mt-1">
-                                        {% if songModerationCount() > 99 %}
-                                            99+
-                                        {% else %}
-                                            {{ songModerationCount() }}
-                                        {% endif %}
-                                    </span>
-                                {% endif %}
-                            </a>
-                        </li>
-                        <li class="md-menu-item md-lined-menu {% if app.request.attributes.get('_route') == 'moderation_pending' %}active{% endif %}">
-                            <a style="padding-left: 8px" href="{{ path('moderation_pending') }}">
-                                {{ 'pending' | trans }}
-                            </a>
-                        </li>
-                    </ul>
-                </div>
+                    <li class="md-menu-item md-lined-menu {% if app.request.attributes.get('_route') == 'moderation_music' %}active{% endif %}">
+                        <a style="padding-left: 8px" href="{{ path('moderation_music') }}">
+                            {{ 'my.songs' | trans }}
+                        </a>
+                    </li>
+                    <li class="md-menu-item md-lined-menu {% if app.request.attributes.get('_route') == 'moderation_ready' %}active{% endif %}">
+                        <a style="padding-left: 8px" href="{{ path('moderation_ready') }}">
+                            {{ 'in.moderation' | trans }}
+                            {% if songModerationCount() != 0 %}
+                                <span class="badge badge-pill badge-danger float-right mt-1">
+                                    {% if songModerationCount() > 99 %}
+                                        99+
+                                    {% else %}
+                                        {{ songModerationCount() }}
+                                    {% endif %}
+                                </span>
+                            {% endif %}
+                        </a>
+                    </li>
+                    <li class="md-menu-item md-lined-menu {% if app.request.attributes.get('_route') == 'moderation_pending' %}active{% endif %}">
+                        <a style="padding-left: 8px" href="{{ path('moderation_pending') }}">
+                            {{ 'pending' | trans }}
+                        </a>
+                    </li>
 
+                </ul>
             </div>
-
+        </div>
     {% endif %}
+
 {% endblock %}
 
 {% block body %}
@@ -108,6 +109,7 @@
         <div class="sidebar-b">
             <div class="md-box sticky-top" style="padding: 12px">
                 <div class="md-menu">
+
                     <ul>
                         <li class="md-menu-item md-lined-menu {% if app.request.attributes.get('_route') == 'moderation_music' %}active{% endif %}">
                             <a style="padding-left: 8px" href="{{ path('moderation_music') }}">
@@ -134,8 +136,8 @@
                             </a>
                         </li>
                     </ul>
-                </div>
 
+                </div>
             </div>
         </div>
 

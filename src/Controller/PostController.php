@@ -50,7 +50,7 @@ class PostController extends CustomAbstractController
 
     /**
      * @Route("/post/new", name="post_new")
-     * @Security("has_role('ROLE_USER')")
+     * @Security("is_granted('ROLE_USER')")
      * @param Request $request
      * @param Initializer $initializer
      * @param Defender $defender
@@ -107,7 +107,7 @@ class PostController extends CustomAbstractController
 
     /**
      * @Route("/post/{id}/edit", name="post_edit", methods={"GET","POST"})
-     * @Security("has_role('ROLE_USER')")
+     * @Security("is_granted('ROLE_USER')")
      * @param Request $request
      * @param Post $post
      * @param Initializer $initializer
@@ -143,7 +143,7 @@ class PostController extends CustomAbstractController
 
     /**
      * @Route("/post/{id}/delete", name="post_delete", methods={"DELETE"})
-     * @Security("has_role('ROLE_USER')")
+     * @Security("is_granted('ROLE_USER')")
      * @param Request $request
      * @param Post $post
      * @return Response

@@ -15,7 +15,7 @@ class TagController extends AbstractController
 {
     /**
      * @Route("/tags", name="tags_index", methods={"GET"})
-     * @Security("has_role('ROLE_OWNER')")
+     * @Security("is_granted('ROLE_OWNER')")
      * @param TagRepository $tagRepository
      * @return Response
      */
@@ -28,7 +28,7 @@ class TagController extends AbstractController
 
     /**
      * @Route("/tag/new", name="tag_new", methods={"GET","POST"})
-     * @Security("has_role('ROLE_OWNER')")
+     * @Security("is_granted('ROLE_OWNER')")
      * @param Request $request
      * @return Response
      */
@@ -55,7 +55,7 @@ class TagController extends AbstractController
 
     /**
      * @Route("/tag/{id}/edit", name="tag_edit", methods={"GET","POST"})
-     * @Security("has_role('ROLE_OWNER')")
+     * @Security("is_granted('ROLE_OWNER')")
      * @param Request $request
      * @param Tag $tag
      * @return Response
@@ -79,7 +79,7 @@ class TagController extends AbstractController
 
     /**
      * @Route("/tag/{id}", name="tag_delete", methods={"DELETE"})
-     * @Security("has_role('ROLE_OWNER')")
+     * @Security("is_granted('ROLE_OWNER')")
      * @param Request $request
      * @param Tag $tag
      * @return Response

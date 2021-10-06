@@ -15,7 +15,7 @@ class ActivityController extends AbstractController
 {
     /**
      * @Route("/activities", name="activities_index", methods={"GET"})
-     * @Security("has_role('ROLE_OWNER')")
+     * @Security("is_granted('ROLE_OWNER')")
      * @param ActivityRepository $activityRepository
      * @return Response
      */
@@ -28,7 +28,7 @@ class ActivityController extends AbstractController
 
     /**
      * @Route("/activity/new", name="activity_new", methods={"GET","POST"})
-     * @Security("has_role('ROLE_OWNER')")
+     * @Security("is_granted('ROLE_OWNER')")
      * @param Request $request
      * @return Response
      */
@@ -54,7 +54,7 @@ class ActivityController extends AbstractController
 
     /**
      * @Route("/activity/{id}/edit", name="activity_edit", methods={"GET","POST"})
-     * @Security("has_role('ROLE_OWNER')")
+     * @Security("is_granted('ROLE_OWNER')")
      * @param Request $request
      * @param Activity $activity
      * @return Response
@@ -78,7 +78,7 @@ class ActivityController extends AbstractController
 
     /**
      * @Route("/activity/{id}", name="activity_delete", methods={"DELETE"})
-     * @Security("has_role('ROLE_OWNER')")
+     * @Security("is_granted('ROLE_OWNER')")
      * @param Request $request
      * @param Activity $activity
      * @return Response

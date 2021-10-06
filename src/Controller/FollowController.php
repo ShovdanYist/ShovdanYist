@@ -73,7 +73,7 @@ class FollowController extends CustomAbstractController
 
     /**
      * @Route("/follow/{username}", name="user_follow", methods={"POST", "GET"})
-     * @Security("has_role('ROLE_USER')")
+     * @Security("is_granted('ROLE_USER')")
      * @param User $user
      * @param EntityManagerInterface $em
      * @return JsonResponse
@@ -115,7 +115,7 @@ class FollowController extends CustomAbstractController
 
     /**
      * @Route("/unfollow/{username}", name="user_unfollow", methods={"POST", "GET"})
-     * @Security("has_role('ROLE_USER')")
+     * @Security("is_granted('ROLE_USER')")
      * @param User $user
      * @param EntityManagerInterface $em
      * @return Response

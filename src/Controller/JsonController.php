@@ -18,7 +18,7 @@ class JsonController extends CustomAbstractController
 {
     /**
      * @Route("/songPlaylist/{slug}", name="song_playlist", methods={"POST", "GET"})
-     * @Security("has_role('ROLE_USER')")
+     * @Security("is_granted('ROLE_USER')")
      * @param Song $song
      * @param UserRepository $userRepo
      * @param PlaylistSongRepository $playlistSongRepo
@@ -50,7 +50,7 @@ class JsonController extends CustomAbstractController
 
     /**
      * @Route("/postBookmark/{slug}", name="post_bookmark", methods={"POST", "GET"})
-     * @Security("has_role('ROLE_USER')")
+     * @Security("is_granted('ROLE_USER')")
      * @param Post $post
      * @param UserRepository $users
      * @return JsonResponse
@@ -81,7 +81,7 @@ class JsonController extends CustomAbstractController
 
     /**
      * @Route("/postFeatured/{id}", name="post_featured", methods={"POST", "GET"})
-     * @Security("has_role('ROLE_POST_MODERATOR')")
+     * @Security("is_granted('ROLE_POST_MODERATOR')")
      * @param Post $post
      * @return JsonResponse
      */

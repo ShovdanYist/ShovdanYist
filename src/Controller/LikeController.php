@@ -42,7 +42,7 @@ class LikeController extends CustomAbstractController
 
     /**
      * @Route("/postLike/{id}", name="post_like", methods={"POST", "GET"})
-     * @Security("has_role('ROLE_USER')")
+     * @Security("is_granted('ROLE_USER')")
      * @param Post $post
      * @return JsonResponse
      */

@@ -62,34 +62,10 @@ security:
         ROLE_USER_RIGHTS: [ROLE_MODERATOR, ROLE_SUPER_MODERATOR]
         ROLE_ADMINISTRATOR: ROLE_USER_RIGHTS
 
-        ROLE_OWNER: [ROLE_ADMINISTRATOR, ROLE_POST_COMMENT_REMOVER, ROLE_POST_MODERATOR, ROLE_PEOPLE_MODERATOR, ROLE_SONG_COMMENT_REMOVER, ROLE_SONG_EDITOR, ROLE_SONG_AUTHOR, ROLE_SONG_MODERATOR, ROLE_USER_ANALYST, ROLE_USER_ACTIONS, ROLE_USER_BAN]
+        ROLE_OWNER: [ROLE_ADMINISTRATOR, ROLE_POST_COMMENT_REMOVER, ROLE_POST_MODERATOR, ROLE_PEOPLE_MODERATOR, ROLE_SONG_COMMENT_REMOVER, ROLE_SONG_EDITOR, ROLE_SONG_MODERATOR, ROLE_USER_ANALYST, ROLE_USER_ACTIONS, ROLE_USER_BAN]
 
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-        # Administrator
-         - { path: ^/dashboard, roles: ROLE_OWNER }
-
-        # User blocker
-         - { path: ^/moderation/blockUser, roles: ROLE_USER_BAN }
-         - { path: ^/moderation/unblockUser, roles: ROLE_USER_BAN }
-
-        # Moderator
-         - { path: ^/moderation, roles: ROLE_OWNER }
-         - { path: ^/moderation/reject/post, roles: ROLE_POST_MODERATOR }
-         - { path: ^/moderation/publish/post, roles: ROLE_POST_MODERATOR }
-         - { path: ^/moderation/posts, roles: ROLE_POST_MODERATOR }
-         - { path: ^/moderation/ready, roles: ROLE_SONG_MODERATOR }
-         - { path: ^/moderation/pending, roles: ROLE_SONG_MODERATOR }
-         - { path: ^/moderation/actions, roles: ROLE_USER_ACTIONS }
-         - { path: ^/moderation/music, roles: [ROLE_SONG_MODERATOR, ROLE_SONG_AUTHOR] }
-
-        # Authorized
-         - { path: ^/notifications, roles: ROLE_USER }
-         - { path: ^/playlist, roles: ROLE_USER }
-         - { path: ^/bookmarks, roles: ROLE_USER }
-
-         - { path: ^/emailValidation, roles: ROLE_USER }
-         - { path: ^/deleteAccount, roles: ROLE_USER }
-         - { path: ^/post/add, roles: ROLE_USER }
-         - { path: ^/reset, roles: ROLE_USER }
+#         - { path: ^/moderation, roles: ROLE_OWNER }
+#         - { path: ^/moderation/music, roles: [ROLE_SONG_MODERATOR, ROLE_SONG_AUTHOR] }

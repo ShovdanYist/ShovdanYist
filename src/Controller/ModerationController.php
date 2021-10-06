@@ -27,6 +27,7 @@ class ModerationController extends CustomAbstractController
 {
     /**
      * @Route("/", name="index")
+     * @Security("is_granted('ROLE_OWNER')")
      * @return Response
      */
     public function index(): Response
@@ -70,6 +71,7 @@ class ModerationController extends CustomAbstractController
 
     /**
      * @Route("/music/{page<\d+>?1}", name="music")
+     * @Security("is_granted('ROLE_SONG_AUTHOR') or is_granted('ROLE_SONG_MODERATOR')")
      * @param $page
      * @param Paginator $paginator
      * @return Response
@@ -93,6 +95,7 @@ class ModerationController extends CustomAbstractController
 
     /**
      * @Route("/ready/{page<\d+>?1}", name="ready")
+     * @Security("is_granted('ROLE_SONG_MODERATOR')")
      * @param $page
      * @param Paginator $paginator
      * @return Response
@@ -116,6 +119,7 @@ class ModerationController extends CustomAbstractController
 
     /**
      * @Route("/pending/{page<\d+>?1}", name="pending")
+     * @Security("is_granted('ROLE_SONG_MODERATOR')")
      * @param $page
      * @param Paginator $paginator
      * @return Response
@@ -140,6 +144,7 @@ class ModerationController extends CustomAbstractController
 
     /**
      * @Route("/actions/{page<\d+>?1}", name="actions")
+     * @Security("is_granted('ROLE_USER_ACTIONS')")
      * @param $page
      * @param Paginator $paginator
      * @param Defender $defender
@@ -162,26 +167,8 @@ class ModerationController extends CustomAbstractController
     }
 
     /**
-     * @Route("/action/{id}/delete", name="action_delete", methods={"DELETE"})
-     * @Security("has_role('ROLE_OWNER')")
-     * @param Request $request
-     * @param Action $action
-     * @return Response
-     */
-    public function deleteAction(Request $request, Action $action): Response
-    {
-        if ($this->isCsrfTokenValid('delete'.$action->getId(), $request->request->get('_token'))) {
-            $em = $this->getDoctrine()->getManager();
-            $em->remove($action);
-            $em->flush();
-        }
-
-        return $this->redirectToRoute('moderation_actions');
-    }
-
-    /**
      * @Route("/actions/user/{username}/{page<\d+>?1}", name="user_actions")
-     * @Security("has_role('ROLE_USER_ACTIONS')")
+     * @Security("is_granted('ROLE_USER_ACTIONS')")
      * @param User $user
      * @param $page
      * @param Paginator $paginator
@@ -209,7 +196,7 @@ class ModerationController extends CustomAbstractController
 
     /**
      * @Route("/actions/type/{type}/{page<\d+>?1}", name="type_actions")
-     * @Security("has_role('ROLE_USER_ACTIONS')")
+     * @Security("is_granted('ROLE_USER_ACTIONS')")
      * @param $type
      * @param $page
      * @param Paginator $paginator
@@ -235,7 +222,26 @@ class ModerationController extends CustomAbstractController
     }
 
     /**
+     * @Route("/action/{id}/delete", name="action_delete", methods={"DELETE"})
+     * @Security("is_granted('ROLE_OWNER')")
+     * @param Request $request
+     * @param Action $action
+     * @return Response
+     */
+    public function deleteAction(Request $request, Action $action): Response
+    {
+        if ($this->isCsrfTokenValid('delete'.$action->getId(), $request->request->get('_token'))) {
+            $em = $this->getDoctrine()->getManager();
+            $em->remove($action);
+            $em->flush();
+        }
+
+        return $this->redirectToRoute('moderation_actions');
+    }
+
+    /**
      * @Route("/posts/{page<\d+>?1}", name="posts", methods={"GET"})
+     * @Security("is_granted('ROLE_POST_MODERATOR')")
      * @param $page
      * @param Paginator $paginator
      * @return Response
@@ -258,6 +264,7 @@ class ModerationController extends CustomAbstractController
 
     /**
      * @Route("/validation/post/{id}", name="post_validation")
+     * @Security("is_granted('ROLE_POST_MODERATOR')")
      * @param Request $request
      * @param Post $post
      * @return Response
@@ -331,7 +338,7 @@ class ModerationController extends CustomAbstractController
 
     /**
      * @Route("/user/rights/{username}", name="user_rights", methods={"GET", "POST"})
-     * @Security("has_role('ROLE_SUPER_MODERATOR')")
+     * @Security("is_granted('ROLE_SUPER_MODERATOR')")
      * @param Request $request
      * @param User $user
      * @param Defender $defender
@@ -437,6 +444,7 @@ class ModerationController extends CustomAbstractController
 
     /**
      * @Route("/blockUser/{id}", name="block_user", methods={"GET","POST"})
+     * @Security("is_granted('ROLE_USER_BAN')")
      * @param User $user
      * @param EmailAddressRepository $emails
      * @param Defender $defender
@@ -476,6 +484,7 @@ class ModerationController extends CustomAbstractController
 
     /**
      * @Route("/unblockUser/{id}", name="unblock_user", methods={"GET","POST"})
+     * @Security("is_granted('ROLE_USER_BAN')")
      * @param User $user
      * @param EmailAddressRepository $emails
      * @return Response

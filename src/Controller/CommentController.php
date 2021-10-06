@@ -21,7 +21,7 @@ class CommentController extends CustomAbstractController
 {
     /**
      * @Route("/comment/new/{type}/{id}", name="comment_new", methods={"POST"})
-     * @Security("has_role('ROLE_USER')")
+     * @Security("is_granted('ROLE_USER')")
      * @param Request $request
      * @param $type
      * @param $id
@@ -133,7 +133,7 @@ class CommentController extends CustomAbstractController
 
     /**
      * @Route("/comment/delete/{id}", name="delete_comment")
-     * @Security("has_role('ROLE_USER')")
+     * @Security("is_granted('ROLE_USER')")
      * @param Request $request
      * @param Comment $comment
      * @param Defender $defender
