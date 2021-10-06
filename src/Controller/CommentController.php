@@ -11,6 +11,7 @@ use App\Entity\Post;
 use App\Form\CommentType;
 use App\Repository\UserRepository;
 use App\Service\Defender;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -20,6 +21,7 @@ class CommentController extends CustomAbstractController
 {
     /**
      * @Route("/comment/new/{type}/{id}", name="comment_new", methods={"POST"})
+     * @Security("has_role('ROLE_USER')")
      * @param Request $request
      * @param $type
      * @param $id
@@ -111,7 +113,7 @@ class CommentController extends CustomAbstractController
                 ]);
             } else {
                 return $this->redirectToRoute('post_show', [
-                    'slug' => $entity->getSlug()
+                    'id' => $entity->getId()
                 ]);
             }
         }
@@ -124,13 +126,14 @@ class CommentController extends CustomAbstractController
             ]);
         } else {
             return $this->redirectToRoute('post_show', [
-                'slug' => $entity->getSlug(),
+                'id' => $entity->getId(),
             ]);
         }
     }
 
     /**
      * @Route("/comment/delete/{id}", name="delete_comment")
+     * @Security("has_role('ROLE_USER')")
      * @param Request $request
      * @param Comment $comment
      * @param Defender $defender
@@ -172,7 +175,7 @@ class CommentController extends CustomAbstractController
             ]);
         } else {
             return $this->redirectToRoute('post_show', [
-                'slug' => $comment->getPost()->getSlug()
+                'id' => $comment->getPost()->getId()
             ]);
         }
     }

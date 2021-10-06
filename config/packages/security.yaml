@@ -75,9 +75,13 @@ security:
          - { path: ^/moderation/unblockUser, roles: ROLE_USER_BAN }
 
         # Moderator
+         - { path: ^/moderation, roles: ROLE_OWNER }
          - { path: ^/moderation/reject/post, roles: ROLE_POST_MODERATOR }
          - { path: ^/moderation/publish/post, roles: ROLE_POST_MODERATOR }
          - { path: ^/moderation/posts, roles: ROLE_POST_MODERATOR }
+         - { path: ^/moderation/ready, roles: ROLE_SONG_MODERATOR }
+         - { path: ^/moderation/pending, roles: ROLE_SONG_MODERATOR }
+         - { path: ^/moderation/actions, roles: ROLE_USER_ACTIONS }
          - { path: ^/moderation/music, roles: [ROLE_SONG_MODERATOR, ROLE_SONG_AUTHOR] }
 
         # Authorized

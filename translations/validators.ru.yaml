@@ -111,7 +111,7 @@ form.agree.terms.message: 'Принятие пользовательского �
 form.password.is.empty: 'Поле пароля не может быть пустым'
 form.password.not.same: 'Пароли не идентичны'
 form.password.min.length.message: 'Пароль должен состоять минимум из {{ limit }}-ти символов'
-image.have.to.be.jpg.or.png: 'Изображение должен быть формата "jpg/jpeg" или "png", а не {{ type }}'
+image.have.to.be.jpg.or.png: 'Изображение должен быть формата ".jpg", ".png" или ".gif", а не {{ type }}'
 audio.have.to.be.mpeg.or.wav: 'Аудио файл должен быть формата "audio/mpeg", "audio/mp4", "audio/vnd.wav" или "audio/x-aiff", а не {{ type }}'
 no.account.with.such.email: 'Аккаунт с такой почтой не найден'
 email.in.blacklist: 'Указанная почта в черном списке'

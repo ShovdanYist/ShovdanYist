@@ -27,10 +27,10 @@
                 </div>
 
                 <div class="md-search-pages-menu">
-                    <a href="{{ path('search_index',{'keyword':keyword}) }}">Всё</a>
-                    <a href="{{ path('search_songs',{'keyword':keyword}) }}">Музыка</a>
-                    <a href="{{ path('search_users',{'keyword':keyword}) }}" class="active">Пользователи</a>
-                    <a href="{{ path('search_posts',{'keyword':keyword}) }}">Статьи</a>
+                    <a href="{{ path('search_index',{'keyword':keyword}) }}">{{ 'all' | trans }}</a>
+                    <a href="{{ path('search_users',{'keyword':keyword}) }}" class="active">{{ 'users' | trans }}</a>
+                    <a href="{{ path('search_songs',{'keyword':keyword}) }}">{{ 'music' | trans }}</a>
+                    <a href="{{ path('search_posts',{'keyword':keyword}) }}">{{ 'posts' | trans }}</a>
                 </div>
 
             </div>

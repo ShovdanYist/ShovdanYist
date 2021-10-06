@@ -8,7 +8,6 @@ use App\Entity\Song;
 use App\Entity\User;
 use App\Repository\PostRepository;
 use App\Repository\UserRepository;
-use Cocur\Slugify\Slugify;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Core\Authorization\AccessDecisionManagerInterface;
 use Symfony\Component\Security\Core\Security;
@@ -190,7 +189,7 @@ class Defender
         if ($bySlug) {
             $right = false;
             $exist = $bySlug;
-        } elseif ($byTitle) {
+        } elseif ($byTitle && $byTitle->getTitle() !== null) {
             $right = false;
             $exist = $byTitle;
         }

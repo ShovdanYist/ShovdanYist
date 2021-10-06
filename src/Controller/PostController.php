@@ -9,6 +9,7 @@ use App\Service\Defender;
 use App\Service\Initializer;
 use App\Form\PostType;
 use App\Service\Paginator;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -49,6 +50,7 @@ class PostController extends CustomAbstractController
 
     /**
      * @Route("/post/new", name="post_new")
+     * @Security("has_role('ROLE_USER')")
      * @param Request $request
      * @param Initializer $initializer
      * @param Defender $defender
@@ -65,8 +67,10 @@ class PostController extends CustomAbstractController
 
             if (!$defender->rightToSetTitleSlug($post)) {
                 $form->get('title')->addError(new FormError($this->trans('title.or.slug.exists')));
+            } elseif (!$post->getImage()) {
+                $form->get('imageFile')->addError(new FormError($this->trans('post.image.required')));
             } else {
-                return $this->redirectToRoute('post_show', ['slug' => $post->getSlug()]);
+                return $this->redirectToRoute('post_show', ['id' => $post->getId()]);
             }
         }
 
@@ -102,23 +106,28 @@ class PostController extends CustomAbstractController
     }
 
     /**
-     * @Route("/post/{slug}/edit", name="post_edit", methods={"GET","POST"})
+     * @Route("/post/{id}/edit", name="post_edit", methods={"GET","POST"})
+     * @Security("has_role('ROLE_USER')")
      * @param Request $request
      * @param Post $post
      * @param Initializer $initializer
+     * @param Defender $defender
      * @return Response
      */
-    public function edit(Request $request, Post $post, Initializer $initializer): Response
+    public function edit(Request $request, Post $post, Initializer $initializer, Defender $defender): Response
     {
         if ($this->getUser() && $this->user() === $post->getAuthor() || $this->isGranted('ROLE_POST_MODERATOR') && $post->getStatus() != null) {
-
             $form = $this->createForm(PostType::class, $post);
             $form->handleRequest($request);
 
             if ($form->isSubmitted() && $form->isValid()) {
                 $initializer->initializePostEdit($post, $form);
 
-                return $this->redirectToRoute('post_show', ['slug' => $post->getSlug()]);
+                if (!$defender->rightToSetTitleSlug($post)) {
+                    $form->get('title')->addError(new FormError($this->trans('title.or.slug.exists')));
+                } else {
+                    return $this->redirectToRoute('post_show', ['id' => $post->getId()]);
+                }
             }
 
             return $this->render('interface/post/edit.html.twig', [
@@ -134,6 +143,7 @@ class PostController extends CustomAbstractController
 
     /**
      * @Route("/post/{id}/delete", name="post_delete", methods={"DELETE"})
+     * @Security("has_role('ROLE_USER')")
      * @param Request $request
      * @param Post $post
      * @return Response

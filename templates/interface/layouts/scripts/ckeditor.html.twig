@@ -22,45 +22,6 @@
                             { model: 'heading6', view: 'h6', title: 'Описание', class: 'ck-sub-description' },
                         ]
                     },
-
-                    image: {
-                        upload: {
-                            panel: {
-                                items: [ 'insertImageViaUrl' ]
-                            }
-                        },
-
-                        styles: [
-                            'alignLeft', 'alignCenter', 'alignRight'
-                        ],
-
-                        resizeUnit: "%",
-                        resizeOptions: [
-                            {
-                                name: 'imageResize:original',
-                                value: null,
-                                icon: 'original'
-                            },
-                            {
-                                name: 'imageResize:50',
-                                value: '50',
-                                icon: 'medium'
-                            },
-                            {
-                                name: 'imageResize:75',
-                                value: '75',
-                                icon: 'large'
-                            }
-                        ],
-
-                        toolbar: [
-                            'imageStyle:alignLeft', 'imageStyle:alignCenter', 'imageStyle:alignRight',
-                            '|',
-                            'imageResize',
-                            '|',
-                            'imageTextAlternative'
-                        ]
-                    },
                     {% if limit %}
                         wordCount: {
                             onUpdate: stats => {

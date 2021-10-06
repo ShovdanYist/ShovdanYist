@@ -9,6 +9,7 @@ use App\Entity\Post;
 use App\Entity\Song;
 use App\Repository\PlaylistSongRepository;
 use App\Repository\UserRepository;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -17,6 +18,7 @@ class JsonController extends CustomAbstractController
 {
     /**
      * @Route("/songPlaylist/{slug}", name="song_playlist", methods={"POST", "GET"})
+     * @Security("has_role('ROLE_USER')")
      * @param Song $song
      * @param UserRepository $userRepo
      * @param PlaylistSongRepository $playlistSongRepo
@@ -48,6 +50,7 @@ class JsonController extends CustomAbstractController
 
     /**
      * @Route("/postBookmark/{slug}", name="post_bookmark", methods={"POST", "GET"})
+     * @Security("has_role('ROLE_USER')")
      * @param Post $post
      * @param UserRepository $users
      * @return JsonResponse
@@ -77,7 +80,8 @@ class JsonController extends CustomAbstractController
     }
 
     /**
-     * @Route("/postFeatured/{slug}", name="post_featured", methods={"POST", "GET"})
+     * @Route("/postFeatured/{id}", name="post_featured", methods={"POST", "GET"})
+     * @Security("has_role('ROLE_POST_MODERATOR')")
      * @param Post $post
      * @return JsonResponse
      */

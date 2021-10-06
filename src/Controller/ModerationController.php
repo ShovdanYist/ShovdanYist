@@ -27,7 +27,6 @@ class ModerationController extends CustomAbstractController
 {
     /**
      * @Route("/", name="index")
-     * @Security("has_role('ROLE_OWNER')")
      * @return Response
      */
     public function index(): Response
@@ -94,7 +93,6 @@ class ModerationController extends CustomAbstractController
 
     /**
      * @Route("/ready/{page<\d+>?1}", name="ready")
-     * @Security("has_role('ROLE_SONG_MODERATOR')")
      * @param $page
      * @param Paginator $paginator
      * @return Response
@@ -118,7 +116,6 @@ class ModerationController extends CustomAbstractController
 
     /**
      * @Route("/pending/{page<\d+>?1}", name="pending")
-     * @Security("has_role('ROLE_SONG_MODERATOR')")
      * @param $page
      * @param Paginator $paginator
      * @return Response
@@ -143,7 +140,6 @@ class ModerationController extends CustomAbstractController
 
     /**
      * @Route("/actions/{page<\d+>?1}", name="actions")
-     * @Security("has_role('ROLE_USER_ACTIONS')")
      * @param $page
      * @param Paginator $paginator
      * @param Defender $defender

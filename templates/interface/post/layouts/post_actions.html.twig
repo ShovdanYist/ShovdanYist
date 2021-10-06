@@ -15,9 +15,15 @@
 <div class="post-actions">
 
     <span class="stat mr-3">
-        <a class="like-toggle{% if userLikedPost(app.user, post) %} added{% endif %}" id="post-like-{{ post.id }}" href="{{ path('post_like', {'slug':post.slug}) }}">
-            <span class="like-icon"></span>
-        </a>
+        {% if app.user %}
+            <a class="like-toggle{% if userLikedPost(app.user, post) %} added{% endif %}" id="post-like-{{ post.id }}" href="{{ path('post_like', {'id':post.id}) }}">
+                <span class="like-icon"></span>
+            </a>
+        {% else %}
+            <a class="guest-like-toggle" href="{{ path('app_login') }}">
+                <span class="like-icon"></span>
+            </a>
+        {% endif %}
     </span>
 
     {% if comments %}

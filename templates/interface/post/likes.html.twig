@@ -27,6 +27,11 @@
 {% block body %}
     {% for user in users %}
         {{ userLine(user) }}
+    {% else %}
+        <div class="text-center">
+            <i class="far fa-heart" style="margin-right: 3px"></i>
+            {{ 'post.have.not.likes' | trans }}
+        </div>
     {% endfor %}
 
     {{ paginator.display() }}

@@ -36,7 +36,7 @@ class NotificationType extends AbstractType
             ->add('approve', SubmitType::class, [
                 'label' => 'approve',
                 'attr' => [
-                    'onclick' => 'return confirm(\'' . $this->translator->trans('are.you.sure.to.publish.it') . '\')'
+                    'onclick' => 'return confirm(\'' . $this->translator->trans('are.you.sure.to.approve.it') . '\')'
                 ]
             ])
             ->add('reject', SubmitType::class, [

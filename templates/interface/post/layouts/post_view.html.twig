@@ -3,6 +3,7 @@
     <div class="md-box md-content-padding">
 
         {{ postInfo(post) }}
+
         {% if post.title %}
             {% if view =='show' %}
                 <h3>{{ post.title }}</h3>
@@ -10,21 +11,46 @@
                 {{ postTitle(post) }}
             {% endif %}
         {% endif %}
+
         {{ postTags(post) }}
         {{ postImage(post,view) }}
 
         {% if post.songs.count %}
-            <div {% if view == 'show' %}class="md-margin-bottom" {% else %}style="margin-bottom: 10px" {% endif %}>
-                {% for song in post.songs %}
-                    {{ player(song,null,null,null) }}
-                {% endfor %}
+            <div {% if view == 'show' %}class="md-margin-bottom"{% else %} style="margin-bottom: 6px" {% endif %}>
+                {% if view == 'show' %}
+                    {% for song in post.songs %}
+                        {{ player(song,null,null,null) }}
+                    {% endfor %}
+                {% else %}
+                    {% for song in post.songs | slice(0,3) %}
+                        {{ player(song,null,null,null) }}
+                    {% endfor %}
+                {% endif %}
             </div>
+
+            {% if post.songs.count > 3 and view != 'show' %}
+                <div class="post-songs-more">
+                    <a href="{{ path('post_show',{'id':post.id}) }}">
+                        {{ 'more.count' | trans({'count':post.songs.count - 3}) }}
+                        {% if (post.songs.count - 3) == 1 %}
+                            {{ 'one.song' | trans }}
+                        {% elseif (post.songs.count - 3) > 1 and (post.songs.count - 3) <= 4 %}
+                            {{ 'few.songs' | trans }}
+                        {% elseif (post.songs.count - 3) > 4 %}
+                            {{ 'some.songs' | trans }}
+                        {% endif %}
+                    </a>
+                    <i class="fas fa-angle-right" style="top: 2px; position: relative;color: #aaa"></i>
+                </div>
+            {% endif %}
         {% endif %}
 
         {% if view == 'show' or view == 'moderation' %}
-            <div class="ckeditor-content">
-                {{ post.content | raw }}
-            </div>
+            {% if post.content %}
+                <div class="ckeditor-content md-margin-bottom">
+                    {{ post.content | raw }}
+                </div>
+            {% endif %}
         {% else %}
             {{ postDescription(post) }}
         {% endif %}

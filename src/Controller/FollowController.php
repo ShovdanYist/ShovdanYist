@@ -8,6 +8,7 @@ use App\Entity\Notification;
 use App\Entity\User;
 use App\Service\Paginator;
 use Doctrine\ORM\EntityManagerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -72,6 +73,7 @@ class FollowController extends CustomAbstractController
 
     /**
      * @Route("/follow/{username}", name="user_follow", methods={"POST", "GET"})
+     * @Security("has_role('ROLE_USER')")
      * @param User $user
      * @param EntityManagerInterface $em
      * @return JsonResponse
@@ -113,6 +115,7 @@ class FollowController extends CustomAbstractController
 
     /**
      * @Route("/unfollow/{username}", name="user_unfollow", methods={"POST", "GET"})
+     * @Security("has_role('ROLE_USER')")
      * @param User $user
      * @param EntityManagerInterface $em
      * @return Response

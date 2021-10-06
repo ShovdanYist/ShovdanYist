@@ -12,32 +12,12 @@
 {% block main %}
 
     {% for post in posts %}
-
-        <div class="md-post">
-
-            <div class="md-box md-content-padding">
-
-                {{ postInfo(post) }}
-                {{ postTags(post) }}
-                {{ postImage(post) }}
-                {% for song in post.songs %}
-                    {{ player(song,null,null,null) }}
-                {% endfor %}
-                {{ postDescription(post) }}
-                {{ postTaggedUsers(post) }}
-                {{ postActions(post) }}
-
-            </div>
-
-        </div>
-
+        {{ postView(post) }}
     {% else %}
-
         <div class="md-box md-content-padding text-center">
             <i class="far fa-bookmark" style="margin-right: 3px"></i>
             {{ 'you.have.not.bookmarks' | trans }}
         </div>
-
     {% endfor %}
 
     {{ paginator.display('box') }}

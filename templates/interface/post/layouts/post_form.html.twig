@@ -20,23 +20,22 @@
 
             {% endif %}
 
-            {% if not post.id or post.id and post.author == app.user and post.publishedAt.timestamp == post.updatedAt.timestamp %}
-
+            {% if form.imageFile is defined %}
                 <div style="margin-top: 2px">
                     {{ form_row(form.imageFile) }}
                 </div>
-
             {% endif %}
 
             {% if not post.id or post.author == app.user %}
                 {{ form_row(form.title) }}
                 {{ form_row(form.content) }}
             {% endif %}
-{#          {{ form_row(form.tags) }}#}
 
-            {% if not post.id and userHavePlaylistSongs(app.user) or post.author == app.user and userHavePlaylistSongs(app.user) %}
+            {{ form_row(form.tags) }}
+
+            {% if form.songs is defined %}
                 {{ form_row(form.songs) }}
-            {% elseif not post.id and not userHavePlaylistSongs(app.user) or post.author == app.user and not userHavePlaylistSongs(app.user) %}
+            {% elseif post.author == app.user %}
                 <div class="form-group">
                     <label class="form-label" for="disabled_input">{{ 'music' | trans }}</label>
                     <input class="form-control" id="disabled_input" type="text" placeholder="{{ 'not.songs.in.your.playlist' | trans }}" disabled="">
@@ -44,9 +43,9 @@
                 </div>
             {% endif %}
 
-            {% if not post.id and app.user.following.count or post.author == app.user and app.user.following.count %}
+            {% if form.taggedUsers is defined %}
                 {{ form_row(form.taggedUsers) }}
-            {% elseif not post.id and not app.user.following.count or post.author == app.user and not app.user.following.count %}
+            {% elseif post.author == app.user %}
                 <div class="form-group">
                     <label class="form-label" for="disabled_input">{{ 'users' | trans }}</label>
                     <input class="form-control" id="disabled_input" type="text" placeholder="{{ 'you.have.not.following' | trans }}" disabled="">
@@ -54,7 +53,7 @@
                 </div>
             {% endif %}
 
-            {% if post.id and not post.status is null and is_granted('ROLE_POST_MODERATOR') %}
+            {% if form.moderation is defined and form.featured is defined %}
                 <div class="chosen-search-off mb-2 mt-2">
                     {{ form_widget(form.moderation) }}
                 </div>
@@ -73,7 +72,7 @@
                     </button>
                 {% endif %}
 
-                <a class="btn btn-link float-right" href="{% if not post.id %}{{ path('app_home') }}{% else %}{{ path('post_show',{'slug':post.slug}) }}{% endif %}">
+                <a class="btn btn-link float-right" href="{% if not post.id %}{{ path('app_home') }}{% else %}{{ path('post_show',{'id':post.id}) }}{% endif %}">
                     {{ 'cancel' | trans }}
                 </a>
 

@@ -109,7 +109,7 @@ class Initializer
 
         $this->em->persist($post);
 
-        if ($this->defender->rightToSetTitleSlug($post)) {
+        if ($this->defender->rightToSetTitleSlug($post) && $post->getImage()) {
             $this->em->flush();
         }
     }
@@ -129,7 +129,9 @@ class Initializer
             $this->createAction($post,'post_edited');
         }
 
-        $this->em->flush();
+        if ($this->defender->rightToSetTitleSlug($post) && $post->getImage()) {
+            $this->em->flush();
+        }
     }
 
     private function generatePostSlug(Post $post)

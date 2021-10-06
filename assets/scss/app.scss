@@ -263,6 +263,16 @@ li {
   color: #9aa7b5;
 }
 
+.posts-list-item {
+  display: table;
+  width: 100%;
+  margin-bottom: 12px;
+}
+
+.posts-list .posts-list-item:last-child {
+  margin: unset;
+}
+
 // CK Editor Content
 
 blockquote, .ck.ck-content blockquote {
@@ -1224,11 +1234,7 @@ td {
   margin-top: 4px;
   padding-bottom: 7px;
 }
-.navbar-menu-separator {
-  color: #555;
-  display: block;
-  margin-bottom: 8px;
-}
+
 .md-menu-item span {
   width: 25px;
   display: table;
@@ -1236,6 +1242,7 @@ td {
   text-align: center;
   margin-right: 4px;
 }
+
 .md-menu-item a {
   color: #586471;
   width: 100%;
@@ -1243,10 +1250,12 @@ td {
   border-radius: radius(full);
   padding: 5px;
 }
+
 .md-menu-item a:hover, .md-menu-item a.active {
   background-color: rgba(0,0,0,0.05);
   color: inherit;
 }
+
 .songs-moderation-mobile-menu {
   display: none;
 }
@@ -1814,7 +1823,7 @@ select {
 
 #sideNav {
   position: fixed;
-  left: -240px;
+  left: -250px;
   z-index: 1300;
   top: 0;
   background-color: #282828;
@@ -1824,7 +1833,7 @@ select {
   -moz-transition: all 300ms ease;
   -o-transition: all 300ms ease;
   transition: all 300ms ease;
-  width: 240px;
+  width: 250px;
 }
 
 #sideNavOpener {
@@ -2070,8 +2079,8 @@ select {
   text-align: center;
   color: #adb5bd;
   text-decoration: unset;
-  font-size: 15px;
-  font-weight: 600;
+  font-size: 14px;
+  font-weight: 500;
 }
 
 .md-search-pages-menu a:hover {
@@ -2279,10 +2288,26 @@ select {
   min-width: 112px;
 }
 
+.post-songs-more {
+  margin-bottom: 12px;
+  top: -2px;
+  position: relative;
+}
+
+.post-songs-more a {
+  color: #777;
+  font-size: 13px;
+  font-weight: 450;
+}
+
+.post-songs-more a:hover {
+  color: #1f5887;
+}
+
 .tagged-users {
   display: table;
   width: 100%;
-  margin-top: 18px;
+  margin-bottom: 4px;
 }
 
 .tagged-user {
@@ -2301,7 +2326,7 @@ select {
 
 // Like toggle
 
-.like-toggle .like-icon::before, .guest-like-icon .like-icon::before {
+.like-toggle .like-icon::before, .guest-like-toggle .like-icon::before {
   content: "\f004";
   font-family: "Font Awesome 5 Free", sans-serif;
   font-size: 24px;

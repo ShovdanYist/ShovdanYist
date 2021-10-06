@@ -61,16 +61,12 @@
         {{ postView(post, 'show') }}
     </div>
 
-    <a href="{{ path('post_new') }}" class="md-write-post-button">
-        <i class="fas fa-plus"></i>
-    </a>
-
 {% endblock %}
 
 {% block main_bottom %}
 
     {% if post.status == true %}
-        {{ comments(post,page,{'slug':post.slug}) }}
+        {{ comments(post,page,{'id':post.id}) }}
     {% endif %}
 
 {% endblock %}

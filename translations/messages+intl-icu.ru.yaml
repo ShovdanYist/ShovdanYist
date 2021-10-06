@@ -39,6 +39,9 @@ featuring_singular: Совместая
 featuring_plural: Совместных
 music: Музыка
 song: Песня
+one.song: песня
+few.songs: песни
+some.songs: песен
 songs: Песни
 my.songs: 'Мои песни'
 two_songs: Песни
@@ -239,7 +242,8 @@ song.adding: 'Добавление песни'
 save.and.close: 'Сохранить и закрыть'
 select.featuring: 'Выберите совместных'
 add.post: 'Новая публикация'
-post.title.help: 'Поле необязательное, при желании можно заполнить: на пример если пишите статью'
+post.title.help: 'При желании можете заполнить, если на пример пишите статью'
+post.tags.help: 'Вы можете выбрать три категории, для улучшения сортировки и выдачу вашей публикации'
 section: Секция
 update: Обновить
 update.tags: 'Обновить теги'
@@ -273,7 +277,8 @@ moderators: Модераторы
 are.you.sure.to.log.out: 'Вы уверены что хотите выйти?'
 are.you.sure.to.block.user: 'Вы уверены что хотите заблокировать этого пользователя?'
 are.you.sure.to.unblock.user: 'Вы уверены что хотите разблокировать этого пользователя?'
-are.you.sure.to.publish.it: 'Вы уверены что хотите утвердить публикацию?'
+are.you.sure.to.approve.it: 'Вы уверены что хотите утвердить публикацию?'
+are.you.sure.to.publish.it: 'Вы уверены что хотите опубликовать?'
 are.you.sure.to.reject.it: 'Вы уверены что хотите отклонить публикацию?'
 are.you.sure.to.change.it: 'Вы уверены что хотите изменить?'
 publish: Опубликовать
@@ -286,6 +291,8 @@ you.have.not.followers: 'У вас еще нет подписчиков'
 you.have.not.following: 'У вас еще нет подписок'
 profile: 'Профиль'
 tagged: 'Отмеченные'
+more.count: 'Еще { count }'
+post.have.not.likes: 'У публикации еще нет отметок «Нравится»'
 you.have.not.posts: 'У вас еще нет публикаций'
 user.have.not.posts: 'У пользователя { username } еще нет публикаций'
 you.have.not.tagged.posts: 'Еще нет публикаций на которых вы отмечены'
@@ -365,10 +372,9 @@ users.for.keyword: 'Пользователи по запросу «{ keyword }»
 posts.for.keyword: 'Публикации по запросу «{ keyword }»'
 in.page: 'на странице «{ page }»'
 title.or.slug.exists: 'Публикация с таким названием уже существует'
+post.image.required: 'Изображение к публикации обязательна'
 animated.image: 'Анимированное изображение'
-
 you.are.blocked.and.you.cant.edit.profile: 'Вы заблокированы и не можете редактировать свою страницу'
 confirm.your.email: 'Подтвердите свою электронную почту'
 to.customize.your.profile: 'чтобы оформить свою страницу'
-
-like.marks: 'Отметки "Нравится"'
+like.marks: 'Отметки «Нравится»'
