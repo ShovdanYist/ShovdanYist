@@ -1,143 +1,48 @@
+<style>
+    .md-comment-children .bp-45 {
+        margin-right: 10px !important;
+        height: 30px;
+        width: 30px;
+    }
+    .md-comment-children .md-comment-author {
+        margin: 0 25px 0 40px;
+    }
+    .md-comment-children .md-comment-message {
+        margin-left: 40px;
+    }
+    .md-comment-children .md-comment-info {
+        margin-left: 38px;
+    }
+</style>
+
 <div class="md-comments">
 
     {% for comment in comments %}
 
-        <div class="md-comment">
+        {{ oneComment(comment) }}
 
-            <a href="{{ path('user_profile', {username: comment.author.username}) }}">
-                <span class="back-picture bp-45" style="margin-right: 14px;background-image: url('{% if comment.author.profile.avatar != 'avatar.jpg' %}{{ vich_uploader_asset(comment.author.profile) | imagine_filter('thumbnail') }}{% else %}{{ asset('assets/images/avatar.jpg') | imagine_filter('thumbnail') }}{% endif %}')">
-                </span>
-            </a>
+        {% if comment.children.count %}
 
-            <div class="md-comment-author">
+            <div class="form-spoiler" style="margin: 2px 0 0 60px">
 
-                <a class="md-comment-username" href="{{ path('user_profile', {username: comment.author.username}) }}">
-                    {{ comment.author.username }}
+                <a class="collapsed message no-width" data-toggle="collapse" data-target="#repliesForComment{{ comment.id }}" aria-controls="navbarToggleExternalContent" aria-expanded="false">
+                    {{ 'Показать' }}
+                    {{ comment.children.count }}
+                    {{ 'ответа' }}
+                    <i></i>
                 </a>
 
-                {% if comment.author.profile.verified == true %}
-                    <span class="md-comment-verified">
-                        <i class="fas fa-check-circle text-info"></i>
-                    </span>
-                {% endif %}
-
-                {% if rightToDeleteComment(app.user,comment) or rightToBlockUser(app.user,comment.author) %}
-
-                    <button type="button" class="btn md-comment-dot-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <i class="fas fa-ellipsis-h"></i>
-                    </button>
-
-                    <div class="dropdown-menu dropdown-menu-right">
-
-                        {% if rightToBlockUser(app.user,comment.author) %}
-
-                            {% if comment.author.status != false %}
-
-                                <button type="button" class="dropdown-item" data-toggle="modal" data-target="#banUser{{ comment.author.id }}">
-                                    {{ 'ban' | trans }}
-                                </button>
-
-                            {% else %}
-
-                                <button type="button" class="dropdown-item" data-toggle="modal" data-target="#unbanUser{{ comment.author.id }}">
-                                    {{ 'unban' | trans }}
-                                </button>
-
-                            {% endif %}
-
-                        {% endif %}
-
-                        {% if rightToDeleteComment(app.user,comment) %}
-                            <button type="button" class="dropdown-item" data-toggle="modal" data-target="#deleteCommentModal{{ comment.id }}">
-                                {{ 'delete' | trans }}
-                            </button>
-                        {% endif %}
-
+                <div class="collapse" id="repliesForComment{{ comment.id }}" style="margin: 4px 0 0;">
+                    <div class="md-comment-children">
+                        {% for childComment in comment.children %}
+                            {{ oneComment(childComment) }}
+                        {% endfor %}
                     </div>
-
-                    {% if rightToDeleteComment(app.user,comment) %}
-                        <div class="modal fade md-confirm-modal" id="deleteCommentModal{{ comment.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                            <div class="modal-dialog modal-dialog-centered" role="document">
-                                <div class="modal-content">
-                                    <div class="md-modal-container">
-                                        <div class="md-modal-message">{{ 'sure.to.delete.comment' | trans }}</div>
-                                        <form class="md-modal-item" method="post" action="{{ path('delete_comment', {'id': comment.id}) }}">
-                                            <input type="hidden" name="_method" value="DELETE">
-                                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ comment.id) }}">
-                                            <button class="btn btn-modal-danger">
-                                                {{ 'delete' | trans }}
-                                            </button>
-                                        </form>
-                                        <button type="button" class="btn btn-modal-default md-modal-item" data-dismiss="modal">{{ 'cancel' | trans }}</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    {% endif %}
-
-                    {% if rightToBlockUser(app.user,comment.author) %}
-                        <div class="modal fade md-confirm-modal" id="banUser{{ comment.author.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                            <div class="modal-dialog modal-dialog-centered" role="document">
-                                <div class="modal-content">
-                                    <div class="md-modal-container">
-                                        <div class="md-modal-message">{{ 'are.you.sure.to.ban.user' | trans }}</div>
-                                        <a class="btn btn-modal-danger md-modal-item" href="{{ path('moderation_ban_user', {'id': comment.author.id}) }}">{{ 'ban' | trans }}</a>
-                                        <button type="button" class="btn btn-modal-default md-modal-item" data-dismiss="modal">{{ 'cancel' | trans }}</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="modal fade md-confirm-modal" id="unbanUser{{ comment.author.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                            <div class="modal-dialog modal-dialog-centered" role="document">
-                                <div class="modal-content">
-                                    <div class="md-modal-container">
-                                        <div class="md-modal-message">{{ 'are.you.sure.to.unban.user' | trans }}</div>
-                                        <a class="btn btn-modal-primary md-modal-item" href="{{ path('moderation_unban_user', {'id': comment.author.id}) }}">{{ 'unban' | trans }}</a>
-                                        <button type="button" class="btn btn-modal-default md-modal-item" data-dismiss="modal">{{ 'cancel' | trans }}</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    {% endif %}
-
-                {% endif %}
+                </div>
 
             </div>
 
-            <span class="md-comment-message">
-                {% if comment.replyTo %}
-                    <span class="md-comment-replied badge badge-light">
-                        <span class="float-left mr-1">{{ 'reply.for' | trans }}</span>
-
-                        <a class="md-comment-username" href="{{ path('user_profile', {username: comment.replyTo.username}) }}">
-                            {{ comment.replyTo.username }}{{ 'reply.for_2' | trans }}
-                        </a>
-
-                    </span>
-                {% endif %}
-
-                {{ comment.message }}
-            </span>
-
-            <div class="md-comment-info">
-                <small class="md-comment-date text-muted">
-                    {{ comment.publishedAt ? comment.publishedAt | format_datetime('medium', 'none', '', 'UTC') }}
-                    в
-                    {{ comment.publishedAt ? comment.publishedAt | date(' H:i') }}
-                </small>
-
-                {% if app.user and comment.author.username != app.user.username %}
-                    <small class="md-comment-reply text-muted">
-                        <span class="comment-reply">
-                            <span class="reply-user d-none">{{ comment.author.username }}</span>
-                            {{ 'reply' | trans }}
-                        </span>
-                    </small>
-                {% endif %}
-            </div>
-
-        </div>
+        {% endif %}
 
     {% endfor %}
 

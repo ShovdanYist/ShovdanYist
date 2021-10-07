@@ -123,13 +123,13 @@ class CounterExtension extends AbstractExtension
     {
         $result = $this->notifyCount($user);
 
-        if ($this->security->isGranted('ROLE_POST_MODERATOR')) {
-            $result += $this->postModerationCount();
-        }
-
-        if ($this->security->isGranted('ROLE_SONG_MODERATOR')) {
-            $result += $this->songModerationCount();
-        }
+//        if ($this->security->isGranted('ROLE_POST_MODERATOR')) {
+//            $result += $this->postModerationCount();
+//        }
+//
+//        if ($this->security->isGranted('ROLE_SONG_MODERATOR')) {
+//            $result += $this->songModerationCount();
+//        }
 
         return $result;
     }

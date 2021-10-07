@@ -28,6 +28,9 @@ class CommentType extends AbstractType
             ->add('replyTo', HiddenType::class, [
                 'mapped' => false
             ])
+            ->add('replyFor', HiddenType::class, [
+                'mapped' => false
+            ])
         ;
     }
 

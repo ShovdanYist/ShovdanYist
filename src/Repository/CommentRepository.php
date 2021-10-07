@@ -19,6 +19,42 @@ class CommentRepository extends ServiceEntityRepository
         parent::__construct($registry, Comment::class);
     }
 
+    public function getNoChildComments($criteria, $orderBy = ['id' => 'DESC'], $limit = null, $offset = 0)
+    {
+        $qb = $this->createQueryBuilder('c');
+
+        $qb->leftJoin('c.parent','p')
+            ->where('p.id is null')
+        ;
+
+        foreach ($criteria as $property => $value) {
+            if ($property == 'post') {
+                $qb ->andWhere('c.post = :post')
+                    ->setParameter('post', $criteria['post']);
+            } elseif ($property == 'song') {
+                $qb ->andWhere('c.song = :song')
+                    ->setParameter('song', $criteria['song']);
+            } else {
+                $qb ->andWhere('s.'. $property .' = :' . $property . '')
+                    ->setParameter($property,$value)
+                ;
+            }
+        }
+
+//        $qb->andWhere('c.post = :post')
+//            ->setParameter('post', $criteria['post'])
+//        ;
+
+        foreach ($orderBy as $key => $value) {
+            $qb->orderBy('c.'.$key,$value);
+        }
+
+        $qb ->setMaxResults(50)
+            ->setFirstResult($offset);
+
+        return $qb->getQuery()->getResult();
+    }
+
     // /**
     //  * @return Comment[] Returns an array of Comment objects
     //  */

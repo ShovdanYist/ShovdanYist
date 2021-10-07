@@ -35,6 +35,7 @@ class ModulesExtension extends AbstractExtension
             new TwigFunction('tags', [$this, 'tags'], ['is_safe' => ['html']]),
             new TwigFunction('comments', [$this, 'comments'], ['is_safe' => ['html'], 'needs_environment' => true]),
             new TwigFunction('breadcrumb', [$this, 'breadcrumb'], ['is_safe' => ['html'], 'needs_environment' => true]),
+            new TwigFunction('oneComment', [$this, 'oneComment'], ['is_safe' => ['html'], 'needs_environment' => true]),
         ];
     }
 
@@ -58,6 +59,7 @@ class ModulesExtension extends AbstractExtension
         $name = strtolower((new \ReflectionClass($entity))->getShortName());
 
         $this->paginator->setClass(Comment::class)
+            ->setMethod('getNoChildComments')
             ->setType('comments')
             ->setOrder(['id' => 'DESC'])
             ->setCriteria([$name => $entity])
@@ -85,6 +87,18 @@ class ModulesExtension extends AbstractExtension
             'links' => $links,
             'entity' => $entity,
             'name' => $name
+        ]);
+    }
+
+    /**
+     * @throws SyntaxError
+     * @throws RuntimeError
+     * @throws LoaderError
+     */
+    public function oneComment(Environment $twig, Comment $comment): string
+    {
+        return $twig->render('interface/layouts/comments/one_comment.html.twig', [
+            'comment' => $comment
         ]);
     }
 }

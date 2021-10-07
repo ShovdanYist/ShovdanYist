@@ -50,6 +50,7 @@ class CommentController extends CustomAbstractController
 
             if ($form->get('replyTo')->getData()) {
                 $receiver = $userRepo->findOneBy(['username' => $form->get('replyTo')->getData()]);
+                $replyingComment = $this->getDoctrine()->getRepository(Comment::class)->findOneBy(['id' => $form->get('replyFor')->getData()]);
                 $existNotify = $this->getDoctrine()->getRepository(Notification::class)->findOneBy(['type' => 'comment_reply', $type => $entity, 'receiver' => $receiver]);
 
                 if ($existNotify) {
@@ -78,6 +79,12 @@ class CommentController extends CustomAbstractController
                 }
 
                 $comment->setReplyTo($receiver);
+
+                if ($replyingComment->getParent()) {
+                    $comment->setParent($replyingComment->getParent());
+                } else {
+                    $comment->setParent($replyingComment);
+                }
             }
 
             $existNotify = $this->getDoctrine()->getRepository(Notification::class)->findOneBy(['type' => 'post_comment', 'post' => $comment->getPost()]);

@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\CustomAbstracts\CustomAbstractController;
+use App\Entity\Comment;
 use App\Entity\EmailAddress;
 use App\Entity\Post;
 use App\Entity\Profile;
@@ -49,6 +50,10 @@ class HomeController extends CustomAbstractController
             ->setLimit(10)
             ->setPage($page)
         ;
+
+//        $comments = $this->getDoctrine()->getRepository(Comment::class)->getNoChildComments(['test' => 'test']);
+//
+//        dump($comments);
 
         return $this->render('interface/home/index.html.twig', [
             'posts' => $paginator->getData(),

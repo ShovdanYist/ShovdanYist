@@ -36,7 +36,7 @@
         <div class="user-line-follow">
 
             {% if app.user and unfollow == app.user %}
-                <a type="button" class="unfollow" data-toggle="modal" data-target="#userUnfollow{{ follower.id }}">
+                <a class="unfollow" data-toggle="modal" data-target="#userUnfollow{{ follower.id }}">
                     <i class="fas fa-times"></i>
                 </a>
                 <div class="modal fade md-confirm-modal" id="userUnfollow{{ follower.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">

@@ -60,9 +60,20 @@ class Comment
      */
     private $status;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Comment::class, inversedBy="child")
+     */
+    private $parent;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="parent")
+     */
+    private $children;
+
     public function __construct()
     {
         $this->notifications = new ArrayCollection();
+        $this->children = new ArrayCollection();
     }
 
     /**
@@ -191,6 +202,49 @@ class Comment
     public function setStatus(bool $status): self
     {
         $this->status = $status;
+
+        return $this;
+    }
+
+    public function getParent(): ?self
+    {
+        return $this->parent;
+    }
+
+    public function setParent(?self $parent): self
+    {
+        $this->parent = $parent;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|self[]
+     */
+    public function getChildren(): Collection
+    {
+        return $this->children;
+    }
+
+    public function addChildren(self $children): self
+    {
+        if (!$this->children->contains($children)) {
+            $this->children[] = $children;
+            $children->setParent($this);
+        }
+
+        return $this;
+    }
+
+    public function removeChildren(self $children): self
+    {
+        if ($this->children->contains($children)) {
+            $this->children->removeElement($children);
+            // set the owning side to null (unless already changed)
+            if ($children->getParent() === $this) {
+                $children->setParent(null);
+            }
+        }
 
         return $this;
     }
