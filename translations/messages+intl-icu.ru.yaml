@@ -142,6 +142,8 @@ edit: Редактировать
 settings: Настройки
 block: Заблокировать
 unblock: Разблокировать
+ban: Забанить
+unban: Разбанить
 reset.password: 'Изменить свой пароль'
 playlist.of: 'Плейлист {username}'
 not.songs.in.your.playlist: 'У вас еще нет песен в плейлисте'
@@ -278,9 +280,7 @@ are.you.sure.to.log.out: 'Вы уверены что хотите выйти?'
 are.you.sure.to.block.user: 'Вы уверены что хотите заблокировать этого пользователя?'
 are.you.sure.to.unblock.user: 'Вы уверены что хотите разблокировать этого пользователя?'
 are.you.sure.to.approve.it: 'Вы уверены что хотите утвердить публикацию?'
-are.you.sure.to.publish.it: 'Вы уверены что хотите опубликовать?'
 are.you.sure.to.reject.it: 'Вы уверены что хотите отклонить публикацию?'
-are.you.sure.to.change.it: 'Вы уверены что хотите изменить?'
 publish: Опубликовать
 approve: Утвердить
 remember.me: 'Запомнить меня'

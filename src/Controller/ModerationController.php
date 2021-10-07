@@ -443,14 +443,14 @@ class ModerationController extends CustomAbstractController
     }
 
     /**
-     * @Route("/blockUser/{id}", name="block_user", methods={"GET","POST"})
+     * @Route("/banUser/{id}", name="ban_user", methods={"GET","POST"})
      * @Security("is_granted('ROLE_USER_BAN')")
      * @param User $user
      * @param EmailAddressRepository $emails
      * @param Defender $defender
      * @return Response
      */
-    public function blockUser(User $user, EmailAddressRepository $emails, Defender $defender): Response
+    public function banUser(User $user, EmailAddressRepository $emails, Defender $defender): Response
     {
         if (!$defender->rightToBlockUser($this->user(),$user)) {
             $this->addFlash('warning', 'Вы не можете блокировать данного пользователя');
@@ -483,13 +483,13 @@ class ModerationController extends CustomAbstractController
     }
 
     /**
-     * @Route("/unblockUser/{id}", name="unblock_user", methods={"GET","POST"})
+     * @Route("/unbanUser/{id}", name="unban_user", methods={"GET","POST"})
      * @Security("is_granted('ROLE_USER_BAN')")
      * @param User $user
      * @param EmailAddressRepository $emails
      * @return Response
      */
-    public function unblockUser(User $user, EmailAddressRepository $emails): Response
+    public function unbanUser(User $user, EmailAddressRepository $emails): Response
     {
         $email = $emails->findOneBy(['address' => $user->getConfirmedEmail()]);
 

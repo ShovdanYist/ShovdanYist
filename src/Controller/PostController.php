@@ -116,29 +116,27 @@ class PostController extends CustomAbstractController
      */
     public function edit(Request $request, Post $post, Initializer $initializer, Defender $defender): Response
     {
-        if ($this->getUser() && $this->user() === $post->getAuthor() || $this->isGranted('ROLE_POST_MODERATOR') && $post->getStatus() != null) {
-            $form = $this->createForm(PostType::class, $post);
-            $form->handleRequest($request);
-
-            if ($form->isSubmitted() && $form->isValid()) {
-                $initializer->initializePostEdit($post, $form);
-
-                if (!$defender->rightToSetTitleSlug($post)) {
-                    $form->get('title')->addError(new FormError($this->trans('title.or.slug.exists')));
-                } else {
-                    return $this->redirectToRoute('post_show', ['id' => $post->getId()]);
-                }
-            }
-
-            return $this->render('interface/post/edit.html.twig', [
-                'post' => $post,
-                'form' => $form->createView(),
-            ]);
-        } elseif ($this->getUser()) {
+        if ($this->user() !== $post->getAuthor() && !$this->isGranted('ROLE_POST_MODERATOR')) {
             return $this->redirectToRoute('app_home');
-        } else {
-            return $this->redirectToRoute('app_login');
         }
+
+        $form = $this->createForm(PostType::class, $post);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $initializer->initializePostEdit($post, $form);
+
+            if (!$defender->rightToSetTitleSlug($post)) {
+                $form->get('title')->addError(new FormError($this->trans('title.or.slug.exists')));
+            } else {
+                return $this->redirectToRoute('post_show', ['id' => $post->getId()]);
+            }
+        }
+
+        return $this->render('interface/post/edit.html.twig', [
+            'post' => $post,
+            'form' => $form->createView(),
+        ]);
     }
 
     /**
