@@ -60,7 +60,6 @@ bookmark.forEach((bookmark) => {
 // Follow a user or unfollow from yourself
 
 let follow = document.querySelectorAll('.follow-toggle');
-let unfollow = document.querySelectorAll('.unfollow-toggle');
 
 function follows(event) {
     event.preventDefault();
@@ -100,23 +99,25 @@ function follows(event) {
     })
 }
 
+let unfollow = document.querySelectorAll('.unfollow-toggle');
+
 follow.forEach((follow) => {
     follow.addEventListener('click', follows);
 });
 
 function unfollows(event) {
     event.preventDefault();
-    if (confirm(this.title)) {
-        let url = this.href;
-        let followerBlock = 'u' + this.id.split('u').pop().split('t')[0] + 'l';
+    let url = this.href;
+    let followerBlock = 'u' + this.id.split('u').pop().split('t')[0] + 'l';
+    let cancelButtonId = 'userUnfollow' + this.id.split('u').pop().split('t')[0];
+    document.getElementById(cancelButtonId).click();
 
-        axios.get(url).then((response) => {
-            let status = String(response.data.response.status);
-            if (status === 'removed') {
-                document.getElementById(followerBlock).remove();
-            }
-        })
-    }
+    axios.get(url).then((response) => {
+        let status = String(response.data.response.status);
+        if (status === 'removed') {
+            document.getElementById(followerBlock).remove();
+        }
+    })
 }
 
 unfollow.forEach((unfollow) => {

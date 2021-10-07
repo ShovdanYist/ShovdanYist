@@ -378,18 +378,6 @@ class Post
         return $this;
     }
 
-    public function getViews(): ?int
-    {
-        return $this->views;
-    }
-
-    public function setViews(int $views): self
-    {
-        $this->views = $views;
-
-        return $this;
-    }
-
     /**
      * @return Collection|Tag[]
      */

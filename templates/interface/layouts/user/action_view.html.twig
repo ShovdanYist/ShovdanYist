@@ -30,15 +30,31 @@
                 {{ action.createdAt ? action.createdAt | date(' H:i') }}
 
                 {% if is_granted('ROLE_OWNER') %}
-                    <form class="md-comment-reply" style="display: contents" method="post" action="{{ path('moderation_action_delete', {'id': action.id}) }}" onsubmit="return confirm('{{ 'sure.to.delete.action' | trans }}');">
-                        <input type="hidden" name="_method" value="DELETE">
-                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ action.id) }}">
-                        <button class="comment-reply" style="display: contents">
-                            {{ 'delete' | trans }}
-                        </button>
-                    </form>
+                    <button class="notification-delete" data-toggle="modal" data-target="#deleteAction{{ action.id }}">
+                        {{ 'delete' | trans }}
+                    </button>
                 {% endif %}
             </small>
+
+            {% if is_granted('ROLE_OWNER') %}
+                <div class="modal fade md-confirm-modal" id="deleteAction{{ action.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="md-modal-container">
+                                <div class="md-modal-message">{{ 'sure.to.delete.action' | trans }}</div>
+                                <form class="md-modal-item" method="post" action="{{ path('moderation_action_delete', {'id': action.id}) }}">
+                                    <input type="hidden" name="_method" value="DELETE">
+                                    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ action.id) }}">
+                                    <button class="btn btn-modal-danger">
+                                        {{ 'delete' | trans }}
+                                    </button>
+                                </form>
+                                <button type="button" class="btn btn-modal-default md-modal-item" data-dismiss="modal">{{ 'cancel' | trans }}</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
 
         </div>
 

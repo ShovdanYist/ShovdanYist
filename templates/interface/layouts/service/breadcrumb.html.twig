@@ -35,16 +35,33 @@
                     </a>
 
                     {% if is_granted('ROLE_OWNER') or entity.author == app.user %}
-                        <form method="post" action="{{ path('post_delete', {'id': entity.id}) }}" onsubmit="return confirm('{{ 'are.you.sure.to.delete' | trans }}');">
-                            <input type="hidden" name="_method" value="DELETE">
-                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ entity.id) }}">
-                            <button class="dropdown-item">
-                                <i class="fas fa-trash-alt"></i> {{ 'delete' | trans }}
-                            </button>
-                        </form>
+                        <button type="button" class="dropdown-item" data-toggle="modal" data-target="#deletePostModal">
+                            <i class="fas fa-trash-alt"></i>
+                            {{ 'delete' | trans }}
+                        </button>
                     {% endif %}
 
                 </div>
+
+                {% if is_granted('ROLE_OWNER') or entity.author == app.user %}
+                    <div class="modal fade md-confirm-modal" id="deletePostModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="md-modal-container">
+                                    <div class="md-modal-message">{{ 'are.you.sure.to.delete.this.post' | trans }}</div>
+                                    <form class="md-modal-item" method="post" action="{{ path('post_delete', {'id': entity.id}) }}">
+                                        <input type="hidden" name="_method" value="DELETE">
+                                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ entity.id) }}">
+                                        <button class="btn btn-modal-danger">
+                                            {{ 'delete' | trans }}
+                                        </button>
+                                    </form>
+                                    <button type="button" class="btn btn-modal-default md-modal-item" data-dismiss="modal">{{ 'cancel' | trans }}</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
 
             {% endif %}
 
@@ -63,16 +80,33 @@
                     </a>
 
                     {% if is_granted('ROLE_OWNER') %}
-                        <form method="post" action="{{ path('song_delete', {'id': entity.id}) }}" onsubmit="return confirm('{{ 'sure.to.delete.song' | trans }}');">
-                            <input type="hidden" name="_method" value="DELETE">
-                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ entity.id) }}">
-                            <button class="dropdown-item">
-                                <i class="fas fa-trash-alt"></i> {{ 'delete' | trans }}
-                            </button>
-                        </form>
+                        <button type="button" class="dropdown-item" data-toggle="modal" data-target="#deleteSong">
+                            <i class="fas fa-trash-alt"></i>
+                            {{ 'delete' | trans }}
+                        </button>
                     {% endif %}
 
                 </div>
+
+                {% if is_granted('ROLE_OWNER') %}
+                    <div class="modal fade md-confirm-modal" id="deleteSong" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="md-modal-container">
+                                    <div class="md-modal-message">{{ 'sure.to.delete.song' | trans }}</div>
+                                    <form class="md-modal-item" method="post" action="{{ path('song_delete', {'id': entity.id}) }}">
+                                        <input type="hidden" name="_method" value="DELETE">
+                                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ entity.id) }}">
+                                        <button class="btn btn-modal-danger">
+                                            {{ 'delete' | trans }}
+                                        </button>
+                                    </form>
+                                    <button type="button" class="btn btn-modal-default md-modal-item" data-dismiss="modal">{{ 'cancel' | trans }}</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
 
             {% endif %}
 
@@ -91,16 +125,33 @@
                     </a>
 
                     {% if is_granted('ROLE_OWNER') %}
-                        <form method="post" action="{{ path('person_delete', {'id': entity.id}) }}" onsubmit="return confirm('{{ 'sure.to.delete.person' | trans }}');">
-                            <input type="hidden" name="_method" value="DELETE">
-                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ entity.id) }}">
-                            <button class="dropdown-item">
-                                <i class="fas fa-trash-alt"></i> {{ 'delete' | trans }}
-                            </button>
-                        </form>
+                        <button type="button" class="dropdown-item" data-toggle="modal" data-target="#deletePerson">
+                            <i class="fas fa-trash-alt"></i>
+                            {{ 'delete' | trans }}
+                        </button>
                     {% endif %}
 
                 </div>
+
+                {% if is_granted('ROLE_OWNER') %}
+                    <div class="modal fade md-confirm-modal" id="deletePerson" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="md-modal-container">
+                                    <div class="md-modal-message">{{ 'sure.to.delete.person' | trans }}</div>
+                                    <form class="md-modal-item" method="post" action="{{ path('person_delete', {'id': entity.id}) }}">
+                                        <input type="hidden" name="_method" value="DELETE">
+                                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ entity.id) }}">
+                                        <button class="btn btn-modal-danger">
+                                            {{ 'delete' | trans }}
+                                        </button>
+                                    </form>
+                                    <button type="button" class="btn btn-modal-default md-modal-item" data-dismiss="modal">{{ 'cancel' | trans }}</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
 
             {% endif %}
 

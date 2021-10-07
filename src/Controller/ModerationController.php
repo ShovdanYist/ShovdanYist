@@ -453,7 +453,6 @@ class ModerationController extends CustomAbstractController
     public function banUser(User $user, EmailAddressRepository $emails, Defender $defender): Response
     {
         if (!$defender->rightToBlockUser($this->user(),$user)) {
-            $this->addFlash('warning', 'Вы не можете блокировать данного пользователя');
             return $this->redirectToRoute('user_profile', ['username' => $user->getUsername()]);
         }
 
@@ -475,7 +474,7 @@ class ModerationController extends CustomAbstractController
         $em->persist($action);
         $em->flush();
 
-        $this->addFlash('danger', 'Пользователь '. $user->getUsername() . ' заблокирован');
+        $this->addFlash('danger', $this->trans('user.is.banned',['username' => $user->getUsername()]));
 
         return $this->redirectToRoute('user_profile', [
             'username' => $user->getUsername()
@@ -508,7 +507,7 @@ class ModerationController extends CustomAbstractController
         $em->persist($action);
         $em->flush();
 
-        $this->addFlash('success', 'Пользователь '. $user->getUsername() . ' разблоктрован');
+        $this->addFlash('success', $this->trans('user.is.unbanned',['username' => $user->getUsername()]));
 
         return $this->redirectToRoute('user_profile', [
             'username' => $user->getUsername()

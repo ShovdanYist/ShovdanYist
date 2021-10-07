@@ -33,6 +33,13 @@ body {
   color: #2c3e50;
   background-color: #edeef0;
   margin: 0 0 60px 0;
+  .dropdown-menu {
+    z-index: 900;
+  }
+}
+
+.sticky-top {
+  z-index: 850;
 }
 
 .h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
@@ -225,7 +232,7 @@ li {
   top: 9px;
 }
 
-.user-line-follow .btn, .notification-follow {
+.user-line-follow .btn-follow, .notification-follow {
   font-weight: 500;
   font-size: 13px;
   padding: 2px 6px 3px 5px;
@@ -537,6 +544,70 @@ blockquote, .ck.ck-content blockquote {
   margin: 0 auto;
 }
 
+// Confirm Modal
+
+.md-confirm-modal .modal-content {
+  background: unset;
+  border: unset;
+  width: 260px;
+  margin: 0 auto;
+}
+
+.md-modal-container {
+  padding: 18px;
+  background-color: rgba(30,30,30,0.9);
+  display: flex;
+  flex-direction: column;
+  border-radius: 12px;
+}
+
+.md-modal-container .md-modal-item {
+  margin-bottom: 12px !important;
+}
+
+.md-modal-container .btn-modal-primary {
+  background: #376691;
+}
+
+.md-modal-container .btn-modal-primary:hover {
+  background: #4072a1;
+}
+
+.md-modal-container .btn-modal-danger {
+  background: #c43d3d;
+}
+
+.md-modal-container .btn-modal-danger:hover {
+  background: #d54b4b;
+}
+
+.md-modal-container .btn-modal-default {
+  background: #595959;
+}
+
+.md-modal-container .btn-modal-default:hover {
+  background: #646464;
+}
+
+.md-modal-container .btn {
+  color: rgba(255,255,255,0.8);
+  border-radius: 6px;
+  border: unset;
+  width: 100%;
+}
+
+.md-modal-container .md-modal-item:last-child {
+  margin: 0 !important;
+}
+
+.md-modal-message {
+  color: #aaa;
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 15px;
+  font-weight: 400;
+}
+
 // Form spoiler
 
 .form-spoiler {
@@ -614,7 +685,7 @@ blockquote, .ck.ck-content blockquote {
 .md-nav {
   background: url("https://shovdanyist.com/assets/images/container-border.png") repeat-x scroll 0 100% / auto 1px rgba(30, 30, 30, 0.95);
   margin-bottom: 15px;
-  z-index: 1100;
+  z-index: 1000;
   height: 55px;
   width: 100%;
 }
@@ -1548,7 +1619,7 @@ td {
 }
 
 .md-breadcrumb-nav::after {
-  background: -moz-linear-gradient(right, #fff 0%, rgba(255, 255, 255, 0) 100%);
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0), white);
   position: absolute;
   height: 42px;
   content: '';
@@ -2273,6 +2344,7 @@ select {
   flex: min-content;
   margin-left: 10px;
   margin-right: 10px;
+  width: 100%;
 }
 
 .md-notification:last-child {
@@ -2290,6 +2362,16 @@ select {
 
 .user-follow-notification .notify-message {
   width: calc(100% - 92px);
+}
+
+.notification-delete {
+  display: contents;
+  font-weight: 500;
+  color: #95a5a6;
+}
+
+.notification-delete:hover {
+  color: #7f9091;
 }
 
 // Pagination

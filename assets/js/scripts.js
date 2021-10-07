@@ -43,6 +43,7 @@ function enableScroll() {
 const sideNav = document.getElementById('sideNav');
 const sideNavOpener = document.getElementById('sideNavOpener');
 const sideNavCloser = document.getElementById('sideNavCloser');
+const sideNavLogoutCloser = document.getElementById('sideNavLogoutCloser');
 const sideNavBack = document.getElementById('sideNavBack');
 
 function openNav() {
@@ -62,6 +63,7 @@ function closeNav() {
 if (sideNav) {
     sideNavOpener.addEventListener('click', openNav);
     sideNavCloser.addEventListener('click', closeNav);
+    sideNavLogoutCloser.addEventListener('click', closeNav);
 }
 
 // MediaElement Player

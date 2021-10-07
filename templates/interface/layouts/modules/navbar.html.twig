@@ -120,10 +120,10 @@
 
                             <span class="dropdown-divider"></span>
 
-                            <a class="dropdown-item" href="{{ path('app_logout') }}" onclick="return confirm('{{ 'are.you.sure.to.log.out' | trans }}')">
+                            <button type="button" class="dropdown-item" data-toggle="modal" data-target="#navbarLogout">
                                 <i class="fas fa-power-off"></i>
                                 {{ 'log.out' | trans }}
-                            </a>
+                            </button>
 
                         </div>
 
@@ -138,3 +138,18 @@
     </div>
 
 </nav>
+
+{% if app.user %}
+    <div class="modal fade md-confirm-modal" id="navbarLogout" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="md-modal-container">
+                    <div class="md-modal-message">{{ 'are.you.sure.to.log.out' | trans }}</div>
+
+                    <a class="btn btn-modal-danger md-modal-item" href="{{ path('app_logout') }}">{{ 'log.out' | trans }}</a>
+                    <button type="button" class="btn btn-modal-default md-modal-item" data-dismiss="modal">{{ 'cancel' | trans }}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endif %}

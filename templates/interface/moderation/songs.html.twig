@@ -72,27 +72,47 @@
                     </a>
 
                     {% if is_granted('ROLE_SONG_MODERATOR') %}
-                        <form method="post" action="{{ path('song_delete', {'id': song.id}) }}" onsubmit="return confirm('{{ 'sure.to.delete.song' | trans }}');">
-                            <input type="hidden" name="_method" value="DELETE">
-                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ song.id) }}">
-                            <button class="dropdown-item">
-                                <i class="fas fa-trash-alt"></i> {{ 'delete' | trans }}
-                            </button>
-                        </form>
+                        <button type="button" class="dropdown-item" data-toggle="modal" data-target="#deleteSong{{ song.id }}">
+                            <i class="fas fa-trash-alt"></i>
+                            {{ 'delete' | trans }}
+                        </button>
                     {% endif %}
                 </div>
+
+                {% if is_granted('ROLE_SONG_MODERATOR') %}
+                    <div class="modal fade md-confirm-modal" id="deleteSong{{ song.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="md-modal-container">
+                                    <div class="md-modal-message">{{ 'sure.to.delete.song' | trans }}</div>
+                                    <form class="md-modal-item" method="post" action="{{ path('song_delete', {'id': song.id}) }}">
+                                        <input type="hidden" name="_method" value="DELETE">
+                                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ song.id) }}">
+                                        <button class="btn btn-modal-danger">
+                                            {{ 'delete' | trans }}
+                                        </button>
+                                    </form>
+                                    <button type="button" class="btn btn-modal-default md-modal-item" data-dismiss="modal">{{ 'cancel' | trans }}</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
 
             </div>
 
         {% else %}
 
-            {% if app.request.attributes.get('_route') == 'moderation_music' %}
-                {{ 'no.songs.in.moderation' | trans }}
-            {% elseif app.request.attributes.get('_route') == 'moderation_ready' %}
-                {{ 'no.ready.songs.in.moderation' | trans }}
-            {% elseif app.request.attributes.get('_route') == 'moderation_pending' %}
-                {{ 'no.pending.songs.in.moderation' | trans }}
-            {% endif %}
+            <div class="text-center">
+                <i class="far fa-play-circle" style="margin-right: 2px"></i>
+                {% if app.request.attributes.get('_route') == 'moderation_music' %}
+                    {{ 'no.songs.in.moderation' | trans }}
+                {% elseif app.request.attributes.get('_route') == 'moderation_ready' %}
+                    {{ 'no.ready.songs.in.moderation' | trans }}
+                {% elseif app.request.attributes.get('_route') == 'moderation_pending' %}
+                    {{ 'no.pending.songs.in.moderation' | trans }}
+                {% endif %}
+            </div>
 
         {% endfor %}
 

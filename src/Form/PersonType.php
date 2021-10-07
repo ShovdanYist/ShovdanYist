@@ -13,7 +13,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Vich\UploaderBundle\Form\Type\VichImageType;
 
-class PeopleType extends AbstractType
+class PersonType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -32,6 +32,7 @@ class PeopleType extends AbstractType
             ])
             ->add('biography', TextareaType::class, [
                 'label' => 'biography',
+                'required' => false,
                 'attr' => [
                     'class' => 'ckeditor'
                 ]

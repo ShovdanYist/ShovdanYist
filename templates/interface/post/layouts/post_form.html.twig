@@ -35,7 +35,7 @@
 
             {% if form.songs is defined %}
                 {{ form_row(form.songs) }}
-            {% elseif post.author == app.user %}
+            {% elseif not post.id or post.author == app.user %}
                 <div class="form-group">
                     <label class="form-label" for="disabled_input">{{ 'music' | trans }}</label>
                     <input class="form-control" id="disabled_input" type="text" placeholder="{{ 'not.songs.in.your.playlist' | trans }}" disabled="">
@@ -45,7 +45,7 @@
 
             {% if form.taggedUsers is defined %}
                 {{ form_row(form.taggedUsers) }}
-            {% elseif post.author == app.user %}
+            {% elseif not post.id or post.author == app.user %}
                 <div class="form-group">
                     <label class="form-label" for="disabled_input">{{ 'users' | trans }}</label>
                     <input class="form-control" id="disabled_input" type="text" placeholder="{{ 'you.have.not.following' | trans }}" disabled="">

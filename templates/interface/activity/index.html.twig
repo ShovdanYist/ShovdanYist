@@ -31,14 +31,29 @@
                                 <i class="fa fa-edit" aria-hidden="true"></i> {{ 'edit' | trans }}
                             </a>
 
-                            <form method="post" action="{{ path('activity_delete', {'id': activity.id}) }}" onsubmit="return confirm('{{ 'are.you.sure.to.delete' | trans }}');">
-                                <input type="hidden" name="_method" value="DELETE">
-                                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ activity.id) }}">
-                                <button class="dropdown-item">
-                                    <i class="fas fa-trash-alt"></i> {{ 'delete' | trans }}
-                                </button>
-                            </form>
+                            <button type="button" class="dropdown-item" data-toggle="modal" data-target="#deleteActivity{{ activity.id }}">
+                                <i class="fas fa-trash-alt"></i>
+                                {{ 'delete' | trans }}
+                            </button>
 
+                        </div>
+
+                        <div class="modal fade md-confirm-modal" id="deleteActivity{{ activity.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                    <div class="md-modal-container">
+                                        <div class="md-modal-message">{{ 'sure.to.delete.activity' | trans }}</div>
+                                        <form class="md-modal-item" method="post" action="{{ path('activity_delete', {'id': activity.id}) }}">
+                                            <input type="hidden" name="_method" value="DELETE">
+                                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ activity.id) }}">
+                                            <button class="btn btn-modal-danger">
+                                                {{ 'delete' | trans }}
+                                            </button>
+                                        </form>
+                                        <button type="button" class="btn btn-modal-default md-modal-item" data-dismiss="modal">{{ 'cancel' | trans }}</button>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
                         <br><span class="small text-muted">{{ activity.slug }}</span>

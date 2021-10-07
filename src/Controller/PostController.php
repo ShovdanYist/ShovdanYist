@@ -91,11 +91,6 @@ class PostController extends CustomAbstractController
     {
         if ($post->getAuthor() === $this->getUser() || $this->isGranted('ROLE_POST_MODERATOR') || $post->getStatus() === true) {
 
-            if (!$defender->isGranted($this->getUser(),'ROLE_GUEST') && $this->getUser() !== $post->getAuthor() && !$this->isGranted('ROLE_POST_MODERATOR')) {
-                $post->setViews($post->getViews() + 1);
-                $this->getDoctrine()->getManager()->flush();
-            }
-
             return $this->render('interface/post/show.html.twig', [
                 'post' => $post,
                 'page' => $page
@@ -148,7 +143,7 @@ class PostController extends CustomAbstractController
      */
     public function delete(Request $request, Post $post): Response
     {
-        if ($this->user() !== $post->getAuthor() && !$this->isGranted('ROLE_POST_MODERATOR')) {
+        if ($this->user() !== $post->getAuthor() && !$this->isGranted('ROLE_OWNER')) {
             return $this->redirectToRoute('app_home');
         }
 

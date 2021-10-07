@@ -1,8 +1,40 @@
 {{ form_start(form, {action: path('moderation_post_validation', {'id': post.id})}) }}
     <div class="mb-3">
         {{ form_widget(form.message) }}
-        {{ form_widget(form.gender) }}
+        <div class="chosen-search-off">
+            {{ form_widget(form.gender) }}
+        </div>
     </div>
-    {{ form_widget(form.approve) }}
-    {{ form_widget(form.reject) }}
+
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#approvePostModal{{ post.id }}">
+        {{ 'approve' | trans }}
+    </button>
+
+    <div class="modal fade md-confirm-modal" id="approvePostModal{{ post.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="md-modal-container">
+                    <div class="md-modal-message">{{ 'are.you.sure.to.approve.it' | trans }}</div>
+                    {{ form_widget(form.approve) }}
+                    <button type="button" class="btn btn-modal-default md-modal-item" data-dismiss="modal">{{ 'cancel' | trans }}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <button type="button" class="btn btn-link float-right" data-toggle="modal" data-target="#rejectPostModal{{ post.id }}">
+        {{ 'reject' | trans }}
+    </button>
+
+    <div class="modal fade md-confirm-modal" id="rejectPostModal{{ post.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="md-modal-container">
+                    <div class="md-modal-message">{{ 'are.you.sure.to.reject.it' | trans }}</div>
+                    {{ form_widget(form.reject) }}
+                    <button type="button" class="btn btn-modal-default md-modal-item" data-dismiss="modal">{{ 'cancel' | trans }}</button>
+                </div>
+            </div>
+        </div>
+    </div>
 {{ form_end(form) }}

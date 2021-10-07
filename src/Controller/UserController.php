@@ -476,7 +476,7 @@ class UserController extends CustomAbstractController
 
     /**
      * @Route("/userDelete/{id}", name="user_delete", methods={"DELETE"})
-     * @Security("is_granted('ROLE_OWNER')")
+     * @Security("is_granted('ROLE_USER')")
      * @param Request $request
      * @param UserPasswordEncoderInterface $encoder
      * @param User $user

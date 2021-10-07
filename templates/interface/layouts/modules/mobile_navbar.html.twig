@@ -178,7 +178,7 @@
                 <hr>
             {% endif %}
 
-            <a class="sidenav-link" href="{{ path('app_logout') }}" onclick="return confirm('{{ 'are.you.sure.to.log.out' | trans }}')">
+            <a href="javascript:void(0)" id="sideNavLogoutCloser" class="sidenav-link" data-toggle="modal" data-target="#navbarLogout">
                 <span class="dashbar-nav-icon">
                     <i class="fas fa-power-off"></i>
                 </span>

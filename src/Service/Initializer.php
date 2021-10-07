@@ -105,7 +105,6 @@ class Initializer
         $post->setUpdatedAt(new \DateTime('now'));
         $post->setPublishedAt(new \DateTime('now'));
         $post->setAuthor($this->getUser());
-        $post->setViews(0);
 
         $this->em->persist($post);
 

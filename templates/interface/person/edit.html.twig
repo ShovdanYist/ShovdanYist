@@ -9,3 +9,7 @@
     {{ include('interface/person/_form.html.twig', {'button_label': 'update' | trans}) }}
 
 {% endblock %}
+
+{% block scripts %}
+    {{ ckeditor() }}
+{% endblock %}

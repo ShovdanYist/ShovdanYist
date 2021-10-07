@@ -4,7 +4,7 @@ namespace App\Controller;
 
 use App\CustomAbstracts\CustomAbstractController;
 use App\Entity\Person;
-use App\Form\PeopleType;
+use App\Form\PersonType;
 use App\Repository\PeopleRepository;
 use App\Repository\SongRepository;
 use App\Service\Initializer;
@@ -52,7 +52,7 @@ class PersonController extends CustomAbstractController
     public function new(Request $request, Initializer $initializer): Response
     {
         $person = new Person();
-        $form = $this->createForm(PeopleType::class, $person);
+        $form = $this->createForm(PersonType::class, $person);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -107,7 +107,7 @@ class PersonController extends CustomAbstractController
      */
     public function edit(Request $request, Person $person, Initializer $initializer): Response
     {
-        $form = $this->createForm(PeopleType::class, $person);
+        $form = $this->createForm(PersonType::class, $person);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

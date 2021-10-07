@@ -33,25 +33,73 @@
 
                             {% if comment.author.status != false %}
 
-                                <a href="{{ path('moderation_ban_user', {'id': comment.author.id}) }}" class="dropdown-item" onclick="return confirm('{{ 'are.you.sure.to.block.user' | trans }}')">
+                                <button type="button" class="dropdown-item" data-toggle="modal" data-target="#banUser{{ comment.author.id }}">
                                     {{ 'ban' | trans }}
-                                </a>
+                                </button>
 
                             {% else %}
 
-                                <a href="{{ path('moderation_unban_user', {'id': comment.author.id}) }}" class="dropdown-item" onclick="return confirm('{{ 'are.you.sure.to.unblock.user' | trans }}')">
+                                <button type="button" class="dropdown-item" data-toggle="modal" data-target="#unbanUser{{ comment.author.id }}">
                                     {{ 'unban' | trans }}
-                                </a>
+                                </button>
 
                             {% endif %}
 
                         {% endif %}
 
                         {% if rightToDeleteComment(app.user,comment) %}
-                            {% include 'interface/layouts/comments/comment_delete.html.twig' %}
+                            <button type="button" class="dropdown-item" data-toggle="modal" data-target="#deleteCommentModal{{ comment.id }}">
+                                {{ 'delete' | trans }}
+                            </button>
                         {% endif %}
 
                     </div>
+
+                    {% if rightToDeleteComment(app.user,comment) %}
+                        <div class="modal fade md-confirm-modal" id="deleteCommentModal{{ comment.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                    <div class="md-modal-container">
+                                        <div class="md-modal-message">{{ 'sure.to.delete.comment' | trans }}</div>
+                                        <form class="md-modal-item" method="post" action="{{ path('delete_comment', {'id': comment.id}) }}">
+                                            <input type="hidden" name="_method" value="DELETE">
+                                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ comment.id) }}">
+                                            <button class="btn btn-modal-danger">
+                                                {{ 'delete' | trans }}
+                                            </button>
+                                        </form>
+                                        <button type="button" class="btn btn-modal-default md-modal-item" data-dismiss="modal">{{ 'cancel' | trans }}</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+
+                    {% if rightToBlockUser(app.user,comment.author) %}
+                        <div class="modal fade md-confirm-modal" id="banUser{{ comment.author.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                    <div class="md-modal-container">
+                                        <div class="md-modal-message">{{ 'are.you.sure.to.ban.user' | trans }}</div>
+                                        <a class="btn btn-modal-danger md-modal-item" href="{{ path('moderation_ban_user', {'id': comment.author.id}) }}">{{ 'ban' | trans }}</a>
+                                        <button type="button" class="btn btn-modal-default md-modal-item" data-dismiss="modal">{{ 'cancel' | trans }}</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="modal fade md-confirm-modal" id="unbanUser{{ comment.author.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                    <div class="md-modal-container">
+                                        <div class="md-modal-message">{{ 'are.you.sure.to.unban.user' | trans }}</div>
+                                        <a class="btn btn-modal-primary md-modal-item" href="{{ path('moderation_unban_user', {'id': comment.author.id}) }}">{{ 'unban' | trans }}</a>
+                                        <button type="button" class="btn btn-modal-default md-modal-item" data-dismiss="modal">{{ 'cancel' | trans }}</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
 
                 {% endif %}
 

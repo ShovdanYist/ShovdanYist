@@ -29,14 +29,28 @@
                 в
                 {{ notification.publishedAt ? notification.publishedAt | date(' H:i') }}
 
-                <form class="md-comment-reply" style="display: contents" method="post" action="{{ path('user_notification_delete', {'id': notification.id}) }}" onsubmit="return confirm('{{ 'sure.to.delete.notification' | trans }}');">
-                    <input type="hidden" name="_method" value="DELETE">
-                    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ notification.id) }}">
-                    <button class="comment-reply" style="display: contents">
-                        {{ 'delete' | trans }}
-                    </button>
-                </form>
+                <button class="notification-delete" data-toggle="modal" data-target="#deleteNotification{{ notification.id }}">
+                    {{ 'delete' | trans }}
+                </button>
             </small>
+
+            <div class="modal fade md-confirm-modal" id="deleteNotification{{ notification.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="md-modal-container">
+                            <div class="md-modal-message">{{ 'sure.to.delete.notification' | trans }}</div>
+                            <form class="md-modal-item" method="post" action="{{ path('user_notification_delete', {'id': notification.id}) }}">
+                                <input type="hidden" name="_method" value="DELETE">
+                                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ notification.id) }}">
+                                <button class="btn btn-modal-danger">
+                                    {{ 'delete' | trans }}
+                                </button>
+                            </form>
+                            <button type="button" class="btn btn-modal-default md-modal-item" data-dismiss="modal">{{ 'cancel' | trans }}</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
         </div>
 
@@ -46,11 +60,7 @@
 
         <div class="notify-picture">
 
-            {% if notification.type == 'user_follow' %}
-
-                {#    TODO: follow button    #}
-
-            {% elseif notification.type == 'comment_reply' and notification.song %}
+            {% if notification.type == 'comment_reply' and notification.song %}
 
                 <a href="{{ path('song_show',{'slug':notification.song.slug}) }}">
                     <span class="back-picture bp-50" style="border-radius: 3px;margin-right: 14px;background-image: url('{% if notification.song.vocalist.picture %}{{ vich_uploader_asset(notification.song.vocalist) | imagine_filter('thumbnail') }}{% else %}{{ asset('assets/images/avatar.jpg') | imagine_filter('thumbnail') }}{% endif %}')">

@@ -135,9 +135,9 @@ no.actions: 'Действий еще нет'
 
 for.next.reason: 'по следующей причине'
 account.deleting: 'Удаление аккаунта'
-account.deleting.warning.message: 'Все данные связанные с вашим аккаунтом будут безвозвратно удалены.'
+account.deleting.warning.message: 'Все данные связанные с вашим аккаунтом будут безвозвратно удалены'
 are.you.sure.to.delete.account: 'Вы уверены что хотите удалить свой аккаунт навсегда?'
-delete.account: 'Удалить свой аккаунт'
+delete.account: 'Удалить аккаунт'
 edit: Редактировать
 settings: Настройки
 block: Заблокировать
@@ -160,9 +160,12 @@ to.leave.a.comment: 'чтобы оставлять комментарии'
 sure.to.delete.comment: 'Вы уверены что хотите удалить этот комментарий?'
 sure.to.delete.notification: 'Вы уверены что хотите удалить это уведомление?'
 sure.to.delete.action: 'Вы уверены что хотите удалить это действие?'
+sure.to.delete.user: 'Вы уверены что хотите удалить этого пользователя?'
 sure.to.delete.song: 'Вы уверены что хотите удалить эту песню?'
+sure.to.delete.tag: 'Вы уверены что хотите удалить этот тег?'
+sure.to.delete.activity: 'Вы уверены что хотите удалить эту деятельность?'
 sure.to.delete.person: 'Вы уверены что хотите удалить этого человека?'
-sure.to.delete.follower: 'Вы уверены что хотите удалить подписчика { username }?'
+sure.to.delete.follower: 'Вы уверены что хотите отписать от себя подписчика { username }?'
 delete: Удалить
 password.recovery: 'Восстановление пароля'
 flash.registration.successful.completed: 'Регистрация успешно завершена'
@@ -260,7 +263,7 @@ add.person: 'Добавить человека'
 activity.editing: 'Изменение деятельности'
 activity.adding: 'Добавление деятельности'
 add.activity: 'Добавить деятельность'
-are.you.sure.to.delete: 'Вы уверены что хотите удалить этот элемент?'
+are.you.sure.to.delete.this.post: 'Вы уверены что хотите удалить эту публикацию?'
 statistics: Статистика
 dashboard: 'Панель управления'
 in.moderation: 'На модерации'
@@ -277,8 +280,10 @@ bookmarks: Закладки
 moderation: Модерация
 moderators: Модераторы
 are.you.sure.to.log.out: 'Вы уверены что хотите выйти?'
-are.you.sure.to.block.user: 'Вы уверены что хотите заблокировать этого пользователя?'
-are.you.sure.to.unblock.user: 'Вы уверены что хотите разблокировать этого пользователя?'
+are.you.sure.to.ban.user: 'Вы уверены что хотите забанить этого пользователя?'
+are.you.sure.to.unban.user: 'Вы уверены что хотите разбанить этого пользователя?'
+user.is.banned: 'Пользователь { username } забанен'
+user.is.unbanned: 'Пользователь { username } разбанен'
 are.you.sure.to.approve.it: 'Вы уверены что хотите утвердить публикацию?'
 are.you.sure.to.reject.it: 'Вы уверены что хотите отклонить публикацию?'
 publish: Опубликовать
@@ -305,6 +310,7 @@ followers: 'Подписчики'
 following: 'Подписки'
 follow: 'Подписаться'
 unfollow: 'Отписаться'
+unfollow.from.me: 'Отписать'
 write: 'Написать'
 have.not.posts: 'Пока нет публикаций'
 additional: Дополнительно

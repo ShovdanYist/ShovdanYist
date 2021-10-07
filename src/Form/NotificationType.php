@@ -15,13 +15,6 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class NotificationType extends AbstractType
 {
-    private $translator;
-
-    public function __construct(TranslatorInterface $translator)
-    {
-        $this->translator = $translator;
-    }
-
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -35,16 +28,11 @@ class NotificationType extends AbstractType
             ])
             ->add('approve', SubmitType::class, [
                 'label' => 'approve',
-                'attr' => [
-                    'onclick' => 'return confirm(\'' . $this->translator->trans('are.you.sure.to.approve.it') . '\')'
-                ]
+                'attr' => [ 'class' => 'btn btn-modal-primary md-modal-item' ]
             ])
             ->add('reject', SubmitType::class, [
                 'label' => 'reject',
-                'attr' => [
-                    'onclick' => 'return confirm(\'' . $this->translator->trans('are.you.sure.to.reject.it') . '\')',
-                    'class' => 'btn-link float-right'
-                ]
+                'attr' => [ 'class' => 'btn btn-modal-danger md-modal-item' ]
             ])
             ->add('gender', ChoiceType::class, [
                 'label' => 'content.for',
@@ -54,8 +42,8 @@ class NotificationType extends AbstractType
                     'content.for.male.audience' => false,
                     'content.for.female.audience' => true
                 ],
-                'data' => $options['gender']
-//                'attr' => ['class' => 'chosen']
+                'data' => $options['gender'],
+                'attr' => ['class' => 'chosen']
             ])
         ;
     }
