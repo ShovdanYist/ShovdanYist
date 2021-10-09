@@ -61,12 +61,12 @@ class Comment
     private $status;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Comment::class, inversedBy="child")
+     * @ORM\ManyToOne(targetEntity=Comment::class, inversedBy="children")
      */
     private $parent;
 
     /**
-     * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="parent")
+     * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="parent", orphanRemoval=true)
      */
     private $children;
 

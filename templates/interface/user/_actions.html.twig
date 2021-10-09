@@ -28,7 +28,7 @@
 
         {% if rightToBlockUser(app.user,user) %}
 
-            {% if user.status != false %}
+            {% if user.status is null or user.status == true %}
 
                 <button type="button" class="dropdown-item" data-toggle="modal" data-target="#banUser">
                     <i class="fas fa-user-times"></i> {{ 'ban' | trans }}
@@ -56,13 +56,13 @@
 
     {% if rightToBlockUser(app.user,user) %}
 
-        {% if user.status != false %}
+        {% if user.status is null or user.status == true %}
 
             <div class="modal fade md-confirm-modal" id="banUser" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered" role="document">
                     <div class="modal-content">
                         <div class="md-modal-container">
-                            <div class="md-modal-message">{{ 'are.you.sure.to.ban.user' | trans }}</div>
+                            <div class="md-modal-message">{{ 'sure.to.ban.user' | trans }}</div>
                             <a class="btn btn-modal-danger md-modal-item" href="{{ path('moderation_ban_user', {'id': user.id}) }}">{{ 'ban' | trans }}</a>
                             <button type="button" class="btn btn-modal-default md-modal-item" data-dismiss="modal">{{ 'cancel' | trans }}</button>
                         </div>
@@ -76,7 +76,7 @@
                 <div class="modal-dialog modal-dialog-centered" role="document">
                     <div class="modal-content">
                         <div class="md-modal-container">
-                            <div class="md-modal-message">{{ 'are.you.sure.to.unban.user' | trans }}</div>
+                            <div class="md-modal-message">{{ 'sure.to.unban.user' | trans }}</div>
                             <a class="btn btn-modal-primary md-modal-item" href="{{ path('moderation_unban_user', {'id': user.id}) }}">{{ 'unban' | trans }}</a>
                             <button type="button" class="btn btn-modal-default md-modal-item" data-dismiss="modal">{{ 'cancel' | trans }}</button>
                         </div>

@@ -10,65 +10,61 @@
 
         <div class="md-content-padding">
 
-            {% if not user.status == 0 or user.status is null %}
+            {% if user.confirmedEmail and user.status is null or user.status == true %}
 
-                {% if user.status %}
+                {{ form_start(form) }}
 
-                    {{ form_start(form) }}
+                    <div class="row label-icons-form md-edit-form">
 
-                        <div class="row label-icons-form md-edit-form">
+                        <div class="col-12 md-edit-form-block">
 
-                            <div class="col-12 md-edit-form-block">
+                            <div id="output-content" style="background-image: url('{% if user.profile.avatar != 'avatar.jpg' %}{% if '.gif' in user.profile.avatar %}{{ vich_uploader_asset(user.profile) }}{% else %}{{ vich_uploader_asset(user.profile) | imagine_filter('avatar') }}{% endif %}{% else %}{{ asset('assets/images/avatar.jpg') }}{% endif %}')">
+                            </div>
+                            {{ form_row(form.avatarFile) }}
+                            {{ form_row(form.avatarDelete) }}
+                            {{ form_row(form.fullname) }}
 
-                                <div id="output-content" style="background-image: url('{% if user.profile.avatar != 'avatar.jpg' %}{% if '.gif' in user.profile.avatar %}{{ vich_uploader_asset(user.profile) }}{% else %}{{ vich_uploader_asset(user.profile) | imagine_filter('avatar') }}{% endif %}{% else %}{{ asset('assets/images/avatar.jpg') }}{% endif %}')">
-                                </div>
-                                {{ form_row(form.avatarFile) }}
-                                {{ form_row(form.avatarDelete) }}
-                                {{ form_row(form.fullname) }}
+                            {% if is_granted('ROLE_OWNER') %}
+                                {{ form_row(form.verified) }}
+                            {% endif %}
 
-                                {% if is_granted('ROLE_OWNER') %}
-                                    {{ form_row(form.verified) }}
-                                {% endif %}
+                            {{ form_row(form.about) }}
+                            {{ form_row(form.url) }}
 
-                                {{ form_row(form.about) }}
-                                {{ form_row(form.url) }}
+                            {{ form_row(form.birthday) }}
 
-                                {{ form_row(form.birthday) }}
-
-                                <div class="md-form-gender">
-                                    {{ form_row(form.gender) }}
-                                </div>
+                            <div class="md-form-gender">
+                                {{ form_row(form.gender) }}
+                            </div>
 
 
-                                <div class="mt-3">
+                            <div class="mt-3">
 
-                                    <button class="btn btn-primary">
-                                        {{ 'save' | trans }}
-                                    </button>
+                                <button class="btn btn-primary">
+                                    {{ 'save' | trans }}
+                                </button>
 
-                                    <a class="btn btn-link float-right" href="{{ path('user_profile', {'username' : user.username }) }}">
-                                        {{ 'cancel' | trans }}
-                                    </a>
-
-                                </div>
+                                <a class="btn btn-link float-right" href="{{ path('user_profile', {'username' : user.username }) }}">
+                                    {{ 'cancel' | trans }}
+                                </a>
 
                             </div>
 
                         </div>
 
-                    {{ form_end(form) }}
-
-                {% else %}
-
-                    <div class="md-comment-guest md-alert md-alert-warning m-0">
-                        <i class="fas fa-exclamation-triangle"></i> <a href="{{ path('user_settings', {'username' : user.username}) }}">{{ 'confirm.your.email' | trans }}</a>, {{ 'to.customize.your.profile' | trans }}
                     </div>
 
-                {% endif %}
+                {{ form_end(form) }}
+
+            {% elseif user.status is null %}
+
+                <div class="md-alert md-alert-warning m-0">
+                    <i class="fas fa-exclamation-triangle"></i> <a href="{{ path('user_settings', {'username' : user.username}) }}">{{ 'confirm.your.email' | trans }}</a>, {{ 'to.customize.your.profile' | trans }}
+                </div>
 
             {% else %}
 
-                <div class="md-comment-guest md-alert md-alert-danger md-box-mb mb-0">
+                <div class="md-alert md-alert-danger mb-0">
                     <i class="fas fa-ban"></i> {{ 'you.are.blocked.and.you.cant.edit.profile' | trans }}
                 </div>
 

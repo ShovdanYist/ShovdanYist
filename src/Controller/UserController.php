@@ -236,7 +236,7 @@ class UserController extends CustomAbstractController
 
         $form = $this->createFormBuilder($user)
             ->add('username', TextType::class, [
-                'label' => $this->trans('form.username'),
+                'label' => 'username',
                 'mapped' => false,
                 'attr' => [
                     'value' => $user->getUsername(),
@@ -246,8 +246,8 @@ class UserController extends CustomAbstractController
                 ],
             ])
             ->add('email', EmailType::class, [
-                'label' => $this->trans('form.email'),
-                'help' => 'Если не подтверждена, то проверьте свою электронную почту и перейдите по отправленной ссылке',
+                'label' => 'email',
+                'help' => 'email.help',
                 'attr' => [
                     'class' => ($user->getEmail() != $user->getConfirmedEmail()) ? 'is-invalid' : null,
                 ]
@@ -263,7 +263,7 @@ class UserController extends CustomAbstractController
         }
 
         if ($user->getEmail() != $user->getConfirmedEmail()) {
-            $form->get('email')->addError(new FormError('Электронная почта не подтверждена'));
+            $form->get('email')->addError(new FormError($this->trans('email.not.verified')));
         }
 
         $form->handleRequest($request);
@@ -285,7 +285,7 @@ class UserController extends CustomAbstractController
                 if ($user->getEmail() != $user->getConfirmedEmail()) {
                     $user->setToken($tokenGenerator->generateToken());
                     $mailer->setTo($form->get('email')->getData())
-                        ->setSubject($this->trans('Подтверждение почты на сайте ShovdanYist'))
+                        ->setSubject($this->trans('email.confirmation.on.website'))
                         ->setTemplate('interface/layouts/mailer/email_confirmation.html.twig')
                         ->setVariables(['user' => $user])
                         ->notify();
@@ -293,7 +293,7 @@ class UserController extends CustomAbstractController
                     if ($user->getConfirmedEmail() && $user->getStatus() !== false) {
                         $user->setStatus(null);
                     }
-                } elseif ($user->getEmail() == $user->getConfirmedEmail() && $user->getStatus() === null) {
+                } elseif ($user->getEmail() === $user->getConfirmedEmail() && $user->getStatus() === null) {
                     $user->setStatus(true);
                 }
 

@@ -22,24 +22,24 @@ class ProfileType extends AbstractType
     {
         $builder
             ->add('avatarFile', VichImageType::class, [
-                'label' => 'form.avatar',
+                'label' => 'avatar',
                 'required' => false,
                 'download_uri' => false,
                 'image_uri' => false,
                 'allow_delete' => false
             ])
             ->add('avatarDelete', CheckboxType::class, [
-                'label' => 'form.delete.avatar',
+                'label' => 'delete.avatar',
                 'required' => false,
                 'mapped' => false,
                 'label_attr' => ['class' => 'switch-custom']
             ])
             ->add('fullname', TextType::class, [
-                'label' => 'form.full.name',
+                'label' => 'full.name',
                 'required' => false
             ])
             ->add('about', TextareaType::class, [
-                'label' => 'form.about.me',
+                'label' => 'about.me',
                 'required' => false,
                 'attr' => [
                     'style' => 'opacity:0;margin-bottom:20px',
@@ -49,25 +49,25 @@ class ProfileType extends AbstractType
                 'constraints' => [
                     new Length([
                         'max' => 800,
-                        'maxMessage' => 'form.max.message'
+                        'maxMessage' => 'max.message'
                     ])
                 ]
             ])
             ->add('url', UrlType::class, [
-                'label' => 'form.website',
+                'label' => 'website',
                 'required' => false
             ])
             ->add('gender', ChoiceType::class, [
-                'label' => 'form.gender',
+                'label' => 'gender',
                 'expanded' => true,
                 'label_attr' => ['class' => 'radio-custom'],
                 'choices' => [
-                    'form.gender.male' => '0',
-                    'form.gender.female' => '1'
+                    'gender.male' => '0',
+                    'gender.female' => '1'
                 ],
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'form.gender.required.message'
+                        'message' => 'gender.required.message'
                     ])
                 ]
             ])

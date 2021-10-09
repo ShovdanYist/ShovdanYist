@@ -33,7 +33,7 @@ class TagType extends AbstractType
                 'constraints' => [
                     new Length([
                         'max' => 800,
-                        'maxMessage' => 'form.max.message'
+                        'maxMessage' => 'max.message'
                     ])
                 ]
             ])

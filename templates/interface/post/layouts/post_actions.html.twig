@@ -1,14 +1,6 @@
-<style>
-    .likes-count {
-        display: table;
-        width: 100%;
-        font-weight: 500;
-    }
-</style>
-
 <div class="likes-count">
     <a href="{{ path('post_likes', {'id':post.id}) }}">
-        Нравится: <span id="post-like-counter-{{ post.id }}" class="count">{{ post.likes.count }}</span>
+        {{ 'likes' | trans }}: <span id="post-like-counter-{{ post.id }}" class="count">{{ post.likes.count }}</span>
     </a>
 </div>
 
@@ -42,7 +34,7 @@
                 <span class="bookmark-icon"></span>
             </a>
         {% else %}
-            <a class="guest-bookmark-toggle" href="javascript:void(0)" style="cursor: pointer;padding-top: 5px;top: -5px;position: relative" data-toggle="tooltip" title="Добавлять посты в закладки можно только после авторизации">
+            <a class="guest-bookmark-toggle" href="javascript:void(0)" style="cursor: pointer;padding-top: 5px;top: -5px;position: relative" data-toggle="tooltip" title="{{ 'guest.bookmark' | trans }}">
                 <span class="bookmark-icon"></span>
             </a>
         {% endif %}

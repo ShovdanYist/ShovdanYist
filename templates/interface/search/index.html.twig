@@ -7,7 +7,7 @@
 {% block main_top %}
     {{ breadcrumb({
         (path('app_home')) : ('home.page' | trans),
-        'active' : keyword
+        'active' : 'search.for.keyword' | trans({'keyword':keyword})
     }) }}
 {% endblock %}
 

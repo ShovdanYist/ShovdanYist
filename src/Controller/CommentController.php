@@ -36,10 +36,8 @@ class CommentController extends CustomAbstractController
             $entity = $this->getDoctrine()->getRepository(Post::class)->findOneBy(['id' => $id]);
         }
 
-        $user = $userRepo->findOneBy(['username' => $this->getUser()->getUsername()]);
-
         $comment = new Comment();
-        $comment->setAuthor($user);
+        $comment->setAuthor($this->user());
         $entity->addComment($comment);
 
         $form = $this->createForm(CommentType::class, $comment);
@@ -57,11 +55,12 @@ class CommentController extends CustomAbstractController
                     if ($existNotify->getSeen()) {
                         $existNotify->setSeen(false);
                         $existNotify->setQuantity(1);
-                    } else {
+                    } elseif ($existNotify->getSender() !== $this->user() || $existNotify->getQuantity() > 1) {
                         $existNotify->setQuantity($existNotify->getQuantity() + 1);
                     }
                     $existNotify->setPublishedAt(new \DateTime('now'));
                     $existNotify->setComment($comment);
+                    $existNotify->setSender($this->user());
                 } else {
                     $notification = new Notification();
                     $notification->setType('comment_reply');
@@ -93,11 +92,12 @@ class CommentController extends CustomAbstractController
                 if ($existNotify->getSeen()) {
                     $existNotify->setSeen(false);
                     $existNotify->setQuantity(1);
-                } elseif ($existNotify->getComment()->getAuthor() !== $comment->getAuthor()) {
+                } elseif ($existNotify->getSender() !== $comment->getAuthor() || $existNotify->getQuantity() > 1) {
                     $existNotify->setQuantity($existNotify->getQuantity() + 1);
                 }
                 $existNotify->setPublishedAt(new \DateTime('now'));
                 $existNotify->setComment($comment);
+                $existNotify->setSender($this->user());
             } elseif ($type == 'post' && $this->user() !== $comment->getPost()->getAuthor() && $form->get('replyTo')->getData() !== $comment->getPost()->getAuthor()->getUsername()) {
                 $notify = new Notification();
                 $notify->setReceiver($comment->getPost()->getAuthor());

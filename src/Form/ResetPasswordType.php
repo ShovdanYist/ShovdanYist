@@ -17,28 +17,28 @@ class ResetPasswordType extends AbstractType
     {
         $builder
             ->add('current', PasswordType::class, [
-                'label' => 'form.current.password',
+                'label' => 'current.password',
                 'mapped' => false
             ])
             ->add('new', RepeatedType::class, [
                 'type' => PasswordType::class,
                 'mapped' => false,
-                'invalid_message' => 'form.password.not.same',
+                'invalid_message' => 'password.not.same',
                 'first_options' => [
-                    'label' => 'form.new.password',
+                    'label' => 'new.password',
                     'constraints' => [
                         new NotBlank([
-                            'message' => 'form.password.is.empty'
+                            'message' => 'password.is.empty'
                         ]),
                         new Length([
                             'min' => 6,
                             'max' => 80,
-                            'minMessage' =>  'form.password.min.length.message',
-                            'maxMessage' => 'form.password.max.length.message'
+                            'minMessage' =>  'password.min.length.message',
+                            'maxMessage' => 'password.max.length.message'
                         ]),
                     ]
                 ],
-                'second_options' => ['label' => 'form.confirm.password']
+                'second_options' => ['label' => 'confirm.password']
             ])
         ;
     }

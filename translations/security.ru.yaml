@@ -1,7 +1,7 @@
 'An authentication exception occurred.': 'Ошибка аутентификации'
 'Authentication credentials could not be found.': 'Аутентификационные данные не найдены'
 'Authentication request could not be processed due to a system problem.': 'Запрос аутентификации не может быть обработан в связи с проблемой в системе'
-'Invalid credentials.': 'Недействительные аутентификационные данные'
+'Invalid credentials.': 'Вы ввели неправильный пароль'
 'Cookie has already been used by someone else.': 'Cookie уже был использован кем-то другим'
 'Not privileged to request the resource.': 'Отсутствуют права на запрос этого ресурса'
 'Invalid CSRF token.': 'Недействительный токен CSRF'

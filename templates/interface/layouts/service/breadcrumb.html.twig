@@ -48,7 +48,7 @@
                         <div class="modal-dialog modal-dialog-centered" role="document">
                             <div class="modal-content">
                                 <div class="md-modal-container">
-                                    <div class="md-modal-message">{{ 'are.you.sure.to.delete.this.post' | trans }}</div>
+                                    <div class="md-modal-message">{{ 'sure.to.delete.post' | trans }}</div>
                                     <form class="md-modal-item" method="post" action="{{ path('post_delete', {'id': entity.id}) }}">
                                         <input type="hidden" name="_method" value="DELETE">
                                         <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ entity.id) }}">

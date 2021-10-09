@@ -1,0 +1,86 @@
+{% extends 'interface/base.html.twig' %}
+
+{% block title %}{{ 'feed' | trans }}{% endblock %}
+
+{% block pageclass %}two-sidebars{% endblock %}
+
+{% block main_top %}
+
+    <div class="feed-types">
+        <a href="{{ path('app_home') }}">{{ 'recommendations' | trans }}</a>
+        <a href="{{ path('post_feed') }}" class="active">{{ 'following' | trans }}</a>
+    </div>
+
+    <div class="md-box d-lg-none" style="margin-bottom: 12px">
+
+        <a class="btn text-muted" style="width: 100%" data-toggle="collapse" data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false">
+            {{ 'categories' | trans }} <i class="fas fa-chevron-down" style="font-size: 12px"></i>
+        </a>
+
+        <div class="collapse" id="navbarToggleExternalContent">
+            <div class="p-2 text-center" style="padding-top: 0 !important;">
+                {% for item in tags('post') %}
+                    <li class="md-menu-item md-lined-menu">
+                        <a style="padding-left: 10px" href="{{ path('post_tag', {'slug':item.slug}) }}">
+                            {{ item.title }}
+                        </a>
+                    </li>
+                {% endfor %}
+            </div>
+        </div>
+
+    </div>
+
+{% endblock %}
+
+{% block main %}
+
+    {% for post in posts %}
+        {{ postView(post) }}
+    {% else %}
+        <div class="md-box md-content-padding text-center">
+            {% if not app.user.following.count %}
+                <i class="far fa-user" style="margin-right: 3px"></i>
+                {{ 'you.have.not.following' | trans }}
+            {% elseif app.user.following.count == 1 %}
+                <i class="far fa-clone" style="margin-right: 3px"></i>
+                {{ 'user.you.followed.have.not.posts' | trans }}
+            {% else %}
+                <i class="far fa-clone" style="margin-right: 3px"></i>
+                {{ 'users.you.followed.have.not.posts' | trans }}
+            {% endif %}
+        </div>
+    {% endfor %}
+
+    {{ paginator.display('box') }}
+
+{% endblock %}
+
+{% block sidebar_b %}
+
+    <div class="sidebar-b">
+        <div class="md-box sticky-top" style="padding: 12px">
+            <div class="text-muted mb-2 pl-2">{{ 'categories' | trans }}</div>
+
+            <div class="md-menu">
+
+                <ul>
+                    {% for item in tags('post') %}
+                        <li class="md-menu-item md-lined-menu">
+                            <a style="padding-left: 8px" href="{{ path('post_tag', {'slug':item.slug}) }}">
+                                {{ item.title }}
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+
+            </div>
+
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block scripts %}
+    {{ autoplay() }}
+{% endblock %}

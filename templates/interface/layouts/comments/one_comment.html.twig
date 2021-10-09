@@ -76,7 +76,7 @@
                     <div class="modal-dialog modal-dialog-centered" role="document">
                         <div class="modal-content">
                             <div class="md-modal-container">
-                                <div class="md-modal-message">{{ 'are.you.sure.to.ban.user' | trans }}</div>
+                                <div class="md-modal-message">{{ 'sure.to.ban.user' | trans }}</div>
                                 <a class="btn btn-modal-danger md-modal-item" href="{{ path('moderation_ban_user', {'id': comment.author.id}) }}">{{ 'ban' | trans }}</a>
                                 <button type="button" class="btn btn-modal-default md-modal-item" data-dismiss="modal">{{ 'cancel' | trans }}</button>
                             </div>
@@ -88,7 +88,7 @@
                     <div class="modal-dialog modal-dialog-centered" role="document">
                         <div class="modal-content">
                             <div class="md-modal-container">
-                                <div class="md-modal-message">{{ 'are.you.sure.to.unban.user' | trans }}</div>
+                                <div class="md-modal-message">{{ 'sure.to.unban.user' | trans }}</div>
                                 <a class="btn btn-modal-primary md-modal-item" href="{{ path('moderation_unban_user', {'id': comment.author.id}) }}">{{ 'unban' | trans }}</a>
                                 <button type="button" class="btn btn-modal-default md-modal-item" data-dismiss="modal">{{ 'cancel' | trans }}</button>
                             </div>
@@ -106,7 +106,7 @@
             <span class="md-comment-replied badge badge-light">
                 <span class="float-left mr-1">{{ 'reply.for' | trans }}</span>
                 <a class="md-comment-username" href="{{ path('user_profile', {username: comment.replyTo.username}) }}">
-                    {{ comment.replyTo.username }}{{ 'reply.for_2' | trans }}
+                    {{ comment.replyTo.username }}{{ 'reply.for.two' | trans }}
                 </a>
             </span>
         {% endif %}
@@ -117,7 +117,7 @@
     <div class="md-comment-info">
         <small class="md-comment-date text-muted">
             {{ comment.publishedAt ? comment.publishedAt | format_datetime('medium', 'none', '', 'UTC') }}
-            в
+            {{ 'at' | trans }}
             {{ comment.publishedAt ? comment.publishedAt | date(' H:i') }}
         </small>
 

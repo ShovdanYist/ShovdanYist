@@ -21,14 +21,14 @@ class RegistrationFormType extends AbstractType
     {
         $builder
             ->add('username', TextType::class, [
-                'label' => 'form.username',
-                'help' => 'form.username_help',
+                'label' => 'username',
+                'help' => 'username.help',
                 'constraints' => [
                     new Length([
                         'min' => 8,
                         'max' => 28,
-                        'minMessage' => 'form.username.min.length.message',
-                        'maxMessage' => 'form.username.max.length.message'
+                        'minMessage' => 'username.min.length.message',
+                        'maxMessage' => 'username.max.length.message'
                     ])
                 ],
                 'attr' => [
@@ -38,38 +38,38 @@ class RegistrationFormType extends AbstractType
                 ]
             ])
             ->add('email', EmailType::class, [
-                'label' => 'form.email'
+                'label' => 'email'
             ])
             ->add('password', RepeatedType::class, [
                 'type' => PasswordType::class,
-                'invalid_message' => 'form.password.not.same',
-                'second_options' => ['label' => 'form.confirm.password'],
+                'invalid_message' => 'password.not.same',
+                'second_options' => ['label' => 'confirm.password'],
                 'first_options' => [
-                    'label' => 'form.password',
+                    'label' => 'password',
                     'constraints' => [
                         new NotBlank([
-                            'message' => 'form.password.is.empty',
+                            'message' => 'password.is.empty',
                         ]),
                         new Length([
                             'min' => 6,
                             'max' => 80,
-                            'minMessage' => 'form.password.min.length.message'
+                            'minMessage' => 'password.min.length.message'
                         ]),
                     ]
                 ]
             ])
             ->add('gender', ChoiceType::class, [
-                'label' => 'form.gender',
+                'label' => 'gender',
                 'mapped' => false,
                 'expanded' => true,
                 'label_attr' => ['class' => 'radio-custom'],
                 'choices' => [
-                    'form.gender.male' => 0,
-                    'form.gender.female' => 1
+                    'gender.male' => 0,
+                    'gender.female' => 1
                 ],
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'form.gender.required.message'
+                        'message' => 'gender.required.message'
                     ])
                 ]
             ])
@@ -104,7 +104,7 @@ class RegistrationFormType extends AbstractType
 //                'label_attr' => ['class' => 'checkbox-custom'],
 //                'constraints' => [
 //                    new IsTrue([
-//                        'message' => 'form.agree.terms.message',
+//                        'message' => 'agree.terms.message',
 //                    ])
 //                ]
 //            ])

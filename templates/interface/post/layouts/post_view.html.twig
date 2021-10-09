@@ -33,11 +33,11 @@
                     <a href="{{ path('post_show',{'id':post.id}) }}">
                         {{ 'more.count' | trans({'count':post.songs.count - 3}) }}
                         {% if (post.songs.count - 3) == 1 %}
-                            {{ 'one.song' | trans }}
+                            {{ 'song' | trans | lower }}
                         {% elseif (post.songs.count - 3) > 1 and (post.songs.count - 3) <= 4 %}
-                            {{ 'few.songs' | trans }}
+                            {{ 'songs' | trans | lower }}
                         {% elseif (post.songs.count - 3) > 4 %}
-                            {{ 'some.songs' | trans }}
+                            {{ 'some.songs' | trans | lower }}
                         {% endif %}
                     </a>
                     <i class="fas fa-angle-right" style="top: 2px; position: relative;color: #aaa"></i>

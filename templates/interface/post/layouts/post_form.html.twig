@@ -55,8 +55,9 @@
 
             {% if form.moderation is defined and form.featured is defined %}
                 <div class="chosen-search-off mb-2 mt-2">
-                    {{ form_widget(form.moderation) }}
+                    {{ form_widget(form.gender) }}
                 </div>
+                {{ form_widget(form.moderation) }}
                 {{ form_widget(form.featured) }}
             {% endif %}
 

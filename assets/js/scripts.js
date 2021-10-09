@@ -63,7 +63,9 @@ function closeNav() {
 if (sideNav) {
     sideNavOpener.addEventListener('click', openNav);
     sideNavCloser.addEventListener('click', closeNav);
-    sideNavLogoutCloser.addEventListener('click', closeNav);
+    if (sideNavLogoutCloser) {
+        sideNavLogoutCloser.addEventListener('click', closeNav);
+    }
 }
 
 // MediaElement Player

@@ -41,10 +41,6 @@ class CommentRepository extends ServiceEntityRepository
             }
         }
 
-//        $qb->andWhere('c.post = :post')
-//            ->setParameter('post', $criteria['post'])
-//        ;
-
         foreach ($orderBy as $key => $value) {
             $qb->orderBy('c.'.$key,$value);
         }

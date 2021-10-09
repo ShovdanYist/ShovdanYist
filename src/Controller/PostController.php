@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\CustomAbstracts\CustomAbstractController;
 use App\Entity\Post;
 use App\Entity\Tag;
+use App\Entity\User;
 use App\Service\Defender;
 use App\Service\Initializer;
 use App\Form\PostType;
@@ -17,6 +18,58 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class PostController extends CustomAbstractController
 {
+    /**
+     * @Route("/{page<\d+>?1}", name="app_home", methods={"GET"})
+     * @param $page
+     * @param Paginator $paginator
+     * @return Response
+     */
+    public function index($page, Paginator $paginator): Response
+    {
+        $gender = ($this->getUser()) ? $this->user()->getProfile()->getGender() : null;
+
+        $paginator
+            ->setClass(Post::class)
+            ->setMethod('findRecommendations')
+            ->setOrder(['publishedAt' => 'DESC'])
+            ->setCriteria(['gender' => $gender, 'status' => true, 'featured' => true])
+            ->setLimit(10)
+            ->setPage($page)
+        ;
+
+        return $this->render('interface/post/recommendations.html.twig', [
+            'posts' => $paginator->getData(),
+            'paginator' => $paginator
+        ]);
+    }
+
+    /**
+     * @Route("/feed/{page<\d+>?1}", name="post_feed", methods={"GET"})
+     * @Security("is_granted('ROLE_USER')")
+     * @param $page
+     * @param Paginator $paginator
+     * @return Response
+     */
+    public function feed($page, Paginator $paginator): Response
+    {
+        $following = $this->getDoctrine()->getRepository(User::class)->findFollows(['user' => $this->user(), 'type' => 'following']);
+
+        $paginator
+            ->setClass(Post::class)
+            ->setMethod('findFeedPosts')
+            ->setOrder(['publishedAt' => 'DESC'])
+            ->setCriteria(['following' => $following, 'status' => true])
+            ->setLimit(10)
+            ->setPage($page)
+        ;
+
+        return $this->render('interface/post/feed.html.twig', [
+            'posts' => $paginator->getData(),
+            'paginator' => $paginator,
+            'following' => $this->getDoctrine()->getRepository(User::class)->findFollows(['user' => $this->user(), 'type' => 'following'])
+        ]);
+    }
+
     /**
      * @Route("/category/{slug}/{page<\d+>?1}", name="post_tag")
      * @param Tag $tag
@@ -41,7 +94,7 @@ class PostController extends CustomAbstractController
             ->setPage($page)
         ;
 
-        return $this->render('interface/post/tag.html.twig', [
+        return $this->render('interface/post/category.html.twig', [
             'posts' => $paginator->getData(),
             'paginator' => $paginator,
             'tag' => $tag

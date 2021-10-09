@@ -99,7 +99,7 @@ class Searcher
         if ($this->isTagsSearch()) {
             $tags = [
                 'data' => $this->getSearchedTags(),
-                'plural' => count($this->getSearchedTags()) > 1,
+                'plural' => (count($this->getSearchedTags()) > 1) ? 'tags' : 'tag',
                 'string' => $this->compiler->tagsString($this->getSearchedTags())
             ];
         } else {

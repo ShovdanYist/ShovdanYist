@@ -161,11 +161,11 @@ class Defender
 
         // Constraints for username
         if (strlen($username) < 8 || strlen($username) > 28) {
-            $message = $this->translator->trans('form.username.must.be.between');
+            $message = $this->translator->trans('username.must.be.between');
         } elseif (preg_match('/^[a-z1-9._]+$/i', $username) == 0) {
-            $message = $this->translator->trans('form.username.can.consist.symbols');
+            $message = $this->translator->trans('username.can.consist.symbols');
         } elseif ($exist) {
-            $message = $this->translator->trans('form.username.already.exists') . ' "' . $username . '"';
+            $message = $this->translator->trans('username.already.exists') . ' "' . $username . '"';
         } else {
             $status = true;
         }

@@ -20,7 +20,7 @@ class NewUserType extends AbstractType
                 'label' => 'username'
             ])
             ->add('email', EmailType::class, [
-                'label' => 'form.email',
+                'label' => 'email',
                 'attr' => [
                     'value' => 'example' . rand(99,9999) . '@shovdanyist.com'
                 ]

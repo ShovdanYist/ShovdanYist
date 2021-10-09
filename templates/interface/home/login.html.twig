@@ -16,10 +16,6 @@
 
         <div class="md-form-padding md-margin-bottom">
 
-            {% if error %}
-                <div class="alert md-alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-            {% endif %}
-
             <div class="form-group">
                 <label for="inputUsername">{{ 'username' | trans }}</label>
                 <input type="text" value="{{ last_username }}" name="username" id="inputUsername" class="form-control" required autofocus>

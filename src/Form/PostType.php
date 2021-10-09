@@ -14,6 +14,7 @@ use App\Repository\UserRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -79,7 +80,7 @@ class PostType extends AbstractType
                     'constraints' => [
                         new Length([
                             'max' => 80,
-                            'maxMessage' => 'form.max.message'
+                            'maxMessage' => 'max.message'
                         ])
                     ]
                 ])
@@ -94,7 +95,7 @@ class PostType extends AbstractType
                     'constraints' => [
                         new Length([
                             'max' => 5000,
-                            'maxMessage' => 'form.max.message'
+                            'maxMessage' => 'max.message'
                         ])
                     ]
                 ])
@@ -158,6 +159,14 @@ class PostType extends AbstractType
                     'required' => false,
                     'mapped' => false,
                     'label_attr' => ['class' => 'switch-custom']
+                ])
+                ->add('gender', ChoiceType::class, [
+                    'choices' => [
+                        'content.for.all' => null,
+                        'content.for.male.audience' => false,
+                        'content.for.female.audience' => true
+                    ],
+                    'attr' => ['class' => 'chosen']
                 ])
                 ->add('featured', CheckboxType::class, [
                     'label' => 'featured',

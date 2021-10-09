@@ -8,7 +8,7 @@
     {% if tags %}
         {{ breadcrumb({
             (path('app_home')) : ('home.page' | trans),
-            'active' : (('songs.for.tag' ~ tags.plural) | trans({'keyword': keyword})) ~ ' : ' ~ tags.string,
+            'active' : (('songs.for.' ~ tags.plural) | trans({'keyword': keyword})) ~ ' : ' ~ tags.string,
         }) }}
     {% else %}
         {{ breadcrumb({
@@ -38,7 +38,7 @@
             <div class="form-spoiler tag-search-spoiler m-0 mt-2">
 
                 <div style="text-align: right">
-                    <a style="margin-right: 2px;position: relative;top: 1px" class="collapsed" data-toggle="collapse" data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false">
+                    <a style="margin-right: 2px;position: relative;top: 1px" class="collapsed message" data-toggle="collapse" data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false">
                         {{ 'search.by.tags' | trans }} <i></i>
                     </a>
                 </div>
@@ -91,14 +91,6 @@
 
                     </div>
 
-                {% else %}
-
-                    <div class="mb-3">
-                        <span class="text-muted pb-3">
-                            {{ 'song.results.for.keyword' | trans({'keyword': keyword}) }}
-                        </span>
-                    </div>
-
                 {% endif %}
 
                 {% for song in songs %}
@@ -117,16 +109,14 @@
 
             </div>
 
-        {% endif %}
-
-        {% if not songs %}
+        {% else %}
 
             <div class="md-search-box md-box md-content-padding">
                 {% if tags %}
                     {% if page > 1 %}
-                        {{ ('not.found.songs.for.tags' ~ tags.plural) | trans({'tags':tags.string}) }} {{ 'in.page' | trans({'page':page}) }}
+                        {{ ('not.found.songs.for.' ~ tags.plural) | trans({'tags':tags.string}) }} {{ 'in.page' | trans({'page':page}) }}
                     {% else %}
-                        {{ ('not.found.songs.for.tags' ~ tags.plural) | trans({'tags':tags.string}) }}
+                        {{ ('not.found.songs.for.' ~ tags.plural) | trans({'tags':tags.string}) }}
                     {% endif %}
                 {% else %}
                     {% if page > 1 %}

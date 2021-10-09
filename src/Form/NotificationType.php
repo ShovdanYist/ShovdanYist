@@ -35,7 +35,6 @@ class NotificationType extends AbstractType
                 'attr' => [ 'class' => 'btn btn-modal-danger md-modal-item' ]
             ])
             ->add('gender', ChoiceType::class, [
-                'label' => 'content.for',
                 'mapped' => false,
                 'choices' => [
                     'content.for.all' => null,

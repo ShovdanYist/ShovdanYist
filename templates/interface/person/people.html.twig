@@ -38,23 +38,9 @@
                             <br>
                         {% endif %}
 
-                        <strong>{{ 'songs_plural' | trans }}:</strong> {{ songsCount(person) }}
+                        <strong>{{ 'some.songs' | trans | capitalize }}:</strong> {{ songsCount(person) }}
 
                     </p>
-
-{#                        <h3 class="my-0"><a href="{{ path('person_show', {slug: person.slug}) }}">{{ person.fullName }}</a></h3>#}
-
-{#                        {% for profession in person.activity %}#}
-{#                            <span class="badge badge-success badge-lower">{{ profession.title }}</span>#}
-{#                            {% if loop.last %}<br>{% endif %}#}
-{#                        {% endfor %}#}
-
-{#                        {% if person.birthDay %}#}
-{#                            <strong>{{ 'birth.date' | trans }}:</strong> {{ person.birthDay ? person.birthDay | format_datetime('medium', 'none', '', 'UTC') }}#}
-{#                            <br>#}
-{#                        {% endif %}#}
-
-{#                        <strong>{{ 'songs_plural' | trans }}:</strong> {{ songsCount(person) }}#}
 
                 </div>
 

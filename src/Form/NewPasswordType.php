@@ -18,18 +18,18 @@ class NewPasswordType extends AbstractType
         $builder
             ->add('password', RepeatedType::class, [
                 'type' => PasswordType::class,
-                'second_options' => ['label' => 'form.confirm.password', 'help' => 'form.confirm.password.help'],
-                'invalid_message' => 'form.password.not.same',
+                'second_options' => ['label' => 'confirm.password', 'help' => 'confirm.password.help'],
+                'invalid_message' => 'password.not.same',
                 'first_options' => [
-                    'label' => 'form.new.password',
+                    'label' => 'new.password',
                     'constraints' => [
                         new NotBlank([
-                            'message' => 'form.password.is.empty',
+                            'message' => 'password.is.empty',
                         ]),
                         new Length([
                             'min' => 6,
                             'max' => 80,
-                            'minMessage' => 'form.password.min.length.message',
+                            'minMessage' => 'password.min.length.message',
                         ]),
                     ]
                 ]

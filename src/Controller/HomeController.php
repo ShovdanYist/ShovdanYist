@@ -3,7 +3,6 @@
 namespace App\Controller;
 
 use App\CustomAbstracts\CustomAbstractController;
-use App\Entity\Comment;
 use App\Entity\EmailAddress;
 use App\Entity\Post;
 use App\Entity\Profile;
@@ -35,32 +34,6 @@ use Twig\Error\SyntaxError;
  */
 class HomeController extends CustomAbstractController
 {
-    /**
-     * @Route("/{page<\d+>?1}", name="home", methods={"GET"})
-     * @param $page
-     * @param Paginator $paginator
-     * @return Response
-     */
-    public function index($page, Paginator $paginator): Response
-    {
-        $paginator
-            ->setClass(Post::class)
-            ->setOrder(['publishedAt' => 'DESC'])
-            ->setCriteria(['status' => true])
-            ->setLimit(10)
-            ->setPage($page)
-        ;
-
-//        $comments = $this->getDoctrine()->getRepository(Comment::class)->getNoChildComments(['test' => 'test']);
-//
-//        dump($comments);
-
-        return $this->render('interface/home/index.html.twig', [
-            'posts' => $paginator->getData(),
-            'paginator' => $paginator
-        ]);
-    }
-
     /**
      * @Route("/sitemap.xml", name="sitemap", defaults={"_format"="xml"})
      * @param Request $request
@@ -98,7 +71,13 @@ class HomeController extends CustomAbstractController
         $error = $authenticationUtils->getLastAuthenticationError();
         $lastUsername = $authenticationUtils->getLastUsername();
 
-        return $this->render('interface/home/login.html.twig', ['last_username' => $lastUsername, 'error' => $error]);
+        if ($error) {
+            $this->addFlash('danger',$this->trans($error->getMessageKey(),[],'security'));
+        }
+
+        return $this->render('interface/home/login.html.twig', [
+            'last_username' => $lastUsername
+        ]);
     }
 
     /**
@@ -191,8 +170,8 @@ class HomeController extends CustomAbstractController
         }
         $form = $this->createFormBuilder()
             ->add('email', EmailType::class, [
-                'label' => 'form.email',
-                'help' => 'form.email.help',
+                'label' => 'email',
+                'help' => 'email.recovery.help',
                 'constraints' => [new Email(), new NotBlank(), new MailExists()]
             ])
             ->getForm();

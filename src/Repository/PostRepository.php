@@ -19,6 +19,58 @@ class PostRepository extends ServiceEntityRepository
         parent::__construct($registry, Post::class);
     }
 
+    public function findRecommendations($criteria, $orderBy = ['id' => 'DESC'], $limit = 10, $offset = 0)
+    {
+        $qb = $this->createQueryBuilder('p');
+
+        foreach ($criteria as $property => $value) {
+            if ($property == 'gender') {
+                $qb ->where('p.gender = :gender OR p.gender IS NULL')
+                    ->setParameter('gender',$value)
+                ;
+            } else {
+                $qb ->andWhere('p.'. $property .' = :' . $property . '')
+                    ->setParameter($property,$value)
+                ;
+            }
+        }
+
+        foreach ($orderBy as $key => $value) {
+            $qb->orderBy('p.'.$key,$value);
+        }
+
+        $qb ->setMaxResults($limit)
+            ->setFirstResult($offset);
+
+        return $qb->getQuery()->getResult();
+    }
+
+    public function findFeedPosts($criteria, $orderBy = ['id' => 'DESC'], $limit = 10, $offset = 0)
+    {
+        $qb = $this->createQueryBuilder('p');
+
+        foreach ($criteria as $property => $value) {
+            if ($property == 'following') {
+                $qb->where('p.author IN (:following)')
+                    ->setParameter('following',$value)
+                ;
+            } else {
+                $qb ->andWhere('p.'. $property .' = :' . $property . '')
+                    ->setParameter($property,$value)
+                ;
+            }
+        }
+
+        foreach ($orderBy as $key => $value) {
+            $qb->orderBy('p.'.$key,$value);
+        }
+
+        $qb ->setMaxResults($limit)
+            ->setFirstResult($offset);
+
+        return $qb->getQuery()->getResult();
+    }
+
     public function findUserTaggedPosts($criteria, $orderBy = ['id' => 'DESC'], $limit = 10, $offset = 0)
     {
         $qb = $this->createQueryBuilder('p');
@@ -73,8 +125,7 @@ class PostRepository extends ServiceEntityRepository
                     ->setParameter($property,$value)
                 ;
             } else {
-                // TODO: Не понятно что такое "m" (Музыка?)
-                $qb ->andWhere('m.'. $property .' = :' . $property . '')
+                $qb ->andWhere('p.'. $property .' = :' . $property . '')
                     ->setParameter($property,$value)
                 ;
             }

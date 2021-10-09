@@ -36,9 +36,9 @@ class UniqueSongValidator extends ConstraintValidator
         $duplicate  = $this->duplicate($entity);
 
         if ($duplicate) {
-            $message   = $this->translator->trans('This performer already has a composition with this title');
+            $message   = $this->translator->trans('person.already.has.song.with.same.title');
         } elseif ($exist) {
-            $message   = $this->translator->trans('Composition with this alias already exists');
+            $message   = $this->translator->trans('already.have.song.with.same.slug');
             $duplicate = true;
         }
 
