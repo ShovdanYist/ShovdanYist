@@ -139,8 +139,6 @@ confirm.password.help: "Введите повторно новый пароль 
 
 password.is.empty: "Поле пароля не может быть пустым"
 current.password.incorrect: "Старый пароль введён неправильно"
-password.max.length.message: "Пароль может состоять максимум из {{ limit }} символов"
-password.min.length.message: "Пароль должен состоять минимум из {{ limit }} символов"
 
 forgot.your.password: "Забыли пароль?"
 password.recovery: "Восстановление пароля"
@@ -400,6 +398,7 @@ you.have.not.following: "У вас еще нет подписок"
 you.have.not.posts: "У вас еще нет публикаций"
 you.have.not.tagged.posts: "Еще нет публикаций на которых вы отмечены"
 post.have.not.likes: "У публикации еще нет отметок «Нравится»"
+categoy.have.not.posts: "В категории «{ category }» еще нет публикаций"
 user.have.not.posts: "У пользователя { username } еще нет публикаций"
 user.you.followed.have.not.posts: "У пользователя на которого вы подписаны еще нет публикации"
 users.you.followed.have.not.posts: "У пользователей на которых вы подписаны еще нет публикаций"

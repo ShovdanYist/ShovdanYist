@@ -22,7 +22,7 @@
         <tbody>
             <tr>
                 <td class="btn btn-blue">
-                    <a href="https://shovdanyist.com{{ path('app_email_validation',{'id':user.id,'token':user.token}) }}">Подтвердить почту</a>
+                    <a href="{{ absolute_url(path('app_email_validation',{'id':user.id,'token':user.token})) }}">Подтвердить почту</a>
                 </td>
             </tr>
         </tbody>

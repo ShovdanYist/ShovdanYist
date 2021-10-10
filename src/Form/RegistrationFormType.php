@@ -53,10 +53,15 @@ class RegistrationFormType extends AbstractType
                         new Length([
                             'min' => 6,
                             'max' => 80,
-                            'minMessage' => 'password.min.length.message'
+                            'minMessage' => 'password.min.length.message',
+                            'maxMessage' => 'password.max.length.message'
                         ]),
+                    ],
+                    'attr' => [
+                        'minlength' => 6,
+                        'maxlength' => 80,
                     ]
-                ]
+                ],
             ])
             ->add('gender', ChoiceType::class, [
                 'label' => 'gender',

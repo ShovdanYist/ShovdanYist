@@ -46,6 +46,11 @@
 
     {% for post in posts %}
         {{ postView(post) }}
+    {% else %}
+        <div class="md-box md-content-padding text-center">
+            <i class="far fa-clone"></i>
+            {{ 'categoy.have.not.posts' | trans({'category':tag.title}) }}
+        </div>
     {% endfor %}
 
     {{ paginator.display('box') }}
