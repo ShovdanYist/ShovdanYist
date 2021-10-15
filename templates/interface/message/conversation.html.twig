@@ -1,0 +1,131 @@
+{% extends 'interface/base.html.twig' %}
+
+{% block title %}{{ 'messages' | trans }}{% endblock %}
+
+{% block footer %}{% endblock %}
+{% block pageclass %}conversation-page{% endblock %}
+
+{% block main %}
+
+    <div class="md-conversation md-box">
+
+        <header class="user-title-block">
+            <a class="btn header-back-button" href="{{ path('message_conversations') }}">
+                <i class="fas fa-chevron-left"></i>
+            </a>
+
+            <div class="username-container">
+                <span class="username">
+                    <a href="{{ path('user_profile', {'username':user.username}) }}">
+                        {{ user.username }}
+                    </a>
+                </span>
+
+                {% if user.profile.verified == true %}
+                    <span class="verified">
+                        <i class="fas fa-check-circle text-info"></i>
+                    </span>
+                {% endif %}
+            </div>
+        </header>
+
+        <div class="messages">
+            <div class="messages-box">
+
+                {% for message in messages %}
+
+                    <div class="message{% if app.user == message.sender %} me{% endif %}">
+
+                        <div class="message-actions">
+                            <button type="button" class="btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-ellipsis-h"></i>
+                            </button>
+
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <button type="button" class="dropdown-item" data-toggle="modal" data-target="#deleteMessage{{ message.id }}ForMe">
+                                    {{ 'delete.for.me' | trans }}
+                                </button>
+                                <button type="button" class="dropdown-item" data-toggle="modal" data-target="#deleteMessage{{ message.id }}ForEveryone">
+                                    {{ 'delete.for.everyone' | trans({'username':user.username}) }}
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="modal fade md-confirm-modal" id="deleteMessage{{ message.id }}ForMe" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                    <div class="md-modal-container">
+                                        <div class="md-modal-message">{{ 'sure.to.delete.message.for.me' | trans({'username':user.username}) }}</div>
+                                        <a class="btn btn-modal-danger md-modal-item" href="{{ path('delete_message_for_me', {'id':message.id}) }}">
+                                            {{ 'delete.for.me' | trans }}
+                                        </a>
+                                        <button type="button" class="btn btn-modal-default md-modal-item" data-dismiss="modal">{{ 'cancel' | trans }}</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal fade md-confirm-modal" id="deleteMessage{{ message.id }}ForEveryone" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                    <div class="md-modal-container">
+                                        <div class="md-modal-message">{{ 'sure.to.delete.message.for.everyone' | trans({'username':user.username}) }}</div>
+                                        <a class="btn btn-modal-danger md-modal-item" href="{{ path('delete_message_for_everyone', {'id':message.id}) }}">
+                                            {{ 'delete.for.everyone' | trans({'username':user.username}) }}
+                                        </a>
+                                        <button type="button" class="btn btn-modal-default md-modal-item" data-dismiss="modal">{{ 'cancel' | trans }}</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="text">
+                            {{ message.content }}
+                            <small>
+                                {% if ("now" | date('d.m.y')) == (message.sentAt ? message.sentAt | date('d.m.y')) %}
+                                    {{ message.sentAt ? message.sentAt | date('G:i') }}
+                                {% elseif ("now" | date('Y')) == (message.sentAt ? message.sentAt | date('Y')) %}
+                                    {{ message.sentAt ? message.sentAt | date('d') }}
+                                    {{ message.sentAt ? message.sentAt | date('M') | trans | lower }}
+                                    {{ message.sentAt ? message.sentAt | date('G:i') }}
+                                {% else %}
+                                    {{ message.sentAt ? message.sentAt | date('d') }}
+                                    {{ message.sentAt ? message.sentAt | date('M') | trans | lower }}
+                                    {{ message.sentAt ? message.sentAt | date('Y') }}
+                                    {{ message.sentAt ? message.sentAt | date('G:i') }}
+                                {% endif %}
+                            </small>
+                        </div>
+
+                    </div>
+
+                {% else %}
+                    <div class="text-center px-2 py-3">
+                        <i class="far fa-comment" style="margin-right: 3px"></i>
+                        {{ 'you.have.not.messages.with.user' | trans({'username' : user.username}) }}
+                    </div>
+                {% endfor %}
+
+            </div>
+        </div>
+
+        {{ form_start(form, {'attr': {'class': 'message-form'}}) }}
+            <div class="message-write">
+                <div class="attach">
+                    <a class="btn">
+                        <i class="fas fa-plus"></i>
+                    </a>
+                </div>
+                <div class="input">
+                    {{ form_widget(form.content) }}
+                </div>
+                <div class="send">
+                    <button type="submit" class="btn">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+            </div>
+        {{ form_end(form) }}
+
+    </div>
+
+{% endblock %}

@@ -174,6 +174,16 @@ class User implements UserInterface
      */
     private $likes;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Message::class, mappedBy="sender", orphanRemoval=true)
+     */
+    private $sentMessages;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Message::class, mappedBy="receiver", orphanRemoval=true)
+     */
+    private $receivedMessages;
+
     public function __construct()
     {
         $this->songs = new ArrayCollection();
@@ -192,6 +202,8 @@ class User implements UserInterface
         $this->followers = new ArrayCollection();
         $this->taggedPosts = new ArrayCollection();
         $this->likes = new ArrayCollection();
+        $this->sentMessages = new ArrayCollection();
+        $this->receivedMessages = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -836,6 +848,68 @@ class User implements UserInterface
             // set the owning side to null (unless already changed)
             if ($like->getUser() === $this) {
                 $like->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Message[]
+     */
+    public function getSentMessages(): Collection
+    {
+        return $this->sentMessages;
+    }
+
+    public function addSentMessage(Message $sentMessage): self
+    {
+        if (!$this->sentMessages->contains($sentMessage)) {
+            $this->sentMessages[] = $sentMessage;
+            $sentMessage->setSender($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSentMessage(Message $sentMessage): self
+    {
+        if ($this->sentMessages->contains($sentMessage)) {
+            $this->sentMessages->removeElement($sentMessage);
+            // set the owning side to null (unless already changed)
+            if ($sentMessage->getSender() === $this) {
+                $sentMessage->setSender(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Message[]
+     */
+    public function getReceivedMessages(): Collection
+    {
+        return $this->receivedMessages;
+    }
+
+    public function addReceivedMessage(Message $receivedMessage): self
+    {
+        if (!$this->receivedMessages->contains($receivedMessage)) {
+            $this->receivedMessages[] = $receivedMessage;
+            $receivedMessage->setReceiver($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReceivedMessage(Message $receivedMessage): self
+    {
+        if ($this->receivedMessages->contains($receivedMessage)) {
+            $this->receivedMessages->removeElement($receivedMessage);
+            // set the owning side to null (unless already changed)
+            if ($receivedMessage->getReceiver() === $this) {
+                $receivedMessage->setReceiver(null);
             }
         }
 

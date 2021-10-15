@@ -10,6 +10,7 @@ use App\Entity\Person;
 use App\Entity\User;
 use App\Repository\BookmarkRepository;
 use App\Repository\LikeRepository;
+use App\Repository\MessageRepository;
 use App\Repository\SongRepository;
 use App\Repository\NotificationRepository;
 use App\Repository\PostRepository;
@@ -24,13 +25,14 @@ class CounterExtension extends AbstractExtension
     private $songRepo;
     private $playlistSongRepo;
     private $notifyRepo;
+    private $messageRepo;
     private $translator;
     private $bookmarks;
     private $likes;
     private $postRepo;
     private $security;
 
-    public function __construct(SongRepository $songRepository, PostRepository $postRepo, BookmarkRepository $bookmarks, LikeRepository $likes, PlaylistSongRepository $playlistSongRepo, NotificationRepository $notifyRepo, TranslatorInterface $translator, Security $security)
+    public function __construct(SongRepository $songRepository, PostRepository $postRepo, BookmarkRepository $bookmarks, LikeRepository $likes, PlaylistSongRepository $playlistSongRepo, NotificationRepository $notifyRepo, MessageRepository $messageRepo, TranslatorInterface $translator, Security $security)
     {
         $this->songRepo = $songRepository;
         $this->postRepo = $postRepo;
@@ -38,6 +40,7 @@ class CounterExtension extends AbstractExtension
         $this->bookmarks = $bookmarks;
         $this->likes = $likes;
         $this->notifyRepo = $notifyRepo;
+        $this->messageRepo = $messageRepo;
         $this->translator = $translator;
         $this->security = $security;
     }
@@ -51,6 +54,8 @@ class CounterExtension extends AbstractExtension
             new TwigFunction('userBookmarkedPost', [$this, 'userBookmarkedPost'], ['is_safe' => ['html']]),
             new TwigFunction('userLikedPost', [$this, 'userLikedPost'], ['is_safe' => ['html']]),
             new TwigFunction('notifyCount', [$this, 'notifyCount'], ['is_safe' => ['html']]),
+            new TwigFunction('messagesCount', [$this, 'messagesCount'], ['is_safe' => ['html']]),
+            new TwigFunction('conversationMessagesCount', [$this, 'conversationMessagesCount'], ['is_safe' => ['html']]),
             new TwigFunction('postModerationCount', [$this, 'postModerationCount'], ['is_safe' => ['html']]),
             new TwigFunction('songModerationCount', [$this, 'songModerationCount'], ['is_safe' => ['html']]),
             new TwigFunction('notifyIndicator', [$this, 'notifyIndicator'], ['is_safe' => ['html']]),
@@ -109,6 +114,16 @@ class CounterExtension extends AbstractExtension
         return $this->notifyRepo->count(['receiver' => $user, 'seen' => false, 'status' => true]);
     }
 
+    public function messagesCount($user): int
+    {
+        return $this->messageRepo->count(['receiver' => $user, 'seen' => false]);
+    }
+
+    public function conversationMessagesCount($user, $sender): int
+    {
+        return $this->messageRepo->count(['receiver' => $user, 'sender' => $sender, 'seen' => false]);
+    }
+
     public function postModerationCount(): int
     {
         return $this->postRepo->count(['status' => null]);
@@ -121,17 +136,7 @@ class CounterExtension extends AbstractExtension
 
     public function notifyIndicator(User $user): int
     {
-        $result = $this->notifyCount($user);
-
-//        if ($this->security->isGranted('ROLE_POST_MODERATOR')) {
-//            $result += $this->postModerationCount();
-//        }
-//
-//        if ($this->security->isGranted('ROLE_SONG_MODERATOR')) {
-//            $result += $this->songModerationCount();
-//        }
-
-        return $result;
+        return $this->notifyCount($user) + $this->messagesCount($user);
     }
 
     public function songViewsCount(Song $song): float

@@ -112,7 +112,7 @@
                         </div>
 
                         <div class="profile-button">
-                            <a class="btn btn-light" href="">
+                            <a class="btn btn-light" href="{{ path('message_conversation', {'username':user.username}) }}">
                                 {{ 'write' | trans }}
                             </a>
                         </div>

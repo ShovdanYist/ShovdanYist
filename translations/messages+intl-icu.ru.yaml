@@ -158,6 +158,29 @@ already.registered: "Вы уже зарегистрированны?"
 agree.terms: "Пользовательское соглашение"
 invited.by: "По приглашению"
 
+# MESSAGE
+
+message: Сообщение
+messages: Сообщении
+write.message: "Написать сообщение.."
+delete.for.me: "Удалить только у себя"
+delete.for.everyone: "Удалить у себя и у { username }"
+
+# DATE
+
+Jan: Янв
+Feb: Фев
+Mar: Мар
+Apr: Апр
+May: Май
+Jun: Июн
+Jul: Июл
+Aug: Авг
+Sep: Сен
+Oct: Окт
+Nov: Ноя
+Dec: Дек
+
 # MUSIC
 
 music: Музыка
@@ -309,6 +332,10 @@ sure.to.delete.account: "Вы уверены что хотите удалить 
 sure.to.delete.notification: "Вы уверены что хотите удалить это уведомление?"
 sure.to.delete.follower: "Вы уверены что хотите отписать от себя подписчика { username }?"
 sure.to.delete.comment: "Вы уверены что хотите удалить этот комментарий?"
+sure.to.delete.conversation.for.me: "Вы уверены что хотите удалить все сообщении с { username } только у себя?"
+sure.to.delete.conversation.for.everyone: "Вы уверены что хотите удалить все сообщении с { username } у себя и у { username }?"
+sure.to.delete.message.for.me: "Вы уверены что хотите удалить сообщение с { username } только у себя?"
+sure.to.delete.message.for.everyone: "Вы уверены что хотите удалить сообщение у себя и у { username }?"
 sure.to.delete.action: "Вы уверены что хотите удалить это действие?"
 sure.to.delete.tag: "Вы уверены что хотите удалить этот тег?"
 sure.to.delete.song: "Вы уверены что хотите удалить эту песню?"
@@ -391,6 +418,8 @@ no.actions: "Действий еще нет"
 
 # EMPTY DATA
 
+you.have.not.messages.with.user: "У вас еще нет сообщений с пользователем { username }"
+you.have.not.conversations: "У вас еще нет сообщений"
 you.have.not.notifications: "У вас еще нет уведомлений"
 you.have.not.bookmarks: "У вас еще нет закладок"
 you.have.not.followers: "У вас еще нет подписчиков"

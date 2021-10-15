@@ -62,6 +62,26 @@
 
             <hr>
 
+            <a class="sidenav-link" href="{{ path('message_conversations') }}">
+                <span class="dashbar-nav-icon">
+                    <i class="fas fa-comment"></i>
+                </span>
+
+                <span class="dashbar-nav-name">
+                    {{ 'messages' | trans }}
+                </span>
+
+                {% if messagesCount(app.user) != 0 %}
+                    <span class="badge badge-pill badge-danger mt-1 dashbar-nav-badge">
+                        {% if messagesCount(app.user) > 99 %}
+                            99+
+                        {% else %}
+                            {{ messagesCount(app.user) }}
+                        {% endif %}
+                    </span>
+                {% endif %}
+            </a>
+
             <a class="sidenav-link" href="{{ path('user_notifications') }}">
 
                 <span class="dashbar-nav-icon">

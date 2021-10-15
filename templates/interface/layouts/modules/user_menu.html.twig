@@ -50,6 +50,24 @@
                     </li>
 
                     <li class="md-menu-item">
+                        <a href="{{ path('message_conversations') }}">
+                            <span>
+                                <i class="fas fa-comment"></i>
+                            </span>
+                            {{ 'messages' | trans }}
+                            {% if messagesCount(app.user) != 0 %}
+                                <span class="badge badge-pill badge-danger float-right mt-1">
+                                    {% if messagesCount(app.user) > 99 %}
+                                        99+
+                                    {% else %}
+                                        {{ messagesCount(app.user) }}
+                                    {% endif %}
+                                </span>
+                            {% endif %}
+                        </a>
+                    </li>
+
+                    <li class="md-menu-item">
                         <a href="{{ path('user_notifications') }}">
                             <span>
                                 <i class="fas fa-bell"></i>

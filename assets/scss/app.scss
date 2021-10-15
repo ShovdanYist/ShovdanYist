@@ -18,6 +18,28 @@ a:focus, a:active, a:hover {
   box-shadow: unset !important;
 }
 
+html, body {
+  height: 100% !important;
+  overflow: hidden !important;
+}
+
+.body-wrapper {
+  position: absolute !important;
+  padding-top: 70px !important;
+  overflow: auto !important;
+  height: 100% !important;
+  width: 100% !important;
+  top: 0 !important;
+}
+
+.md-nav {
+  margin-bottom: 0 !important;
+}
+
+.md-box.sticky-top, .sidebar.sticky-top {
+  top: -4px !important;
+}
+
 img {
   max-width: 100%;
 }
@@ -709,7 +731,7 @@ blockquote, .ck.ck-content blockquote {
 
 .md-nav {
   background: url("https://shovdanyist.com/assets/images/container-border.png") repeat-x scroll 0 100% / auto 1px rgba(30, 30, 30, 0.95);
-  margin-bottom: 15px;
+  margin-bottom: 12px;
   z-index: 1000;
   height: 55px;
   width: 100%;
@@ -903,7 +925,7 @@ blockquote, .ck.ck-content blockquote {
 // Body
 
 .md-container {
-  margin-top: 15px;
+  margin-top: 12px;
 }
 
 main {
@@ -1743,6 +1765,16 @@ td {
   top: 14px;
 }
 
+.header-back-button:hover {
+  color: #777;
+}
+
+.header-back-button {
+  position: absolute;
+  left: 10px;
+  color: #aaa;
+}
+
 .md-box {
   background-color: $box-background;
   box-shadow: 0 1px 0 0 #d7d8db, 0 0 0 1px #e3e4e8;
@@ -1806,6 +1838,216 @@ td {
   border-radius: radius(top);
   background-color: #fff;
   padding: 10px 15px;
+}
+
+// Messages
+
+.md-conversations-list {
+  padding: 12px;
+}
+
+.md-conversation-line {
+  border-radius: 3px;
+  position: relative;
+}
+
+.md-conversation-line a {
+  display: flex;
+  padding: 8px 12px;
+}
+
+.md-conversation-line:hover {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.md-conversation-line .username {
+  font-weight: 500;
+  display: flex;
+  color: #000;
+}
+
+.md-conversation-line .content {
+  position: relative;
+  white-space: nowrap;
+  overflow: hidden;
+  flex: 1;
+}
+
+.md-conversation-line .message {
+  color: #626d7a;
+  display: flex;
+}
+
+.md-conversation-line .message .text {
+  flex: 1;
+  overflow: hidden;
+  position: relative;
+  margin-right: 10px;
+}
+
+.md-conversation-line .message .text span {
+  white-space: nowrap;
+}
+
+.md-conversation-line .message .text::after {
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0), white);
+  position: absolute;
+  height: 24px;
+  content: '';
+  width: 40px;
+  right: 0;
+  top: 0;
+}
+
+.md-conversation-line:hover .message .text::after {
+  background: linear-gradient(90deg, rgba(242, 242, 242, 0), rgb(242, 242, 242));
+}
+
+.md-conversation-line .btn {
+  top: 4px;
+  right: 6px;
+  height: 30px;
+  width: 30px;
+  padding: unset;
+  margin: unset;
+}
+
+.conversation-unseen-counter {
+  position: absolute;
+  left: 26px;
+  top: 42px;
+  font-size: 12px;
+  color: #fff;
+  background: #3498db;
+  padding: 0 6px;
+  border-radius: 100px;
+  font-weight: 500;
+}
+
+.conversation-page {
+  margin: 0;
+}
+
+.md-conversation .md-auto-sizer {
+  margin: unset ;
+}
+
+.md-conversation {
+  max-height: calc(100vh - 146px);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.md-conversation .messages {
+  display: flex;
+  flex-direction: column;
+  padding: 12px;
+  max-height: calc(100vh - 255px);
+  overflow-y: scroll;
+}
+
+.md-conversation .message {
+  margin-bottom: 8px;
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: flex-end;
+}
+
+.md-conversation .message.me {
+  flex-direction: row;
+}
+
+.md-conversation .message:last-child {
+  margin: unset;
+}
+
+.md-conversation .message.me .text {
+  background: #3498db;
+  color: white;
+}
+
+.md-conversation .message .text {
+  background: #eaeff0;
+  border-radius: 10px;
+  padding: 4px 8px;
+}
+
+.message-actions {
+  min-width: 30px;
+}
+
+.message-actions .btn {
+  width: 30px;
+  height: 30px;
+  line-height: 16px;
+  padding: 0;
+  color: #a0a0a0;
+  display: none;
+}
+
+.message:hover .message-actions .btn {
+  display: unset;
+}
+
+.md-conversation .message small {
+  color: #95a5a6;
+}
+
+.md-conversation .message.me small {
+  color: rgba(255,255,255,0.7);
+}
+
+.message-write {
+  display: flex;
+  padding: 10px;
+  border-top: 1px solid #eef1f5;
+}
+
+.message-write .input {
+  flex: 1;
+}
+
+.message-write .input textarea {
+  border-radius: 10px;
+}
+
+.message-write .attach .btn {
+  border: 2px solid #a7acb7;
+  border-radius: 100%;
+  padding: unset;
+  width: 24px;
+  height: 24px;
+  line-height: 20px;
+  font-size: 12px;
+  color: #a7acb7;
+}
+
+.message-write .attach {
+  width: 34px;
+  line-height: 32px;
+  text-align: center;
+  margin-right: 8px;
+}
+
+.message-write .send .btn {
+  position: relative;
+  height: 36px;
+  width: 36px;
+  font-size: 16px;
+  border-radius: 100px;
+  color: #fff;
+  border: unset;
+  background: #3498DB;
+  padding: 0 3px 0 0;
+  margin-left: 8px;
+}
+
+.message-form {
+  width: 100%;
+  bottom: 0;
+  background: #fff;
+  border-radius: 3px;
 }
 
 // Login & Register forms

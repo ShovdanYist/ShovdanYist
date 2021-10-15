@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\DBAL\DBALException;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
@@ -22,6 +23,29 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, User::class);
+    }
+
+    /**
+     * @throws DBALException
+     */
+    public function findConversations($user): array
+    {
+        $em = $this->getEntityManager();
+
+        $query = 'SELECT CASE WHEN sender_id = ' . $user . '
+                    THEN receiver_id
+                    ELSE sender_id
+                    END AS user
+                    FROM message
+                    WHERE ' . $user . ' IN (sender_id, receiver_id) AND sender_id = ' . $user . ' AND sender_deleted = false
+                    OR ' . $user . ' IN (sender_id, receiver_id) AND receiver_id = ' . $user . ' AND receiver_deleted = false
+                    GROUP BY user
+                    ORDER BY MAX(sent_at) DESC;';
+
+        $statement = $em->getConnection()->prepare($query);
+        $statement->execute();
+
+        return $statement->fetchAll();
     }
 
     public function findLikes($criteria, $orderBy = ['id' => 'DESC'], $limit = null, $offset = 0)
