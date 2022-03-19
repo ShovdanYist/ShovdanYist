@@ -12,12 +12,15 @@
 
 {% block keywords %}текст песни, скачать, перевод, {{ song.vocalist.fullName | lower }}, {{ song.title | lower}}, музыка{% endblock %}
 
+{% block letters %}
+    {{ lettersMenu() }}
+{% endblock %}
+
 {% block pageclass %}two-sidebars{% endblock %}
 
 {% block main_top %}
 
     {{ breadcrumb({
-        (path('app_home')) : ('home.page' | trans),
         (path('song_index')) : ('music' | trans),
         (path('people_by_letter', {letter: slugify(song.vocalist.fullName | first) })) : (song.vocalist.fullName | first),
         (path('person_show', {slug: song.vocalist.slug})) : (song.vocalist.fullName),

@@ -16,10 +16,13 @@
 
 {% block keywords %}{{ person.fullName | lower }} биография, {{ person.fullName | lower }} дискография, {{ person.fullName | lower }} все песни, тексты чеченских песен, переводы чеченских песен, под гитару, чеченская музыка{% endblock %}
 
+{% block letters %}
+    {{ lettersMenu() }}
+{% endblock %}
+
 {% block main_top %}
 
     {{ breadcrumb({
-        (path('app_home')) : ('home.page' | trans),
         (path('song_index')) : ('music' | trans),
         (path('people_by_letter', {letter: slugify(person.fullName | first) })) : (person.fullName | first),
         'active' : (person.fullName),

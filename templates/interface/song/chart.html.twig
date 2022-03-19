@@ -6,9 +6,12 @@
 
 {% block keywords %}чеченские {{ info.h1 | lower }}, тексты чеченских песен, под гитару, переводы чеченских песен, музыка{% endblock %}
 
+{% block letters %}
+    {{ lettersMenu() }}
+{% endblock %}
+
 {% block main_top %}
     {{ breadcrumb({
-        (path('app_home')) : ('home.page' | trans),
         (path('song_index')) : ('music' | trans),
         'active' : (info.h1),
     }) }}

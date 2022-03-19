@@ -27,31 +27,44 @@
             {% endif %}
 
             {% if not post.id or post.author == app.user %}
-                {{ form_row(form.title) }}
+{#                {{ form_row(form.title) }}#}
                 {{ form_row(form.content) }}
             {% endif %}
 
-            {{ form_row(form.tags) }}
+{#            {{ form_row(form.tags) }}#}
 
-            {% if form.songs is defined %}
-                {{ form_row(form.songs) }}
-            {% elseif not post.id or post.author == app.user %}
-                <div class="form-group">
-                    <label class="form-label" for="disabled_input">{{ 'music' | trans }}</label>
-                    <input class="form-control" id="disabled_input" type="text" placeholder="{{ 'not.songs.in.your.playlist' | trans }}" disabled="">
-                    <small class="form-text text-muted">{{ 'song.help' | trans }}</small>
-                </div>
-            {% endif %}
+            <div class="form-spoiler">
 
-            {% if form.taggedUsers is defined %}
-                {{ form_row(form.taggedUsers) }}
-            {% elseif not post.id or post.author == app.user %}
-                <div class="form-group">
-                    <label class="form-label" for="disabled_input">{{ 'users' | trans }}</label>
-                    <input class="form-control" id="disabled_input" type="text" placeholder="{{ 'you.have.not.following' | trans }}" disabled="">
-                    <small class="form-text text-muted">{{ 'tagged.users.help' | trans }}</small>
+                <a class="collapsed message no-width" data-toggle="collapse" data-target="#newPostMore">
+                    {{ 'additional' | trans }}
+                    <i></i>
+                </a>
+
+                <div class="collapse" id="newPostMore" style="margin: 8px 0 4px;">
+
+                    {% if form.songs is defined %}
+                        {{ form_row(form.songs) }}
+                    {% elseif not post.id or post.author == app.user %}
+                        <div class="form-group">
+                            <label class="form-label" for="disabled_input">{{ 'music' | trans }}</label>
+                            <input class="form-control" id="disabled_input" type="text" placeholder="{{ 'not.songs.in.your.playlist' | trans }}" disabled="">
+                            <small class="form-text text-muted">{{ 'song.help' | trans }}</small>
+                        </div>
+                    {% endif %}
+
+                    {% if form.taggedUsers is defined %}
+                        {{ form_row(form.taggedUsers) }}
+                    {% elseif not post.id or post.author == app.user %}
+                        <div class="form-group">
+                            <label class="form-label" for="disabled_input">{{ 'users' | trans }}</label>
+                            <input class="form-control" id="disabled_input" type="text" placeholder="{{ 'you.have.not.following' | trans }}" disabled="">
+                            <small class="form-text text-muted">{{ 'tagged.users.help' | trans }}</small>
+                        </div>
+                    {% endif %}
+
                 </div>
-            {% endif %}
+
+            </div>
 
             {% if form.moderation is defined and form.featured is defined %}
                 <div class="chosen-search-off mb-2 mt-2">

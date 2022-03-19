@@ -28,7 +28,6 @@ class PostExtension extends AbstractExtension
             new TwigFunction('postValidation', [$this, 'postValidation'], ['is_safe' => ['html'], 'needs_environment' => true]),
             new TwigFunction('postInfo', [$this, 'postInfo'], ['is_safe' => ['html'], 'needs_environment' => true]),
             new TwigFunction('postTitle', [$this, 'postTitle'], ['is_safe' => ['html'], 'needs_environment' => true]),
-            new TwigFunction('postTags', [$this, 'postTags'], ['is_safe' => ['html'], 'needs_environment' => true]),
             new TwigFunction('postImage', [$this, 'postImage'], ['is_safe' => ['html'], 'needs_environment' => true]),
             new TwigFunction('postDescription', [$this, 'postDescription'], ['is_safe' => ['html'], 'needs_environment' => true]),
             new TwigFunction('postTaggedUsers', [$this, 'postTaggedUsers'], ['is_safe' => ['html'], 'needs_environment' => true]),
@@ -77,18 +76,6 @@ class PostExtension extends AbstractExtension
     public function postTitle(Environment $twig, $post): string
     {
         return $twig->render('interface/post/layouts/post_title.html.twig', [
-            'post' => $post
-        ]);
-    }
-
-    /**
-     * @throws RuntimeError
-     * @throws SyntaxError
-     * @throws LoaderError
-     */
-    public function postTags(Environment $twig, $post): string
-    {
-        return $twig->render('interface/post/layouts/post_tags.html.twig', [
             'post' => $post
         ]);
     }
