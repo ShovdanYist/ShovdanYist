@@ -29,13 +29,15 @@
 
         {% block navbar %}
             {% include 'interface/layouts/modules/navbar.html.twig' %}
-            {% include 'interface/layouts/modules/mobile_navbar.html.twig' %}
+{#            {% include 'interface/layouts/modules/mobile_navbar.html.twig' %}#}
         {% endblock %}
+
+        {% include 'interface/layouts/modules/mobile_menu.html.twig' %}
 
         <div class="body-wrapper">
 
             {% block letters %}
-                {{ lettersMenu() }}
+{#                {{ lettersMenu() }}#}
             {% endblock %}
 
             <div class="container md-container">

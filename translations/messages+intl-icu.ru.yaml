@@ -188,6 +188,8 @@ song: Песня
 songs: Песни
 some.songs: Песен
 
+hits: Хиты
+
 trends: Тренды
 novelty: Новинки
 discussed: "Самые обсуждаемые"
@@ -444,6 +446,7 @@ nothing.found.for: "Ничего не найдено по запросу:"
 
 # MODERATION
 
+moderation: Модерация
 activities: Деятельности
 activity: Деятельность
 actions: Действия

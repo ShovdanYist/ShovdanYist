@@ -78,6 +78,15 @@
   .manager-menu {
     display: flex !important;
   }
+  .mobile-menu {
+    display: flex !important;
+  }
+  body {
+    background-color: #282828 !important;
+  }
+  .body-wrapper {
+    background: #edeef0;
+  }
 }
 
 @media only screen and (max-width: 768px) {
@@ -135,9 +144,6 @@
     flex: unset;
     width: 100%;
     margin-bottom: 15px;
-  }
-  .md-chart-boxes {
-    margin-top: 10px;
   }
   .md-profile .md-dot-btn {
     top: 2px !important;

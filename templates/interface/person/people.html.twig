@@ -4,9 +4,12 @@
     {{ 'people.for.letter' | trans({'%letter%': letter | capitalize}) }}
 {% endblock %}
 
+{% block letters %}
+    {{ lettersMenu() }}
+{% endblock %}
+
 {% block main_top %}
     {{ breadcrumb({
-        (path('app_home')) : ('home.page' | trans),
         (path('song_index')) : ('music' | trans),
         'active' : (letter | capitalize),
     }, null,'people') }}

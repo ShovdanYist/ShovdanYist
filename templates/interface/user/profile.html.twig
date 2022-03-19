@@ -102,6 +102,11 @@
                             </a>
                         </div>
                         <div class="profile-button un-width">
+                            <a class="btn btn-light" href="{{ path('user_bookmarks') }}">
+                                <i class="fas fa-bookmark"></i>
+                            </a>
+                        </div>
+                        <div class="profile-button un-width">
                             <a class="btn btn-light" href="{{ path('user_settings',{'username':app.user.username}) }}">
                                 <i class="fas fa-cog"></i>
                             </a>
@@ -142,6 +147,48 @@
         </div>
 
         {% if is_granted('ROLE_USER_ANALYST') %}
+
+            <hr class="m-0" style="border-color: #eef1f5">
+
+            <div class="form-spoiler" style="margin: 10px 12px">
+
+                <a class="collapsed message" data-toggle="collapse" data-target="#moderatorProfileMenu" aria-controls="navbarToggleExternalContent" aria-expanded="false">
+                    {{ 'moderation' | trans }} <i></i>
+                </a>
+
+                <div class="collapse" id="moderatorProfileMenu" style="margin: 4px 0 0;">
+
+                    <div style="display: flex;justify-content: space-around">
+
+                        {% if is_granted('ROLE_OWNER') %}
+                            <a class="btn btn-primary" href="{{ path('moderation_index') }}">
+                                <i class="fas fa-toolbox"></i>
+                            </a>
+                        {% endif %}
+
+                        {% if is_granted('ROLE_SONG_MODERATOR') or hasOnlyAuthorRightsInSongs(app.user) %}
+                            <a class="btn btn-primary" href="{{ path('moderation_music') }}">
+                                <i class="fas fa-play-circle"></i>
+                            </a>
+                        {% endif %}
+
+                        {% if is_granted('ROLE_POST_MODERATOR') %}
+                            <a class="btn btn-primary" href="{{ path('moderation_posts') }}">
+                                <i class="fas fa-id-card"></i>
+                            </a>
+                        {% endif %}
+
+                        {% if is_granted('ROLE_USER_ACTIONS') %}
+                            <a class="btn btn-primary" href="{{ path('moderation_actions') }}">
+                                <i class="fas fa-hand-point-up"></i>
+                            </a>
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+            </div>
 
             <hr class="m-0" style="border-color: #eef1f5">
 

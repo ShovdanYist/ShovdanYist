@@ -1,0 +1,103 @@
+<style>
+    .mobile-menu {
+        position: fixed;
+        width: 100%;
+        bottom: 0;
+        z-index: 999;
+        background: url("https://shovdanyist.com/assets/images/container-border.png") repeat-x scroll 0 0/auto 1px rgba(30, 30, 30, 0.95);
+        height: 50px;
+        display: none;
+        justify-content: space-around;
+    }
+    .mobile-menu a {
+        color: #626262;
+        font-size: 22px;
+        padding: 6px;
+        top: 8px;
+        position: relative;
+    }
+    .mobile-menu-badge {
+        position: absolute;
+        background-color: #e74c3c;
+        font-size: 10px;
+        color: #fff;
+        border-radius: 30px;
+        padding: 0 5px;
+        bottom: 0;
+        right: -12px;
+    }
+</style>
+
+{% if app.user %}
+
+    <div class="mobile-menu">
+
+        <div>
+            <a href="{{ path('app_home') }}">
+                <i class="fas fa-home"></i>
+            </a>
+        </div>
+
+        <div>
+            <a href="{{ path('user_playlist') }}">
+                <i class="fas fa-music"></i>
+            </a>
+        </div>
+
+        <div>
+            <a href="{{ path('message_conversations')}}">
+                <i class="fas fa-comment"></i>
+                {% if messagesCount(app.user) != 0 %}
+                    <span class="mobile-menu-badge">
+                    {% if messagesCount(app.user) > 99 %}
+                        99+
+                    {% else %}
+                        {{ messagesCount(app.user) }}
+                    {% endif %}
+                </span>
+                {% endif %}
+            </a>
+        </div>
+
+        <div>
+            <a href="{{ path('user_notifications') }}">
+                <i class="fas fa-heart"></i>
+                {% if notifyCount(app.user) != 0 %}
+                    <span class="mobile-menu-badge">
+                    {% if notifyCount(app.user) > 99 %}
+                        99+
+                    {% else %}
+                        {{ notifyCount(app.user) }}
+                    {% endif %}
+                </span>
+                {% endif %}
+            </a>
+        </div>
+
+        <div>
+            <a href="{{ path('user_profile', {'username':app.user.username}) }}">
+                <i class="fas fa-user"></i>
+            </a>
+        </div>
+
+    </div>
+
+{% else %}
+
+    <div class="mobile-menu">
+
+        <div>
+            <a href="{{ path('app_home') }}">
+                <i class="fas fa-home"></i>
+            </a>
+        </div>
+
+        <div>
+            <a href="{{ path('song_index') }}">
+                <i class="fas fa-music"></i>
+            </a>
+        </div>
+
+    </div>
+
+{% endif %}

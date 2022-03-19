@@ -11,26 +11,6 @@
         <a href="{{ path('post_feed') }}" class="active">{{ 'following' | trans }}</a>
     </div>
 
-    <div class="md-box d-lg-none" style="margin-bottom: 12px">
-
-        <a class="btn text-muted" style="width: 100%" data-toggle="collapse" data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false">
-            {{ 'categories' | trans }} <i class="fas fa-chevron-down" style="font-size: 12px"></i>
-        </a>
-
-        <div class="collapse" id="navbarToggleExternalContent">
-            <div class="p-2 text-center" style="padding-top: 0 !important;">
-                {% for item in tags('post') %}
-                    <li class="md-menu-item md-lined-menu">
-                        <a style="padding-left: 10px" href="{{ path('post_tag', {'slug':item.slug}) }}">
-                            {{ item.title }}
-                        </a>
-                    </li>
-                {% endfor %}
-            </div>
-        </div>
-
-    </div>
-
 {% endblock %}
 
 {% block main %}
@@ -65,13 +45,13 @@
             <div class="md-menu">
 
                 <ul>
-                    {% for item in tags('post') %}
-                        <li class="md-menu-item md-lined-menu">
-                            <a style="padding-left: 8px" href="{{ path('post_tag', {'slug':item.slug}) }}">
-                                {{ item.title }}
-                            </a>
-                        </li>
-                    {% endfor %}
+{#                    {% for item in tags('post') %}#}
+{#                        <li class="md-menu-item md-lined-menu">#}
+{#                            <a style="padding-left: 8px" href="{{ path('post_tag', {'slug':item.slug}) }}">#}
+{#                                {{ item.title }}#}
+{#                            </a>#}
+{#                        </li>#}
+{#                    {% endfor %}#}
                 </ul>
 
             </div>
