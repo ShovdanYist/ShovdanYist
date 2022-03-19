@@ -6,14 +6,20 @@
 
 {% block keywords %}тексты чеченских песен, чеченские песни, под гитару, переводы чеченских песен, музыка{% endblock %}
 
-{% block main_top %}
-    {{ breadcrumb({
-        (path('app_home')) : ('home.page' | trans),
-        'active' : ('music' | trans),
-    }) }}
+{% block letters %}
+    {{ lettersMenu() }}
 {% endblock %}
 
 {% block main %}
+
+    {% if app.user %}
+
+        <div class="feed-types">
+            <a href="{{ path('user_playlist') }}">{{ 'playlist' | trans }}</a>
+            <a href="{{ path('song_index') }}" class="active">{{ 'hits' | trans }}</a>
+        </div>
+
+    {% endif %}
 
     <div class="md-chart-boxes row-cols-1 row-cols-md-2">
         {{ chartBox('trends') }}

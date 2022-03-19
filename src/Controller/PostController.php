@@ -71,37 +71,6 @@ class PostController extends CustomAbstractController
     }
 
     /**
-     * @Route("/category/{slug}/{page<\d+>?1}", name="post_tag")
-     * @param Tag $tag
-     * @param $page
-     * @param Paginator $paginator
-     * @return Response
-     */
-    public function category(Tag $tag, $page, Paginator $paginator): Response
-    {
-        if ($tag->getType() !== 'post') {
-            return $this->redirectToRoute('app_home');
-        }
-
-        $paginator
-            ->setCriteria(['status' => true, 'tag' => $tag])
-            ->setParameters(['slug' => $tag->getSlug()])
-            ->setOrder(['publishedAt' => 'DESC'])
-            ->setMethod('findPosts')
-            ->setClass(Post::class)
-            ->setType('post')
-            ->setLimit(10)
-            ->setPage($page)
-        ;
-
-        return $this->render('interface/post/category.html.twig', [
-            'posts' => $paginator->getData(),
-            'paginator' => $paginator,
-            'tag' => $tag
-        ]);
-    }
-
-    /**
      * @Route("/post/new", name="post_new")
      * @Security("is_granted('ROLE_USER')")
      * @param Request $request

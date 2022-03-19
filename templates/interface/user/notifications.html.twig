@@ -2,13 +2,6 @@
 
 {% block title %}{{ 'notifications' | trans }}{% endblock %}
 
-{% block main_top %}
-    {{ breadcrumb({
-        (path('user_profile', {'username': app.user.username} )) : (app.user.username),
-        'active' : ('notifications' | trans),
-    }) }}
-{% endblock %}
-
 {% block body %}
 
     <div class="md-notifications">

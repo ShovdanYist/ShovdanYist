@@ -2,13 +2,6 @@
 
 {% block title %}{{ 'messages' | trans }}{% endblock %}
 
-{% block main_top %}
-    {{ breadcrumb({
-        (path('user_profile', {'username': app.user.username} )) : (app.user.username),
-        'active' : ('messages' | trans),
-    }) }}
-{% endblock %}
-
 {% block main %}
 
     <div class="md-box">

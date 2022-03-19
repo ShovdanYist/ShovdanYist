@@ -6,11 +6,15 @@
 
 {% block keywords %}{% if not app.user %}{{ 'playlist.of' | trans | lower }} {{ user.username }}{% endif %}, тексты чеченских песен, чеченские песни, под гитару, переводы чеченских песен, музыка{% endblock %}
 
+{% block letters %}
+    {{ lettersMenu() }}
+{% endblock %}
+
 {% block main_top %}
-    {{ breadcrumb({
-        (path('user_profile', {'username': user.username} )) : (user.username),
-        'active' : ('playlist' | trans),
-    }) }}
+    <div class="feed-types">
+        <a href="{{ path('user_playlist') }}" class="active">{{ 'playlist' | trans }}</a>
+        <a href="{{ path('song_index') }}">{{ 'hits' | trans }}</a>
+    </div>
 {% endblock %}
 
 {% block body %}

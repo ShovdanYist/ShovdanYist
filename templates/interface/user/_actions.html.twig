@@ -1,4 +1,4 @@
-{% if rightToBlockUser(app.user,user) or rightToChangeUserRights(app.user,user) %}
+{% if rightToBlockUser(app.user,user) or rightToChangeUserRights(app.user,user) or user == app.user %}
 
     <button type="button" class="btn md-dot-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         <i class="fas fa-ellipsis-h"></i>
@@ -6,7 +6,7 @@
 
     <div class="dropdown-menu dropdown-menu-right">
 
-        {% if user == app.user or is_granted('ROLE_OWNER') %}
+        {% if user != app.user and is_granted('ROLE_OWNER') %}
 
             <a href="{{ path('user_edit', {'username' : user.username}) }}" class="dropdown-item">
                 <i class="fas fa-user-edit"></i> {{ 'edit' | trans }}
@@ -51,6 +51,10 @@
             </button>
 
         {% endif %}
+
+        <a href="javascript:void(0)" id="sideNavLogoutCloser" class="dropdown-item" data-toggle="modal" data-target="#navbarLogout">
+            <i class="fas fa-power-off"></i> {{ 'log.out' | trans }}
+        </a>
 
     </div>
 

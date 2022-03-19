@@ -50,22 +50,22 @@ class PostType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder
-            ->add('tags', EntityType::class, [
-                'label' => 'categories',
-                'help' => 'post.tags.help',
-                'class' => Tag::class,
-                'multiple' => true,
-                'required' => false,
-                'choice_label' => 'title',
-                'choices' => $this->tags->findBy(['type' => 'post']),
-                'label_attr' => ['class' => 'checkbox-custom'],
-                'attr' => [
-                    'data-placeholder' => $this->translator->trans('select.categories'),
-                    'class' => 'chosen'
-                ]
-            ])
-        ;
+//        $builder
+//            ->add('tags', EntityType::class, [
+//                'label' => 'categories',
+//                'help' => 'post.tags.help',
+//                'class' => Tag::class,
+//                'multiple' => true,
+//                'required' => false,
+//                'choice_label' => 'title',
+//                'choices' => $this->tags->findBy(['type' => 'post']),
+//                'label_attr' => ['class' => 'checkbox-custom'],
+//                'attr' => [
+//                    'data-placeholder' => $this->translator->trans('select.categories'),
+//                    'class' => 'chosen'
+//                ]
+//            ])
+//        ;
 
         $post = $builder->getData();
         $userPlaylist = $this->playlistSongs->findOneBy(['user' => $this->user]);
@@ -73,17 +73,17 @@ class PostType extends AbstractType
 
         if (!$post->getId() || $post->getAuthor() == $this->user) {
             $builder
-                ->add('title', TextType::class, [
-                    'label' => 'heading',
-                    'help' => 'post.title.help',
-                    'required' => false,
-                    'constraints' => [
-                        new Length([
-                            'max' => 80,
-                            'maxMessage' => 'max.message'
-                        ])
-                    ]
-                ])
+//                ->add('title', TextType::class, [
+//                    'label' => 'heading',
+//                    'help' => 'post.title.help',
+//                    'required' => false,
+//                    'constraints' => [
+//                        new Length([
+//                            'max' => 80,
+//                            'maxMessage' => 'max.message'
+//                        ])
+//                    ]
+//                ])
                 ->add('content', TextareaType::class, [
                     'label' => 'description',
                     'required' => false,

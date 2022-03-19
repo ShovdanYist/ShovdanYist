@@ -25,7 +25,7 @@ html, body {
 
 .body-wrapper {
   position: absolute !important;
-  padding-top: 70px !important;
+  padding-top: 67px !important;
   overflow: auto !important;
   height: 100% !important;
   width: 100% !important;
@@ -924,10 +924,6 @@ blockquote, .ck.ck-content blockquote {
 
 // Body
 
-.md-container {
-  margin-top: 12px;
-}
-
 main {
   flex: 0 0 100%;
 }
@@ -1166,8 +1162,8 @@ td {
 }
 
 .md-song-menu {
-  margin-bottom: -5px;
   text-align: center;
+  margin-bottom: 8px;
   padding: 0 10px;
 }
 
@@ -2706,7 +2702,7 @@ select {
 }
 
 .md-post h3 {
-  margin-bottom: unset;
+  margin-bottom: 8px;
 }
 
 .md-post .section {
