@@ -1929,18 +1929,18 @@ td {
 }
 
 .md-conversation {
-  max-height: calc(100vh - 146px);
+  max-height: calc(100vh - 130px);
   position: relative;
   display: flex;
   flex-direction: column;
 }
 
 .md-conversation .messages {
-  display: flex;
-  flex-direction: column;
-  padding: 12px;
-  max-height: calc(100vh - 255px);
+  max-height: calc(100vh - 238px);
+  flex-direction: column-reverse;
   overflow-y: scroll;
+  display: flex;
+  padding: 12px;
 }
 
 .md-conversation .message {
@@ -2468,8 +2468,9 @@ select {
 .tag-search-spoiler button {
   height: 41px;
 }
+
 .chosen-choices .default {
-  min-width: 160px;
+  min-width: 240px;
 }
 
 .navbar-search .md-search-input, .navbar-search .md-search-all-input {

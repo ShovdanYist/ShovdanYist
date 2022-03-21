@@ -20,52 +20,7 @@
 
     {% if name %}
 
-        {% if name == 'post' %}
-
-            {% if is_granted('ROLE_POST_MODERATOR') or entity.author == app.user %}
-
-                <button type="button" class="btn md-dot-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="right: 12px;top: 8px">
-                    <i class="fas fa-ellipsis-h"></i>
-                </button>
-
-                <div class="dropdown-menu dropdown-menu-right">
-
-                    <a href="{{ path('post_edit', {'id':entity.id}) }}" class="dropdown-item">
-                        <i class="fa fa-edit"></i> {{ 'edit' | trans }}
-                    </a>
-
-                    {% if is_granted('ROLE_OWNER') or entity.author == app.user %}
-                        <button type="button" class="dropdown-item" data-toggle="modal" data-target="#deletePostModal">
-                            <i class="fas fa-trash-alt"></i>
-                            {{ 'delete' | trans }}
-                        </button>
-                    {% endif %}
-
-                </div>
-
-                {% if is_granted('ROLE_OWNER') or entity.author == app.user %}
-                    <div class="modal fade md-confirm-modal" id="deletePostModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered" role="document">
-                            <div class="modal-content">
-                                <div class="md-modal-container">
-                                    <div class="md-modal-message">{{ 'sure.to.delete.post' | trans }}</div>
-                                    <form class="md-modal-item" method="post" action="{{ path('post_delete', {'id': entity.id}) }}">
-                                        <input type="hidden" name="_method" value="DELETE">
-                                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ entity.id) }}">
-                                        <button class="btn btn-modal-danger">
-                                            {{ 'delete' | trans }}
-                                        </button>
-                                    </form>
-                                    <button type="button" class="btn btn-modal-default md-modal-item" data-dismiss="modal">{{ 'cancel' | trans }}</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                {% endif %}
-
-            {% endif %}
-
-        {% elseif name == 'song' %}
+        {% if name == 'song' %}
 
             {% if is_granted('ROLE_SONG_EDITOR') %}
 

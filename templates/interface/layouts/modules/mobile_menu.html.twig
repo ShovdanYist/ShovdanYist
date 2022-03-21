@@ -28,24 +28,26 @@
     }
 </style>
 
+{% set pathname = app.request.get('_route') %}
+
 {% if app.user %}
 
     <div class="mobile-menu">
 
         <div>
-            <a href="{{ path('app_home') }}">
+            <a href="{{ path('app_home') }}"{% if pathname == 'app_home' or pathname == 'post_feed' %} style="color: #bbb" {% endif %}>
                 <i class="fas fa-home"></i>
             </a>
         </div>
 
         <div>
-            <a href="{{ path('user_playlist') }}">
+            <a href="{{ path('user_playlist') }}"{% if pathname == 'user_playlist' or pathname == 'song_index' %} style="color: #bbb" {% endif %}>
                 <i class="fas fa-music"></i>
             </a>
         </div>
 
         <div>
-            <a href="{{ path('message_conversations')}}">
+            <a href="{{ path('message_conversations')}}"{% if pathname == 'message_conversations' %} style="color: #bbb" {% endif %}>
                 <i class="fas fa-comment"></i>
                 {% if messagesCount(app.user) != 0 %}
                     <span class="mobile-menu-badge">
@@ -60,7 +62,7 @@
         </div>
 
         <div>
-            <a href="{{ path('user_notifications') }}">
+            <a href="{{ path('user_notifications') }}"{% if pathname == 'user_notifications' %} style="color: #bbb" {% endif %}>
                 <i class="fas fa-heart"></i>
                 {% if notifyCount(app.user) != 0 %}
                     <span class="mobile-menu-badge">
@@ -75,7 +77,7 @@
         </div>
 
         <div>
-            <a href="{{ path('user_profile', {'username':app.user.username}) }}">
+            <a href="{{ path('user_profile', {'username':app.user.username}) }}"{% if pathname == 'user_profile' and user == app.user or pathname == 'user_tagged' and user == app.user %} style="color: #bbb" {% endif %}>
                 <i class="fas fa-user"></i>
             </a>
         </div>
@@ -87,13 +89,13 @@
     <div class="mobile-menu">
 
         <div>
-            <a href="{{ path('app_home') }}">
+            <a href="{{ path('app_home') }}"{% if pathname == 'app_home' %} style="color: #bbb" {% endif %}>
                 <i class="fas fa-home"></i>
             </a>
         </div>
 
         <div>
-            <a href="{{ path('song_index') }}">
+            <a href="{{ path('song_index') }}"{% if pathname == 'song_index' %} style="color: #bbb" {% endif %}>
                 <i class="fas fa-music"></i>
             </a>
         </div>

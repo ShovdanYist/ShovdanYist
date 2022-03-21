@@ -19,27 +19,15 @@
 
 {% block title %}
     {% if post.title %}
-        {{ post.title }} | {{ 'article' | trans }}
+        {{ post.title }} | {{ 'article' | trans }} {{ post.id }}
     {% else %}
-        {{ 'post' | trans }} #{{ post.id }}
+        {{ 'post' | trans }} {{ post.author.username }} | {{ post.id }}
     {% endif %}
 {% endblock %}
 
 {% block pageclass %}{% if is_granted('ROLE_POST_MODERATOR') or app.user == post.author %} moder-or-author{% endif %}{% endblock %}
 
 {% block main_top %}
-
-    {% if post.title %}
-        {{ breadcrumb({
-            (path('user_profile', {'username':post.author.username})) : post.author.username,
-            'active' : post.title,
-        }, post, 'post') }}
-    {% else %}
-        {{ breadcrumb({
-            (path('user_profile', {'username':post.author.username})) : post.author.username,
-            'active' : ('post' | trans) ~ ' #' ~ post.id,
-        }, post, 'post') }}
-    {% endif %}
 
     {% if post.status is null %}
         <div class="md-alert md-alert-info md-box-mb">

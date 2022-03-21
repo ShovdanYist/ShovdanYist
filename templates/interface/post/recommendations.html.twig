@@ -2,8 +2,6 @@
 
 {% block title %}{{ 'home.page' | trans }}{% endblock %}
 
-{% block pageclass %}two-sidebars{% endblock %}
-
 {% block main_top %}
 
     {% if app.user %}
@@ -22,38 +20,6 @@
     {% endfor %}
 
     {{ paginator.display('box') }}
-
-{% endblock %}
-
-{% block sidebar_b %}
-
-    <div class="sidebar-b">
-        <div class="md-box sticky-top" style="padding: 12px">
-            <div class="text-muted mb-2 pl-2">{{ 'categories' | trans }}</div>
-
-            <div class="md-menu">
-
-                <ul>
-                    {% if not app.user %}
-                        <li class="md-menu-item md-lined-menu active">
-                            <a style="padding-left: 8px" href="{{ path('app_home') }}">
-                                {{ 'all' | trans }}
-                            </a>
-                        </li>
-                    {% endif %}
-{#                    {% for item in tags('post') %}#}
-{#                        <li class="md-menu-item md-lined-menu">#}
-{#                            <a style="padding-left: 8px" href="{{ path('post_tag', {'slug':item.slug}) }}">#}
-{#                                {{ item.title }}#}
-{#                            </a>#}
-{#                        </li>#}
-{#                    {% endfor %}#}
-                </ul>
-
-            </div>
-
-        </div>
-    </div>
 
 {% endblock %}
 

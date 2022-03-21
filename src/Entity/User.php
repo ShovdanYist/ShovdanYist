@@ -31,8 +31,8 @@ class User implements UserInterface
      * @ORM\Column(type="string", length=180, unique=true)
      * @Assert\NotBlank(message="username.not_blank")
      * @Assert\Regex(
-     *     pattern     = "/^[a-z1-9._]+$/i",
-     *     htmlPattern = "^[a-zA-Z1-9._]+$",
+     *     pattern     = "/^[a-z0-9._]+$/i",
+     *     htmlPattern = "^[a-zA-Z0-9._]+$",
      *     message     = "forn.username.can.consist.symbols"
      * )
      */

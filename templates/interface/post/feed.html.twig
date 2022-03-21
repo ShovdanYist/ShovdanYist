@@ -2,15 +2,11 @@
 
 {% block title %}{{ 'feed' | trans }}{% endblock %}
 
-{% block pageclass %}two-sidebars{% endblock %}
-
 {% block main_top %}
-
     <div class="feed-types">
         <a href="{{ path('app_home') }}">{{ 'recommendations' | trans }}</a>
         <a href="{{ path('post_feed') }}" class="active">{{ 'following' | trans }}</a>
     </div>
-
 {% endblock %}
 
 {% block main %}
@@ -33,31 +29,6 @@
     {% endfor %}
 
     {{ paginator.display('box') }}
-
-{% endblock %}
-
-{% block sidebar_b %}
-
-    <div class="sidebar-b">
-        <div class="md-box sticky-top" style="padding: 12px">
-            <div class="text-muted mb-2 pl-2">{{ 'categories' | trans }}</div>
-
-            <div class="md-menu">
-
-                <ul>
-{#                    {% for item in tags('post') %}#}
-{#                        <li class="md-menu-item md-lined-menu">#}
-{#                            <a style="padding-left: 8px" href="{{ path('post_tag', {'slug':item.slug}) }}">#}
-{#                                {{ item.title }}#}
-{#                            </a>#}
-{#                        </li>#}
-{#                    {% endfor %}#}
-                </ul>
-
-            </div>
-
-        </div>
-    </div>
 
 {% endblock %}
 

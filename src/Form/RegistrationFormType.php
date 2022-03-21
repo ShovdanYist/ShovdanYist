@@ -25,7 +25,7 @@ class RegistrationFormType extends AbstractType
                 'help' => 'username.help',
                 'constraints' => [
                     new Length([
-                        'min' => 8,
+                        'min' => 6,
                         'max' => 28,
                         'minMessage' => 'username.min.length.message',
                         'maxMessage' => 'username.max.length.message'
@@ -34,7 +34,7 @@ class RegistrationFormType extends AbstractType
                 'attr' => [
                     'class' => 'username-input',
                     'maxlength' => 28,
-                    'minlength' => 8
+                    'minlength' => 6
                 ]
             ])
             ->add('email', EmailType::class, [
