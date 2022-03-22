@@ -25,7 +25,7 @@ html, body {
 
 .body-wrapper {
   position: absolute !important;
-  padding-top: 67px !important;
+  padding-top: 67px;
   overflow: auto !important;
   height: 100% !important;
   width: 100% !important;
@@ -52,7 +52,7 @@ body {
   //font-family: Lato,Helvetica Neue,Helvetica,Arial,sans-serif;
   font-family: -apple-system,BlinkMacSystemFont,Roboto,Open Sans,Helvetica Neue,"Noto Sans Armenian","Noto Sans Bengali","Noto Sans Cherokee","Noto Sans Devanagari","Noto Sans Ethiopic","Noto Sans Georgian","Noto Sans Hebrew","Noto Sans Kannada","Noto Sans Khmer","Noto Sans Lao","Noto Sans Osmanya","Noto Sans Tamil","Noto Sans Telugu","Noto Sans Thai",sans-serif;
   font-size: 15px;
-  color: #2c3e50;
+  color: #000;
   background-color: #edeef0;
   margin: 0 0 60px 0;
   .dropdown-menu {
@@ -257,8 +257,8 @@ li {
 .user-line-follow .btn-follow, .notification-follow {
   font-weight: 500;
   font-size: 13px;
-  padding: 2px 6px 3px 5px;
-  width: 100px;
+  padding: 3px 6px 5px 5px;
+  width: 105px;
 }
 
 .profile-buttons {
@@ -650,14 +650,14 @@ blockquote, .ck.ck-content blockquote {
 }
 
 .form-spoiler .message {
-  color: #95a5a6;
+  color: #909499;
   width: 100%;
   display: table;
   cursor: pointer
 }
 
 .form-spoiler .no-width {
-  color: #95a5a6;
+  color: #909499;
   width: unset;
   cursor: pointer
 }
@@ -730,11 +730,12 @@ blockquote, .ck.ck-content blockquote {
 // Navbar
 
 .md-nav {
-  background: url("https://shovdanyist.com/assets/images/container-border.png") repeat-x scroll 0 100% / auto 1px #282828;
+  background: #fefefe;
   margin-bottom: 12px;
   z-index: 1000;
   height: 55px;
   width: 100%;
+  border-bottom: 0.5px solid #dedede;
 }
 
 .md-nav .container {
@@ -1308,7 +1309,7 @@ td {
 }
 
 .md-comment-reply .comment-reply {
-  color: #95a5a6;
+  color: #909499;
   font-weight: 500;
   cursor: pointer;
 }
@@ -1567,11 +1568,11 @@ td {
 
 .follows-block .number {
   font-weight: 600;
-  color: #2c3e50;
+  color: #000;
 }
 
 .follows-block .title {
-  color: #95a5a6;
+  color: #909499;
   font-size: 13px;
   text-transform: lowercase;
 }
@@ -1698,7 +1699,7 @@ td {
 }
 
 .md-breadcrumb a {
-  color: #2c3e50;
+  color: #000;
 }
 
 .md-breadcrumb ol {
@@ -1870,7 +1871,7 @@ td {
 }
 
 .md-conversation-line .message {
-  color: #626d7a;
+  color: #818c99;
   display: flex;
 }
 
@@ -1910,8 +1911,8 @@ td {
 
 .conversation-unseen-counter {
   position: absolute;
-  left: 26px;
-  top: 42px;
+  left: 48px;
+  top: 7px;
   font-size: 12px;
   color: #fff;
   background: #3498db;
@@ -1987,7 +1988,7 @@ td {
 }
 
 .md-conversation .message small {
-  color: #95a5a6;
+  color: #909499;
 }
 
 .md-conversation .message.me small {
@@ -2226,7 +2227,7 @@ select {
   border-bottom: 1px solid rgba(0,0,0,0.2);
   padding: 8px;
   display: block;
-  color: #2c3e50;
+  color: #000;
 }
 
 .md-user-song-nav li:first-child.active {
@@ -2324,7 +2325,7 @@ select {
   text-align: center;
   line-height: 54px;
   font-size: 23px;
-  color: #626262;
+  color: #9aa1ac;
   display: none;
   z-index: 1050;
   height: 54px;
@@ -2345,7 +2346,7 @@ select {
 }
 
 #sideNavOpener:hover {
-  background-color: rgba(0, 0, 0, 0.2);
+  color: #4e8bd0;
 }
 
 #sideNavCloser {
@@ -2437,7 +2438,7 @@ select {
 }
 
 .navbar-search-mobile {
-  border-left: 1px solid #373737;
+  border-left: 0.5px solid #dedede;
   position: absolute;
   right: 0;
   top: 0;
@@ -2449,11 +2450,11 @@ select {
 }
 
 .navbar-search input, .navbar-search-mobile input {
-  background: #333;
-  border: 1px solid #333;
+  background: #ebedf0;
+  border: unset;
   border-radius: 6px;
   transition: ease 600ms;
-  color: #aaa !important;
+  color: #000 !important;
 }
 
 .navbar-search-mobile input {
@@ -2499,17 +2500,17 @@ select {
 }
 
 .navbar-search input::placeholder, .navbar-search-mobile input::placeholder {
-  color: #888;
+  color: #aaa;
 }
 
 .navbar-search input:hover, .navbar-search-mobile input:hover {
-  background: #373737;
-  border: 1px solid #373737;
+  background: #ebedf0;
+  border: unset;
 }
 
 .navbar-search input:focus, .navbar-search-mobile input:focus {
-  background: #3b3b3b;
-  border: 1px solid #3b3b3b;
+  background: #ebedf0;
+  border: unset;
   border-radius: 6px;
 }
 
@@ -2518,7 +2519,6 @@ select {
   width: 36px;
   padding: 0.375rem 0.75rem 0.400rem;
   height: 36px;
-  background: #333 !important;
   border-radius: 100px;
   text-align: center;
   color: #b0b0b0 !important;
@@ -2527,23 +2527,23 @@ select {
   top: 9px;
   border: unset !important;
   display: none;
+  font-size: 20px;
 }
 
 .navbar-search-opener svg {
-  top: 1px;
+  top: -3px;
   position: relative;
-  right: 1px;
+  right: 5px;
 }
 
 .navbar-search-opener:hover {
-  background: #2f2f2f !important;
   color: #adadad !important;
 }
 
 .navbar-search-closer {
   position: absolute;
   right: 70px;
-  color: #686868;
+  color: #ccc;
   top: 15px;
   font-size: 16px;
   cursor: pointer;
@@ -2600,12 +2600,11 @@ select {
 // Notifications
 
 .notify-message-link, .notify-message-link:hover {
-  color: #2c3e50;
+  color: #000;
 }
 
 .md-notification {
   display: flex;
-  border-bottom: 1px solid rgba(0,0,0,0.1);
   margin-bottom: 10px;
   padding-bottom: 10px;
   position: relative;
@@ -2632,7 +2631,6 @@ select {
 }
 
 .md-notification:last-child {
-  border: unset;
   margin: unset;
   padding: unset;
 }
@@ -2651,7 +2649,7 @@ select {
 .notification-delete {
   display: contents;
   font-weight: 500;
-  color: #95a5a6;
+  color: #909499;
 }
 
 .notification-delete:hover {
@@ -2746,7 +2744,7 @@ select {
 
 .post-info .date {
   font-size: 12px;
-  color: #95a5a6;
+  color: #909499;
 }
 
 .post-image {
@@ -2772,7 +2770,7 @@ select {
 
 .post-actions .count {
   margin-left: 6px;
-  color: #2c3e50;
+  color: #000;
 }
 
 .post-actions a {
@@ -2782,7 +2780,7 @@ select {
 }
 
 .post-actions a:hover {
-  color: #2c3e50;
+  color: #000;
 }
 
 .md-post-status {
@@ -2833,7 +2831,7 @@ select {
 }
 
 .likes-count a {
-  color: #2c3e50;
+  color: #000;
 }
 
 .feed-types {

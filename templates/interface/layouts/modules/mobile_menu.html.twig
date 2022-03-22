@@ -4,13 +4,14 @@
         width: 100%;
         bottom: 0;
         z-index: 999;
-        background: url("https://shovdanyist.com/assets/images/container-border.png") repeat-x scroll 0 0/auto 1px #282828;
+        background: #fefefe;
         height: 50px;
         display: none;
         justify-content: space-around;
+        border-top: 0.5px solid #dedede;
     }
     .mobile-menu a {
-        color: #626262;
+        color: #9aa1ac;
         font-size: 22px;
         padding: 6px;
         top: 8px;
@@ -22,7 +23,7 @@
         font-size: 10px;
         color: #fff;
         border-radius: 30px;
-        padding: 0 5px;
+        padding: 0 6px;
         bottom: 0;
         right: -12px;
     }
@@ -35,20 +36,20 @@
     <div class="mobile-menu">
 
         <div>
-            <a href="{{ path('app_home') }}"{% if pathname == 'app_home' or pathname == 'post_feed' %} style="color: #bbb" {% endif %}>
-                <i class="fas fa-home"></i>
+            <a href="{{ path('app_home') }}"{% if pathname == 'app_home' or pathname == 'post_feed' %} style="color: #4e8bd0" {% endif %}>
+                <i class="far fa-newspaper"></i>
             </a>
         </div>
 
         <div>
-            <a href="{{ path('user_playlist') }}"{% if pathname == 'user_playlist' or pathname == 'song_index' %} style="color: #bbb" {% endif %}>
-                <i class="fas fa-music"></i>
+            <a href="{{ path('user_playlist') }}"{% if pathname == 'user_playlist' or pathname == 'song_index' %} style="color: #4e8bd0" {% endif %}>
+                <i class="fas fa-headphones-alt"></i>
             </a>
         </div>
 
         <div>
-            <a href="{{ path('message_conversations')}}"{% if pathname == 'message_conversations' %} style="color: #bbb" {% endif %}>
-                <i class="fas fa-comment"></i>
+            <a href="{{ path('message_conversations')}}"{% if pathname == 'message_conversations' %} style="color: #4e8bd0" {% endif %}>
+                <i class="far fa-comment"></i>
                 {% if messagesCount(app.user) != 0 %}
                     <span class="mobile-menu-badge">
                     {% if messagesCount(app.user) > 99 %}
@@ -62,8 +63,8 @@
         </div>
 
         <div>
-            <a href="{{ path('user_notifications') }}"{% if pathname == 'user_notifications' %} style="color: #bbb" {% endif %}>
-                <i class="fas fa-heart"></i>
+            <a href="{{ path('user_notifications') }}"{% if pathname == 'user_notifications' %} style="color: #4e8bd0" {% endif %}>
+                <i class="far fa-heart"></i>
                 {% if notifyCount(app.user) != 0 %}
                     <span class="mobile-menu-badge">
                     {% if notifyCount(app.user) > 99 %}
@@ -77,8 +78,8 @@
         </div>
 
         <div>
-            <a href="{{ path('user_profile', {'username':app.user.username}) }}"{% if pathname == 'user_profile' and user == app.user or pathname == 'user_tagged' and user == app.user %} style="color: #bbb" {% endif %}>
-                <i class="fas fa-user"></i>
+            <a href="{{ path('user_profile', {'username':app.user.username}) }}"{% if pathname == 'user_profile' and user == app.user or pathname == 'user_tagged' and user == app.user %} style="color: #4e8bd0" {% endif %}>
+                <i class="far fa-user"></i>
             </a>
         </div>
 
@@ -89,13 +90,13 @@
     <div class="mobile-menu">
 
         <div>
-            <a href="{{ path('app_home') }}"{% if pathname == 'app_home' %} style="color: #bbb" {% endif %}>
+            <a href="{{ path('app_home') }}"{% if pathname == 'app_home' %} style="color: #4e8bd0" {% endif %}>
                 <i class="fas fa-home"></i>
             </a>
         </div>
 
         <div>
-            <a href="{{ path('song_index') }}"{% if pathname == 'song_index' %} style="color: #bbb" {% endif %}>
+            <a href="{{ path('song_index') }}"{% if pathname == 'song_index' %} style="color: #4e8bd0" {% endif %}>
                 <i class="fas fa-music"></i>
             </a>
         </div>
