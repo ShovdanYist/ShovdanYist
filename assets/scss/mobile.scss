@@ -391,16 +391,17 @@
     margin: 11px 0 -3px !important;
   }
   .md-chart-box {
-    margin-bottom: -12px !important;
+    margin-bottom: -4px !important;
   }
   .user-title-block {
     border-radius: unset !important;
   }
   .md-comments-block {
-    margin-bottom: 66px;
+    margin: -3px 0 66px !important;
+    padding: 0 13px 15px !important;
   }
   .md-main-box-col-2 .md-song-stats, .md-main-box-col-2 .md-post-info {
-    padding: 0 15px 0 !important;
+    padding: 0 15px 24px !important;
   }
   .md-breadcrumb {
     background: #f2f2f2 !important;
@@ -411,7 +412,23 @@
     background: linear-gradient(90deg, rgba(255, 255, 255, 0), #f2f2f2) !important;
   }
   article h1 {
-    margin-top: 0px !important;
+    margin-top: 0 !important;
+  }
+  .md-post .btn.md-dot-btn {
+    right: 16px !important;
+    top: 10px !important;
+  }
+  .container {
+    overflow: hidden;
+  }
+  .settings-footer {
+    border-top: 0.5px solid #dbdcdb;
+    border-bottom: 0.5px solid #dbdcdb;
+  }
+  .md-alert {
+    border-radius: unset !important;
+    border: unset !important;
+    margin: unset !important;
   }
 }
 

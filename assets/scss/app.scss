@@ -257,8 +257,8 @@ li {
 .user-line-follow .btn-follow, .notification-follow {
   font-weight: 500;
   font-size: 13px;
-  padding: 3px 6px 5px 5px;
-  width: 105px;
+  padding: 2px 6px 3px 5px;
+  width: 100px;
 }
 
 .profile-buttons {
@@ -2777,7 +2777,7 @@ select {
 
 .post-actions a {
   height: 22px;
-  color: #737f8b;
+  color: #333;
   display: inline-flex;
 }
 
@@ -2888,11 +2888,11 @@ select {
 
 .like-toggle.added .like-icon::before {
   font-weight: 800;
-  color: #d54b43;
+  color: #e63b31;
 }
 
 .like-toggle.added .like-icon:hover:before {
-  color: #df5a52;
+  color: #da4a41;
 }
 
 // Bookmark toggle
@@ -2951,4 +2951,9 @@ select {
   border-radius: 100px;
   padding: 4px 10px 5px 10px;
   font-weight: 500;
+}
+
+.settings-footer {
+  padding: 22px 12px !important;
+  text-align: center;
 }

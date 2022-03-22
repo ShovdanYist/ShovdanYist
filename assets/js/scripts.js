@@ -144,8 +144,8 @@ function closeNavbarSearch(){
 
 if (navbarSearch) {
     navbarSearchOpener.addEventListener('click', openNavbarSearch);
-    navbarSearchCloser.addEventListener('click', closeNavbarSearch);
-    navbarSearchInput.addEventListener('focusout', closeNavbarSearch);
+    // navbarSearchCloser.addEventListener('click', closeNavbarSearch);
+    // navbarSearchInput.addEventListener('focusout', closeNavbarSearch);
 }
 
 searchInputs.forEach((inputBox,key) => {

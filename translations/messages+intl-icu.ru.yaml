@@ -482,3 +482,18 @@ all.rights.reserved: "Все права защищены"
 email.confirmation.on.website: "Подтверждение почты на сайте ShovdanYist"
 mailer.shovdanyist.signup: "Регистрация на сайте ShovdanYist"
 mailer.shovdanyist.account.recovery: "Восстановление аккаунта ShovdanYist"
+
+# DATE
+
+month01: янв
+month02: фев
+month03: март
+month04: апр
+month05: май
+month06: июнь
+month07: июль
+month08: авг
+month09: сент
+month10: окт
+month11: ноя
+month12: дек
