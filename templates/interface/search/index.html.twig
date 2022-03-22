@@ -39,7 +39,7 @@
 
         {% if users %}
 
-            <div class="md-search-box md-box md-content-padding">
+            <div class="md-search-box md-box md-content-padding md-mobile-padding">
 
                 <h4 class="mb-3">
                     {{ 'users' | trans }}
@@ -64,7 +64,7 @@
 
         {% if songs %}
 
-            <div class="md-search-box md-box md-content-padding">
+            <div class="md-search-box md-box md-content-padding md-mobile-padding">
 
                 <h4 class="mb-3">
                     {{ 'music' | trans }}
@@ -97,7 +97,7 @@
 
         {% if posts %}
 
-            <div class="md-search-box md-box md-content-padding">
+            <div class="md-search-box md-box md-content-padding md-mobile-padding">
 
                 <h4 class="mb-3">
                     {{ 'posts' | trans }}
@@ -141,7 +141,7 @@
 
         {% if not posts or not songs or not users %}
 
-            <div class="md-search-box md-box md-content-padding">
+            <div class="md-search-box-not-found md-search-box md-box md-content-padding md-mobile-padding">
                 {% if not posts and songs and users %}
                     {{ 'not.found.posts.for.keyword' | trans({'keyword':keyword}) }}
                 {% elseif not songs and posts and users %}

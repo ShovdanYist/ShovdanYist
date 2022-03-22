@@ -127,7 +127,7 @@ if (commentReply) {
 let searchInputs = document.querySelectorAll('.md-search-all-input');
 
 const navbarSearch = document.getElementById('navbarSearch');
-const navbarSearchInput = document.getElementById('navbarSearchInput');
+// const navbarSearchInput = document.getElementById('navbarSearchInput');
 const navbarSearchOpener = document.getElementById('openNavbarSearch');
 const navbarSearchCloser = document.getElementById('closeNavbarSearch');
 
@@ -144,8 +144,8 @@ function closeNavbarSearch(){
 
 if (navbarSearch) {
     navbarSearchOpener.addEventListener('click', openNavbarSearch);
-    // navbarSearchCloser.addEventListener('click', closeNavbarSearch);
-    // navbarSearchInput.addEventListener('focusout', closeNavbarSearch);
+    navbarSearchCloser.addEventListener('click', closeNavbarSearch);
+    document.querySelector('.body-wrapper').addEventListener('click', closeNavbarSearch);
 }
 
 searchInputs.forEach((inputBox,key) => {

@@ -4,7 +4,7 @@
 
         {% if app.user %}
             <a id="sideNavOpener" href="{{ path('post_new') }}">
-                <i class="far fa-plus-square" style="font-size: 20px; top: -2px; position: relative"></i>
+                <i class="fas fa-plus-circle" style="font-size: 20px; top: -2px; position: relative"></i>
             </a>
         {% else %}
             <a id="sideNavOpener" href="{{ path('app_login') }}">
@@ -99,7 +99,7 @@
                         <div class="dropdown-menu dropdown-menu-right">
 
                             <a class="dropdown-item" href="{{ path('post_new') }}">
-                                <i class="fas fa-plus-square"></i>
+                                <i class="fas fa-plus-circle"></i>
                                 {{ 'add.post' | trans }}
                             </a>
 

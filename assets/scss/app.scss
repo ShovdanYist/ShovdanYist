@@ -32,6 +32,10 @@ html, body {
   top: 0 !important;
 }
 
+.md-container {
+  min-height: 500px;
+}
+
 .md-nav {
   margin-bottom: 0 !important;
 }
@@ -203,7 +207,7 @@ li {
 }
 
 .md-search .md-search-box:first-child {
-  margin-bottom: 12px !important;
+  margin-bottom: 12px;
 }
 
 .md-search .md-search-box:last-child {
@@ -2484,9 +2488,11 @@ select {
   background: #333 !important;
   border: unset !important;
   border-radius: 100px;
-  height: 36px;
-  width: 36px;
   color: #b0b0b0;
+  font-size: 18px;
+  padding: 3px;
+  min-width: 36px;
+  min-height: 36px;
 }
 
 .navbar-search a:hover, .navbar-search-mobile a:hover {
@@ -2518,17 +2524,16 @@ select {
 .navbar-search-opener {
   z-index: 50;
   width: 36px;
-  padding: 0.375rem 0.75rem 0.400rem;
+  padding: 3px;
   height: 36px;
-  background: #333 !important;
-  border-radius: 100px;
   text-align: center;
-  color: #b0b0b0 !important;
+  color: #777 !important;
   position: absolute;
   right: 9px;
   top: 9px;
   border: unset !important;
   display: none;
+  font-size: 18px;
 }
 
 .navbar-search-opener svg {
@@ -2538,8 +2543,7 @@ select {
 }
 
 .navbar-search-opener:hover {
-  background: #2f2f2f !important;
-  color: #adadad !important;
+  color: #ccc !important;
 }
 
 .navbar-search-closer {

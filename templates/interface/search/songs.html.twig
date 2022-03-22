@@ -67,7 +67,7 @@
 
         {% if songs %}
 
-            <div class="md-search-box md-box md-content-padding">
+            <div class="md-search-box md-box md-content-padding md-mobile-padding">
 
                 {% if tags %}
 
@@ -111,7 +111,7 @@
 
         {% else %}
 
-            <div class="md-search-box md-box md-content-padding">
+            <div class="md-search-box-not-found md-search-box md-box md-content-padding md-mobile-padding">
                 {% if tags %}
                     {% if page > 1 %}
                         {{ ('not.found.songs.for.' ~ tags.plural) | trans({'tags':tags.string}) }} {{ 'in.page' | trans({'page':page}) }}

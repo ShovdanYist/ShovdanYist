@@ -39,7 +39,7 @@
 
         {% if posts %}
 
-            <div class="md-search-box md-box md-content-padding">
+            <div class="md-search-box md-box md-content-padding md-mobile-padding">
 
                 <div class="posts-list">
 
@@ -74,7 +74,7 @@
 
         {% if not posts %}
 
-            <div class="md-search-box md-box md-content-padding">
+            <div class="md-search-box-not-found md-search-box md-box md-content-padding md-mobile-padding">
                 {% if page > 1 %}
                     {{ 'not.found.posts.for.keyword' | trans({'keyword':keyword}) }} {{ 'in.page' | trans({'page':page}) }}
                 {% else %}

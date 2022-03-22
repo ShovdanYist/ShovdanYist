@@ -430,6 +430,33 @@
     border: unset !important;
     margin: unset !important;
   }
+  .md-search .md-search-box:first-child, .md-search .md-search-box {
+    margin-bottom: 0 !important;
+  }
+  .md-search .md-search-box-not-found {
+    margin: 4px 12px 72px !important;
+    background: #f2f2f2 !important;
+    border-radius: 5px !important;
+    padding: 8px 12px !important;
+    color: #555;
+  }
+
+  // Messages
+
+  .md-conversation {
+    max-height: calc(100vh - 105px) !important;
+  }
+  .md-conversation .messages {
+    max-height: calc(100vh - 150px) !important;
+    margin-bottom: 57px !important;
+  }
+  .message-form {
+    border-radius: unset !important;
+    position: absolute !important;
+  }
+  .message-write {
+    border-bottom: 1px solid #eef1f5;
+  }
 }
 
 @media only screen and (max-width: 400px) {
