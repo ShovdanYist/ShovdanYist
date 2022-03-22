@@ -253,24 +253,17 @@ class HomeController extends CustomAbstractController
     }
 
     /**
-     * @Route("/emailValidation/{id}/{token}", name="email_validation")
-     * @param User $user
+     * @Route("/emailValidation/{token}", name="email_validation")
      * @param $token
      * @return Response
      */
-    public function emailValidation(User $user, $token): Response
+    public function emailValidation($token): Response
     {
-        if ($this->user()->getStatus()) {
-            return $this->redirectToRoute('user_profile', [
-                'username' => $this->user()->getUsername()
-            ]);
-        }
+        $user = $this->getDoctrine()->getRepository(User::class)->findOneBy(['token' => $token]);
 
-        if ($user->getToken() == $token) {
+        if ($user && $user->getStatus() !== false) {
             $user->setToken(null);
-            if ($user->getStatus() !== false) {
-                $user->setStatus(true);
-            }
+            $user->setStatus(true);
             $user->setConfirmedEmail($user->getEmail());
             $em = $this->getDoctrine()->getManager();
 
@@ -284,10 +277,16 @@ class HomeController extends CustomAbstractController
             }
 
             $em->flush();
+            $status = true;
+        } elseif ($user && $user->getStatus() == false) {
+            $status = false;
+        } else {
+            $status = null;
         }
 
         return $this->render('interface/home/email_validation.html.twig', [
-            'user' => $user
+            'user' => $user,
+            'status' => $status
         ]);
     }
 }

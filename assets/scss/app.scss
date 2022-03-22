@@ -2916,24 +2916,10 @@ select {
 
 // Featured post toggle
 
-.featured-action {
-  float: right;
-}
-
-.featured-action a {
-  height: 22px;
-  color: #737f8b;
-  display: inline-flex;
-}
-
-.featured-action a:hover {
-  color: #2c3e50;
-}
-
 .featured-toggle .featured-icon::before {
   content: "\f005";
   font-family: "Font Awesome 5 Free", sans-serif;
-  font-size: 22px;
+  font-size: 15px;
   position: relative;
   font-weight: 400;
   -moz-osx-font-smoothing: grayscale;

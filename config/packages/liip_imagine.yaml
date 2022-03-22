@@ -29,4 +29,5 @@ liip_imagine:
                     heighten: 850
                 watermark_image:
                     image: public/assets/images/post-watermark.png
+                    size: 0.3
                     position: bottomright

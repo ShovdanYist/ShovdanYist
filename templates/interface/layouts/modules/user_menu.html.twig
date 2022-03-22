@@ -41,15 +41,6 @@
                     </li>
 
                     <li class="md-menu-item">
-                        <a href="{{ path('song_index') }}">
-                            <span>
-                                <i class="fas fa-music"></i>
-                            </span>
-                            {{ 'music' | trans }}
-                        </a>
-                    </li>
-
-                    <li class="md-menu-item">
                         <a href="{{ path('message_conversations') }}">
                             <span>
                                 <i class="fas fa-comment"></i>
@@ -82,6 +73,15 @@
                                     {% endif %}
                                 </span>
                             {% endif %}
+                        </a>
+                    </li>
+
+                    <li class="md-menu-item">
+                        <a href="{{ path('song_index') }}">
+                            <span>
+                                <i class="fas fa-music"></i>
+                            </span>
+                            {{ 'music' | trans }}
                         </a>
                     </li>
 

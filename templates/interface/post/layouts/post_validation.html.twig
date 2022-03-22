@@ -10,6 +10,12 @@
         {{ 'approve' | trans }}
     </button>
 
+    {% if is_granted('ROLE_POST_MODERATOR') and post.status != true or is_granted('ROLE_OWNER') %}
+        <a class="btn btn-link featured-toggle{% if post.featured == true %} added{% endif %}" href="{{ path('post_featured', {'id': post.id}) }}">
+            <span class="featured-icon"></span>
+        </a>
+    {% endif %}
+
     <div class="modal fade md-confirm-modal" id="approvePostModal{{ post.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">

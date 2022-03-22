@@ -19,12 +19,4 @@
         {{ post.publishedAt ? post.publishedAt | date(' H:i') }}
     </span>
 
-    {% if is_granted('ROLE_POST_MODERATOR') and post.status != true or is_granted('ROLE_OWNER') %}
-        <div class="featured-action">
-            <a class="featured-toggle{% if post.featured == true %} added{% endif %}" href="{{ path('post_featured', {'id': post.id}) }}">
-                <span class="featured-icon"></span>
-            </a>
-        </div>
-    {% endif %}
-
 </div>
