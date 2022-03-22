@@ -13,7 +13,7 @@
                 <div class="md-conversation-line">
                     <a href="{{ path('message_conversation', {'username':user.username}) }}">
                         <div class="avatar">
-                            <div class="back-picture bp-45" style="background-image: url('{% if user.profile.avatar != 'avatar.jpg' %}{{ vich_uploader_asset(user.profile) | imagine_filter('thumbnail') }}{% else %}{{ asset('assets/images/avatar.jpg') | imagine_filter('thumbnail') }}{% endif %}'); margin-right: 10px">
+                            <div class="back-picture bp-50" style="background-image: url('{% if user.profile.avatar != 'avatar.jpg' %}{{ vich_uploader_asset(user.profile) | imagine_filter('thumbnail') }}{% else %}{{ asset('assets/images/avatar.jpg') | imagine_filter('thumbnail') }}{% endif %}'); margin-right: 10px">
                             </div>
                         </div>
 
