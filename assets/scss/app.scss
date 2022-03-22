@@ -721,6 +721,7 @@ blockquote, .ck.ck-content blockquote {
 }
 
 .md-profile .md-username::after {
+  background: rgb(40,40,40);
   background: -moz-linear-gradient(right, rgb(255, 255, 255) 0%, rgba(255,255,255,0) 100%);
   height: 40px;
   right: 40px;
@@ -730,12 +731,11 @@ blockquote, .ck.ck-content blockquote {
 // Navbar
 
 .md-nav {
-  background: #fefefe;
+  background: linear-gradient(180deg, rgb(40, 40, 40) 0%, rgba(30,30,30,0.95) 100%);
   margin-bottom: 12px;
   z-index: 1000;
   height: 55px;
   width: 100%;
-  border-bottom: 0.5px solid #dedede;
 }
 
 .md-nav .container {
@@ -2156,9 +2156,10 @@ select {
 
 .md-chart-box-heading {
   border-radius: radius(top);
-  padding: 10px 15px 0;
+  padding: 12px 15px 4px;
   line-height: 29px;
-  font-size: 20px;
+  font-size: 22px;
+  font-weight: 500;
 }
 
 .md-chart-box-body {
@@ -2325,7 +2326,7 @@ select {
   text-align: center;
   line-height: 54px;
   font-size: 23px;
-  color: #9aa1ac;
+  color: #777;
   display: none;
   z-index: 1050;
   height: 54px;
@@ -2346,7 +2347,7 @@ select {
 }
 
 #sideNavOpener:hover {
-  color: #4e8bd0;
+  color: #ccc;
 }
 
 #sideNavCloser {
@@ -2438,7 +2439,7 @@ select {
 }
 
 .navbar-search-mobile {
-  border-left: 0.5px solid #dedede;
+  border-left: 1px solid #373737;
   position: absolute;
   right: 0;
   top: 0;
@@ -2450,11 +2451,11 @@ select {
 }
 
 .navbar-search input, .navbar-search-mobile input {
-  background: #ebedf0;
-  border: unset;
+  background: #333;
+  border: 1px solid #333;
   border-radius: 6px;
   transition: ease 600ms;
-  color: #000 !important;
+  color: #aaa !important;
 }
 
 .navbar-search-mobile input {
@@ -2500,17 +2501,17 @@ select {
 }
 
 .navbar-search input::placeholder, .navbar-search-mobile input::placeholder {
-  color: #aaa;
+  color: #888;
 }
 
 .navbar-search input:hover, .navbar-search-mobile input:hover {
-  background: #ebedf0;
-  border: unset;
+  background: #373737;
+  border: 1px solid #373737;
 }
 
 .navbar-search input:focus, .navbar-search-mobile input:focus {
-  background: #ebedf0;
-  border: unset;
+  background: #3b3b3b;
+  border: 1px solid #3b3b3b;
   border-radius: 6px;
 }
 
@@ -2519,6 +2520,7 @@ select {
   width: 36px;
   padding: 0.375rem 0.75rem 0.400rem;
   height: 36px;
+  background: #333 !important;
   border-radius: 100px;
   text-align: center;
   color: #b0b0b0 !important;
@@ -2527,23 +2529,23 @@ select {
   top: 9px;
   border: unset !important;
   display: none;
-  font-size: 20px;
 }
 
 .navbar-search-opener svg {
-  top: -3px;
+  top: 1px;
   position: relative;
-  right: 5px;
+  right: 1px;
 }
 
 .navbar-search-opener:hover {
+  background: #2f2f2f !important;
   color: #adadad !important;
 }
 
 .navbar-search-closer {
   position: absolute;
   right: 70px;
-  color: #ccc;
+  color: #686868;
   top: 15px;
   font-size: 16px;
   cursor: pointer;
