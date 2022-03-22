@@ -15,7 +15,7 @@ function switcher(event) {
         this.dataset.originalTitle = response.data.response.title;
         this.style.pointerEvents = 'none';
 
-        let alertBox = document.querySelector('.md-breadcrumb');
+        let alertBox = document.querySelector('main');
         let alertExist = document.querySelector('.md-alert');
 
         if (response.data.response.message) {
@@ -33,7 +33,7 @@ function switcher(event) {
             if (alertExist) {
                 alertExist.outerHTML = message;
             } else {
-                alertBox.insertAdjacentHTML('afterend', message);
+                alertBox.insertAdjacentHTML('afterbegin', message);
             }
 
             $(".md-alert").fadeTo(3000, 500).slideUp(500, function(){
