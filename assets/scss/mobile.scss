@@ -478,11 +478,9 @@
     top: 106px;
     bottom: 108px;
   }
-
-  //.md-conversation .messages {
-  //  max-height: calc(100vh - 214px) !important;
-  //  margin-top: 51px;
-  //}
+  .md-conversation .messages-box {
+    padding-top: 12px;
+  }
   .message-form {
     border-radius: unset !important;
     position: absolute !important;
@@ -500,9 +498,6 @@
     width: 100%;
     top: 55px;
   }
-
-
-
 }
 
 @media only screen and (max-width: 400px) {
