@@ -470,10 +470,10 @@
   .md-conversation {
     max-height: calc(100vh - 105px) !important;
   }
-  .md-conversation .messages {
-    max-height: calc(100vh - 214px) !important;
-    margin-top: 51px;
-  }
+  //.md-conversation .messages {
+  //  max-height: calc(100vh - 214px) !important;
+  //  margin-top: 51px;
+  //}
   .message-form {
     border-radius: unset !important;
     position: absolute !important;
