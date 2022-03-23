@@ -192,6 +192,30 @@ li {
   bottom: 30px;
 }
 
+.md-vertical-menu a {
+  padding: 10px 8px 10px;
+  width: 100%;
+  display: table;
+  border-bottom: 0.5px solid #ddd;
+  font-size: 16px;
+}
+
+.md-vertical-menu a:first-child {
+  border-top: 0.5px solid #ddd;
+}
+
+.md-vertical-menu a:hover {
+  background: #f0f0f0;
+}
+
+.md-vertical-menu .icon {
+  width: 40px;
+  display: block;
+  float: left;
+  text-align: center;
+  color: #555 !important;
+}
+
 // Search
 
 .found-keyword {
@@ -1649,8 +1673,11 @@ td {
 }
 
 .md-profile-posts-menu a {
-  color: #adb5bd;
+  text-align: center;
+  position: relative;
   font-weight: 500;
+  color: #adb5bd;
+  width: 28px;
 }
 
 .md-profile-posts-menu a:hover {
@@ -1663,6 +1690,18 @@ td {
 
 .md-profile-posts-menu a.active:hover {
   color: #777;
+}
+
+.md-profile-menu-indicator {
+  position: absolute;
+  background: #38b569;
+  border-radius: 30px;
+  color: white;
+  display: block;
+  top: 0;
+  padding: 0 5px;
+  font-size: 10px;
+  right: -20px;
 }
 
 // Breadcrumbs
@@ -2493,6 +2532,7 @@ select {
   padding: 3px;
   min-width: 36px;
   min-height: 36px;
+  max-height: 36px;
 }
 
 .navbar-search a:hover, .navbar-search-mobile a:hover {
@@ -2851,16 +2891,16 @@ select {
 }
 
 .feed-types a {
-  color: #adb5bd;
+  color: #999;
   font-weight: 500;
 }
 
 .feed-types a:hover {
-  color: #97a1aa;
+  color: #888;
 }
 
 .feed-types a.active {
-  color: #212529;
+  color: #000;
 }
 
 .feed-types a:first-child {

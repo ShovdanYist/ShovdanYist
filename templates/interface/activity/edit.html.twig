@@ -2,10 +2,14 @@
 
 {% block title %}{{ 'activity.editing' | trans }}{% endblock %}
 
-{% block body %}
+{% block main %}
 
-    <h1>{{ 'activity.editing' | trans }}</h1>
+    <div class="md-box">
+        <header class="user-title-block">{{ 'activity.editing' | trans }}</header>
 
-    {{ include('interface/activity/_form.html.twig', {'button_label': 'update' | trans }) }}
+        <div class="md-content-padding md-mobile-padding">
+            {{ include('interface/activity/_form.html.twig', {'button_label': 'update' | trans }) }}
+        </div>
+    </div>
 
 {% endblock %}

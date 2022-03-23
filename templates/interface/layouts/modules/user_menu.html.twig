@@ -76,14 +76,14 @@
                         </a>
                     </li>
 
-                    <li class="md-menu-item">
-                        <a href="{{ path('song_index') }}">
-                            <span>
-                                <i class="fas fa-music"></i>
-                            </span>
-                            {{ 'music' | trans }}
-                        </a>
-                    </li>
+{#                    <li class="md-menu-item">#}
+{#                        <a href="{{ path('song_index') }}">#}
+{#                            <span>#}
+{#                                <i class="fas fa-music"></i>#}
+{#                            </span>#}
+{#                            {{ 'music' | trans }}#}
+{#                        </a>#}
+{#                    </li>#}
 
                     <li class="md-menu-item">
                         <a href="{{ path('user_playlist') }}">
@@ -94,14 +94,14 @@
                         </a>
                     </li>
 
-                    <li class="md-menu-item">
-                        <a href="{{ path('user_bookmarks') }}">
-                            <span>
-                                <i class="fas fa-bookmark"></i>
-                            </span>
-                            {{ 'bookmarks' | trans }}
-                        </a>
-                    </li>
+{#                    <li class="md-menu-item">#}
+{#                        <a href="{{ path('user_bookmarks') }}">#}
+{#                            <span>#}
+{#                                <i class="fas fa-bookmark"></i>#}
+{#                            </span>#}
+{#                            {{ 'bookmarks' | trans }}#}
+{#                        </a>#}
+{#                    </li>#}
 
                     {% if is_granted('ROLE_POST_MODERATOR') or is_granted('ROLE_USER_ACTIONS') or is_granted('ROLE_SONG_MODERATOR') or hasOnlyAuthorRightsInSongs(app.user) %}
                         <span class="user-menu-separator text-muted">Модерация</span>

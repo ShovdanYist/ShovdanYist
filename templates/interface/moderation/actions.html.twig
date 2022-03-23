@@ -5,19 +5,19 @@
 {% block main_top %}
     {% if type is defined %}
         {{ breadcrumb({
-            (is_granted('ROLE_OWNER')) ? path('moderation_index') : '' : 'moderation' | trans,
+            (path('user_profile', {'username': app.user.username} )) : (app.user.username),
             (path('moderation_actions')) : 'actions' | trans,
             'active' : ('type_' ~ type) | trans,
         }) }}
     {% elseif user is defined %}
         {{ breadcrumb({
-            (is_granted('ROLE_OWNER')) ? path('moderation_index') : '' : 'moderation' | trans,
+            (path('user_profile', {'username': app.user.username} )) : (app.user.username),
             (path('moderation_actions')) : 'actions' | trans,
             'active' : user.username
         }) }}
     {% else %}
         {{ breadcrumb({
-            (is_granted('ROLE_OWNER')) ? path('moderation_index') : '' : 'moderation' | trans,
+            (path('user_profile', {'username': app.user.username} )) : (app.user.username),
             'active' : ('actions' | trans),
         }) }}
     {% endif %}
@@ -62,15 +62,17 @@
         {% else %}
 
             <div class="text-center">
-                <i class="far fa-hand-point-up" style="margin-right: 3px"></i>
+                <div class="not-have-message not-have-message-center">
+                    <i class="far fa-hand-point-up" style="margin-right: 3px"></i>
 
-                {% if type is defined %}
-                    {{ 'no.actions.in' | trans({'section': ('type_' ~ type) | trans }) }}
-                {% elseif user is defined %}
-                    {{ 'user.have.no.actions' | trans({'username': user.username}) }}
-                {% else %}
-                    {{ 'no.actions' | trans }}
-                {% endif %}
+                    {% if type is defined %}
+                        {{ 'no.actions.in' | trans({'section': ('type_' ~ type) | trans }) }}
+                    {% elseif user is defined %}
+                        {{ 'user.have.no.actions' | trans({'username': user.username}) }}
+                    {% else %}
+                        {{ 'no.actions' | trans }}
+                    {% endif %}
+                </div>
             </div>
 
         {% endfor %}

@@ -37,6 +37,7 @@ tagged.users.help: "Вы можете отметить пользователе�
 heading: Заголовок
 title: Название
 slug: Алиас
+type: Тип
 description: Описание
 image: Изображение
 first.name: Имя
@@ -450,6 +451,8 @@ moderation: Модерация
 activities: Деятельности
 activity: Деятельность
 actions: Действия
+post.moderation: "Модерация публикаций"
+music.moderation: "Модерация музыки"
 in.moderation: "На модерации"
 to.moderation: "На модерацию"
 my.songs: "Мои песни"

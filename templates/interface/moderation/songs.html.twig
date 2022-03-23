@@ -7,8 +7,8 @@
 {% block main_top %}
 
     {{ breadcrumb({
-        (is_granted('ROLE_OWNER')) ? path('moderation_index') : '' : 'moderation' | trans,
-        'active' : ('music' | trans),
+        (path('user_profile', {'username': app.user.username} )) : (app.user.username),
+        'active' : ('music.moderation' | trans),
     }, null, 'song_add') }}
 
     {% if is_granted('ROLE_SONG_MODERATOR') %}
@@ -104,14 +104,16 @@
         {% else %}
 
             <div class="text-center">
-                <i class="far fa-play-circle" style="margin-right: 2px"></i>
-                {% if app.request.attributes.get('_route') == 'moderation_music' %}
-                    {{ 'no.songs.in.moderation' | trans }}
-                {% elseif app.request.attributes.get('_route') == 'moderation_ready' %}
-                    {{ 'no.ready.songs.in.moderation' | trans }}
-                {% elseif app.request.attributes.get('_route') == 'moderation_pending' %}
-                    {{ 'no.pending.songs.in.moderation' | trans }}
-                {% endif %}
+                <div class="not-have-message not-have-message-center">
+                    <i class="far fa-play-circle" style="margin-right: 2px"></i>
+                    {% if app.request.attributes.get('_route') == 'moderation_music' %}
+                        {{ 'no.songs.in.moderation' | trans }}
+                    {% elseif app.request.attributes.get('_route') == 'moderation_ready' %}
+                        {{ 'no.ready.songs.in.moderation' | trans }}
+                    {% elseif app.request.attributes.get('_route') == 'moderation_pending' %}
+                        {{ 'no.pending.songs.in.moderation' | trans }}
+                    {% endif %}
+                </div>
             </div>
 
         {% endfor %}

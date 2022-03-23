@@ -2,11 +2,15 @@
 
 {% block title %}{{ person.fullName }} | {{ 'person.editing' | trans }}{% endblock %}
 
-{% block body %}
+{% block main %}
 
-    <h1>{{ 'person.editing' | trans }}</h1>
+    <div class="md-box">
+        <header class="user-title-block">{{ 'person.editing' | trans }}</header>
 
-    {{ include('interface/person/_form.html.twig', {'button_label': 'update' | trans}) }}
+        <div class="md-content-padding md-mobile-padding">
+            {{ include('interface/person/_form.html.twig', {'button_label': 'update' | trans}) }}
+        </div>
+    </div>
 
 {% endblock %}
 
