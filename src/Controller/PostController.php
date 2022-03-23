@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use App\CustomAbstracts\CustomAbstractController;
 use App\Entity\Post;
-use App\Entity\Tag;
 use App\Entity\User;
 use App\Service\Defender;
 use App\Service\Initializer;

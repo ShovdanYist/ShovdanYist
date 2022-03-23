@@ -103,61 +103,6 @@
 {#                        </a>#}
 {#                    </li>#}
 
-                    {% if is_granted('ROLE_POST_MODERATOR') or is_granted('ROLE_USER_ACTIONS') or is_granted('ROLE_SONG_MODERATOR') or hasOnlyAuthorRightsInSongs(app.user) %}
-                        <span class="user-menu-separator text-muted">Модерация</span>
-                    {% endif %}
-
-                    {% if is_granted('ROLE_SONG_MODERATOR') or hasOnlyAuthorRightsInSongs(app.user) %}
-                        <li class="md-menu-item">
-                            <a href="{{ path('moderation_music') }}">
-                                <span>
-                                    <i class="fas fa-play-circle"></i>
-                                </span>
-                                {{ 'music' | trans }}
-                                {% if songModerationCount() != 0 and is_granted('ROLE_SONG_MODERATOR') %}
-                                    <span class="badge badge-pill badge-danger float-right mt-1">
-                                        {% if songModerationCount() > 99 %}
-                                            99+
-                                        {% else %}
-                                            {{ songModerationCount() }}
-                                        {% endif %}
-                                    </span>
-                                {% endif %}
-                            </a>
-                        </li>
-                    {% endif %}
-
-                    {% if is_granted('ROLE_POST_MODERATOR') %}
-                        <li class="md-menu-item">
-                            <a href="{{ path('moderation_posts') }}">
-                            <span>
-                                <i class="fas fa-id-card"></i>
-                            </span>
-                                {{ 'posts' | trans }}
-                                {% if postModerationCount() != 0 %}
-                                    <span class="badge badge-pill badge-danger float-right mt-1">
-                                        {% if postModerationCount() > 99 %}
-                                            99+
-                                        {% else %}
-                                            {{ postModerationCount() }}
-                                        {% endif %}
-                                    </span>
-                                {% endif %}
-                            </a>
-                        </li>
-                    {% endif %}
-
-                    {% if is_granted('ROLE_USER_ACTIONS') %}
-                        <li class="md-menu-item">
-                            <a href="{{ path('moderation_actions') }}">
-                                <span>
-                                    <i class="fas fa-hand-point-up"></i>
-                                </span>
-                                {{ 'actions' | trans }}
-                            </a>
-                        </li>
-                    {% endif %}
-
                 </ul>
 
             </div>

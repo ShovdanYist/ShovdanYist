@@ -139,7 +139,7 @@ function openNavbarSearch(){
 
 function closeNavbarSearch(){
     document.querySelector('.navbar-search-mobile').style.display = 'none';
-    navbarSearchOpener.style.display = 'unset';
+    navbarSearchOpener.style.display = 'none';
 }
 
 if (navbarSearch) {

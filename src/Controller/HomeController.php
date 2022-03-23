@@ -4,14 +4,12 @@ namespace App\Controller;
 
 use App\CustomAbstracts\CustomAbstractController;
 use App\Entity\EmailAddress;
-use App\Entity\Post;
 use App\Entity\Profile;
 use App\Entity\User;
 use App\Form\RegistrationFormType;
 use App\Form\NewPasswordType;
 use App\Security\UserAuthenticator;
 use App\Service\Mailer;
-use App\Service\Paginator;
 use App\Service\Sitemap;
 use App\Validator\Constraints\MailExists;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -127,9 +125,9 @@ class HomeController extends CustomAbstractController
             $user->getProfile()->setAvatar('avatar.jpg');
             $user->setRegisteredAt(new \DateTime('now'));
 
-//            if ($form->get('invitedBy')->getData() && $this->getDoctrine()->getRepository(User::class)->findOneBy(['username' => $form->get('invitedBy')->getData()])) {
-//                $user->setInvitedBy($this->getDoctrine()->getRepository(User::class)->findOneBy(['username' => $form->get('invitedBy')->getData()]));
-//            }
+            if ($form->get('invitedBy')->getData() && $this->getDoctrine()->getRepository(User::class)->findOneBy(['username' => $form->get('invitedBy')->getData()])) {
+                $user->setInvitedBy($this->getDoctrine()->getRepository(User::class)->findOneBy(['username' => $form->get('invitedBy')->getData()]));
+            }
 
             $em = $this->getDoctrine()->getManager();
             $em->persist($user);

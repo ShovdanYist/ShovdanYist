@@ -1,6 +1,6 @@
 {% extends 'interface/base.html.twig' %}
 
-{% block title %}Dashboard{% endblock %}
+{% block title %}{{ 'moderation' | trans }}{% endblock %}
 
 {% block main_top %}
     {{ breadcrumb({
@@ -13,6 +13,33 @@
 
     <div class="md-box md-margin-bottom">
         <div class="md-vertical-menu">
+
+            <a href="{{ path('moderation_posts') }}">
+                <span class="icon">
+                    <i class="fas fa-sticky-note"></i>
+                </span>
+                <span>
+                    {{ 'posts' | trans }}
+                </span>
+            </a>
+
+            <a href="{{ path('moderation_music') }}">
+                <span class="icon">
+                    <i class="fas fa-play-circle"></i>
+                </span>
+                <span>
+                    {{ 'music' | trans }}
+                </span>
+            </a>
+
+            <a href="{{ path('moderation_actions') }}">
+                <span class="icon">
+                    <i class="fas fa-hand-point-up"></i>
+                </span>
+                <span>
+                    {{ 'actions' | trans }}
+                </span>
+            </a>
 
             <a href="{{ path('users_index') }}">
                 <span class="icon">
@@ -38,33 +65,6 @@
                 </span>
                 <span>
                     {{ 'tags' | trans }}
-                </span>
-            </a>
-
-            <a href="{{ path('moderation_music') }}">
-                <span class="icon">
-                    <i class="fas fa-play-circle"></i>
-                </span>
-                <span>
-                    {{ 'music' | trans }}
-                </span>
-            </a>
-
-            <a href="{{ path('moderation_posts') }}">
-                <span class="icon">
-                    <i class="fas fa-id-card"></i>
-                </span>
-                <span>
-                    {{ 'posts' | trans }}
-                </span>
-            </a>
-
-            <a href="{{ path('moderation_actions') }}">
-                <span class="icon">
-                    <i class="fas fa-hand-point-up"></i>
-                </span>
-                <span>
-                    {{ 'actions' | trans }}
                 </span>
             </a>
 

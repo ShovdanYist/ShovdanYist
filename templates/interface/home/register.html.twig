@@ -27,17 +27,17 @@
             {{ form_row(registrationForm.password.first) }}
             {{ form_row(registrationForm.password.second) }}
 
-{#            <div class="form-spoiler">#}
+            <div class="form-spoiler">
 
-{#                <a class="collapsed" data-toggle="collapse" data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false">#}
-{#                    {{ 'additional' | trans }} <i></i>#}
-{#                </a>#}
+                <a class="collapsed no-width" data-toggle="collapse" data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false">
+                    {{ 'additional' | trans }} <i></i>
+                </a>
 
-{#                <div class="collapse" id="navbarToggleExternalContent">#}
-{#                    {{ form_row(registrationForm.invitedBy) }}#}
-{#                </div>#}
+                <div class="collapse" id="navbarToggleExternalContent">
+                    {{ form_row(registrationForm.invitedBy) }}
+                </div>
 
-{#            </div>#}
+            </div>
 
 {#            {{ form_errors(registrationForm.agreeTerms) }}#}
 {#            {{ form_widget(registrationForm.agreeTerms) }}#}

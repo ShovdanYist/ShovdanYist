@@ -108,8 +108,10 @@
                     {% for post in posts %}
 
                         <div class="posts-list-item">
-                            <div class="back-picture bp-48" style="background-image: url('{% if post.info.image %}{{ vich_uploader_asset(post.info) | imagine_filter('thumbnail') }}{% else %}{{ asset('assets/images/question.jpg') }}{% endif %}'); border-radius: 3px; margin-right: 10px">
-                            </div>
+                            <a href="{{ path('post_show',{'id':post.info.id}) }}">
+                                <div class="back-picture bp-48" style="background-image: url('{% if post.info.image %}{{ vich_uploader_asset(post.info) | imagine_filter('thumbnail') }}{% else %}{{ asset('assets/images/question.jpg') }}{% endif %}'); border-radius: 3px; margin-right: 10px">
+                                </div>
+                            </a>
 
                             <h5>
                                 <a href="{{ path('post_show',{'id':post.info.id}) }}">

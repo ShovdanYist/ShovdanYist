@@ -103,6 +103,7 @@ confirm.your.email: "Подтвердите свою электронную по
 to.customize.your.profile: "чтобы оформить свою страницу"
 to.write.comments: "чтобы писать комментарии"
 to.add.post: "чтобы добавлять публикации"
+to.write.messages: "чтобы писать сообщении"
 
 you.are.blocked.and.you.cant.edit.profile: "Вы заблокированы и не можете редактировать свою страницу"
 you.are.blocked.and.you.cant.add.post: "Вы заблокированы и не можете добавлять публикации"
@@ -158,6 +159,7 @@ sign.up: Регистрация
 already.registered: "Вы уже зарегистрированны?"
 agree.terms: "Пользовательское соглашение"
 invited.by: "По приглашению"
+invited.by.help: "Введите имя пользователя который вас пригласил"
 
 # MESSAGE
 
@@ -181,6 +183,19 @@ Sep: Сен
 Oct: Окт
 Nov: Ноя
 Dec: Дек
+
+month01: янв
+month02: фев
+month03: март
+month04: апр
+month05: май
+month06: июнь
+month07: июль
+month08: авг
+month09: сент
+month10: окт
+month11: ноя
+month12: дек
 
 # MUSIC
 
@@ -485,18 +500,3 @@ all.rights.reserved: "Все права защищены"
 email.confirmation.on.website: "Подтверждение почты на сайте ShovdanYist"
 mailer.shovdanyist.signup: "Регистрация на сайте ShovdanYist"
 mailer.shovdanyist.account.recovery: "Восстановление аккаунта ShovdanYist"
-
-# DATE
-
-month01: янв
-month02: фев
-month03: март
-month04: апр
-month05: май
-month06: июнь
-month07: июль
-month08: авг
-month09: сент
-month10: окт
-month11: ноя
-month12: дек

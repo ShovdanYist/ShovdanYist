@@ -99,7 +99,7 @@
                     </div>
 
                 {% else %}
-                    <div class="text-center px-2 py-3">
+                    <div class="py-3 not-have-message not-have-message-center">
                         <i class="far fa-comment" style="margin-right: 3px"></i>
                         {{ 'you.have.not.messages.with.user' | trans({'username' : user.username}) }}
                     </div>
@@ -108,23 +108,37 @@
             </div>
         </div>
 
-        {{ form_start(form, {'attr': {'class': 'message-form'}}) }}
-            <div class="message-write">
-                <div class="attach">
-                    <a class="btn">
-                        <i class="fas fa-plus"></i>
-                    </a>
+        {% if app.user.confirmedEmail and app.user.status is null or app.user.status == true %}
+
+            {{ form_start(form, {'attr': {'class': 'message-form'}}) }}
+                <div class="message-write">
+                    <div class="attach">
+                        <a class="btn">
+                            <i class="fas fa-plus"></i>
+                        </a>
+                    </div>
+                    <div class="input">
+                        {{ form_widget(form.content) }}
+                    </div>
+                    <div class="send">
+                        <button type="submit" class="btn">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </div>
                 </div>
-                <div class="input">
-                    {{ form_widget(form.content) }}
-                </div>
-                <div class="send">
-                    <button type="submit" class="btn">
-                        <i class="fas fa-paper-plane"></i>
-                    </button>
+            {{ form_end(form) }}
+
+        {% elseif app.user.status is null %}
+
+            <div class="pr-3 pl-3 pb-3">
+                <div class="md-alert md-alert-warning">
+                    <i class="fas fa-exclamation-triangle"></i> <a href="{{ path('user_settings', {'username' : app.user.username}) }}">{{ 'confirm.your.email' | trans }}</a>, {{ 'to.write.messages' | trans }}
                 </div>
             </div>
-        {{ form_end(form) }}
+
+        {% else %}
+
+        {% endif %}
 
     </div>
 

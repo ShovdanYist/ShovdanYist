@@ -70,16 +70,6 @@ class Sitemap
             ];
         }
 
-        // Posts urls
-        foreach ($this->em->getRepository(Post::class)->findBy(['status' => true]) as $post) {
-            $urls[] = [
-                'loc' => $this->generator->generate('post_show', [
-                    'slug' => $post->getSlug()
-                ]),
-                'lastmod' => $post->getUpdatedAt()->format('Y-m-d')
-            ];
-        }
-
         // People urls
         foreach ($this->em->getRepository(Person::class)->findActiveSongsPeopleByActivity('vocalist') as $person) {
             $urls[] = [

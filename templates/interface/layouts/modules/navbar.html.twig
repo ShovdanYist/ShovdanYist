@@ -103,27 +103,6 @@
                                 {{ 'add.post' | trans }}
                             </a>
 
-                            {% if is_granted('ROLE_OWNER') %}
-
-                                <span class="dropdown-divider"></span>
-
-                                <a class="dropdown-item" href="{{ path('users_index') }}">
-                                    <i class="fas fa-users"></i>
-                                    {{ 'users' | trans }}
-                                </a>
-
-                                <a class="dropdown-item" href="{{ path('activities_index') }}">
-                                    <i class="fas fa-briefcase"></i>
-                                    {{ 'activities' | trans }}
-                                </a>
-
-                                <a class="dropdown-item" href="{{ path('tags_index') }}">
-                                    <i class="fas fa-tag"></i>
-                                    {{ 'tags' | trans }}
-                                </a>
-
-                            {% endif %}
-
                             <span class="dropdown-divider"></span>
 
                             <button type="button" class="dropdown-item" data-toggle="modal" data-target="#navbarLogout">
