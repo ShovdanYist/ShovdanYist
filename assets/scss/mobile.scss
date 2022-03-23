@@ -82,12 +82,6 @@
   .mobile-menu {
     display: flex !important;
   }
-  body {
-    background-color: rgba(30, 30, 30, 0.95) !important;
-  }
-  .body-wrapper {
-    background: #fff;
-  }
 }
 
 @media only screen and (max-width: 768px) {
@@ -440,26 +434,6 @@
     padding: 8px 12px !important;
     color: #555;
   }
-
-  // Messages
-
-  .md-conversation {
-    max-height: calc(100vh - 105px) !important;
-  }
-  .md-conversation .messages {
-    max-height: calc(100vh - 150px) !important;
-    margin-bottom: 57px !important;
-  }
-  .message-form {
-    border-radius: unset !important;
-    position: absolute !important;
-  }
-  .message-write {
-    border-bottom: 1px solid #eef1f5;
-  }
-
-  // Messages at top
-
   .form-signin-info {
     background: #f2f2f2 !important;
     margin-top: -8px !important;
@@ -485,10 +459,41 @@
     z-index: 999;
     left: 12px;
   }
+  body {
+    background-color: rgba(30, 30, 30, 0.95) !important;
+  }
+  .body-wrapper {
+    background: #fff;
+  }
+
+  // Messages
+  .md-conversation {
+    max-height: calc(100vh - 105px) !important;
+  }
+  .md-conversation .messages {
+    max-height: calc(100vh - 214px) !important;
+    margin-top: 51px;
+  }
+  .message-form {
+    border-radius: unset !important;
+    position: absolute !important;
+  }
+  .message-write {
+    border-bottom: 1px solid #eef1f5;
+  }
   .message-form {
     position: fixed !important;
     bottom: 50px !important;
   }
+  .user-conversation-header {
+    position: fixed !important;
+    background: #fff;
+    width: 100%;
+    top: 55px;
+  }
+
+
+
 }
 
 @media only screen and (max-width: 400px) {
