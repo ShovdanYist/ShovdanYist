@@ -469,7 +469,16 @@
   // Messages
   .md-conversation {
     max-height: calc(100vh - 105px) !important;
+    position: unset !important;
   }
+  .md-conversation .messages {
+    width: 100%;
+    position: absolute;
+    max-height: unset !important;
+    top: 106px;
+    bottom: 108px;
+  }
+
   //.md-conversation .messages {
   //  max-height: calc(100vh - 214px) !important;
   //  margin-top: 51px;
