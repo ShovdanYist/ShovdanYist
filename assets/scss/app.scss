@@ -596,7 +596,8 @@ blockquote, .ck.ck-content blockquote {
 #postImgOutput {
   display: block;
   width: 300px;
-  margin: 0 auto;
+  margin: 0 auto 10px;
+  border-radius: 3px !important;
 }
 
 // Confirm Modal
@@ -834,7 +835,27 @@ blockquote, .ck.ck-content blockquote {
   margin-top: 8px;
   padding: 5px;
   z-index: 1060;
-  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.05);
+  box-shadow: unset;
+  background: rgba(30, 30, 30, 0.9);
+  border-radius: 10px;
+  border: unset;
+}
+
+.dropdown-menu .icon {
+  width: 18px;
+  display: block;
+  float: left;
+  text-align: center;
+  margin-right: 7px;
+}
+
+.dropdown-menu a, .dropdown-menu button {
+  color: #aaa !important;
+  border-radius: 6px !important;
+}
+
+.dropdown-menu a:hover, .dropdown-menu button:hover {
+  background: rgba(255, 255, 255, 0.05);
 }
 
 .dropdown-item {
@@ -857,6 +878,7 @@ blockquote, .ck.ck-content blockquote {
 .dropdown-divider {
   display: block;
   margin: 5px 0;
+  border-top: 1px solid rgba(0,0,0,0.1);
 }
 
 .navbar-login-mobile {
@@ -2046,6 +2068,7 @@ td {
 
 .message-write .input {
   flex: 1;
+  position: relative;
 }
 
 .message-write .input textarea {

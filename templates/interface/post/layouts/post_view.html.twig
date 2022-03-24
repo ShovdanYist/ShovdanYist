@@ -11,12 +11,17 @@
             <div class="dropdown-menu dropdown-menu-right">
 
                 <a href="{{ path('post_edit', {'id':post.id}) }}" class="dropdown-item">
-                    <i class="fa fa-edit"></i> {{ 'edit' | trans }}
+                    <span class="icon">
+                        <i class="fas fa-pencil-alt"></i>
+                    </span>
+                    {{ 'edit' | trans }}
                 </a>
 
                 {% if is_granted('ROLE_OWNER') or post.author == app.user %}
                     <button type="button" class="dropdown-item" data-toggle="modal" data-target="#deletePostModal">
-                        <i class="fas fa-trash-alt"></i>
+                        <span class="icon">
+                            <i class="far fa-trash-alt"></i>
+                        </span>
                         {{ 'delete' | trans }}
                     </button>
                 {% endif %}

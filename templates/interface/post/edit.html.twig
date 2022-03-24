@@ -2,11 +2,15 @@
 
 {% block title %}{{ 'post.editing' | trans }}{% endblock %}
 
-{% block body %}
+{% block main %}
 
-    <h1>{{ 'post.editing' | trans }}</h1>
+    <div class="md-box">
+        <header class="user-title-block">{{ 'post.editing' | trans }}</header>
 
-    {{ include('interface/post/layouts/post_form.html.twig') }}
+        <div class="md-content-padding md-mobile-padding">
+            {{ include('interface/post/layouts/post_form.html.twig') }}
+        </div>
+    </div>
 
 {% endblock %}
 

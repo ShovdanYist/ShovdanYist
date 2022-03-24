@@ -74,7 +74,7 @@
                     <div class="mb-3">
 
                         <span class="text-muted pb-3">
-                            {% if tags.plural %}
+                            {% if tags.plural == 'tags' %}
                                 {{ 'song.results.for.tags' | trans }}
                             {% else %}
                                 {{ 'song.results.for.tag' | trans }}
