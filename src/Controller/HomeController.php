@@ -47,6 +47,20 @@ class HomeController extends CustomAbstractController
     }
 
     /**
+     * @Route("/posts/sitemap.xml", name="posts_sitemap", defaults={"_format"="xml"})
+     * @param Request $request
+     * @param Sitemap $sitemap
+     * @throws RuntimeError
+     * @throws SyntaxError
+     * @throws LoaderError
+     * @return Response
+     */
+    public function postsSitemap(Request $request, Sitemap $sitemap): Response
+    {
+        return $sitemap->postsUrls($request->getSchemeAndHttpHost());
+    }
+
+    /**
      * @Route("/terms", name="terms", methods={"GET"})
      * @return Response
      */
