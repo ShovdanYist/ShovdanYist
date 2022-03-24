@@ -153,14 +153,12 @@
         let messageBoxBlock = document.createElement('div');
         messageBoxBlock.className = 'sending-message message me';
 
-        // messageSendButton.preventDefault();
-
         function messageSender(){
             if (document.querySelector('.sending-message') == null) {
                 messageBoxBlock.insertAdjacentHTML('afterbegin','<div class="text">' + messageTextArea.value + '<small style="margin-left: 5px"><i class="fas fa-spinner fa-spin"></i></small></div>');
                 messagesBox.insertAdjacentElement('beforeend',messageBoxBlock);
-                // messageTextArea.disabled = true;
-                // messageSendButton.disabled = true;
+                messageSendButton.insertAdjacentHTML('beforebegin','<div class="message-send-disabler"></div>');
+                messageSendButton.style.opacity = '0.8';
             }
         }
 
