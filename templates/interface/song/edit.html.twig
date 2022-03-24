@@ -2,11 +2,15 @@
 
 {% block title %}{{ song.fullTitle }} | {{ 'song.editing' | trans }}{% endblock %}
 
-{% block body %}
+{% block main %}
 
-    <h1>{{ 'song.editing' | trans }}</h1>
+    <div class="md-box">
+        <header class="user-title-block">{{ 'song.editing' | trans }}</header>
 
-    {{ include('interface/song/_form_song.html.twig') }}
+        <div class="md-content-padding md-mobile-padding">
+            {{ include('interface/song/_form_song.html.twig') }}
+        </div>
+    </div>
 
 {% endblock %}
 

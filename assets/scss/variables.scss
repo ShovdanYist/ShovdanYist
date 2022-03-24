@@ -32,13 +32,13 @@ $gray-200 : #ecf0f1 !default;
 $gray-300 : #dee2e6 !default;
 $gray-400 : #ced4da !default;
 $gray-500 : #b4bcc2 !default;
-$gray-600 : #95a5a6 !default;
+$gray-600 : #909499 !default;
 $gray-700 : #7b8a8b !default;
 $gray-800 : #343a40 !default;
 $gray-900 : #212529 !default;
 $black    : #000000 !default;
 
-$blue   : #2C3E50 !default;
+$blue   : #000 !default;
 $indigo : #6610f2 !default;
 $purple : #6f42c1 !default;
 $pink   : #e83e8c !default;
@@ -54,7 +54,7 @@ $primary   : $blue      !default;
 $secondary : $brown  !default;
 $success   : $green     !default;
 $info      : $cyan      !default;
-$link      : #1f5887  !default;
+$link      : #010101  !default;
 $warning   : $yellow    !default;
 $danger    : $red       !default;
 $light     : $gray-200  !default;
@@ -107,22 +107,22 @@ $post-colors: (
 // Buttons
 
 .btn-primary {
-  background-color: #3A5571 !important;
-  border-color: #3A5571 !important;
+  background-color: #333 !important;
+  border-color: #333 !important;
 }
 
 .btn-primary:hover {
-  background-color: #426384 !important;
-  border-color: #426384 !important;
+  background-color: #444 !important;
+  border-color: #444 !important;
 }
 
 .btn-link {
-  color: #3A5571 !important;
+  color: #555 !important;
 }
 
 .btn-link:hover {
-  color: #426384 !important;
-  background-color: #f0f5f9 !important;
+  color: #555 !important;
+  background-color: #eee !important;
 }
 
 .btn-success {
@@ -192,8 +192,8 @@ $badge-border-radius: 3px;
 
 // Links
 
-$link-color:              #1f5887 !default;
-$link-hover-color:        #1f5887 !default;
+$link-color:              #010101 !default;
+$link-hover-color:        #010101 !default;
 $link-hover-decoration:   none    !default;
 
 .muted-link {

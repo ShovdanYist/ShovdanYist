@@ -25,8 +25,13 @@
             <br>
 
             <small class="text-muted">
-                {{ notification.publishedAt ? notification.publishedAt | format_datetime('medium', 'none', '', 'UTC') }}
-                в
+                {{ notification.publishedAt ? notification.publishedAt | date('d') | replace({'0':''}) }}
+                {{ ('month' ~ notification.publishedAt | date("m")) | trans }}
+
+                {% if "now" | date("Y") != notification.publishedAt | date('Y') %}
+                    {{ notification.publishedAt ? notification.publishedAt | date('Y') }}
+                {% endif %}
+
                 {{ notification.publishedAt ? notification.publishedAt | date(' H:i') }}
 
                 <button class="notification-delete" data-toggle="modal" data-target="#deleteNotification{{ notification.id }}">

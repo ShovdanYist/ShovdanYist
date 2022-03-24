@@ -39,7 +39,7 @@
 
         {% if users %}
 
-            <div class="md-search-box md-box md-content-padding">
+            <div class="md-search-box md-box md-content-padding md-mobile-padding">
 
                 {% for user in users %}
                     {{ userLine(user) }}
@@ -53,7 +53,7 @@
 
         {% if not users %}
 
-            <div class="md-search-box md-box md-content-padding">
+            <div class="md-search-box-not-found md-search-box md-box md-content-padding md-mobile-padding">
                 {% if page > 1 %}
                     {{ 'not.found.users.for.keyword' | trans({'keyword':keyword}) }} {{ 'in.page' | trans({'page':page}) }}
                 {% else %}

@@ -15,6 +15,7 @@
         {{ postView(post) }}
     {% else %}
         <div class="md-box md-content-padding text-center">
+            <div class="not-have-message not-have-message-center">
             {% if not app.user.following.count %}
                 <i class="far fa-user" style="margin-right: 3px"></i>
                 {{ 'you.have.not.following' | trans }}
@@ -25,6 +26,7 @@
                 <i class="far fa-clone" style="margin-right: 3px"></i>
                 {{ 'users.you.followed.have.not.posts' | trans }}
             {% endif %}
+            </div>
         </div>
     {% endfor %}
 

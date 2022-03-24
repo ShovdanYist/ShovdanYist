@@ -1,4 +1,8 @@
 User-Agent: *
-Disallow: *
 
+Disallow: /search*
+Disallow: /people*
+
+Host: https://shovdanyist.com
 Sitemap: https://shovdanyist.com/sitemap.xml
+Sitemap: https://shovdanyist.com/posts/sitemap.xml

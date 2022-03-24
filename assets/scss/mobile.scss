@@ -11,6 +11,7 @@
   }
   main {
     width: 100%;
+    padding: 0 !important;
     flex: unset !important;
   }
   .mobile-navbar-item {
@@ -80,12 +81,6 @@
   }
   .mobile-menu {
     display: flex !important;
-  }
-  body {
-    background-color: #282828 !important;
-  }
-  .body-wrapper {
-    background: #edeef0;
   }
 }
 
@@ -324,6 +319,187 @@
     font-size: 13px !important;
     padding: 3px 6px !important;
     width: 100px !important;
+  }
+  .md-box {
+    border-radius: 0 !important;
+    box-shadow: unset !important;
+    background: unset !important;
+  }
+  .body-wrapper {
+    background: #fff;
+  }
+  .md-content-padding {
+    padding: unset !important;
+  }
+  .body-wrapper {
+    padding-top: 55px !important;
+  }
+  .feed-types {
+    background: #f2f2f2 !important;
+    margin: 12px 12px 3px !important;
+    box-shadow: unset !important;
+  }
+  .md-conversations-list {
+    padding: 0 !important;
+  }
+  .md-conversation-line, .post-image {
+    border-radius: unset !important;
+  }
+  .post-info {
+    padding: 12px !important;
+    margin: unset !important;
+  }
+  .post-view-bottom {
+    padding: 0 12px;
+  }
+  .md-post {
+    padding-bottom: 14px;
+    margin: unset !important;
+  }
+  .md-mobile-padding {
+    padding: 12px !important;
+  }
+
+  //  Profile grid posts START (To forward just delete)
+  .md-grid-post, .md-grid-post:nth-child(4n+4), .md-grid-post:nth-child(5n+5) {
+    margin-right: 1px !important;
+    margin-bottom: 1px !important;
+  }
+  .md-grid-post img {
+    border-radius: unset !important;
+  }
+  .md-grid-post:nth-child(5n+5) {
+  }
+  .md-grid-post:nth-child(3n+3) {
+    margin-right: unset !important;
+  }
+  .md-grid-posts {
+    padding: unset !important;
+  }
+  .md-grid-post {
+    flex-basis: calc(100% / 3 - 0.7px) !important;
+  }
+  // Profile grid posts END (To forward just delete)
+
+  .md-song-menu.container {
+    margin: 11px 0 -3px !important;
+  }
+  .md-chart-box {
+    margin-bottom: -4px !important;
+  }
+  .user-title-block {
+    border-radius: unset !important;
+  }
+  .md-comments-block {
+    margin: -3px 0 66px !important;
+    padding: 0 13px 15px !important;
+  }
+  .md-main-box-col-2 .md-song-stats, .md-main-box-col-2 .md-post-info {
+    padding: 0 15px 24px !important;
+  }
+  .md-breadcrumb {
+    background: #f2f2f2 !important;
+    margin: 12px 12px 4px !important;
+    border-radius: 5px !important;
+  }
+  .md-breadcrumb-nav::after {
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0), #f2f2f2) !important;
+  }
+  article h1 {
+    margin-top: 0 !important;
+  }
+  .md-post .btn.md-dot-btn {
+    right: 16px !important;
+    top: 10px !important;
+  }
+  .container {
+    overflow: hidden;
+  }
+  .settings-footer {
+    border-top: 0.5px solid #dbdcdb;
+    border-bottom: 0.5px solid #dbdcdb;
+  }
+  .md-alert {
+    border-radius: unset !important;
+    border: unset !important;
+    margin: unset !important;
+  }
+  .md-search .md-search-box:first-child, .md-search .md-search-box {
+    margin-bottom: 0 !important;
+  }
+  .md-search .md-search-box-not-found {
+    margin: 4px 12px 72px !important;
+    background: #f2f2f2 !important;
+    border-radius: 5px !important;
+    padding: 8px 12px !important;
+    color: #555;
+  }
+  .form-signin-info {
+    background: #f2f2f2 !important;
+    margin-top: -8px !important;
+  }
+  .not-have-message {
+    background: #f2f2f2;
+    border-radius: 5px;
+    padding: 20px;
+  }
+  .not-have-message-center {
+    transform: translate(-50%, -50%);
+    position: fixed;
+    width: 86%;
+    left: 50%;
+    top: 50%;
+  }
+  .md-alert {
+    border-radius: 5px !important;
+    width: calc(100% - 24px);
+    position: fixed;
+    opacity: 0.95;
+    bottom: 62px;
+    z-index: 999;
+    left: 12px;
+  }
+  body {
+    background-color: rgba(30, 30, 30, 0.95) !important;
+  }
+  .body-wrapper {
+    background: #fff;
+  }
+
+  // Messages
+  .md-conversation {
+    max-height: calc(100vh - 105px) !important;
+    position: unset !important;
+  }
+  .md-conversation .messages {
+    width: 100%;
+    position: absolute;
+    max-height: unset !important;
+    top: 106px;
+    bottom: 108px;
+  }
+  .md-conversation .messages-box {
+    padding-top: 12px;
+  }
+  .message-form {
+    border-radius: unset !important;
+    position: absolute !important;
+  }
+  .message-write {
+    border-bottom: 1px solid #eef1f5;
+  }
+  .message-form {
+    position: fixed !important;
+    bottom: 50px !important;
+  }
+  .user-conversation-header {
+    position: fixed !important;
+    background: #fff;
+    width: 100%;
+    top: 55px;
+  }
+  .md-vertical-menu {
+    margin-top: 12px;
   }
 }
 

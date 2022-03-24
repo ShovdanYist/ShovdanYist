@@ -98,12 +98,12 @@ class RegistrationFormType extends AbstractType
                     'class' => 'user-birthday'
                 ]
             ])
-//            ->add('invitedBy', TextType::class, [
-//                'label' => 'invited.by',
-//                'help' => 'Тот кто вас пригласил',
-//                'mapped' => false,
-//                'required' => false
-//            ])
+            ->add('invitedBy', TextType::class, [
+                'label' => 'invited.by',
+                'help' => 'invited.by.help',
+                'mapped' => false,
+                'required' => false
+            ])
 //            ->add('agreeTerms', CheckboxType::class, [
 //                'mapped' => false,
 //                'label_attr' => ['class' => 'checkbox-custom'],

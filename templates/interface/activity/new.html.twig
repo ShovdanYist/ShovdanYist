@@ -2,10 +2,14 @@
 
 {% block title %}{{ 'activity.adding' | trans }}{% endblock %}
 
-{% block body %}
+{% block main %}
 
-    <h1>{{ 'activity.adding' | trans }}</h1>
+    <div class="md-box">
+        <header class="user-title-block">{{ 'activity.adding' | trans }}</header>
 
-    {{ include('interface/activity/_form.html.twig') }}
+        <div class="md-content-padding md-mobile-padding">
+            {{ include('interface/activity/_form.html.twig') }}
+        </div>
+    </div>
 
 {% endblock %}

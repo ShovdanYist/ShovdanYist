@@ -380,7 +380,7 @@ class UserController extends CustomAbstractController
             ->setType('notification')
             ->setOrder(['publishedAt' => 'DESC'])
             ->setCriteria(['receiver' => $user, 'status' => true])
-            ->setLimit(10)
+            ->setLimit(50)
             ->setPage($page);
 
         return $this->render('interface/user/notifications.html.twig', [

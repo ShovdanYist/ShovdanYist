@@ -4,7 +4,7 @@
 
         {% if app.user %}
             <a id="sideNavOpener" href="{{ path('post_new') }}">
-                <i class="far fa-plus-square" style="font-size: 20px; top: -2px; position: relative"></i>
+                <i class="fas fa-plus-circle" style="font-size: 20px; top: -2px; position: relative"></i>
             </a>
         {% else %}
             <a id="sideNavOpener" href="{{ path('app_login') }}">
@@ -24,7 +24,9 @@
         </a>
 
         <a class="navbar-search-opener" id="openNavbarSearch" href="javascript:void(0)">
-            <i class="fas fa-search"></i>
+            <span>
+                <i class="fas fa-search"></i>
+            </span>
         </a>
 
         <div class="navbar-search-mobile" id="navbarSearch">
@@ -97,30 +99,9 @@
                         <div class="dropdown-menu dropdown-menu-right">
 
                             <a class="dropdown-item" href="{{ path('post_new') }}">
-                                <i class="fas fa-plus-square"></i>
+                                <i class="fas fa-plus-circle"></i>
                                 {{ 'add.post' | trans }}
                             </a>
-
-                            {% if is_granted('ROLE_OWNER') %}
-
-                                <span class="dropdown-divider"></span>
-
-                                <a class="dropdown-item" href="{{ path('users_index') }}">
-                                    <i class="fas fa-users"></i>
-                                    {{ 'users' | trans }}
-                                </a>
-
-                                <a class="dropdown-item" href="{{ path('activities_index') }}">
-                                    <i class="fas fa-briefcase"></i>
-                                    {{ 'activities' | trans }}
-                                </a>
-
-                                <a class="dropdown-item" href="{{ path('tags_index') }}">
-                                    <i class="fas fa-tag"></i>
-                                    {{ 'tags' | trans }}
-                                </a>
-
-                            {% endif %}
 
                             <span class="dropdown-divider"></span>
 

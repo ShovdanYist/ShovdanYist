@@ -4,8 +4,8 @@
 
 {% block main_top %}
     {{ breadcrumb({
-        (is_granted('ROLE_OWNER')) ? path('moderation_index') : '' : 'moderation' | trans,
-        'active' : ('posts' | trans),
+        (path('user_profile', {'username': app.user.username} )) : (app.user.username),
+        'active' : ('post.moderation' | trans),
     }) }}
 {% endblock %}
 
@@ -14,7 +14,11 @@
     {% for post in posts %}
         {{ postView(post, 'moderation') }}
     {% else%}
-        <div class="md-box md-content-padding">{{ 'no.posts.in.moderation' | trans }}</div>
+        <div class="md-box md-content-padding">
+            <div class="not-have-message not-have-message-center">
+                <i class="far fa-sticky-note" style="margin-right: 5px"></i>{{ 'no.posts.in.moderation' | trans }}
+            </div>
+        </div>
     {% endfor %}
 
     {{ paginator.display() }}

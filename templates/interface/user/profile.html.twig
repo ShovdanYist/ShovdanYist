@@ -38,7 +38,7 @@
 
         </header>
 
-        <div class="md-content-padding md-profile-head">
+        <div class="md-content-padding md-mobile-padding">
 
             {% if user.profile.avatar != 'avatar.jpg' %}
 
@@ -152,48 +152,6 @@
 
             <div class="form-spoiler" style="margin: 10px 12px">
 
-                <a class="collapsed message" data-toggle="collapse" data-target="#moderatorProfileMenu" aria-controls="navbarToggleExternalContent" aria-expanded="false">
-                    {{ 'moderation' | trans }} <i></i>
-                </a>
-
-                <div class="collapse" id="moderatorProfileMenu" style="margin: 4px 0 0;">
-
-                    <div style="display: flex;justify-content: space-around">
-
-                        {% if is_granted('ROLE_OWNER') %}
-                            <a class="btn btn-primary" href="{{ path('moderation_index') }}">
-                                <i class="fas fa-toolbox"></i>
-                            </a>
-                        {% endif %}
-
-                        {% if is_granted('ROLE_SONG_MODERATOR') or hasOnlyAuthorRightsInSongs(app.user) %}
-                            <a class="btn btn-primary" href="{{ path('moderation_music') }}">
-                                <i class="fas fa-play-circle"></i>
-                            </a>
-                        {% endif %}
-
-                        {% if is_granted('ROLE_POST_MODERATOR') %}
-                            <a class="btn btn-primary" href="{{ path('moderation_posts') }}">
-                                <i class="fas fa-id-card"></i>
-                            </a>
-                        {% endif %}
-
-                        {% if is_granted('ROLE_USER_ACTIONS') %}
-                            <a class="btn btn-primary" href="{{ path('moderation_actions') }}">
-                                <i class="fas fa-hand-point-up"></i>
-                            </a>
-                        {% endif %}
-
-                    </div>
-
-                </div>
-
-            </div>
-
-            <hr class="m-0" style="border-color: #eef1f5">
-
-            <div class="form-spoiler" style="margin: 10px 12px">
-
                 <a class="collapsed message" data-toggle="collapse" data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false">
                     {{ 'statistics' | trans }} <i></i>
                 </a>
@@ -217,13 +175,53 @@
 
         {% endif %}
 
+        {% set pathname = app.request.get('_route') %}
+
         <div class="md-profile-posts-menu">
-            <a href="{{ path('user_profile', {'username':user.username}) }}" {% if type == 'profile' %}class="active"{% endif %}>
+            <a href="{{ path('user_profile', {'username':user.username}) }}" {% if pathname == 'user_profile' %}class="active"{% endif %}>
                 <i class="fas fa-th"></i>
             </a>
-            <a href="{{ path('user_tagged', {'username':user.username}) }}" {% if type == 'tagged' %}class="active"{% endif %}>
+            <a href="{{ path('user_tagged', {'username':user.username}) }}" {% if pathname == 'user_tagged' %}class="active"{% endif %}>
                 <i class="fas fa-user-tag"></i>
             </a>
+
+            {% if app.user == user and not is_granted('ROLE_OWNER') %}
+
+                {% if is_granted('ROLE_POST_MODERATOR') %}
+                    <a href="{{ path('moderation_posts') }}">
+                        <i class="fas fa-sticky-note"></i>
+                        {% if postModerationCount() != 0 %}
+                            <span class="md-profile-menu-indicator">
+                                {% if postModerationCount() > 99 %}
+                                    99+
+                                {% else %}
+                                    {{ postModerationCount() }}
+                                {% endif %}
+                            </span>
+                        {% endif %}
+                    </a>
+                {% endif %}
+
+                {% if is_granted('ROLE_SONG_MODERATOR') or hasOnlyAuthorRightsInSongs(app.user) %}
+                    <a href="{{ path('moderation_music') }}">
+                        <i class="fas fa-play-circle"></i>
+                    </a>
+                {% endif %}
+
+                {% if is_granted('ROLE_USER_ACTIONS') %}
+                    <a href="{{ path('moderation_actions') }}">
+                        <i class="fas fa-hand-point-up"></i>
+                    </a>
+                {% endif %}
+
+            {% elseif app.user == user and is_granted('ROLE_OWNER')%}
+
+                <a href="{{ path('moderation_index') }}">
+                    <i class="fas fa-toolbox"></i>
+                </a>
+
+            {% endif %}
+
         </div>
 
         <div class="md-grid-posts">
@@ -264,7 +262,7 @@
 
             {% else %}
 
-                <div class="profile-no-posts">
+                <div class="profile-no-posts not-have-message">
                     <i class="far fa-clone" style="margin-right: 3px"></i>
                     {% if type == 'profile' %}
                         {% if app.user == user %}

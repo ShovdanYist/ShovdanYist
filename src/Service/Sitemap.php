@@ -59,6 +59,7 @@ class Sitemap
 
         $urls[] = ['loc' => $this->generator->generate('app_login')];
         $urls[] = ['loc' => $this->generator->generate('app_register')];
+        $urls[] = ['loc' => $this->generator->generate('app_account_recovery')];
 
         // Song urls
         foreach ($this->em->getRepository(Song::class)->findBy(['status' => true]) as $song) {
@@ -70,16 +71,6 @@ class Sitemap
             ];
         }
 
-        // Posts urls
-        foreach ($this->em->getRepository(Post::class)->findBy(['status' => true]) as $post) {
-            $urls[] = [
-                'loc' => $this->generator->generate('post_show', [
-                    'slug' => $post->getSlug()
-                ]),
-                'lastmod' => $post->getUpdatedAt()->format('Y-m-d')
-            ];
-        }
-
         // People urls
         foreach ($this->em->getRepository(Person::class)->findActiveSongsPeopleByActivity('vocalist') as $person) {
             $urls[] = [
@@ -87,6 +78,40 @@ class Sitemap
                     'slug' => $person->getSlug()
                 ]),
                 'lastmod' => $person->getUpdatedAt()->format('Y-m-d')
+            ];
+        }
+
+        // Response creation
+        $response = new Response(
+            $this->twig->render('interface/layouts/service/sitemap.html.twig', [
+                'urls' => $urls,
+                'hostname' => $hostname
+            ]),
+            200
+        );
+
+        // HTTP headers
+        $response->headers->set('Content-Type', 'text/xml');
+
+        return $response;
+    }
+
+    /**
+     * @throws RuntimeError
+     * @throws SyntaxError
+     * @throws LoaderError
+     */
+    public function postsUrls($hostname): Response
+    {
+        $urls = [];
+
+        // Posts urls
+        foreach ($this->em->getRepository(Post::class)->findBy(['status' => true]) as $post) {
+            $urls[] = [
+                'loc' => $this->generator->generate('post_show', [
+                    'id' => $post->getId()
+                ]),
+                'lastmod' => $post->getUpdatedAt()->format('Y-m-d')
             ];
         }
 

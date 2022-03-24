@@ -2,11 +2,15 @@
 
 {% block title %}{{ 'person.adding' | trans }}{% endblock %}
 
-{% block body %}
+{% block main %}
 
-    <h1>{{ 'person.adding' | trans }}</h1>
+    <div class="md-box">
+        <header class="user-title-block">{{ 'person.adding' | trans }}</header>
 
-    {{ include('interface/person/_form.html.twig') }}
+        <div class="md-content-padding md-mobile-padding">
+            {{ include('interface/person/_form.html.twig') }}
+        </div>
+    </div>
 
 {% endblock %}
 

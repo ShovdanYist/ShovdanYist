@@ -14,8 +14,13 @@
     {% endif %}
 
     <span class="date">
-        {{ post.publishedAt ? post.publishedAt | format_datetime('medium', 'none', '', 'UTC') }}
-        в
+        {{ post.publishedAt ? post.publishedAt | date('d') | replace({'0':''}) }}
+        {{ ('month' ~ post.publishedAt | date("m")) | trans }}
+
+        {% if "now" | date("Y") != post.publishedAt | date('Y') %}
+            {{ post.publishedAt ? post.publishedAt | date('Y') }}
+        {% endif %}
+
         {{ post.publishedAt ? post.publishedAt | date(' H:i') }}
     </span>
 

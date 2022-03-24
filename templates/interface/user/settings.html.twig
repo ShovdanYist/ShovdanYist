@@ -8,7 +8,7 @@
 
         <header class="user-title-block">{{ 'settings' | trans }}</header>
 
-        <div class="md-content-padding">
+        <div class="md-content-padding md-mobile-padding">
 
             {{ form_start(form) }}
 
@@ -50,8 +50,8 @@
 {% block main_bottom %}
 
     {% if user == app.user %}
-        <div class="mx-5 my-3 text-center">
-            {{ 'you.also.can' | trans }} <a href="{{ path('user_reset') }}">{{ 'reset.password' | trans | lower }}</a> {{ 'or' | trans }} <a href="{{ path('user_delete_account') }}">{{ 'delete.account' | trans | lower }}.</a>
+        <div class="settings-footer">
+            {{ 'you.also.can' | trans }} <a style="font-weight: 600" href="{{ path('user_reset') }}">{{ 'reset.password' | trans | lower }}</a> {{ 'or' | trans }} <a style="font-weight: 600" href="{{ path('user_delete_account') }}">{{ 'delete.account' | trans | lower }}.</a>
         </div>
     {% endif %}
 
