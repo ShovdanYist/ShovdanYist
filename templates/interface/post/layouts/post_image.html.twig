@@ -6,12 +6,8 @@
         {% set post_image_link = vich_uploader_asset(post) | imagine_filter('post') %}
     {% endif %}
 
-    {% if view == 'show' %}
+    <div class="post-liker">
         <img class="post-image" width="100%" src="{{ post_image_link }}" alt="{{ post.slug }}">
-    {% else %}
-        <a href="{{ path('post_show', {'id':post.id}) }}">
-            <img class="post-image" width="100%" src="{{ post_image_link }}" alt="{{ post.slug }}">
-        </a>
-    {% endif %}
+    </div>
 
 {% endif %}

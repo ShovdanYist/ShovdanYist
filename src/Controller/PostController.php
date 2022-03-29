@@ -105,10 +105,9 @@ class PostController extends CustomAbstractController
      * @Route("/post/{id}/{page<\d+>?1}", name="post_show")
      * @param Post $post
      * @param $page
-     * @param Defender $defender
      * @return Response
      */
-    public function show(Post $post, $page, Defender $defender): Response
+    public function show(Post $post, $page): Response
     {
         if ($post->getAuthor() === $this->getUser() || $this->isGranted('ROLE_POST_MODERATOR') || $post->getStatus() === true) {
 

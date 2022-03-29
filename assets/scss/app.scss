@@ -2888,10 +2888,26 @@ select {
   color: #1f5887;
 }
 
+.post-collapse.closed {
+  max-height: 46px;
+  overflow: hidden;
+}
+
+.post-collapse-more {
+  display: none;
+  margin: 6px 0;
+}
+
+.post-collapse-more span {
+  font-size: 13px;
+  cursor: pointer;
+  color: #909499;
+}
+
 .tagged-users {
   display: table;
   width: 100%;
-  margin-bottom: 4px;
+  margin: 8px 0 4px;
 }
 
 .tagged-user {
@@ -2912,6 +2928,69 @@ select {
 
 .likes-count a {
   color: #000;
+}
+
+@keyframes like-heart-animation {
+  0%,
+  to {
+    opacity: 0;
+    -webkit-transform: scale(0);
+  }
+  15% {
+    opacity: 0.9;
+    -webkit-transform: scale(1.2);
+  }
+  30% {
+    -webkit-transform: scale(0.95);
+  }
+  45%,
+  80% {
+    opacity: 0.9;
+    -webkit-transform: scale(1);
+  }
+}
+
+.post-liker {
+  cursor: pointer;
+  margin-bottom: 12px;
+}
+
+.post-liker .post-image {
+  margin: unset;
+}
+
+.post-liker.like::before {
+  content: "\f004";
+  font-family: "Font Awesome 5 Free", sans-serif;
+  font-weight: 900;
+  position: absolute;
+  left: calc(50% - 30px);
+  top: calc(50% - 45px);
+  transform: translateY(-50%);
+  font-size: 60px;
+  color: #fff;
+  animation: 1s like-heart-animation ease-in-out forwards;
+}
+
+.post-liker.like {
+  position: relative;
+}
+
+.post-liker.dislike::before {
+  content: "\f7a9";
+  font-family: "Font Awesome 5 Free", sans-serif;
+  font-weight: 900;
+  position: absolute;
+  left: calc(50% - 30px);
+  top: calc(50% - 45px);
+  transform: translateY(-50%);
+  font-size: 60px;
+  color: #fff;
+  animation: 1s like-heart-animation ease-in-out forwards;
+}
+
+.post-liker.dislike {
+  position: relative;
 }
 
 .feed-types {

@@ -130,9 +130,9 @@
 
                 <span class="md-fullname">{{ profile.fullname }}</span>
 
-                {% if is_role(profile.user,'ROLE_MODERATOR') %}
-                    <span class="text-muted">Администрация ShovdanYist</span>
-                {% endif %}
+{#                {% if is_role(profile.user,'ROLE_MODERATOR') %}#}
+{#                    <span class="text-muted">Администрация ShovdanYist</span>#}
+{#                {% endif %}#}
 
                 <div class="md-bio">
                     {{ profile.about | raw }}

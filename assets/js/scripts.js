@@ -207,3 +207,21 @@ $('.username-input').on('keypress', function (event) {
         return false;
     }
 });
+
+// Post collapse
+const postCollapse = document.querySelectorAll('.post-collapse');
+
+postCollapse.forEach((post) => {
+    function openCollapsedPost() {
+        this.style.display = 'none';
+        document.getElementById('postCollapse' + postId).classList.remove('closed');
+    }
+
+    let postId = post.id.replace('postCollapse', '');
+
+    if (post.querySelector('div').clientHeight > 50) {
+        document.getElementById('postCollapseButton' + postId).style.display = 'block';
+    }
+
+    document.getElementById('postCollapseButton' + postId).addEventListener('click', openCollapsedPost);
+});

@@ -1,4 +1,4 @@
-<div class="md-post">
+<div class="md-post" id="postId{{ post.id }}">
 
     <div class="md-box md-content-padding">
 
@@ -101,7 +101,16 @@
                     </div>
                 {% endif %}
             {% else %}
-                {{ postDescription(post) }}
+                {% if post.content %}
+                    <div class="post-collapse closed" id="postCollapse{{ post.id }}">
+                        <div class="ckeditor-content md-margin-bottom">
+                            {{ post.content | raw }}
+                        </div>
+                    </div>
+                    <div class="post-collapse-more" id="postCollapseButton{{ post.id }}">
+                        <span>{{ 'more' | trans }} <i class="fas fa-angle-down"></i></span>
+                    </div>
+                {% endif %}
             {% endif %}
 
             {{ postTaggedUsers(post) }}

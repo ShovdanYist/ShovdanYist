@@ -180,3 +180,41 @@ function likePost(event) {
 like.forEach((like) => {
     like.addEventListener('click', likePost);
 });
+
+// Post double-click like
+
+document.querySelectorAll('.md-post').forEach((post) => {
+    let postId = post.id.replace('postId', '');
+    post.querySelector('.post-image').addEventListener('dblclick',(event) => {
+        let postLiker = post.querySelector('.like-toggle');
+        let url = postLiker.href;
+
+        axios.get(url).then((response) => {
+            let status = String(response.data.response.status);
+            (status === 'added') ? postLiker.classList.add('added') : postLiker.classList.remove('added');
+
+            let postLikeCounter = 'post-like-counter-' + postLiker.id.replace('post-like-','');
+            let currentLikes = parseInt(document.getElementById(postLikeCounter).innerHTML);
+
+            if (status === 'added') {
+                post.querySelector('.post-liker').classList.add('like');
+                setTimeout(() => {
+                    post.querySelector('.post-liker').classList.remove('like');
+                }, 1000);
+                document.getElementById(postLikeCounter).innerHTML = currentLikes + 1;
+            } else  {
+                post.querySelector('.post-liker').classList.add('dislike');
+                setTimeout(() => {
+                    post.querySelector('.post-liker').classList.remove('dislike');
+                }, 1000);
+                document.getElementById(postLikeCounter).innerHTML = currentLikes - 1;
+            }
+
+            setTimeout(() => {
+                [postLiker].forEach((switcher) => {
+                    switcher.style.pointerEvents = 'auto';
+                })
+            }, 100);
+        })
+    });
+});
