@@ -66,6 +66,7 @@ browse: Выбрать
 change: Изменить
 update: Обновить
 more: Еще
+and: И
 
 # PROFILE
 
@@ -334,6 +335,8 @@ replied.you.with.comment.users: "и другие ответили на ваш к
 commented.your.post.male: "оставил комментарий на вашу публикацию"
 commented.your.post.female: "оставила комментарий на вашу публикацию"
 commented.your.post.users: "и другие оставили комментарии на вашу публикацию"
+
+like.your.post: "понравилась ваша публикация"
 
 rejected.your.post: "отклонил вашу публикацию"
 approved.your.post: "утвердил вашу публикацию"

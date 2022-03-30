@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\CustomAbstracts\CustomAbstractController;
 use App\Entity\Like;
+use App\Entity\Notification;
 use App\Entity\Post;
 use App\Entity\User;
 use App\Service\Paginator;
@@ -52,6 +53,11 @@ class LikeController extends CustomAbstractController
         $em = $this->getDoctrine()->getManager();
 
         if ($like) {
+            $notification = $this->getDoctrine()->getRepository(Notification::class)->findOneBy(['post' => $post, 'type' => 'post_like', 'sender' => $this->user()]);
+            if ($notification) {
+                $em->remove($notification);
+            }
+
             $this->user()->removeLike($like);
             $response = ['status' => 'removed'];
         } else {
@@ -60,6 +66,29 @@ class LikeController extends CustomAbstractController
             $like->setPost($post);
             $em->persist($like);
             $response = ['status' => 'added'];
+
+            if ($post->getAuthor() !== $this->user()) {
+                $existNotify = $this->getDoctrine()->getRepository(Notification::class)->findOneBy(['post' => $post, 'type' => 'post_like']);
+
+                if ($existNotify) {
+                    if ($existNotify->getSeen()) {
+                        $existNotify->setSeen(false);
+                        $existNotify->setQuantity(1);
+                    } elseif ($existNotify->getSender() !== $this->user() || $existNotify->getQuantity() > 1) {
+                        $existNotify->setQuantity($existNotify->getQuantity() + 1);
+                    }
+                    $existNotify->setPublishedAt(new \DateTime('now'));
+                    $existNotify->setSender($this->user());
+                } else {
+                    $notification = new Notification();
+                    $notification->setType('post_like');
+                    $notification->setReceiver($post->getAuthor());
+                    $notification->setPost($post);
+                    $notification->setQuantity(1);
+                    $notification->setSender($this->user());
+                    $em->persist($notification);
+                }
+            }
         }
 
         $em->flush();

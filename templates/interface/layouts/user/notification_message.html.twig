@@ -46,11 +46,11 @@
     {% if notification.quantity == 1 %}
         {% if notification.comment.song %}
             <a class="notify-message-link" href="{{ path('song_show', {'slug': notification.comment.song.slug}) }}">
-                <span style="font-weight: 500">{{ notification.comment.message }}</span>
+                {{ notification.comment.message }}
             </a>
         {% else %}
             <a class="notify-message-link" href="{{ path( 'post_show', {'id': notification.comment.post.id}) }}">
-                <span style="font-weight: 500">{{ notification.comment.message }}</span>
+                {{ notification.comment.message }}
             </a>
         {% endif %}
     {% endif %}
@@ -68,14 +68,24 @@
     {% if notification.quantity == 1 %}
         {% if notification.comment.song %}
             <a class="notify-message-link" href="{{ path('song_show', {'slug': notification.comment.song.slug}) }}">
-                <span style="font-weight: 500">{{ notification.comment.message }}</span>
+                {{ notification.comment.message }}
             </a>
         {% else %}
             <a class="notify-message-link" href="{{ path( 'post_show', {'id': notification.comment.post.id}) }}">
-                <span style="font-weight: 500">{{ notification.comment.message }}</span>
+                {{ notification.comment.message }}
             </a>
         {% endif %}
     {% endif %}
+
+{% elseif notification.type == 'post_like' %}
+
+    {% if notification.quantity > 1 %}
+        <a href="{{ path('user_profile', {'username' : notification.sender.username}) }}" style="font-weight: 600">
+            {{ 'and' | trans | lower }} {{ 'more' | trans | lower }} {{ notification.quantity - 1 }}
+        </a>
+    {% endif %}
+
+    {{ 'like.your.post' | trans }}
 
 {% elseif notification.type == 'post_approved' %}
 
@@ -84,9 +94,7 @@
 {% elseif notification.type == 'post_rejected' %}
 
     {{ 'rejected.your.post'| trans }}
-
     {{ 'for.next.reason' | trans }}:
-
-    <span style="font-weight: 500">{{ notification.message }}</span>
+    {{ notification.message }}
 
 {% endif %}
