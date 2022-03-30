@@ -24,7 +24,6 @@
                     {{ song.releaseDate ? song.releaseDate | date('d') }}
                 {% endif %}
 
-                {{ song.releaseDate ? song.releaseDate | date('d') | replace({'0':''}) }}
                 {{ ('month' ~ song.releaseDate | date("m")) | trans }}
 
                 {% if "now" | date("Y") != song.releaseDate | date('Y') %}
@@ -56,8 +55,12 @@
     <div>
         {% if song.publicationDate %}
             <strong>{{ 'publication.date' | trans }}</strong><br>
+            {% if song.publicationDate | date('d') | slice(0,1) == 0 %}
+                {{ song.publicationDate ? song.publicationDate | date('d') | replace({'0':''}) }}
+            {% else %}
+                {{ song.publicationDate ? song.publicationDate | date('d') }}
+            {% endif %}
 
-            {{ song.publicationDate ? song.publicationDate | date('d') }}
             {{ ('month' ~ song.publicationDate | date("m")) | trans }}
 
             {% if "now" | date("Y") != song.publicationDate | date('Y') %}
