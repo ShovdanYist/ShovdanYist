@@ -18,6 +18,12 @@
         {% if song.releaseDate %}
             <strong>{{ 'premiere.date' | trans }}</strong>
             <span class="badge badge-primary">
+                {% if song.releaseDate | date('d') | slice(0,1) == 0 %}
+                    {{ song.releaseDate ? song.releaseDate | date('d') | replace({'0':''}) }}
+                {% else %}
+                    {{ song.releaseDate ? song.releaseDate | date('d') }}
+                {% endif %}
+
                 {{ song.releaseDate ? song.releaseDate | date('d') | replace({'0':''}) }}
                 {{ ('month' ~ song.releaseDate | date("m")) | trans }}
 

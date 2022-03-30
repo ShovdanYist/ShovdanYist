@@ -25,7 +25,12 @@
             <br>
 
             <small class="text-muted">
-                {{ notification.publishedAt ? notification.publishedAt | date('d') | replace({'0':''}) }}
+                {% if notification.publishedAt | date('d') | slice(0,1) == 0 %}
+                    {{ notification.publishedAt ? notification.publishedAt | date('d') | replace({'0':''}) }}
+                {% else %}
+                    {{ notification.publishedAt ? notification.publishedAt | date('d') }}
+                {% endif %}
+
                 {{ ('month' ~ notification.publishedAt | date("m")) | trans }}
 
                 {% if "now" | date("Y") != notification.publishedAt | date('Y') %}
