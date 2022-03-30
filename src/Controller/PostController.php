@@ -32,7 +32,7 @@ class PostController extends CustomAbstractController
             ->setMethod('findRecommendations')
             ->setOrder(['publishedAt' => 'DESC'])
             ->setCriteria(['gender' => $gender, 'status' => true, 'featured' => true])
-            ->setLimit(10)
+            ->setLimit(15)
             ->setPage($page)
         ;
 
@@ -58,7 +58,7 @@ class PostController extends CustomAbstractController
             ->setMethod('findFeedPosts')
             ->setOrder(['publishedAt' => 'DESC'])
             ->setCriteria(['following' => $following, 'status' => true])
-            ->setLimit(10)
+            ->setLimit(15)
             ->setPage($page)
         ;
 

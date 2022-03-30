@@ -314,6 +314,7 @@ li {
   right: 3px;
   top: 1px;
   position: relative;
+  cursor: pointer;
 }
 
 .unfollow:hover {
@@ -2748,11 +2749,11 @@ select {
 }
 
 .page-link:hover {
-  background-color: $info;
+  background-color: #3c3c3c;
 }
 
 .page-item.active .page-link {
-  background-color: $info;
+  background-color: #3c3c3c;
 }
 
 .page-item.disabled .page-link {

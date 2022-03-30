@@ -19,7 +19,7 @@ class PostRepository extends ServiceEntityRepository
         parent::__construct($registry, Post::class);
     }
 
-    public function findRecommendations($criteria, $orderBy = ['id' => 'DESC'], $limit = 10, $offset = 0)
+    public function findRecommendations($criteria, $orderBy = ['id' => 'DESC'], $limit = null, $offset = null)
     {
         $qb = $this->createQueryBuilder('p');
 
@@ -45,7 +45,7 @@ class PostRepository extends ServiceEntityRepository
         return $qb->getQuery()->getResult();
     }
 
-    public function findFeedPosts($criteria, $orderBy = ['id' => 'DESC'], $limit = 10, $offset = 0)
+    public function findFeedPosts($criteria, $orderBy = ['id' => 'DESC'], $limit = null, $offset = null)
     {
         $qb = $this->createQueryBuilder('p');
 
@@ -71,7 +71,7 @@ class PostRepository extends ServiceEntityRepository
         return $qb->getQuery()->getResult();
     }
 
-    public function findUserTaggedPosts($criteria, $orderBy = ['id' => 'DESC'], $limit = 10, $offset = 0)
+    public function findUserTaggedPosts($criteria, $orderBy = ['id' => 'DESC'], $limit = null, $offset = null)
     {
         $qb = $this->createQueryBuilder('p');
 
@@ -91,7 +91,7 @@ class PostRepository extends ServiceEntityRepository
         return $qb->getQuery()->getResult();
     }
 
-    public function findByKeyword($keyword, $orderBy = ['id' => 'DESC'], $limit = null, $offset = 0)
+    public function findByKeyword($keyword, $orderBy = ['id' => 'DESC'], $limit = null, $offset = null)
     {
         $qb = $this->createQueryBuilder('p');
 
@@ -111,7 +111,7 @@ class PostRepository extends ServiceEntityRepository
         return $qb->getQuery()->getResult();
     }
 
-    public function findUserBookmarks($criteria, $orderBy = ['id' => 'DESC'], $limit = 10, $offset = 0)
+    public function findUserBookmarks($criteria, $orderBy = ['id' => 'DESC'], $limit = null, $offset = null)
     {
         $qb = $this->createQueryBuilder('p');
 
@@ -141,7 +141,7 @@ class PostRepository extends ServiceEntityRepository
         return $qb->getQuery()->getResult();
     }
 
-    public function findPosts($criteria = [], $orderBy = ['id' => 'DESC'], $limit = 10, $offset = 0)
+    public function findPosts($criteria = [], $orderBy = ['id' => 'DESC'], $limit = null, $offset = null)
     {
         $qb = $this->createQueryBuilder('p');
 
