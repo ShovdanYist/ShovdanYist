@@ -1,14 +1,14 @@
 {
   "entrypoints": {
-    "app": {
+    "app2": {
       "js": [
         "/build/runtime.js",
         "/build/vendors-node_modules_fortawesome_fontawesome-free_js_all_js-node_modules_fortawesome_fontawes-a7977b.js",
-        "/build/app.js"
+        "/build/app2.js"
       ],
       "css": [
         "/build/vendors-node_modules_fortawesome_fontawesome-free_js_all_js-node_modules_fortawesome_fontawes-a7977b.css",
-        "/build/app.css"
+        "/build/app2.css"
       ]
     }
   }
