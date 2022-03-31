@@ -24,4 +24,13 @@ class CustomAbstractController extends AbstractController
     {
         return $this->getDoctrine()->getRepository(User::class)->findOneBy(['username' => $this->getUser()->getUsername()]);
     }
+
+    public function updateLastActivity()
+    {
+        if ($this->getUser()) {
+            $em = $this->getDoctrine()->getManager();
+            $this->user()->setLastActivityAt(new \DateTime('now'));
+            $em->flush();
+        }
+    }
 }

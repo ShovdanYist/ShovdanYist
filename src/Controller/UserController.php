@@ -110,6 +110,7 @@ class UserController extends CustomAbstractController
      */
     public function profile(User $user, $page, Paginator $paginator, Defender $defender): Response
     {
+        $this->updateLastActivity();
         if (!$defender->isGranted($this->getUser(),'ROLE_GUEST') && $user === $this->user() || $this->isGranted('ROLE_POST_MODERATOR')) {
             $criteria = ['author' => $user];
         } else {
@@ -252,6 +253,11 @@ class UserController extends CustomAbstractController
                     'class' => ($user->getEmail() != $user->getConfirmedEmail()) ? 'is-invalid' : null,
                 ]
             ])
+            ->add('hideOnline', CheckboxType::class, [
+                'label' => 'hide.online',
+                'required' => false,
+                'label_attr' => ['class' => 'switch-custom']
+            ])
             ->getForm();
 
         if ($this->isGranted('ROLE_OWNER') && $user !== $this->user()) {
@@ -359,6 +365,7 @@ class UserController extends CustomAbstractController
      */
     public function notifications($page, NotificationRepository $notifyRepo, UserRepository $userRepo, Paginator $paginator): Response
     {
+        $this->updateLastActivity();
         $user = $userRepo->findOneBy(['username' => $this->getUser()->getUsername()]);
 
         if ($notifyRepo->count(['receiver' => $user]) > 100) {
@@ -420,6 +427,7 @@ class UserController extends CustomAbstractController
      */
     public function playlist($page, Paginator $paginator): Response
     {
+        $this->updateLastActivity();
         $paginator
             ->setParameters(['username' => $this->user()->getUsername()])
             ->setMethod('findUserPlaylist')

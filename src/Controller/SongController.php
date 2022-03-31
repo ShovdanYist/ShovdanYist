@@ -23,6 +23,7 @@ class SongController extends CustomAbstractController
      */
     public function index(): Response
     {
+        $this->updateLastActivity();
         return $this->render('interface/song/index.html.twig');
     }
 
@@ -127,6 +128,7 @@ class SongController extends CustomAbstractController
      */
     public function show(Song $song, $page, Initializer $initializer): Response
     {
+        $this->updateLastActivity();
         if ($song->getStatus() != true && !$this->isGranted('ROLE_OWNER')) {
             return $this->redirectToRoute('person_show', [
                 'slug' => $song->getVocalist()->getSlug()

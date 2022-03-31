@@ -184,6 +184,16 @@ class User implements UserInterface
      */
     private $receivedMessages;
 
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $lastActivityAt;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $hideOnline;
+
     public function __construct()
     {
         $this->songs = new ArrayCollection();
@@ -912,6 +922,30 @@ class User implements UserInterface
                 $receivedMessage->setReceiver(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getLastActivityAt(): ?\DateTimeInterface
+    {
+        return $this->lastActivityAt;
+    }
+
+    public function setLastActivityAt(?\DateTimeInterface $lastActivityAt): self
+    {
+        $this->lastActivityAt = $lastActivityAt;
+
+        return $this;
+    }
+
+    public function getHideOnline(): ?bool
+    {
+        return $this->hideOnline;
+    }
+
+    public function setHideOnline(bool $hideOnline): self
+    {
+        $this->hideOnline = $hideOnline;
 
         return $this;
     }

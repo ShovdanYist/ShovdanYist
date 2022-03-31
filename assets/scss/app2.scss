@@ -2125,6 +2125,69 @@ td {
   border-radius: 3px;
 }
 
+.online-users-title {
+  color: #999;
+  padding: 12px 20px 6px;
+}
+
+.online-users-list {
+  display: flex;
+  overflow: auto;
+}
+
+.online-users-list .back-picture {
+  display: table;
+  float: left;
+  min-width: 50px;
+  min-height: 50px;
+}
+
+.online-users-block {
+  padding: 0 12px 12px;
+  position: relative;
+  border-bottom: 1px solid #eef1f5;
+}
+
+.online-users-block::before, .online-users-block::after {
+  content: "";
+  width: 15px;
+  position: absolute;
+  height: 50px;
+  display: block;
+  top: 0;
+}
+
+.online-users-block::before {
+  background: -moz-linear-gradient(left, rgb(255, 255, 255) 0%, rgba(255,255,255,0) 100%);
+  left: 12px;
+  z-index: 1;
+}
+
+.online-users-block::after{
+  background: -moz-linear-gradient(right, rgb(255, 255, 255) 0%, rgba(255,255,255,0) 100%);
+  right: 12px;
+}
+
+.online-users-list a {
+  margin-right: 12px;
+  position: relative;
+}
+
+.online-users-list a:first-child {
+  margin-left: 12px;
+}
+
+.online-user-status {
+  background: #17c674;
+  border-radius: 10px;
+  position: absolute;
+  display: table;
+  height: 8px;
+  width: 8px;
+  right: 3px;
+  top: 3px;
+}
+
 // Login & Register forms
 
 .form-signin-info {

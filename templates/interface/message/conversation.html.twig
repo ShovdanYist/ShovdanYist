@@ -93,9 +93,15 @@
                                     {{ message.sentAt ? message.sentAt | date('Y') }}
                                     {{ message.sentAt ? message.sentAt | date('G:i') }}
                                 {% endif %}
+                                {% if message.sender == app.user %}
+                                    {% if message.seen and not message.receiver.hideOnline %}
+                                        <i style="font-size: 8px" class="fas fa-check-double"></i>
+                                    {% else %}
+                                        <i style="font-size: 8px" class="fas fa-check"></i>
+                                    {% endif %}
+                                {% endif %}
                             </small>
                         </div>
-
                     </div>
 
                 {% else %}

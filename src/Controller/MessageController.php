@@ -23,6 +23,7 @@ class MessageController extends CustomAbstractController
      */
     public function index(): Response
     {
+        $this->updateLastActivity();
         $conversations = $this->getDoctrine()->getRepository(User::class)->findConversations($this->user()->getId());
         $users = [];
 
@@ -30,8 +31,11 @@ class MessageController extends CustomAbstractController
             $users[] = $this->getDoctrine()->getRepository(User::class)->findOneBy(['id' => $conversation['user']]);
         }
 
+        $onlineUsers = $this->getDoctrine()->getRepository(User::class)->findOnlineFollows(['user' => $this->user(), 'type' => 'following']);
+
         return $this->render('interface/message/conversations.html.twig', [
-            'users' => $users
+            'users' => $users,
+            'onlineUsers' => $onlineUsers
         ]);
     }
 

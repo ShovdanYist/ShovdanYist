@@ -91,6 +91,37 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         return $qb->getQuery()->getResult();
     }
 
+    public function findOnlineFollows($criteria, $orderBy = ['id' => 'DESC'], $limit = null, $offset = 0)
+    {
+        $qb = $this->createQueryBuilder('u');
+
+        if ($criteria['type'] === 'followers') {
+            $qb->join('u.following', 'f')
+                ->where('f.followed = :user');
+        } elseif ($criteria['type'] === 'following') {
+            $qb->join('u.followers', 'f')
+                ->where('f.follower = :user');
+        }
+
+        $date = new \DateTime('-5 minute');
+
+        $qb ->andWhere('u.lastActivityAt > :date')
+            ->andWhere('u.hideOnline != true')
+            ->setParameter('date', $date)
+        ;
+
+        $qb->setParameter('user', $criteria['user']);
+
+        foreach ($orderBy as $key => $value) {
+            $qb->orderBy('f.'.$key,$value);
+        }
+
+        $qb ->setMaxResults($limit)
+            ->setFirstResult($offset);
+
+        return $qb->getQuery()->getResult();
+    }
+
     public function findByKeyword($keyword, $orderBy = ['id' => 'DESC'], $limit = null, $offset = 0)
     {
         $qb = $this->createQueryBuilder('u');

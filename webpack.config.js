@@ -20,8 +20,8 @@ Encore
      * Add 1 entry for each "page" of your app
      * (including one that's included on every page - e.g. "app")
      *
-     * Each entry will result in one JavaScript file (e.g. app.js)
-     * and one CSS file (e.g. app.scss) if your JavaScript imports CSS.
+     * Each entry will result in one JavaScript file (e.g. appFile.js)
+     * and one CSS file (e.g. appFile.scss) if your JavaScript imports CSS.
      */
     .addEntry('app2', './assets/js/app2.js')
     //.addEntry('page1', './assets/js/page1.js')

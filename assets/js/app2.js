@@ -5,7 +5,7 @@
  * (and its CSS file) in your base layout (base.html.twig).
  */
 
-// any CSS you import will output into a single scss file (app.scss in this case)
+// any CSS you import will output into a single scss file (appFile.scss in this case)
 import '../scss/app2.scss';
 
 // Awesome fonts

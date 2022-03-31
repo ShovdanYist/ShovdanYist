@@ -73,6 +73,7 @@ status: Статус
 
 profile: Профиль
 my.page: "Моя страница"
+online: "В сети"
 
 notifications: Уведомлении
 statistics: Статистика
@@ -93,6 +94,7 @@ birth.date: "Дата рождения"
 gender: Пол
 gender.male: Мужской
 gender.female: Женский
+hide.online: "Скрыть статус «В сети»"
 
 followers: Подписчики
 following: Подписки

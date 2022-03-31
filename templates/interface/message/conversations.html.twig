@@ -6,6 +6,21 @@
 
     <div class="md-box">
 
+        {% if onlineUsers %}
+            <div class="online-users-title">{{ 'online' | trans }}</div>
+            <div class="online-users-block">
+                <div class="online-users-list">
+                    {% for onlineUser in onlineUsers %}
+                        <a href="{{ path('message_conversation', {'username':onlineUser.username}) }}">
+                            <div class="back-picture bp-50" style="background-image: url('{% if onlineUser.profile.avatar != 'avatar.jpg' %}{{ vich_uploader_asset(onlineUser.profile) | imagine_filter('thumbnail') }}{% else %}{{ asset('assets/images/avatar.jpg') | imagine_filter('thumbnail') }}{% endif %}')">
+                                <span class="online-user-status"></span>
+                            </div>
+                        </a>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endif %}
+
         <div class="md-conversations-list">
 
             {% for user in users %}

@@ -25,6 +25,7 @@ class PostController extends CustomAbstractController
      */
     public function index($page, Paginator $paginator): Response
     {
+        $this->updateLastActivity();
         $gender = ($this->getUser()) ? $this->user()->getProfile()->getGender() : null;
 
         $paginator
