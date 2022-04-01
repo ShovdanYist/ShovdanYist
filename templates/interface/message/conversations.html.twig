@@ -43,7 +43,7 @@
                                 {% endif %}
                             </div>
 
-                            <div class="message{% if lastMessage(user).post %} message-post-preview{% endif %}">
+                            <div class="message{% if lastMessage(user).post %} message-post-preview{% endif %}{% if lastMessage(user).profile %} message-profile-preview{% endif %}">
                                 <div class="text">
                                     <span>
                                         {% if lastMessage(user).sender == app.user %}
@@ -54,9 +54,13 @@
                                             <i class="fas fa-play-circle"></i>
                                             {{ lastMessage(user).song.vocalist.fullName ~ ' - ' ~ lastMessage(user).song.title }}
                                         {% elseif lastMessage(user).post %}
-                                            <div class="back-picture bp-24" style="background-image: url('{% if lastMessage(user).post.image %}{{ vich_uploader_asset(lastMessage(user).post) | imagine_filter('thumbnail') }}{% else %}{{ asset('assets/images/question.jpg') }}{% endif %}'); border-radius: 3px">
+                                            <div class="back-picture bp-24" style="background-image: url('{% if lastMessage(user).post.image %}{{ vich_uploader_asset(lastMessage(user).post) | imagine_filter('thumbnail') }}{% else %}{{ asset('assets/images/question.jpg') }}{% endif %}'); border-radius: 3px; {% if lastMessage(user).sender != app.user %}margin-left: unset !important;{% endif %}">
                                             </div>
                                             {{ 'post' | trans }}
+                                        {% elseif lastMessage(user).profile %}
+                                            <div class="back-picture bp-24" style="background-image: url('{% if lastMessage(user).profile.avatar != 'avatar.jpg' %}{{ vich_uploader_asset(lastMessage(user).profile) | imagine_filter('thumbnail') }}{% else %}{{ asset('assets/images/avatar.jpg') | imagine_filter('thumbnail') }}{% endif %}'); border-radius: 3px; {% if lastMessage(user).sender != app.user %}margin-left: unset !important;{% endif %}">
+                                            </div>
+                                            {{ lastMessage(user).profile.user.username }}
                                         {% else %}
                                             {{ lastMessage(user).content }}
                                         {% endif %}

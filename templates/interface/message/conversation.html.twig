@@ -34,7 +34,7 @@
 
                 {% for message in messages %}
 
-                    <div class="message{% if app.user == message.sender %} me{% endif %}{% if message.song %} audio-message{% endif %}{% if message.post %} post-message{% endif %}">
+                    <div class="message{% if app.user == message.sender %} me{% endif %}{% if message.song %} audio-message{% endif %}{% if message.post %} post-message{% endif %}{% if message.profile %} profile-message{% endif %}">
 
                         <div class="message-actions">
                             <button type="button" class="btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -91,6 +91,14 @@
                                             <span><i class="fas fa-heart"></i> {{ message.post.likes.count }}</span>
                                             <span><i class="fas fa-comment"></i> {{ message.post.comments.count }}</span>
                                         </div>
+                                    </div>
+                                </a>
+                            {% elseif message.profile %}
+                                <a href="{{ path('user_profile', {'username':message.profile.user.username}) }}">
+                                    <div class="user-line">
+                                        <div class="back-picture bp-35" style="background-image: url('{% if message.profile.avatar != 'avatar.jpg' %}{{ vich_uploader_asset(message.profile) | imagine_filter('thumbnail') }}{% else %}{{ asset('assets/images/avatar.jpg') | imagine_filter('thumbnail') }}{% endif %}')">
+                                        </div>
+                                        <div class="user-line-info">{{ message.profile.user.username }}</div>
                                     </div>
                                 </a>
                             {% else %}

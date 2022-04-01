@@ -7,6 +7,7 @@ use App\Entity\Bookmark;
 use App\Entity\Message;
 use App\Entity\PlaylistSong;
 use App\Entity\Post;
+use App\Entity\Profile;
 use App\Entity\Song;
 use App\Entity\User;
 use App\Repository\PlaylistSongRepository;
@@ -159,6 +160,34 @@ class JsonController extends CustomAbstractController
 
         return $this->json([
             'response' => ['status' => 'sent', 'message' => $this->trans('flash.post.is.sent') . ' ' . $user->getUsername()]
+        ]);
+    }
+
+    /**
+     * @Route("/shareProfile/{profile}/{id}", name="share_profile", methods={"GET", "POST"})
+     * @Security("is_granted('ROLE_USER')")
+     * @param Profile $profile
+     * @param User $user
+     * @return Response
+     */
+    public function sendProfile(Profile $profile, User $user): Response
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $message = new Message();
+        $message->setSender($this->user());
+        $message->setReceiver($user);
+        $message->setProfile($profile);
+        $message->setSenderDeleted(false);
+        $message->setReceiverDeleted(false);
+        $message->setSentAt(new \DateTime('now'));
+        $message->setSeen(false);
+
+        $em->persist($message);
+        $em->flush();
+
+        return $this->json([
+            'response' => ['status' => 'sent', 'message' => $this->trans('flash.profile.is.sent') . ' ' . $user->getUsername()]
         ]);
     }
 }

@@ -1,10 +1,15 @@
-{% if rightToBlockUser(app.user,user) or rightToChangeUserRights(app.user,user) or user == app.user %}
+{#{% if rightToBlockUser(app.user,user) or rightToChangeUserRights(app.user,user) or user == app.user %}#}
 
     <button type="button" class="btn md-dot-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         <i class="fas fa-ellipsis-h"></i>
     </button>
 
     <div class="dropdown-menu dropdown-menu-right">
+
+        <button id="shareProfile" type="button" class="dropdown-item" data-toggle="modal" data-target="#shareProfileModal">
+            <i class="fas fa-paper-plane"></i>
+            {{ 'share' | trans }}
+        </button>
 
         {% if user != app.user and is_granted('ROLE_OWNER') %}
 
@@ -116,4 +121,4 @@
 
     {% endif %}
 
-{% endif %}
+{#{% endif %}#}

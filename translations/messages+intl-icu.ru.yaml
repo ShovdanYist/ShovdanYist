@@ -369,6 +369,8 @@ sure.to.delete.song: "Вы уверены что хотите удалить э�
 sure.to.delete.person: "Вы уверены что хотите удалить этого человека?"
 sure.to.delete.activity: "Вы уверены что хотите удалить эту деятельность?"
 sure.to.send.song: "Вы хотите отправить эту песню пользователю"
+sure.to.send.post: "Вы хотите отправить эту публикацию пользователю"
+sure.to.send.profile: "Вы хотите отправить этот профиль пользователю"
 
 # FLASH MESSAGES
 
@@ -378,6 +380,7 @@ flash.recovery.email.sent.successful: "Письмо для восстановл�
 flash.added.to.playlist: "Песня добавлена в плейлист"
 flash.song.is.sent: "Песня отправлена пользователю"
 flash.post.is.sent: "Публикация отправлена пользователю"
+flash.profile.is.sent: "Профиль отправлен пользователю"
 flash.removed.from.playlist: "Песня удалена из плейлиста"
 flash.comment.added: "Комментарий добавлен"
 flash.comment.adding.error: "Ошибка при добавлении комментария"

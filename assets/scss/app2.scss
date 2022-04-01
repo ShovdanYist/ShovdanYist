@@ -2268,6 +2268,37 @@ td {
   bottom: 0;
 }
 
+// Message profile
+
+.message-profile-preview span {
+  display: flex;
+}
+
+.message-profile-preview span .back-picture {
+  border-radius: 20px !important;
+  margin: 2px 5px;
+  height: 20px;
+  width: 20px;
+}
+
+.profile-message .user-line {
+  margin: 6px 5px 4px 3px;
+  height: 35px;
+}
+
+.profile-message .user-line-info {
+  line-height: 35px;
+  font-weight: 500;
+}
+
+.profile-message .back-picture {
+  margin-right: 8px;
+}
+
+.profile-message.me .user-line-info {
+  color: #fff;
+}
+
 // Login & Register forms
 
 .form-signin-info {

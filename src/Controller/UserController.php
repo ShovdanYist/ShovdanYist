@@ -126,13 +126,16 @@ class UserController extends CustomAbstractController
             ->setPage($page)
         ;
 
+        $shareUsers = $this->getDoctrine()->getRepository(User::class)->findFollows(['user' => $this->user(), 'type' => 'following']);
+
         return $this->render('interface/user/profile.html.twig', [
             'invitees' => $this->getDoctrine()->getRepository(User::class)->count(['invitedBy' => $user, 'status' => true]),
             'posts' => $paginator->getData(),
             'paginator' => $paginator,
             'profile' => $user->getProfile(),
             'user' => $user,
-            'type' => 'profile'
+            'type' => 'profile',
+            'shareUsers' => $shareUsers
         ]);
     }
 
