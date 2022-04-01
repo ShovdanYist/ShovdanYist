@@ -61,6 +61,7 @@ send: Отправить
 save: Сохранить
 cancel: Отмена
 log.out: Выйти
+share: Поделиться
 delete: Удалить
 browse: Выбрать
 change: Изменить
@@ -367,6 +368,7 @@ sure.to.delete.tag: "Вы уверены что хотите удалить эт
 sure.to.delete.song: "Вы уверены что хотите удалить эту песню?"
 sure.to.delete.person: "Вы уверены что хотите удалить этого человека?"
 sure.to.delete.activity: "Вы уверены что хотите удалить эту деятельность?"
+sure.to.send.song: "Вы хотите отправить эту песню пользователю"
 
 # FLASH MESSAGES
 
@@ -374,6 +376,8 @@ flash.user.deleted: "Пользователь { username } удалён"
 flash.registration.successful.completed: "Регистрация успешно завершена"
 flash.recovery.email.sent.successful: "Письмо для восстановления аккаунта успешно отправлен на вашу почту"
 flash.added.to.playlist: "Песня добавлена в плейлист"
+flash.song.is.sent: "Песня отправлена пользователю"
+flash.post.is.sent: "Публикация отправлена пользователю"
 flash.removed.from.playlist: "Песня удалена из плейлиста"
 flash.comment.added: "Комментарий добавлен"
 flash.comment.adding.error: "Ошибка при добавлении комментария"

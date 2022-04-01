@@ -466,9 +466,12 @@ class UserController extends CustomAbstractController
             ->setPage($page)
         ;
 
+        $shareUsers = $this->getDoctrine()->getRepository(User::class)->findFollows(['user' => $this->user(), 'type' => 'following']);
+
         return $this->render('interface/user/bookmarks.html.twig', [
             'posts' => $paginator->getData(),
-            'paginator' => $paginator
+            'paginator' => $paginator,
+            'shareUsers' => $shareUsers
         ]);
     }
 

@@ -27,10 +27,11 @@
 
                 <div class="md-person-block">
 
-                    <div class="md-person-image" style="background-image: url('{% if person.picture %}{{ vich_uploader_asset(person) | imagine_filter('avatar') }}{% else %}{{ asset('assets/images/avatar.jpg') }}{% endif %}')"></div>
+                    <a href="{{ path('person_show', {slug: person.slug}) }}">
+                        <div class="md-person-image" style="background-image: url('{% if person.picture %}{{ vich_uploader_asset(person) | imagine_filter('avatar') }}{% else %}{{ asset('assets/images/avatar.jpg') }}{% endif %}')"></div>
+                    </a>
 
                     <p>
-
                         {% for profession in person.activity %}
                             <span class="badge badge-success badge-lower">{{ profession.title }}</span>
                             {% if loop.last %}<br>{% endif %}
@@ -42,7 +43,6 @@
                         {% endif %}
 
                         <strong>{{ 'some.songs' | trans | capitalize }}:</strong> {{ songsCount(person) }}
-
                     </p>
 
                 </div>

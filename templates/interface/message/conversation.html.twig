@@ -34,7 +34,7 @@
 
                 {% for message in messages %}
 
-                    <div class="message{% if app.user == message.sender %} me{% endif %}">
+                    <div class="message{% if app.user == message.sender %} me{% endif %}{% if message.song %} audio-message{% endif %}{% if message.post %} post-message{% endif %}">
 
                         <div class="message-actions">
                             <button type="button" class="btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -79,7 +79,24 @@
                         </div>
 
                         <div class="text">
-                            {{ message.content }}
+
+                            {% if message.song %}
+                                {{ player(message.song,false,false) }}
+                            {% elseif message.post %}
+                                <a href="{{ path('post_show',{'id':message.post.id}) }}">
+                                    <div class="post-message-content">
+                                        <div class="back-picture bp-130" style="background-image: url('{% if message.post.image %}{{ vich_uploader_asset(message.post) | imagine_filter('avatar') }}{% else %}{{ asset('assets/images/question.jpg') }}{% endif %}')">
+                                        </div>
+                                        <div class="info">
+                                            <span><i class="fas fa-heart"></i> {{ message.post.likes.count }}</span>
+                                            <span><i class="fas fa-comment"></i> {{ message.post.comments.count }}</span>
+                                        </div>
+                                    </div>
+                                </a>
+                            {% else %}
+                                {{ message.content }}
+                            {% endif %}
+
                             <small>
                                 {% if ("now" | date('d.m.y')) == (message.sentAt ? message.sentAt | date('d.m.y')) %}
                                     {{ message.sentAt ? message.sentAt | date('G:i') }}
@@ -151,6 +168,7 @@
 {% endblock %}
 
 {% block scripts %}
+    {{ autoplay() }}
     <script>
         let messageTextArea = document.querySelector('.message-write textarea');
         let messageSendButton = document.querySelector('.send button');

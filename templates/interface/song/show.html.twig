@@ -26,6 +26,8 @@
         (path('person_show', {slug: song.vocalist.slug})) : (song.vocalist.fullName),
     }, song,'song') }}
 
+    {% include 'interface/song/_share_song.html.twig' %}
+
 {% endblock %}
 
 {% block body %}

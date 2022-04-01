@@ -148,6 +148,11 @@ class Song
      */
     private $search;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Message::class, mappedBy="song")
+     */
+    private $messages;
+
     public function __construct()
     {
         $this->featuring = new ArrayCollection();
@@ -158,6 +163,7 @@ class Song
         $this->tags = new ArrayCollection();
         $this->actions = new ArrayCollection();
         $this->views = new ArrayCollection();
+        $this->messages = new ArrayCollection();
     }
 
     /**
@@ -577,6 +583,37 @@ class Song
     public function setSearch(?string $search): self
     {
         $this->search = $search;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Message[]
+     */
+    public function getMessages(): Collection
+    {
+        return $this->messages;
+    }
+
+    public function addMessage(Message $message): self
+    {
+        if (!$this->messages->contains($message)) {
+            $this->messages[] = $message;
+            $message->setSong($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMessage(Message $message): self
+    {
+        if ($this->messages->contains($message)) {
+            $this->messages->removeElement($message);
+            // set the owning side to null (unless already changed)
+            if ($message->getSong() === $this) {
+                $message->setSong(null);
+            }
+        }
 
         return $this;
     }

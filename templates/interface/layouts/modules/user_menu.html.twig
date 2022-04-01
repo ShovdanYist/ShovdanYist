@@ -41,6 +41,15 @@
                     </li>
 
                     <li class="md-menu-item">
+                        <a href="{{ path('user_playlist') }}">
+                            <span>
+                                <i class="fas fa-headphones"></i>
+                            </span>
+                            {{ 'music' | trans }}
+                        </a>
+                    </li>
+
+                    <li class="md-menu-item">
                         <a href="{{ path('message_conversations') }}">
                             <span>
                                 <i class="fas fa-comment"></i>
@@ -84,15 +93,6 @@
 {#                            {{ 'music' | trans }}#}
 {#                        </a>#}
 {#                    </li>#}
-
-                    <li class="md-menu-item">
-                        <a href="{{ path('user_playlist') }}">
-                            <span>
-                                <i class="fas fa-headphones"></i>
-                            </span>
-                            {{ 'playlist' | trans }}
-                        </a>
-                    </li>
 
 {#                    <li class="md-menu-item">#}
 {#                        <a href="{{ path('user_bookmarks') }}">#}

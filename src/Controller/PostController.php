@@ -37,9 +37,12 @@ class PostController extends CustomAbstractController
             ->setPage($page)
         ;
 
+        $shareUsers = $this->getDoctrine()->getRepository(User::class)->findFollows(['user' => $this->user(), 'type' => 'following']);
+
         return $this->render('interface/post/recommendations.html.twig', [
             'posts' => $paginator->getData(),
-            'paginator' => $paginator
+            'paginator' => $paginator,
+            'shareUsers' => $shareUsers
         ]);
     }
 
@@ -63,10 +66,13 @@ class PostController extends CustomAbstractController
             ->setPage($page)
         ;
 
+        $shareUsers = $this->getDoctrine()->getRepository(User::class)->findFollows(['user' => $this->user(), 'type' => 'following']);
+
         return $this->render('interface/post/feed.html.twig', [
             'posts' => $paginator->getData(),
             'paginator' => $paginator,
-            'following' => $this->getDoctrine()->getRepository(User::class)->findFollows(['user' => $this->user(), 'type' => 'following'])
+            'following' => $this->getDoctrine()->getRepository(User::class)->findFollows(['user' => $this->user(), 'type' => 'following']),
+            'shareUsers' => $shareUsers
         ]);
     }
 
@@ -112,9 +118,12 @@ class PostController extends CustomAbstractController
     {
         if ($post->getAuthor() === $this->getUser() || $this->isGranted('ROLE_POST_MODERATOR') || $post->getStatus() === true) {
 
+            $shareUsers = $this->getDoctrine()->getRepository(User::class)->findFollows(['user' => $this->user(), 'type' => 'following']);
+
             return $this->render('interface/post/show.html.twig', [
                 'post' => $post,
-                'page' => $page
+                'page' => $page,
+                'shareUsers' => $shareUsers
             ]);
         }
 

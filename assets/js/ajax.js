@@ -181,6 +181,142 @@ like.forEach((like) => {
     like.addEventListener('click', likePost);
 });
 
+// Share song
+
+function shareMediaRequest(event) {
+    let username = this.querySelector('.md-username').innerHTML;
+    let song = document.getElementById('shareSongId').innerHTML;
+    let url = '/shareSong/' + song + '/' + username;
+
+    document.getElementById('shareSendUsername').innerHTML = username;
+    document.getElementById('shareSongConfirmModal').querySelector('a').href = url;
+
+    document.getElementById('shareSongModal').click();
+    document.getElementById('shareSongConfirm').click();
+}
+
+function shareMedia(event) {
+    event.preventDefault();
+    let url = this.href;
+
+    axios.get(url).then((response) => {
+        document.getElementById('shareSongConfirmModal').click();
+
+        let message = '<div class="md-alert md-alert-success md-box-mb">' +
+            response.data.response.message +
+            '</div>';
+
+        let alertBox = document.querySelector('main');
+        let alertExist = document.querySelector('.md-alert');
+
+        if (alertExist) {
+            alertExist.outerHTML = message;
+        } else {
+            alertBox.insertAdjacentHTML('afterbegin', message);
+        }
+
+        $(".md-alert").fadeTo(3000, 500).slideUp(500, function(){
+            $(".md-alert").slideUp(500);
+        });
+    })
+}
+
+function shareMediaCancel(event) {
+    event.preventDefault();
+    document.getElementById('shareSongConfirmModal').click();
+    document.getElementById('shareSongOpener').click();
+}
+
+let shareSongUsers = document.querySelectorAll('.user-share-media .user-line');
+shareSongUsers.forEach((user) => {
+    user.addEventListener('click', shareMediaRequest)
+});
+
+let shareSendButton = document.getElementById('shareSongConfirmButton');
+if (shareSendButton) {
+    shareSendButton.addEventListener('click', shareMedia);
+}
+
+let shareSendCancel = document.getElementById('shareSongCancel');
+if (shareSendCancel) {
+    shareSendCancel.addEventListener('click', shareMediaCancel);
+}
+
+// Share post
+
+let sharePostButton = document.querySelectorAll('.share-post-button');
+
+function sharePostButtonFunction() {
+    document.getElementById('sharePostId').innerHTML = this.id.replace('sharePostId', '');
+}
+
+sharePostButton.forEach((sharePostButton) => {
+    sharePostButton.addEventListener('click', sharePostButtonFunction)
+});
+
+let sharePostUsers = document.querySelectorAll('.user-share-media .user-line');
+
+function sharePostModalFunction(event) {
+    let username = this.querySelector('.md-username').innerHTML;
+    let post = document.getElementById('sharePostId').innerHTML;
+    let url = '/sharePost/' + post + '/' + username;
+
+    console.log(url);
+
+    document.getElementById('sharePostUsername').innerHTML = username;
+    document.getElementById('sharePostConfirmModal').querySelector('a').href = url;
+
+    document.getElementById('sharePostModal').click();
+    document.getElementById('sharePostConfirm').click();
+}
+
+sharePostUsers.forEach((sharePostUsers) => {
+    sharePostUsers.addEventListener('click', sharePostModalFunction)
+})
+
+let sharePostCancel = document.getElementById('sharePostCancel');
+
+function sharePostCancelFunction() {
+    document.getElementById('sharePostConfirmModal').click();
+    document.getElementById('sharePostId' + document.getElementById('sharePostId').innerHTML).click();
+}
+
+if (sharePostCancel) {
+    sharePostCancel.addEventListener('click', sharePostCancelFunction);
+}
+
+let sharePostConfirmButton = document.getElementById('sharePostConfirmButton');
+
+function sharePostConfirmButtonFunction(event) {
+    event.preventDefault();
+    let url = this.href;
+
+    axios.get(url).then((response) => {
+        document.getElementById('sharePostConfirmModal').click();
+
+        let message = '<div class="md-alert md-alert-success md-box-mb">' +
+            response.data.response.message +
+            '</div>';
+
+        let alertBox = document.querySelector('main');
+        let alertExist = document.querySelector('.md-alert');
+
+        if (alertExist) {
+            alertExist.outerHTML = message;
+        } else {
+            alertBox.insertAdjacentHTML('afterbegin', message);
+        }
+
+        $(".md-alert").fadeTo(3000, 500).slideUp(500, function(){
+            $(".md-alert").slideUp(500);
+        });
+    })
+}
+
+if (sharePostConfirmButton) {
+    sharePostConfirmButton.addEventListener('click', sharePostConfirmButtonFunction)
+}
+
 // Post double-click like
 
 document.querySelectorAll('.md-post').forEach((post) => {

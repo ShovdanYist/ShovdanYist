@@ -30,7 +30,7 @@ class Message
     private $receiver;
 
     /**
-     * @ORM\Column(type="text")
+     * @ORM\Column(type="text", nullable=true)
      */
     private $content;
 
@@ -53,6 +53,16 @@ class Message
      * @ORM\Column(type="boolean")
      */
     private $receiver_deleted;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Song::class, inversedBy="messages")
+     */
+    private $song;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Post::class, inversedBy="messages")
+     */
+    private $post;
 
     public function getId(): ?int
     {
@@ -139,6 +149,30 @@ class Message
     public function setReceiverDeleted(bool $receiver_deleted): self
     {
         $this->receiver_deleted = $receiver_deleted;
+
+        return $this;
+    }
+
+    public function getSong(): ?Song
+    {
+        return $this->song;
+    }
+
+    public function setSong(?Song $song): self
+    {
+        $this->song = $song;
+
+        return $this;
+    }
+
+    public function getPost(): ?Post
+    {
+        return $this->post;
+    }
+
+    public function setPost(?Post $post): self
+    {
+        $this->post = $post;
 
         return $this;
     }

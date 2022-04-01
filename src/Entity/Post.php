@@ -129,6 +129,11 @@ class Post
      */
     private $likes;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Message::class, mappedBy="post")
+     */
+    private $messages;
+
     public function __construct()
     {
         $this->songs = new ArrayCollection();
@@ -139,6 +144,7 @@ class Post
         $this->actions = new ArrayCollection();
         $this->taggedUsers = new ArrayCollection();
         $this->likes = new ArrayCollection();
+        $this->messages = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -522,6 +528,37 @@ class Post
             // set the owning side to null (unless already changed)
             if ($like->getPost() === $this) {
                 $like->setPost(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Message[]
+     */
+    public function getMessages(): Collection
+    {
+        return $this->messages;
+    }
+
+    public function addMessage(Message $message): self
+    {
+        if (!$this->messages->contains($message)) {
+            $this->messages[] = $message;
+            $message->setPost($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMessage(Message $message): self
+    {
+        if ($this->messages->contains($message)) {
+            $this->messages->removeElement($message);
+            // set the owning side to null (unless already changed)
+            if ($message->getPost() === $this) {
+                $message->setPost(null);
             }
         }
 

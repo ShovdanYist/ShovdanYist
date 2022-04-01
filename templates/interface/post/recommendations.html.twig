@@ -17,6 +17,8 @@
         {{ postView(post) }}
     {% endfor %}
 
+    {% include 'interface/post/_share_post.html.twig' %}
+
     {{ paginator.display('box') }}
 
 {% endblock %}

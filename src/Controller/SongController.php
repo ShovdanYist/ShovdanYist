@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\CustomAbstracts\CustomAbstractController;
 use App\Entity\Song;
 use App\Entity\Person;
+use App\Entity\User;
 use App\Form\SongType;
 use App\Service\Defender;
 use App\Service\Initializer;
@@ -135,11 +136,14 @@ class SongController extends CustomAbstractController
             ]);
         }
 
+        $shareUsers = $this->getDoctrine()->getRepository(User::class)->findFollows(['user' => $this->user(), 'type' => 'following']);
+
         $initializer->initializeSongShow($song);
 
         return $this->render('interface/song/show.html.twig', [
             'song' => $song,
-            'page' => $page
+            'page' => $page,
+            'shareUsers' => $shareUsers
         ]);
     }
 
