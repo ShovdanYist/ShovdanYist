@@ -34,7 +34,7 @@
 
                 {% for message in messages %}
 
-                    <div class="message{% if app.user == message.sender %} me{% endif %}{% if message.song %} audio-message{% endif %}{% if message.post %} post-message{% endif %}{% if message.profile %} profile-message{% endif %}">
+                    <div id="message{{ message.id }}" class="message{% if app.user == message.sender %} me{% endif %}{% if message.song %} audio-message{% endif %}{% if message.post %} post-message{% endif %}{% if message.profile %} profile-message{% endif %}">
 
                         <div class="message-actions">
                             <button type="button" class="btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -42,6 +42,12 @@
                             </button>
 
                             <div class="dropdown-menu dropdown-menu-right">
+                                <button type="button" class="dropdown-item reply-to-message" data-toggle="modal" id="#replyToMessage{{ message.id }}">
+                                    {{ 'reply' | trans }}
+                                </button>
+
+                                <span class="dropdown-divider"></span>
+
                                 <button type="button" class="dropdown-item" data-toggle="modal" data-target="#deleteMessage{{ message.id }}ForMe">
                                     {{ 'delete.for.me' | trans }}
                                 </button>
@@ -81,28 +87,68 @@
                         <div class="text">
 
                             {% if message.song %}
-                                {{ player(message.song,false,false) }}
+                                <span class="song-message">
+                                    {{ player(message.song,false,false) }}
+                                    <span class="song-full-title" style="display: none">{{ message.song.fullTitle }}</span>
+                                </span>
                             {% elseif message.post %}
-                                <a href="{{ path('post_show',{'id':message.post.id}) }}">
-                                    <div class="post-message-content">
-                                        <div class="back-picture bp-130" style="background-image: url('{% if message.post.image %}{{ vich_uploader_asset(message.post) | imagine_filter('avatar') }}{% else %}{{ asset('assets/images/question.jpg') }}{% endif %}')">
+                                <span class="post-message">
+                                    <a href="{{ path('post_show',{'id':message.post.id}) }}">
+                                        <div class="post-message-content">
+                                            <div class="back-picture bp-130" style="background-image: url('{% if message.post.image %}{{ vich_uploader_asset(message.post) | imagine_filter('avatar') }}{% else %}{{ asset('assets/images/question.jpg') }}{% endif %}')">
+                                            </div>
+                                            <div class="info">
+                                                <span><i class="fas fa-heart"></i> {{ message.post.likes.count }}</span>
+                                                <span><i class="fas fa-comment"></i> {{ message.post.comments.count }}</span>
+                                            </div>
                                         </div>
-                                        <div class="info">
-                                            <span><i class="fas fa-heart"></i> {{ message.post.likes.count }}</span>
-                                            <span><i class="fas fa-comment"></i> {{ message.post.comments.count }}</span>
-                                        </div>
-                                    </div>
-                                </a>
+                                    </a>
+                                </span>
                             {% elseif message.profile %}
-                                <a href="{{ path('user_profile', {'username':message.profile.user.username}) }}">
-                                    <div class="user-line">
-                                        <div class="back-picture bp-35" style="background-image: url('{% if message.profile.avatar != 'avatar.jpg' %}{{ vich_uploader_asset(message.profile) | imagine_filter('thumbnail') }}{% else %}{{ asset('assets/images/avatar.jpg') | imagine_filter('thumbnail') }}{% endif %}')">
+                                <span class="profile-message">
+                                    <a href="{{ path('user_profile', {'username':message.profile.user.username}) }}">
+                                        <div class="user-line">
+                                            <div class="back-picture bp-35" style="background-image: url('{% if message.profile.avatar != 'avatar.jpg' %}{{ vich_uploader_asset(message.profile) | imagine_filter('thumbnail') }}{% else %}{{ asset('assets/images/avatar.jpg') | imagine_filter('thumbnail') }}{% endif %}')">
+                                            </div>
+                                            <div class="user-line-info">{{ message.profile.user.username }}</div>
                                         </div>
-                                        <div class="user-line-info">{{ message.profile.user.username }}</div>
-                                    </div>
-                                </a>
+                                    </a>
+                                </span>
                             {% else %}
-                                {{ message.content }}
+                                {% if message.replyTo %}
+                                    {% if message.replyTo.song %}
+                                        <a href="#message{{ message.replyTo.id }}">
+                                            <div class="replied-message">
+                                                <i class="fas fa-play-circle"></i> {{ message.replyTo.song.fullTitle }}
+                                            </div>
+                                        </a>
+                                    {% elseif message.replyTo.post %}
+                                        <a href="#message{{ message.replyTo.id }}">
+                                            <div class="replied-message">
+                                                <div class="back-picture bp-24" style="background-image: url('{% if message.replyTo.post.image %}{{ vich_uploader_asset(message.replyTo.post) | imagine_filter('thumbnail') }}{% else %}{{ asset('assets/images/question.jpg') }}{% endif %}'); border-radius: 3px; margin-right: 5px">
+                                                </div>
+                                                {{ 'post' | trans }}
+                                            </div>
+                                        </a>
+                                    {% elseif message.replyTo.profile %}
+                                        <a href="#message{{ message.replyTo.id }}">
+                                            <div class="replied-message">
+                                                <div class="back-picture bp-24" style="background-image: url('{% if message.replyTo.profile.avatar != 'avatar.jpg' %}{{ vich_uploader_asset(message.replyTo.profile) | imagine_filter('thumbnail') }}{% else %}{{ asset('assets/images/avatar.jpg') | imagine_filter('thumbnail') }}{% endif %}'); border-radius: 20px; margin-right: 5px">
+                                                </div>
+                                                {{ message.replyTo.profile.user.username }}
+                                            </div>
+                                        </a>
+                                    {% else %}
+                                        <a href="#message{{ message.replyTo.id }}">
+                                            <div class="replied-message">
+                                                {{ message.replyTo.content }}
+                                            </div>
+                                        </a>
+                                    {% endif %}
+                                    <span class="text-message">{{ message.content }}</span>
+                                {% else %}
+                                    <span class="text-message">{{ message.content }}</span>
+                                {% endif %}
                             {% endif %}
 
                             <small>
@@ -142,6 +188,11 @@
         {% if app.user.confirmedEmail and app.user.status is null or app.user.status == true %}
 
             {{ form_start(form, {'attr': {'class': 'message-form'}}) }}
+                <div id="replyMessageBox">
+                    <span id="replyMessage"></span>
+                    <span id="replyMessageClose"><i class="fas fa-times"></i></span>
+                </div>
+
                 <div class="message-write">
                     <div class="attach">
                         <a class="btn">
@@ -195,5 +246,46 @@
         }
 
         messageSendButton.addEventListener('click',messageSender);
+    </script>
+
+    <script>
+        let replyToMessageButtons = document.querySelectorAll('.reply-to-message');
+        let replyMessageBox = document.getElementById('replyMessageBox');
+        let replyMessage = document.getElementById('replyMessage');
+
+        replyToMessageButtons.forEach((button) => {
+            button.addEventListener('click', (event) => {
+                let replyId = button.id.replace('#replyToMessage', '');
+                document.getElementById('message_replyTo').value = replyId;
+                document.getElementById('message_content').focus();
+
+                replyMessageBox.removeAttribute('class');
+                replyMessageBox.style.display = 'block';
+
+                let message = document.getElementById('message' + replyId);
+                let textMessage = message.querySelector('.text-message');
+                let songMessage = message.querySelector('.song-message');
+                let postMessage = message.querySelector('.post-message');
+                let profileMessage = message.querySelector('.profile-message');
+
+                if (textMessage) {
+                    replyMessage.innerHTML = textMessage.innerHTML;
+                } else if (songMessage) {
+                    replyMessageBox.className = 'song';
+                    replyMessage.innerHTML = '<div class="info"><i class="fas fa-play-circle"></i> ' + songMessage.querySelector('.song-full-title').innerHTML + '</div>';
+                } else if (postMessage) {
+                    replyMessageBox.className = 'post';
+                    replyMessage.innerHTML = postMessage.querySelector('.back-picture').outerHTML + '<div class="info">Публикация</div>';
+                } else if (profileMessage) {
+                    replyMessageBox.className = 'profile';
+                    replyMessage.innerHTML = profileMessage.querySelector('.back-picture').outerHTML + '<div class="info">' + profileMessage.querySelector('.user-line-info').innerHTML + '</div>';
+                }
+            })
+        })
+
+        document.getElementById('replyMessageClose').addEventListener('click', () => {
+            document.getElementById('message_replyTo').removeAttribute('value');
+            replyMessageBox.style.display = 'none';
+        })
     </script>
 {% endblock %}

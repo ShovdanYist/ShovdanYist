@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Message;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -24,7 +25,9 @@ class MessageType extends AbstractType
                     new NotBlank()
                 ]
             ])
-//            ->add('send', SubmitType::class)
+            ->add('replyTo', HiddenType::class, [
+                'mapped' => false
+            ])
         ;
     }
 

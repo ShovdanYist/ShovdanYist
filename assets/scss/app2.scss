@@ -872,6 +872,10 @@ blockquote, .ck.ck-content blockquote {
   border-radius: 3px;
 }
 
+.dropdown-item:focus {
+  background: unset;
+}
+
 .dropdown-item:last-child {
   margin: unset;
 }
@@ -2123,6 +2127,7 @@ td {
   bottom: 0;
   background: #fff;
   border-radius: 3px;
+  z-index: 99;
 }
 
 .online-users-title {
@@ -2186,6 +2191,93 @@ td {
   width: 8px;
   right: 3px;
   top: 3px;
+}
+
+#replyMessageBox {
+  border-top: 1px solid #eef1f5;
+  position: relative;
+  padding: 12px 18px 12px;
+  white-space: nowrap;
+  overflow: hidden;
+  display: none;
+}
+
+#replyMessage {
+  line-height: 29px;
+  overflow: hidden;
+  display: block;
+  margin-right: 28px;
+}
+
+#replyMessageBox.post .back-picture {
+  width: 29px;
+  height: 29px;
+  border-radius: 3px;
+  margin-right: 8px;
+}
+
+#replyMessageBox.profile .back-picture {
+  margin-right: 8px;
+  height: 29px;
+  width: 29px;
+}
+
+#replyMessageBox.profile .info {
+  font-weight: 500;
+}
+
+#replyMessageClose {
+  position: absolute;
+  right: 22px;
+  top: 14px;
+  color: #ccc;
+  cursor: pointer;
+}
+
+#replyMessage::after {
+  content: "";
+  background: -moz-linear-gradient(right, rgb(255, 255, 255) 0%, rgba(255,255,255,0) 100%);
+  display: block;
+  position: absolute;
+  width: 32px;
+  right: 40px;
+  top: 0;
+  height: 54px;
+}
+
+.message .replied-message {
+  background: rgba(255,255,255,0.5);
+  color: rgba(255,255,255,0.9);
+  padding: 4px 6px;
+  border-radius: 0 8px 8px 0;
+  margin: 4px 0 3px;
+  border-left: 2px solid rgba(0,0,0,0.3);
+  white-space: nowrap;
+  max-width: 200px;
+  overflow: hidden;
+  position: relative;
+  color: #444;
+}
+
+.message.me .replied-message {
+  color: #fff;
+  background: rgba(255,255,255,0.15);
+  border-left: 2px solid rgba(0,0,0,0.25);
+}
+
+.message .replied-message::after {
+  content: "";
+  background: -moz-linear-gradient(right, rgb(244, 247, 247) 0%, rgba(255,255,255,0) 100%);
+  width: 40px;
+  height: 32px;
+  display: block;
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+.message.me .replied-message::after {
+  background: -moz-linear-gradient(right, rgb(82, 167, 224) 0%, rgba(255,255,255,0) 100%);
 }
 
 // Message Song

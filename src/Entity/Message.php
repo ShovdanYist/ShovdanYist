@@ -69,6 +69,11 @@ class Message
      */
     private $profile;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Message::class)
+     */
+    private $replyTo;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -190,6 +195,18 @@ class Message
     public function setProfile(?Profile $profile): self
     {
         $this->profile = $profile;
+
+        return $this;
+    }
+
+    public function getReplyTo(): ?self
+    {
+        return $this->replyTo;
+    }
+
+    public function setReplyTo(?self $replyTo): self
+    {
+        $this->replyTo = $replyTo;
 
         return $this;
     }

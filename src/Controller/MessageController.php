@@ -67,8 +67,12 @@ class MessageController extends CustomAbstractController
             $message->setReceiverDeleted(false);
             $message->setSentAt(new \DateTime('now'));
 
-            if ($messageRepo->findConversationMessagesCount(['user_one' => $this->user(),'user_two' => $user])[0]['count'] > 100) {
-                foreach ($messageRepo->findConversation(['user_one' => $this->user(),'user_two' => $user],['sentAt' => 'DESC'],null,100) as $messageToDelete) {
+            if ($form->get('replyTo')->getData()) {
+                $message->setReplyTo($messageRepo->findOneBy(['id' => $form->get('replyTo')->getData()]));
+            }
+
+            if ($messageRepo->findConversationMessagesCount(['user_one' => $this->user(),'user_two' => $user])[0]['count'] > 200) {
+                foreach ($messageRepo->findConversation(['user_one' => $this->user(),'user_two' => $user],['sentAt' => 'DESC'],null,200) as $messageToDelete) {
                     $em->remove($messageToDelete);
                 }
             }
