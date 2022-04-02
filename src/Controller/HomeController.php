@@ -138,6 +138,7 @@ class HomeController extends CustomAbstractController
             $user->getProfile()->setBirthday($form->get('birthday')->getData());
             $user->getProfile()->setAvatar('avatar.jpg');
             $user->setRegisteredAt(new \DateTime('now'));
+            $user->setHideOnline(false);
 
             if ($form->get('invitedBy')->getData() && $this->getDoctrine()->getRepository(User::class)->findOneBy(['username' => $form->get('invitedBy')->getData()])) {
                 $user->setInvitedBy($this->getDoctrine()->getRepository(User::class)->findOneBy(['username' => $form->get('invitedBy')->getData()]));
