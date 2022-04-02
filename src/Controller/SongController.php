@@ -136,7 +136,11 @@ class SongController extends CustomAbstractController
             ]);
         }
 
-        $shareUsers = $this->getDoctrine()->getRepository(User::class)->findFollows(['user' => $this->user(), 'type' => 'following']);
+        if ($this->isGranted('IS_AUTHENTICATED_FULLY')) {
+            $shareUsers = $this->getDoctrine()->getRepository(User::class)->findFollows(['user' => $this->user(), 'type' => 'following']);
+        } else {
+            $shareUsers = null;
+        }
 
         $initializer->initializeSongShow($song);
 

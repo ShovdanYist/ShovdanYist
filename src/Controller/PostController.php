@@ -37,7 +37,11 @@ class PostController extends CustomAbstractController
             ->setPage($page)
         ;
 
-        $shareUsers = $this->getDoctrine()->getRepository(User::class)->findFollows(['user' => $this->user(), 'type' => 'following']);
+        if ($this->isGranted('IS_AUTHENTICATED_FULLY')) {
+            $shareUsers = $this->getDoctrine()->getRepository(User::class)->findFollows(['user' => $this->user(), 'type' => 'following']);
+        } else {
+            $shareUsers = null;
+        }
 
         return $this->render('interface/post/recommendations.html.twig', [
             'posts' => $paginator->getData(),
@@ -66,7 +70,11 @@ class PostController extends CustomAbstractController
             ->setPage($page)
         ;
 
-        $shareUsers = $this->getDoctrine()->getRepository(User::class)->findFollows(['user' => $this->user(), 'type' => 'following']);
+        if ($this->isGranted('IS_AUTHENTICATED_FULLY')) {
+            $shareUsers = $this->getDoctrine()->getRepository(User::class)->findFollows(['user' => $this->user(), 'type' => 'following']);
+        } else {
+            $shareUsers = null;
+        }
 
         return $this->render('interface/post/feed.html.twig', [
             'posts' => $paginator->getData(),
@@ -118,7 +126,11 @@ class PostController extends CustomAbstractController
     {
         if ($post->getAuthor() === $this->getUser() || $this->isGranted('ROLE_POST_MODERATOR') || $post->getStatus() === true) {
 
-            $shareUsers = $this->getDoctrine()->getRepository(User::class)->findFollows(['user' => $this->user(), 'type' => 'following']);
+            if ($this->isGranted('IS_AUTHENTICATED_FULLY')) {
+                $shareUsers = $this->getDoctrine()->getRepository(User::class)->findFollows(['user' => $this->user(), 'type' => 'following']);
+            } else {
+                $shareUsers = null;
+            }
 
             return $this->render('interface/post/show.html.twig', [
                 'post' => $post,

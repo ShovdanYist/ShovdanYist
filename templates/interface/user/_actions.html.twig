@@ -1,4 +1,4 @@
-{#{% if rightToBlockUser(app.user,user) or rightToChangeUserRights(app.user,user) or user == app.user %}#}
+{% if app.user %}
 
     <button type="button" class="btn md-dot-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         <i class="fas fa-ellipsis-h"></i>
@@ -121,4 +121,4 @@
 
     {% endif %}
 
-{#{% endif %}#}
+{% endif %}

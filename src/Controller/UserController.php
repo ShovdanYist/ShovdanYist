@@ -126,7 +126,11 @@ class UserController extends CustomAbstractController
             ->setPage($page)
         ;
 
-        $shareUsers = $this->getDoctrine()->getRepository(User::class)->findFollows(['user' => $this->user(), 'type' => 'following']);
+        if ($this->isGranted('IS_AUTHENTICATED_FULLY')) {
+            $shareUsers = $this->getDoctrine()->getRepository(User::class)->findFollows(['user' => $this->user(), 'type' => 'following']);
+        } else {
+            $shareUsers = null;
+        }
 
         return $this->render('interface/user/profile.html.twig', [
             'invitees' => $this->getDoctrine()->getRepository(User::class)->count(['invitedBy' => $user, 'status' => true]),

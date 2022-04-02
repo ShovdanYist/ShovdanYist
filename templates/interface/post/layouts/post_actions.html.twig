@@ -27,11 +27,13 @@
         </span>
     {% endif %}
 
-    <span class="stat">
-        <a href="javascript:void(0)" id="sharePostId{{ post.id }}" class="share-post-button" data-toggle="modal" data-target="#sharePostModal">
-            <i class="far fa-paper-plane" style="font-size: 22px;"></i>
-        </a>
-    </span>
+    {% if app.user %}
+        <span class="stat">
+            <a href="javascript:void(0)" id="sharePostId{{ post.id }}" class="share-post-button" data-toggle="modal" data-target="#sharePostModal">
+                <i class="far fa-paper-plane" style="font-size: 22px;"></i>
+            </a>
+        </span>
+    {% endif %}
 
     <span class="stat float-right m-0">
 
