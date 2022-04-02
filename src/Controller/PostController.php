@@ -126,7 +126,7 @@ class PostController extends CustomAbstractController
     {
         if ($post->getAuthor() === $this->getUser() || $this->isGranted('ROLE_POST_MODERATOR') || $post->getStatus() === true) {
 
-            if ($this->isGranted('IS_AUTHENTICATED_FULLY')) {
+            if ($this->isGranted('ROLE_USER')) {
                 $shareUsers = $this->getDoctrine()->getRepository(User::class)->findFollows(['user' => $this->user(), 'type' => 'following']);
             } else {
                 $shareUsers = null;

@@ -127,7 +127,7 @@ class UserController extends CustomAbstractController
             ->setPage($page)
         ;
 
-        if ($this->isGranted('IS_AUTHENTICATED_FULLY')) {
+        if ($this->isGranted('ROLE_USER')) {
             $shareUsers = $this->getDoctrine()->getRepository(User::class)->findFollows(['user' => $this->user(), 'type' => 'following']);
         } else {
             $shareUsers = null;
