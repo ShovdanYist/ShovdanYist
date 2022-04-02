@@ -9,6 +9,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Vich\UploaderBundle\Form\Type\VichImageType;
 
 class MessageType extends AbstractType
 {
@@ -16,17 +17,22 @@ class MessageType extends AbstractType
     {
         $builder
             ->add('content', TextareaType::class,[
+                'required' => true,
                 'attr' => [
                     'class' => 'md-auto-sizer',
                     'placeholder' => 'write.message',
                     'rows' => 1
-                ],
-                'constraints' => [
-                    new NotBlank()
                 ]
             ])
             ->add('replyTo', HiddenType::class, [
                 'mapped' => false
+            ])
+            ->add('imageFile', VichImageType::class, [
+                'label' => 'image',
+                'required' => false,
+                'download_uri' => false,
+                'image_uri' => false,
+                'allow_delete' => false
             ])
         ;
     }

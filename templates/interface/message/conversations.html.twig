@@ -43,7 +43,7 @@
                                 {% endif %}
                             </div>
 
-                            <div class="message{% if lastMessage(user).post %} message-post-preview{% endif %}{% if lastMessage(user).profile %} message-profile-preview{% endif %}">
+                            <div class="message{% if lastMessage(user).post or lastMessage(user).image %} message-post-preview{% endif %}{% if lastMessage(user).profile %} message-profile-preview{% endif %}">
                                 <div class="text">
                                     <span>
                                         {% if lastMessage(user).sender == app.user %}
@@ -62,7 +62,15 @@
                                             </div>
                                             {{ lastMessage(user).profile.user.username }}
                                         {% else %}
-                                            {{ lastMessage(user).content }}
+                                            {% if lastMessage(user).image %}
+                                                <div class="back-picture bp-24" style="background-image: url('{% if lastMessage(user).image %}{{ vich_uploader_asset(lastMessage(user)) | imagine_filter('thumbnail') }}{% else %}{{ asset('assets/images/question.jpg') }}{% endif %}'); border-radius: 3px; {% if lastMessage(user).sender != app.user %}margin-left: unset !important;{% endif %}">
+                                                </div>
+                                            {% endif %}
+                                            {% if lastMessage(user).content %}
+                                                {{ lastMessage(user).content }}
+                                            {% else %}
+                                                {{ 'photo' | trans }}
+                                            {% endif %}
                                         {% endif %}
                                     </span>
                                 </div>

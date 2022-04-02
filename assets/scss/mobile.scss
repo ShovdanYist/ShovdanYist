@@ -514,6 +514,9 @@
   .online-users-block::after{
     right: 0 !important;
   }
+  .md-conversation .message .text {
+    max-width: unset !important;
+  }
 }
 
 @media only screen and (max-width: 400px) {

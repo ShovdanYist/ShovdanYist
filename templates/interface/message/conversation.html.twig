@@ -34,7 +34,7 @@
 
                 {% for message in messages %}
 
-                    <div id="message{{ message.id }}" class="message{% if app.user == message.sender %} me{% endif %}{% if message.song %} audio-message{% endif %}{% if message.post %} post-message{% endif %}{% if message.profile %} profile-message{% endif %}">
+                    <div id="message{{ message.id }}" class="message{% if app.user == message.sender %} me{% endif %}{% if message.song %} audio-message{% endif %}{% if message.post %} post-message{% endif %}{% if message.profile %} profile-message{% endif %}{% if message.image %} image-message{% endif %}">
 
                         <div class="message-actions">
                             <button type="button" class="btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -141,12 +141,36 @@
                                     {% else %}
                                         <a href="#message{{ message.replyTo.id }}">
                                             <div class="replied-message">
-                                                {{ message.replyTo.content }}
+                                                {% if message.replyTo.image %}
+                                                    <div class="back-picture bp-24" style="background-image: url('{% if message.replyTo.image %}{{ vich_uploader_asset(message.replyTo) | imagine_filter('thumbnail') }}{% else %}{{ asset('assets/images/question.jpg') }}{% endif %}'); border-radius: 3px; margin-right: 5px">
+                                                    </div>
+                                                    {% if message.replyTo.content %}
+                                                        {{ message.replyTo.content }}
+                                                    {% else %}
+                                                        {{ 'photo' | trans }}
+                                                    {% endif %}
+                                                {% else %}
+                                                    {{ message.replyTo.content }}
+                                                {% endif %}
                                             </div>
                                         </a>
                                     {% endif %}
                                     <span class="text-message">{{ message.content }}</span>
                                 {% else %}
+                                    {% if message.image %}
+                                        <div class="message-image">
+                                            <a data-toggle="modal" data-target="#messageImage{{ message.id }}" class="back-picture bp-130" style="cursor: pointer; border-radius: 8px; background-image: url('{% if message.image %}{{ vich_uploader_asset(message) | imagine_filter('avatar') }}{% else %}{{ asset('assets/images/question.jpg') }}{% endif %}')">
+                                            </a>
+
+                                            <div class="modal fade" id="messageImage{{ message.id }}" data-keyboard="false" tabindex="-1" aria-hidden="true">
+                                                <div class="modal-dialog modal-dialog-centered">
+                                                    <div class="modal-content">
+                                                        <img src="{{ vich_uploader_asset(message) | imagine_filter('message') }}" alt="{{ message.image }}">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {% endif %}
                                     <span class="text-message">{{ message.content }}</span>
                                 {% endif %}
                             {% endif %}
@@ -190,13 +214,21 @@
             {{ form_start(form, {'attr': {'class': 'message-form'}}) }}
                 <div id="replyMessageBox">
                     <span id="replyMessage"></span>
-                    <span id="replyMessageClose"><i class="fas fa-times"></i></span>
+                    <span id="replyMessageClose" onclick="this.parentNode.innerHTML=''"><i class="fas fa-times"></i></span>
                 </div>
 
                 <div class="message-write">
                     <div class="attach">
+                        <div id="attachedImage">
+                            <span id="attachedImageClose">
+                                <i class="fas fa-times"></i>
+                            </span>
+                        </div>
                         <a class="btn">
                             <i class="fas fa-plus"></i>
+                            <span style="display: none">
+                                {{ form_widget(form.imageFile) }}
+                            </span>
                         </a>
                     </div>
                     <div class="input">
@@ -228,22 +260,53 @@
 
 {% block scripts %}
     {{ autoplay() }}
+
     <script>
+        let messageInput = document.getElementById('message_content');
+        let fileInput = document.getElementById('message_imageFile_file');
+        let attachedImageClose = document.getElementById('attachedImageClose');
         let messageTextArea = document.querySelector('.message-write textarea');
         let messageSendButton = document.querySelector('.send button');
         let messagesBox = document.querySelector('.messages-box');
+        let attachedImage = document.getElementById('attachedImage');
+
+        fileInput.onchange = () => {
+            messageInput.removeAttribute('required');
+            messageSendButton.id = 'imageLoaded';
+            attachedImage.style.backgroundImage = 'url(\'' + window.URL.createObjectURL(fileInput.files[0]) + '\')';
+            attachedImage.style.display = 'block';
+        };
+
+        attachedImageClose.addEventListener('click', () => {
+            messageSendButton.removeAttribute('id');
+            attachedImage.style.display = 'none';
+            messageInput.required = 'required';
+            fileInput.value = '';
+        })
 
         let messageBoxBlock = document.createElement('div');
         messageBoxBlock.className = 'sending-message message me';
 
         function messageSender(){
-            if (document.querySelector('.sending-message') == null) {
-                messageBoxBlock.insertAdjacentHTML('afterbegin','<div class="text">' + messageTextArea.value + '<small style="margin-left: 5px"><i class="fas fa-spinner fa-spin"></i></small></div>');
-                messagesBox.insertAdjacentElement('beforeend',messageBoxBlock);
-                messageSendButton.insertAdjacentHTML('beforebegin','<div class="message-send-disabler"></div>');
-                messageSendButton.style.opacity = '0.8';
+            if (messageInput.value || messageSendButton.id === 'imageLoaded') {
+                if (document.querySelector('.sending-message') == null) {
+                    messageBoxBlock.insertAdjacentHTML('afterbegin','<div class="text">' + '<span class="text-message">' + messageTextArea.value + '</span>' + '<small style="margin-left: 5px"><i class="fas fa-spinner fa-spin"></i></small></div>');
+                    messagesBox.insertAdjacentElement('beforeend',messageBoxBlock);
+                    messageSendButton.insertAdjacentHTML('beforebegin','<div class="message-send-disabler"></div>');
+                    messageSendButton.style.opacity = '0.8';
+
+                    if (messageSendButton.id === 'imageLoaded') {
+                        let sentImage = '<div class="message-image"><div class="back-picture bp-130" style="border-radius: 8px; background-image: url(' + window.URL.createObjectURL(fileInput.files[0]) + ')"></div></div>';
+                        messageBoxBlock.querySelector('.text').insertAdjacentHTML('afterbegin',sentImage);
+                        messageBoxBlock.classList.add('image-message');
+                    }
+                }
             }
         }
+
+        document.querySelector('.attach .btn').addEventListener('click', () => {
+            fileInput.click();
+        })
 
         messageSendButton.addEventListener('click',messageSender);
     </script>
@@ -264,21 +327,30 @@
 
                 let message = document.getElementById('message' + replyId);
                 let textMessage = message.querySelector('.text-message');
+                let imageMessage = message.querySelector('.message-image');
                 let songMessage = message.querySelector('.song-message');
                 let postMessage = message.querySelector('.post-message');
                 let profileMessage = message.querySelector('.profile-message');
 
-                if (textMessage) {
-                    replyMessage.innerHTML = textMessage.innerHTML;
+                if (imageMessage) {
+                    replyMessageBox.className = 'post';
+                    if (message.querySelector('.text-message').innerHTML) {
+                        replyMessage.innerHTML = imageMessage.querySelector('.back-picture').outerHTML + textMessage.innerHTML;
+                    } else {
+                        replyMessage.innerHTML = imageMessage.querySelector('.back-picture').outerHTML + '<div class="info">' + '{{ 'photo' | trans }}' + '</div>';
+                    }
                 } else if (songMessage) {
                     replyMessageBox.className = 'song';
                     replyMessage.innerHTML = '<div class="info"><i class="fas fa-play-circle"></i> ' + songMessage.querySelector('.song-full-title').innerHTML + '</div>';
                 } else if (postMessage) {
                     replyMessageBox.className = 'post';
-                    replyMessage.innerHTML = postMessage.querySelector('.back-picture').outerHTML + '<div class="info">Публикация</div>';
+                    replyMessage.innerHTML = postMessage.querySelector('.back-picture').outerHTML + '<div class="info">' + '{{ 'post' | trans }}' + '</div>';
                 } else if (profileMessage) {
                     replyMessageBox.className = 'profile';
                     replyMessage.innerHTML = profileMessage.querySelector('.back-picture').outerHTML + '<div class="info">' + profileMessage.querySelector('.user-line-info').innerHTML + '</div>';
+                } else {
+                    console.log('lost');
+                    replyMessage.innerHTML = textMessage.innerHTML;
                 }
             })
         })
@@ -288,4 +360,5 @@
             replyMessageBox.style.display = 'none';
         })
     </script>
+
 {% endblock %}

@@ -86,6 +86,7 @@ ban: Забанить
 unban: Разбанить
 
 avatar: Аватар
+photo: Фото
 delete.avatar: "Удалить аватар"
 full.name: "Полное имя"
 verified: "✓ Проверенный"
@@ -381,6 +382,7 @@ flash.added.to.playlist: "Песня добавлена в плейлист"
 flash.song.is.sent: "Песня отправлена пользователю"
 flash.post.is.sent: "Публикация отправлена пользователю"
 flash.profile.is.sent: "Профиль отправлен пользователю"
+flash.message.is.empty: "Ваше сообщение пустое"
 flash.removed.from.playlist: "Песня удалена из плейлиста"
 flash.comment.added: "Комментарий добавлен"
 flash.comment.adding.error: "Ошибка при добавлении комментария"

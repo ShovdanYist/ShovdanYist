@@ -60,25 +60,30 @@ class MessageController extends CustomAbstractController
         $em->flush();
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $message->setSender($this->user());
-            $message->setReceiver($user);
-            $message->setSeen(false);
-            $message->setSenderDeleted(false);
-            $message->setReceiverDeleted(false);
-            $message->setSentAt(new \DateTime('now'));
 
-            if ($form->get('replyTo')->getData()) {
-                $message->setReplyTo($messageRepo->findOneBy(['id' => $form->get('replyTo')->getData()]));
-            }
+            if ($form->get('imageFile')->getData() == null && $form->get('content')->getData() == null) {
+                $this->addFlash('danger', $this->trans('flash.message.is.empty'));
+            } else {
+                $message->setSender($this->user());
+                $message->setReceiver($user);
+                $message->setSeen(false);
+                $message->setSenderDeleted(false);
+                $message->setReceiverDeleted(false);
+                $message->setSentAt(new \DateTime('now'));
 
-            if ($messageRepo->findConversationMessagesCount(['user_one' => $this->user(),'user_two' => $user])[0]['count'] > 200) {
-                foreach ($messageRepo->findConversation(['user_one' => $this->user(),'user_two' => $user],['sentAt' => 'DESC'],null,200) as $messageToDelete) {
-                    $em->remove($messageToDelete);
+                if ($form->get('replyTo')->getData()) {
+                    $message->setReplyTo($messageRepo->findOneBy(['id' => $form->get('replyTo')->getData()]));
                 }
-            }
 
-            $em->persist($message);
-            $em->flush();
+                if ($messageRepo->findConversationMessagesCount(['user_one' => $this->user(),'user_two' => $user])[0]['count'] > 200) {
+                    foreach ($messageRepo->findConversation(['user_one' => $this->user(),'user_two' => $user],['sentAt' => 'DESC'],null,200) as $messageToDelete) {
+                        $em->remove($messageToDelete);
+                    }
+                }
+
+                $em->persist($message);
+                $em->flush();
+            }
 
             return $this->redirectToRoute('message_conversation', [
                 'username' => $user->getUsername()

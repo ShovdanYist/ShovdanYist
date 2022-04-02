@@ -31,3 +31,10 @@ liip_imagine:
                     image: public/assets/images/post-watermark.png
                     size: 0.3
                     position: bottomright
+
+        message:
+            quality: 80
+            filters:
+                auto_rotate: ~
+                relative_resize:
+                    heighten: 850

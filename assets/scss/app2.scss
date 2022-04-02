@@ -2038,6 +2038,7 @@ td {
   background: #eaeff0;
   border-radius: 10px;
   padding: 4px 8px;
+  max-width: 50%;
 }
 
 .message-actions {
@@ -2069,6 +2070,7 @@ td {
   display: flex;
   padding: 10px;
   border-top: 1px solid #eef1f5;
+  position: relative;
 }
 
 .message-write .input {
@@ -2096,6 +2098,7 @@ td {
   line-height: 32px;
   text-align: center;
   margin-right: 8px;
+  position: relative;
 }
 
 .message-write .send {
@@ -2212,7 +2215,7 @@ td {
 #replyMessageBox.post .back-picture {
   width: 29px;
   height: 29px;
-  border-radius: 3px;
+  border-radius: 8px;
   margin-right: 8px;
 }
 
@@ -2389,6 +2392,36 @@ td {
 
 .profile-message.me .user-line-info {
   color: #fff;
+}
+
+// Message image
+
+#attachedImage {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  background-position: center;
+  background-size: cover;
+  border-radius: 8px;
+  z-index: 999;
+  display: none;
+}
+
+#attachedImageClose {
+  position: absolute;
+  left: 12px;
+  bottom: 2px;
+  color: #fff;
+  cursor: pointer;
+}
+
+.message-image {
+  display: flex;
+  justify-content: center;
+}
+
+.image-message .back-picture {
+  margin: 4px 0 2px;
 }
 
 // Login & Register forms
