@@ -142,9 +142,20 @@ class MessageController extends CustomAbstractController
         $em = $this->getDoctrine()->getManager();
 
         foreach ($sentMessages as $sentMessage) {
+            $replySentMessages = $this->getDoctrine()->getRepository(Message::class)->findBy(['replyTo' => $sentMessage]);
+            foreach ($replySentMessages as $replySentMessage) {
+                $em->remove($replySentMessage);
+            }
+
             $em->remove($sentMessage);
         }
         foreach ($receivedMessages as $receivedMessage) {
+            $replyReceivedMessages = $this->getDoctrine()->getRepository(Message::class)->findBy(['replyTo' => $receivedMessage]);
+            foreach ($replyReceivedMessages as $replyReceivedMessage) {
+                $em->remove($replyReceivedMessage);
+            }
+
+            $receivedMessage->setReplyTo(null);
             $em->remove($receivedMessage);
         }
 
@@ -206,6 +217,12 @@ class MessageController extends CustomAbstractController
             $username = $message->getSender()->getUsername();
         } else {
             return $this->redirectToRoute('message_conversations');
+        }
+
+        $replyMessages = $this->getDoctrine()->getRepository(Message::class)->findBy(['replyTo' => $message]);
+
+        foreach ($replyMessages as $replyMessage) {
+            $replyMessage->setReplyTo(null);
         }
 
         $em->remove($message);
