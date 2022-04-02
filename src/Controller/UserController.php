@@ -84,6 +84,7 @@ class UserController extends CustomAbstractController
             $user->getProfile()->setGender(0);
             $user->getProfile()->setAvatar('avatar.jpg');
             $user->setRegisteredAt(new \DateTime('now'));
+            $user->setHideOnline(false);
 
             $em = $this->getDoctrine()->getManager();
             $em->persist($user);
