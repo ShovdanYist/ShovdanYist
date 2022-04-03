@@ -48,7 +48,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         return $statement->fetchAll();
     }
 
-    public function findLikes($criteria, $orderBy = ['id' => 'DESC'], $limit = null, $offset = 0)
+    public function findLikes($criteria, $orderBy = ['id' => 'DESC'], $limit = null, $offset = null)
     {
         $qb = $this->createQueryBuilder('u');
 
@@ -67,7 +67,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         return $qb->getQuery()->getResult();
     }
 
-    public function findFollows($criteria, $orderBy = ['id' => 'DESC'], $limit = null, $offset = 0)
+    public function findFollows($criteria, $orderBy = ['id' => 'DESC'], $limit = null, $offset = null)
     {
         $qb = $this->createQueryBuilder('u');
 
@@ -91,7 +91,31 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         return $qb->getQuery()->getResult();
     }
 
-    public function findOnlineFollows($criteria, $orderBy = ['id' => 'DESC'], $limit = null, $offset = 0)
+    public function findShareUsers($criteria, $orderBy = ['username' => 'ASC'], $limit = null, $offset = null)
+    {
+        $qb = $this->createQueryBuilder('u');
+
+        if ($criteria['type'] === 'followers') {
+            $qb->join('u.following', 'f')
+                ->where('f.followed = :user');
+        } elseif ($criteria['type'] === 'following') {
+            $qb->join('u.followers', 'f')
+                ->where('f.follower = :user');
+        }
+
+        $qb->setParameter('user', $criteria['user']);
+
+        foreach ($orderBy as $key => $value) {
+            $qb->orderBy('u.'.$key,$value);
+        }
+
+        $qb ->setMaxResults($limit)
+            ->setFirstResult($offset);
+
+        return $qb->getQuery()->getResult();
+    }
+
+    public function findOnlineFollows($criteria, $orderBy = ['id' => 'DESC'], $limit = null, $offset = null)
     {
         $qb = $this->createQueryBuilder('u');
 
@@ -122,7 +146,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         return $qb->getQuery()->getResult();
     }
 
-    public function findByKeyword($keyword, $orderBy = ['id' => 'DESC'], $limit = null, $offset = 0)
+    public function findByKeyword($keyword, $orderBy = ['id' => 'DESC'], $limit = null, $offset = null)
     {
         $qb = $this->createQueryBuilder('u');
 

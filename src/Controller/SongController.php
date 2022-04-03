@@ -137,7 +137,7 @@ class SongController extends CustomAbstractController
         }
 
         if ($this->isGranted('ROLE_USER')) {
-            $shareUsers = $this->getDoctrine()->getRepository(User::class)->findFollows(['user' => $this->user(), 'type' => 'following']);
+            $shareUsers = $this->getDoctrine()->getRepository(User::class)->findShareUsers(['user' => $this->user(), 'type' => 'following']);
         } else {
             $shareUsers = null;
         }

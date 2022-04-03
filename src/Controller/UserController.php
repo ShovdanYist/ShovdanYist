@@ -128,7 +128,7 @@ class UserController extends CustomAbstractController
         ;
 
         if ($this->isGranted('ROLE_USER')) {
-            $shareUsers = $this->getDoctrine()->getRepository(User::class)->findFollows(['user' => $this->user(), 'type' => 'following']);
+            $shareUsers = $this->getDoctrine()->getRepository(User::class)->findShareUsers(['user' => $this->user(), 'type' => 'following']);
         } else {
             $shareUsers = null;
         }
@@ -474,7 +474,7 @@ class UserController extends CustomAbstractController
             ->setPage($page)
         ;
 
-        $shareUsers = $this->getDoctrine()->getRepository(User::class)->findFollows(['user' => $this->user(), 'type' => 'following']);
+        $shareUsers = $this->getDoctrine()->getRepository(User::class)->findShareUsers(['user' => $this->user(), 'type' => 'following']);
 
         return $this->render('interface/user/bookmarks.html.twig', [
             'posts' => $paginator->getData(),

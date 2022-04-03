@@ -38,7 +38,7 @@ class PostController extends CustomAbstractController
         ;
 
         if ($this->isGranted('ROLE_USER')) {
-            $shareUsers = $this->getDoctrine()->getRepository(User::class)->findFollows(['user' => $this->user(), 'type' => 'following']);
+            $shareUsers = $this->getDoctrine()->getRepository(User::class)->findShareUsers(['user' => $this->user(), 'type' => 'following']);
         } else {
             $shareUsers = null;
         }
@@ -71,7 +71,7 @@ class PostController extends CustomAbstractController
         ;
 
         if ($this->isGranted('ROLE_USER')) {
-            $shareUsers = $this->getDoctrine()->getRepository(User::class)->findFollows(['user' => $this->user(), 'type' => 'following']);
+            $shareUsers = $this->getDoctrine()->getRepository(User::class)->findShareUsers(['user' => $this->user(), 'type' => 'following']);
         } else {
             $shareUsers = null;
         }
@@ -127,7 +127,7 @@ class PostController extends CustomAbstractController
         if ($post->getAuthor() === $this->getUser() || $this->isGranted('ROLE_POST_MODERATOR') || $post->getStatus() === true) {
 
             if ($this->isGranted('ROLE_USER')) {
-                $shareUsers = $this->getDoctrine()->getRepository(User::class)->findFollows(['user' => $this->user(), 'type' => 'following']);
+                $shareUsers = $this->getDoctrine()->getRepository(User::class)->findShareUsers(['user' => $this->user(), 'type' => 'following']);
             } else {
                 $shareUsers = null;
             }
