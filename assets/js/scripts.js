@@ -150,7 +150,7 @@ if (navbarSearch) {
 
 searchInputs.forEach((inputBox,key) => {
     inputBox.querySelector('.search_input').addEventListener('input',(input) => {
-        inputBox.querySelector('.search_button').href = '/search/' + input.target.value;
+        inputBox.querySelector('.search_button').href = '/search/' + input.target.value.replace('#', '%23').replace('%', '%25');
     })
 
     inputBox.querySelector('.search_input').addEventListener('keyup',(event) => {

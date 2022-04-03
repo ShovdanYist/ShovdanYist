@@ -2312,28 +2312,36 @@ td {
 .audio-message .audio-player {
   margin: -1px -5px 0;
 }
+
 .audio-message .audio-player-image div {
   border-radius: 8px;
 }
+
 .audio-message .audio-player:hover {
   background: unset;
 }
+
 .audio-message .mejs__time-total::before {
   background-color: rgba(0,0,0,0.1);
   border-radius: 3px;
 }
+
 .audio-message .mejs__time-loaded {
   background: rgba(0,0,0,0.1);
 }
+
 .audio-message .mejs__time {
   padding: 35px 6px 0 6px;
 }
+
 .audio-message .mejs__time-rail {
   margin: 0 3px;
 }
+
 .audio-message .mejs__duration-container {
   padding-right: 10px !important;
 }
+
 .audio-message .text {
   min-width: 50%;
 }
@@ -2341,18 +2349,30 @@ td {
 .audio-message.me .mejs__currenttime, .audio-message.me .mejs__duration {
   color: rgba(255, 255, 255, 0.7);
 }
+
 .audio-message.me .audio-player-title a, .audio-message.me .audio-player {
   color: #fff !important;
 }
+
 .audio-message.me .mejs__time-current, .audio-message.me .mejs__time-handle-content {
   background: #fff;
 }
+
 .audio-message.me .mejs__time-loaded {
   background: rgba(255, 255, 255, 0.5);
 }
+
 .audio-message.me .mejs__time-total::before {
   background-color: rgba(255,255,255,0.5);
   border-radius: 3px;
+}
+
+.audio-message.me .mejs__time-hovered {
+  background: rgb(152, 213, 255);
+}
+
+.audio-message.me .mejs__time-hovered.negative {
+  background: rgba(0, 0, 0, 0.1);
 }
 
 // Message Post

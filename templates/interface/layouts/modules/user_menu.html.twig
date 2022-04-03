@@ -77,31 +77,22 @@
                     </li>
 
                     <li class="md-menu-item">
-                        <a href="{{ path('user_playlist') }}">
-                            <span>
-                                <i class="fas fa-headphones"></i>
-                            </span>
-                            {{ 'music' | trans }}
-                        </a>
+                        {% if app.user.playlistSongs.count %}
+                            <a href="{{ path('user_playlist') }}">
+                                <span>
+                                    <i class="fas fa-headphones"></i>
+                                </span>
+                                {{ 'music' | trans }}
+                            </a>
+                        {% else %}
+                            <a href="{{ path('song_index') }}">
+                                <span>
+                                    <i class="fas fa-headphones"></i>
+                                </span>
+                                {{ 'music' | trans }}
+                            </a>
+                        {% endif %}
                     </li>
-
-{#                    <li class="md-menu-item">#}
-{#                        <a href="{{ path('song_index') }}">#}
-{#                            <span>#}
-{#                                <i class="fas fa-music"></i>#}
-{#                            </span>#}
-{#                            {{ 'music' | trans }}#}
-{#                        </a>#}
-{#                    </li>#}
-
-{#                    <li class="md-menu-item">#}
-{#                        <a href="{{ path('user_bookmarks') }}">#}
-{#                            <span>#}
-{#                                <i class="fas fa-bookmark"></i>#}
-{#                            </span>#}
-{#                            {{ 'bookmarks' | trans }}#}
-{#                        </a>#}
-{#                    </li>#}
 
                 </ul>
 

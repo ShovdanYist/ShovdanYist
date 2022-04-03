@@ -108,7 +108,7 @@
             {% if view == 'show' or view == 'moderation' %}
                 {% if post.content %}
                     <div class="ckeditor-content md-margin-bottom">
-                        {{ post.content | raw }}
+                        {{ post.content | tagger | raw }}
                     </div>
                 {% endif %}
             {% else %}
