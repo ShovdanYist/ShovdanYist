@@ -2050,6 +2050,22 @@ td {
   max-width: 52%;
 }
 
+.message.me:hover .text {
+  background: #3ca7f0 !important;
+}
+
+.message.me:hover .replied-message::after {
+  background: -moz-linear-gradient(right, #3ca7f0 0%, rgba(255, 255, 255, 0) 100%);
+}
+
+.message:hover .text {
+  background: #f5f8f9 !important;
+}
+
+.message:hover .replied-message::after {
+  background: -moz-linear-gradient(right, #f5f8f9 0%, rgba(255, 255, 255, 0) 100%);
+}
+
 .message-actions {
   min-width: 30px;
 }
@@ -3457,4 +3473,36 @@ select {
 
 .not-have-message {
   text-align: center;
+}
+
+// Mobile menu
+
+.mobile-menu {
+  position: fixed;
+  width: 100%;
+  bottom: 0;
+  z-index: 999;
+  background: linear-gradient(0deg, #282828 0%, rgba(30, 30, 30, 0.95) 100%);
+  height: 50px;
+  display: none;
+  justify-content: space-around;
+}
+
+.mobile-menu a {
+  color: #777;
+  font-size: 22px;
+  padding: 6px;
+  top: 8px;
+  position: relative;
+}
+
+.mobile-menu-badge {
+  position: absolute;
+  background-color: #e74c3c;
+  font-size: 10px;
+  color: #fff;
+  border-radius: 30px;
+  padding: 0 6px;
+  bottom: 0;
+  right: -12px;
 }

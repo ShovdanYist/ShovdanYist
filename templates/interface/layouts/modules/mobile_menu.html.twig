@@ -1,33 +1,3 @@
-<style>
-    .mobile-menu {
-        position: fixed;
-        width: 100%;
-        bottom: 0;
-        z-index: 999;
-        background: linear-gradient(0deg, #282828 0%, rgba(30, 30, 30, 0.95) 100%);
-        height: 50px;
-        display: none;
-        justify-content: space-around;
-    }
-    .mobile-menu a {
-        color: #777;
-        font-size: 22px;
-        padding: 6px;
-        top: 8px;
-        position: relative;
-    }
-    .mobile-menu-badge {
-        position: absolute;
-        background-color: #e74c3c;
-        font-size: 10px;
-        color: #fff;
-        border-radius: 30px;
-        padding: 0 6px;
-        bottom: 0;
-        right: -12px;
-    }
-</style>
-
 {% set pathname = app.request.get('_route') %}
 
 {% if app.user %}
@@ -41,9 +11,15 @@
         </div>
 
         <div>
-            <a href="{{ path('user_playlist') }}"{% if pathname == 'user_playlist' or pathname == 'song_index' %} style="color: #ccc" {% endif %}>
-                <i class="fas fa-headphones-alt"></i>
-            </a>
+            {% if app.user.playlistSongs.count %}
+                <a href="{{ path('user_playlist') }}"{% if pathname == 'user_playlist' or pathname == 'song_index' %} style="color: #ccc" {% endif %}>
+                    <i class="fas fa-headphones-alt"></i>
+                </a>
+            {% else %}
+                <a href="{{ path('song_index') }}"{% if pathname == 'user_playlist' or pathname == 'song_index' %} style="color: #ccc" {% endif %}>
+                    <i class="fas fa-headphones-alt"></i>
+                </a>
+            {% endif %}
         </div>
 
         <div>

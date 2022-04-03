@@ -515,7 +515,7 @@
     right: 0 !important;
   }
   .md-conversation .message .text {
-    max-width: unset !important;
+    max-width: calc(100% - 30px) !important;
   }
 }
 
