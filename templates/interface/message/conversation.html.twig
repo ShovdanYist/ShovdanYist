@@ -63,7 +63,7 @@
                                     <div class="md-modal-container">
                                         <div class="md-modal-message">{{ 'sure.to.delete.message.for.me' | trans({'username':user.username}) }}</div>
                                         <a class="btn btn-modal-danger md-modal-item" href="{{ path('delete_message_for_me', {'id':message.id}) }}">
-                                            {{ 'delete.for.me' | trans }}
+                                            {{ 'delete.only.for.me' | trans }}
                                         </a>
                                         <button type="button" class="btn btn-modal-default md-modal-item" data-dismiss="modal">{{ 'cancel' | trans }}</button>
                                     </div>
@@ -76,7 +76,7 @@
                                     <div class="md-modal-container">
                                         <div class="md-modal-message">{{ 'sure.to.delete.message.for.everyone' | trans({'username':user.username}) }}</div>
                                         <a class="btn btn-modal-danger md-modal-item" href="{{ path('delete_message_for_everyone', {'id':message.id}) }}">
-                                            {{ 'delete.for.everyone' | trans({'username':user.username}) }}
+                                            {{ 'delete.for.me.and.interlocutor' | trans({'username':user.username}) }}
                                         </a>
                                         <button type="button" class="btn btn-modal-default md-modal-item" data-dismiss="modal">{{ 'cancel' | trans }}</button>
                                     </div>

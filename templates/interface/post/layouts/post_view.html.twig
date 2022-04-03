@@ -2,7 +2,7 @@
 
     <div class="md-box md-content-padding">
 
-        {% if is_granted('ROLE_POST_MODERATOR') or post.author == app.user %}
+        {% if app.user %}
 
             <button type="button" class="btn md-dot-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="right: 16px;top: 14px">
                 <i class="fas fa-ellipsis-h"></i>
@@ -10,12 +10,23 @@
 
             <div class="dropdown-menu dropdown-menu-right">
 
-                <a href="{{ path('post_edit', {'id':post.id}) }}" class="dropdown-item">
-                    <span class="icon">
-                        <i class="fas fa-pencil-alt"></i>
-                    </span>
-                    {{ 'edit' | trans }}
-                </a>
+                {% if app.user %}
+                    <button id="sharePostId{{ post.id }}" type="button" class="dropdown-item share-post-button" data-toggle="modal" data-target="#sharePostModal">
+                        <span class="icon">
+                            <i class="fas fa-paper-plane"></i>
+                        </span>
+                        {{ 'share' | trans }}
+                    </button>
+                {% endif %}
+
+                {% if is_granted('ROLE_POST_MODERATOR') or post.author == app.user %}
+                    <a href="{{ path('post_edit', {'id':post.id}) }}" class="dropdown-item">
+                        <span class="icon">
+                            <i class="fas fa-pencil-alt"></i>
+                        </span>
+                        {{ 'edit' | trans }}
+                    </a>
+                {% endif %}
 
                 {% if is_granted('ROLE_OWNER') or post.author == app.user %}
                     <button type="button" class="dropdown-item" data-toggle="modal" data-target="#deletePostModal">

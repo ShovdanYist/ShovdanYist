@@ -31,19 +31,26 @@
                 <div class="dropdown-menu dropdown-menu-right">
 
                     <button id="shareSong" type="button" class="dropdown-item" data-toggle="modal" data-target="#shareSongModal">
-                        <i class="fas fa-paper-plane"></i>
+                        <span class="icon">
+                            <i class="fas fa-paper-plane"></i>
+                        </span>
                         {{ 'share' | trans }}
                     </button>
 
                     {% if is_granted('ROLE_SONG_EDITOR') %}
                         <a href="{{ path('song_edit', {'slug':entity.slug}) }}" class="dropdown-item">
-                            <i class="fa fa-edit"></i> {{ 'edit' | trans }}
+                            <span class="icon">
+                                <i class="fas fa-pencil-alt"></i>
+                            </span>
+                            {{ 'edit' | trans }}
                         </a>
                     {% endif %}
 
                     {% if is_granted('ROLE_OWNER') %}
                         <button type="button" class="dropdown-item" data-toggle="modal" data-target="#deleteSong">
-                            <i class="fas fa-trash-alt"></i>
+                            <span class="icon">
+                                <i class="fas fa-trash-alt"></i>
+                            </span>
                             {{ 'delete' | trans }}
                         </button>
                     {% endif %}

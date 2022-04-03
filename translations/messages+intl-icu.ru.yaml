@@ -173,8 +173,10 @@ invited.by.help: "Введите имя пользователя который 
 message: Сообщение
 messages: Сообщении
 write.message: "Написать сообщение.."
-delete.for.me: "Удалить только у себя"
-delete.for.everyone: "Удалить у себя и у { username }"
+delete.for.me: "Удалить у себя"
+delete.for.everyone: "Удалить у всех"
+delete.only.for.me: "Удалить только у себя"
+delete.for.me.and.interlocutor: "Удалить у себя и у { username }"
 
 # DATE
 
