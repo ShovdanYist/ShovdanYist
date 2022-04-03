@@ -601,7 +601,7 @@ blockquote, .ck.ck-content blockquote {
   border-radius: 3px !important;
 }
 
-// Confirm Modal
+// MODAL
 
 .md-confirm-modal .modal-content {
   background: unset;
@@ -663,6 +663,15 @@ blockquote, .ck.ck-content blockquote {
   margin-bottom: 20px;
   font-size: 15px;
   font-weight: 400;
+}
+
+.md-empty-modal .modal-content {
+  background: unset;
+  border: unset;
+}
+
+.md-empty-modal .modal-content img {
+  border-radius: 8px;
 }
 
 // Form spoiler
@@ -2038,7 +2047,7 @@ td {
   background: #eaeff0;
   border-radius: 10px;
   padding: 4px 8px;
-  max-width: 50%;
+  max-width: 52%;
 }
 
 .message-actions {
@@ -2256,7 +2265,6 @@ td {
   margin: 4px 0 3px;
   border-left: 2px solid rgba(0,0,0,0.3);
   white-space: nowrap;
-  max-width: 200px;
   overflow: hidden;
   position: relative;
   color: #444;
