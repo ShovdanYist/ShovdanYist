@@ -105,8 +105,6 @@
 
                 {% endfor %}
 
-                {{ paginator.display() }}
-
             </div>
 
         {% else %}
@@ -130,6 +128,8 @@
         {% endif %}
 
     </div>
+
+    {{ paginator.display() }}
 
 {% endblock %}
 

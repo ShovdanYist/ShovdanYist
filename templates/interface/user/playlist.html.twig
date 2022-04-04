@@ -37,8 +37,10 @@
 
     {% endfor %}
 
-    {{ paginator.display() }}
+{% endblock %}
 
+{% block main_bottom %}
+    {{ paginator.display() }}
 {% endblock %}
 
 {% block scripts %}

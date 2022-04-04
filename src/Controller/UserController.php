@@ -125,7 +125,7 @@ class UserController extends CustomAbstractController
             ->setOrder(['publishedAt' => 'DESC'])
             ->setCriteria($criteria)
             ->setParameters(['username' => $user->getUsername()])
-            ->setLimit(40)
+            ->setLimit(30)
             ->setPage($page)
         ;
 
@@ -522,7 +522,7 @@ class UserController extends CustomAbstractController
             ->setCriteria(['user' => $user])
             ->setClass(Post::class)
             ->setType('bookmark')
-            ->setLimit(10)
+            ->setLimit(15)
             ->setPage($page)
         ;
 

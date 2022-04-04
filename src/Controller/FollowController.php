@@ -34,7 +34,7 @@ class FollowController extends CustomAbstractController
                 ->setCriteria(['user' => $user, 'type' => 'followers', 'accepted' => true])
                 ->setParameters(['username' => $user->getUsername()])
                 ->setOrder(['id' => 'DESC'])
-                ->setLimit(10)
+                ->setLimit(50)
                 ->setPage($page)
             ;
 
@@ -70,7 +70,7 @@ class FollowController extends CustomAbstractController
                 ->setCriteria(['user' => $user, 'type' => 'following', 'accepted' => true])
                 ->setParameters(['username' => $user->getUsername()])
                 ->setOrder(['id' => 'DESC'])
-                ->setLimit(100)
+                ->setLimit(50)
                 ->setPage($page)
             ;
 

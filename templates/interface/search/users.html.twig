@@ -45,8 +45,6 @@
                     {{ userLine(user) }}
                 {% endfor %}
 
-                {{ paginator.display() }}
-
             </div>
 
         {% endif %}
@@ -64,6 +62,8 @@
         {% endif %}
 
     </div>
+
+    {{ paginator.display() }}
 
 {% endblock %}
 

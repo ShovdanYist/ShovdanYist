@@ -19,7 +19,7 @@ class CommentRepository extends ServiceEntityRepository
         parent::__construct($registry, Comment::class);
     }
 
-    public function getNoChildComments($criteria, $orderBy = ['id' => 'DESC'], $limit = null, $offset = 0)
+    public function getNoParentComments($criteria, $orderBy = ['id' => 'DESC'], $limit = null, $offset = null)
     {
         $qb = $this->createQueryBuilder('c');
 
@@ -45,7 +45,7 @@ class CommentRepository extends ServiceEntityRepository
             $qb->orderBy('c.'.$key,$value);
         }
 
-        $qb ->setMaxResults(50)
+        $qb ->setMaxResults($limit)
             ->setFirstResult($offset);
 
         return $qb->getQuery()->getResult();

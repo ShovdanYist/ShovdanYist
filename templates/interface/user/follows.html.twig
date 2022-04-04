@@ -7,7 +7,6 @@
     <div class="md-box">
 
         <header class="user-title-block">
-
             <div class="username-container">
 
                 <span class="username">
@@ -15,7 +14,6 @@
                         {{ user.username }}
                     </a>
                 </span>
-
                 {% if profile.verified == true %}
                     <span class="verified">
                         <i class="fas fa-check-circle text-info"></i>
@@ -23,7 +21,6 @@
                 {% endif %}
 
             </div>
-
         </header>
 
         <div class="md-profile-posts-menu" style="border-top: unset;">
@@ -54,10 +51,10 @@
                 </div>
             {% endfor %}
 
-            {{ paginator.display() }}
-
         </div>
 
     </div>
+
+    {{ paginator.display() }}
 
 {% endblock %}

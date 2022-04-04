@@ -73,12 +73,12 @@ class ModulesExtension extends AbstractExtension
         $name = strtolower((new \ReflectionClass($entity))->getShortName());
 
         $this->paginator->setClass(Comment::class)
-            ->setMethod('getNoChildComments')
+            ->setMethod('getNoParentComments')
             ->setType('comments')
             ->setOrder(['id' => 'DESC'])
             ->setCriteria([$name => $entity])
             ->setParameters($params)
-            ->setLimit(10)
+            ->setLimit(30)
             ->setPage($page);
 
         return $twig->render('interface/layouts/comments/comment_block.html.twig', [

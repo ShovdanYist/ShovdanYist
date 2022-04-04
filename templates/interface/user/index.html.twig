@@ -12,13 +12,13 @@
 {% block body %}
 
     <div class="md-search-box">
-
         {% for user in users %}
             {{ userLine(user) }}
         {% endfor %}
-
-        {{ paginator.display() }}
-
     </div>
 
+{% endblock %}
+
+{% block main_bottom %}
+    {{ paginator.display() }}
 {% endblock %}

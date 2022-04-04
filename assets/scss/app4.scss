@@ -41,7 +41,7 @@ html, body {
 }
 
 .md-box.sticky-top, .sidebar.sticky-top {
-  top: -4px !important;
+  top: 0 !important;
 }
 
 img {
@@ -1802,7 +1802,8 @@ td {
 }
 
 .md-pagination-box {
-  margin-top: 14px;
+  margin-top: 12px;
+  margin-bottom: 62px;
 }
 
 .md-margin-bottom {
@@ -3126,11 +3127,6 @@ select {
   margin: 3px;
   line-height: 28px;
   color: #aaa;
-}
-
-.md-custom-paginator .md-pagination-box {
-  margin-top: 0;
-  padding-bottom: 15px;
 }
 
 // Post

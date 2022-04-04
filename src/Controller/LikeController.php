@@ -30,7 +30,7 @@ class LikeController extends CustomAbstractController
             ->setCriteria(['post' => $post])
             ->setParameters(['id' => $post->getId()])
             ->setOrder(['id' => 'DESC'])
-            ->setLimit(50)
+            ->setLimit(30)
             ->setPage($page)
         ;
 

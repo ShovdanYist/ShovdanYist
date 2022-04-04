@@ -24,11 +24,16 @@
     {% for key,song in songs %}
         {{ player(song) }}
     {% else %}
-        {{ 'no.records.found' | trans }}
+        <div class="not-have-message not-have-message-center">
+            <i class="fas fa-headphones-alt"></i>
+            {{ 'song.not.found' | trans }}
+        </div>
     {% endfor %}
 
-    {{ paginator.display }}
+{% endblock %}
 
+{% block main_bottom %}
+    {{ paginator.display }}
 {% endblock %}
 
 {% block scripts %}
