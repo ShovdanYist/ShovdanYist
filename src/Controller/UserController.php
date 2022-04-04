@@ -312,6 +312,13 @@ class UserController extends CustomAbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
+            if ($form->get('closedAccount')->getData() === false) {
+                $followRequests = $this->getDoctrine()->getRepository(Follow::class)->findBy(['followed' => $this->user(),'accepted' => false]);
+                foreach ($followRequests as $followRequest) {
+                    $followRequest->setAccepted(true);
+                }
+            }
+
             if ($this->isGranted('ROLE_OWNER') && $user !== $this->user()) {
                 $user->setPassword(
                     $passwordEncoder->encodePassword(
