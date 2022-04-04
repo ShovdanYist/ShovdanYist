@@ -2,22 +2,39 @@
 
 {% block title %}{{ 'notifications' | trans }}{% endblock %}
 
-{% block body %}
+{% block main %}
 
-    <div class="md-notifications">
+    <div class="md-box">
 
-        {% for notification in notifications %}
+        {% if requests %}
+            <a href="{{ path('user_requests') }}">
+                <div class="md-content-padding md-mobile-padding requests-notification">
+                    {{ 'follow.requests' | trans }}
+                    <span class="indicator">{{ requests }}</span>
+                </div>
+            </a>
+        {% endif %}
 
-            {{ notificationView(notification) }}
+        <div class="md-content-padding md-mobile-padding">
 
-        {% else %}
+            <div class="md-notifications">
 
-            <div class="not-have-message not-have-message-center">
-                <i class="far fa-bell" style="margin-right: 3px"></i>
-                {{ 'you.have.not.notifications' | trans }}
+                {% for notification in notifications %}
+
+                    {{ notificationView(notification) }}
+
+                {% else %}
+
+                    <div class="not-have-message not-have-message-center">
+                        <i class="far fa-bell" style="margin-right: 3px"></i>
+                        {{ 'you.have.not.notifications' | trans }}
+                    </div>
+
+                {% endfor %}
+
             </div>
 
-        {% endfor %}
+        </div>
 
     </div>
 

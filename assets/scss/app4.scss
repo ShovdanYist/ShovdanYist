@@ -276,13 +276,13 @@ li {
   top: unset;
 }
 
-.user-line-follow, .notification-follow {
+.user-line-follow, .notification-follow, .follow-request {
   position: absolute;
   right: 0;
   top: 9px;
 }
 
-.user-line-follow .btn-follow, .notification-follow {
+.user-line-follow .btn-follow, .notification-follow, .follow-request .btn {
   font-weight: 500;
   font-size: 13px;
   padding: 2px 6px 3px 5px;
@@ -3078,6 +3078,22 @@ select {
 
 .notification-delete:hover {
   color: #7f9091;
+}
+
+.requests-notification {
+  text-align: center;
+  font-weight: 500;
+  border-bottom: 1px solid #eef1f5;
+  color: #000;
+  position: relative;
+}
+
+.requests-notification .indicator {
+  background: #f03434;
+  padding: 2px 6px;
+  border-radius: 100px;
+  color: #fff;
+  font-size: 12px;
 }
 
 // Pagination

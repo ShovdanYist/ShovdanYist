@@ -77,15 +77,19 @@ function follows(event) {
                 let followers = document.getElementById('profileFollowers').querySelector('.number').innerHTML;
                 document.getElementById('profileFollowers').querySelector('.number').innerHTML = (parseInt(followers, 10) + 1).toString();
             }
+        } else if (status === 'requested') {
+            this.classList.remove('btn-info');
+            this.classList.add('btn-light');
+            this.classList.add('requested');
         } else {
-            this.classList.remove('btn-light');
-            this.classList.remove('followed');
-            this.classList.add('btn-info');
-
-            if (document.getElementById('profileFollowers')) {
+            if (document.getElementById('profileFollowers') && !document.querySelector('.requested')) {
                 let followers = document.getElementById('profileFollowers').querySelector('.number').innerHTML;
                 document.getElementById('profileFollowers').querySelector('.number').innerHTML = (parseInt(followers, 10) - 1).toString();
             }
+            this.classList.remove('btn-light');
+            this.classList.remove('followed');
+            this.classList.remove('requested');
+            this.classList.add('btn-info');
         }
 
         this.dataset.originalTitle = response.data.response.title;
@@ -122,6 +126,49 @@ function unfollows(event) {
 
 unfollow.forEach((unfollow) => {
     unfollow.addEventListener('click', unfollows);
+});
+
+// Accept or reject follow request
+
+function rejectRequestFunction(event, requestResponse) {
+    event.preventDefault();
+    let url = event.target.href;
+    let followerBlock = 'u' + event.target.id.split('u').pop().split('t')[0] + 'l';
+
+    if (requestResponse === 'rejected') {
+        let cancelButtonId = 'rejectRequest' + event.target.id.split('u').pop().split('t')[0];
+        document.getElementById(cancelButtonId).click();
+    }
+
+    axios.get(url).then((response) => {
+        let request = String(response.data.response.request);
+        if (request === requestResponse) {
+            document.getElementById(followerBlock).remove();
+            if (document.querySelector('.user-line') === null) {
+                if (document.getElementById('requestsPaginator')) {
+                    document.location.reload();
+                } else {
+                    document.getElementById('requestsList').remove();
+                    document.getElementById('requestsIsEmpty').style.display = 'block';
+                }
+            }
+        }
+    })
+}
+
+let acceptRequest = document.querySelectorAll('.accept-follow-request');
+let rejectRequest = document.querySelectorAll('.reject-request-toggle');
+
+acceptRequest.forEach((acceptRequest) => {
+    acceptRequest.addEventListener('click', (event) => {
+        rejectRequestFunction(event,'accepted')
+    });
+});
+
+rejectRequest.forEach((rejectRequest) => {
+    rejectRequest.addEventListener('click', (event) => {
+        rejectRequestFunction(event,'rejected')
+    });
 });
 
 // Make post featured

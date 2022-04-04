@@ -35,6 +35,10 @@ class PostRepository extends ServiceEntityRepository
             }
         }
 
+        $qb->join('p.author','u')
+            ->andWhere('u.closedAccount = false')
+        ;
+
         foreach ($orderBy as $key => $value) {
             $qb->orderBy('p.'.$key,$value);
         }
@@ -53,6 +57,13 @@ class PostRepository extends ServiceEntityRepository
             if ($property == 'following') {
                 $qb->where('p.author IN (:following)')
                     ->setParameter('following',$value)
+                ;
+            } else if ($property == 'user')  {
+                $qb->join('p.author','u')
+                    ->join('u.followers', 'f')
+                    ->andWhere('f.follower = :user')
+                    ->andWhere('f.accepted = true')
+                    ->setParameter('user', $criteria['user'])
                 ;
             } else {
                 $qb ->andWhere('p.'. $property .' = :' . $property . '')
@@ -95,9 +106,11 @@ class PostRepository extends ServiceEntityRepository
     {
         $qb = $this->createQueryBuilder('p');
 
-        $qb ->where('p.content LIKE :keyword')
+        $qb ->join('p.author', 'u')
+            ->where('p.content LIKE :keyword')
             ->orWhere('p.title LIKE :keyword')
             ->andWhere('p.status = true')
+            ->andWhere('u.closedAccount = false')
             ->setParameter('keyword','%'. $keyword .'%')
         ;
 

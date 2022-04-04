@@ -194,6 +194,11 @@ class User implements UserInterface
      */
     private $hideOnline;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $closedAccount;
+
     public function __construct()
     {
         $this->songs = new ArrayCollection();
@@ -946,6 +951,18 @@ class User implements UserInterface
     public function setHideOnline(bool $hideOnline): self
     {
         $this->hideOnline = $hideOnline;
+
+        return $this;
+    }
+
+    public function getClosedAccount(): ?bool
+    {
+        return $this->closedAccount;
+    }
+
+    public function setClosedAccount(bool $closedAccount): self
+    {
+        $this->closedAccount = $closedAccount;
 
         return $this;
     }

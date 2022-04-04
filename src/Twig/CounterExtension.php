@@ -9,6 +9,7 @@ use App\Entity\Song;
 use App\Entity\Person;
 use App\Entity\User;
 use App\Repository\BookmarkRepository;
+use App\Repository\FollowRepository;
 use App\Repository\LikeRepository;
 use App\Repository\MessageRepository;
 use App\Repository\SongRepository;
@@ -30,9 +31,9 @@ class CounterExtension extends AbstractExtension
     private $bookmarks;
     private $likes;
     private $postRepo;
-    private $security;
+    private $followRepo;
 
-    public function __construct(SongRepository $songRepository, PostRepository $postRepo, BookmarkRepository $bookmarks, LikeRepository $likes, PlaylistSongRepository $playlistSongRepo, NotificationRepository $notifyRepo, MessageRepository $messageRepo, TranslatorInterface $translator, Security $security)
+    public function __construct(SongRepository $songRepository, PostRepository $postRepo, BookmarkRepository $bookmarks, LikeRepository $likes, PlaylistSongRepository $playlistSongRepo, NotificationRepository $notifyRepo, MessageRepository $messageRepo, TranslatorInterface $translator, FollowRepository $followRepo)
     {
         $this->songRepo = $songRepository;
         $this->postRepo = $postRepo;
@@ -42,7 +43,7 @@ class CounterExtension extends AbstractExtension
         $this->notifyRepo = $notifyRepo;
         $this->messageRepo = $messageRepo;
         $this->translator = $translator;
-        $this->security = $security;
+        $this->followRepo = $followRepo;
     }
 
     public function getFunctions(): array
@@ -111,7 +112,9 @@ class CounterExtension extends AbstractExtension
 
     public function notifyCount($user): int
     {
-        return $this->notifyRepo->count(['receiver' => $user, 'seen' => false, 'status' => true]);
+        $notifyCount = $this->notifyRepo->count(['receiver' => $user, 'seen' => false, 'status' => true]);
+        $requestsCount = $this->followRepo->count(['followed' => $user, 'accepted' => false]);
+        return $notifyCount + $requestsCount;
     }
 
     public function messagesCount($user): int

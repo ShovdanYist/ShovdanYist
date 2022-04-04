@@ -36,6 +36,11 @@ class Follow
      */
     private $notifications;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $accepted;
+
     public function __construct()
     {
         $this->notifications = new ArrayCollection();
@@ -97,6 +102,18 @@ class Follow
                 $notification->setFollow(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getAccepted(): ?bool
+    {
+        return $this->accepted;
+    }
+
+    public function setAccepted(bool $accepted): self
+    {
+        $this->accepted = $accepted;
 
         return $this;
     }

@@ -6,6 +6,8 @@ use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\DBAL\DBALException;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
@@ -79,6 +81,11 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
                 ->where('f.follower = :user');
         }
 
+        if (isset($criteria['accepted'])) {
+            $qb->andWhere('f.accepted = :accepted')
+                ->setParameter('accepted', $criteria['accepted']);
+        }
+
         $qb->setParameter('user', $criteria['user']);
 
         foreach ($orderBy as $key => $value) {
@@ -91,16 +98,43 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         return $qb->getQuery()->getResult();
     }
 
+    /**
+     * @throws NonUniqueResultException
+     * @throws NoResultException
+     */
+    public function followsCount($criteria)
+    {
+        $qb = $this->createQueryBuilder('u')
+            ->select('count(u)');
+
+        if ($criteria['type'] === 'followers') {
+            $qb->join('u.following', 'f')
+                ->where('f.followed = :user')
+                ->andWhere('f.accepted = true')
+            ;
+        } elseif ($criteria['type'] === 'following') {
+            $qb->join('u.followers', 'f')
+                ->where('f.follower = :user')
+                ->andWhere('f.accepted = true');
+        }
+
+        $qb->setParameter('user', $criteria['user']);
+
+        return $qb->getQuery()->getSingleScalarResult();
+    }
+
     public function findShareUsers($criteria, $orderBy = ['username' => 'ASC'], $limit = null, $offset = null)
     {
         $qb = $this->createQueryBuilder('u');
 
         if ($criteria['type'] === 'followers') {
             $qb->join('u.following', 'f')
-                ->where('f.followed = :user');
+                ->where('f.followed = :user')
+                ->andWhere('f.accepted = true');
         } elseif ($criteria['type'] === 'following') {
             $qb->join('u.followers', 'f')
-                ->where('f.follower = :user');
+                ->where('f.follower = :user')
+                ->andWhere('f.accepted = true');
         }
 
         $qb->setParameter('user', $criteria['user']);
@@ -121,10 +155,12 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
 
         if ($criteria['type'] === 'followers') {
             $qb->join('u.following', 'f')
-                ->where('f.followed = :user');
+                ->where('f.followed = :user')
+                ->andWhere('f.accepted = true');
         } elseif ($criteria['type'] === 'following') {
             $qb->join('u.followers', 'f')
-                ->where('f.follower = :user');
+                ->where('f.follower = :user')
+                ->andWhere('f.accepted = true');
         }
 
         $date = new \DateTime('-5 minute');

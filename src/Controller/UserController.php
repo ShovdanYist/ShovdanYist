@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\CustomAbstracts\CustomAbstractController;
 use App\Entity\EmailAddress;
+use App\Entity\Follow;
 use App\Entity\Profile;
 use App\Entity\Song;
 use App\Entity\Notification;
@@ -85,6 +86,7 @@ class UserController extends CustomAbstractController
             $user->getProfile()->setAvatar('avatar.jpg');
             $user->setRegisteredAt(new \DateTime('now'));
             $user->setHideOnline(false);
+            $user->setClosedAccount(false);
 
             $em = $this->getDoctrine()->getManager();
             $em->persist($user);
@@ -127,11 +129,16 @@ class UserController extends CustomAbstractController
             ->setPage($page)
         ;
 
+        $userRepo = $this->getDoctrine()->getRepository(User::class);
+
         if ($this->isGranted('ROLE_USER')) {
-            $shareUsers = $this->getDoctrine()->getRepository(User::class)->findShareUsers(['user' => $this->user(), 'type' => 'following']);
+            $shareUsers = $userRepo->findShareUsers(['user' => $this->user(), 'type' => 'following']);
         } else {
             $shareUsers = null;
         }
+
+        $followers = $userRepo->followsCount(['user' => $user, 'type' => 'followers', 'accepted' => true]);
+        $following = $userRepo->followsCount(['user' => $user, 'type' => 'following', 'accepted' => true]);
 
         return $this->render('interface/user/profile.html.twig', [
             'invitees' => $this->getDoctrine()->getRepository(User::class)->count(['invitedBy' => $user, 'status' => true]),
@@ -140,7 +147,9 @@ class UserController extends CustomAbstractController
             'profile' => $user->getProfile(),
             'user' => $user,
             'type' => 'profile',
-            'shareUsers' => $shareUsers
+            'shareUsers' => $shareUsers,
+            'followers' => $followers,
+            'following' => $following
         ]);
     }
 
@@ -163,13 +172,27 @@ class UserController extends CustomAbstractController
             ->setPage($page)
         ;
 
+        $userRepo = $this->getDoctrine()->getRepository(User::class);
+
+        if ($this->isGranted('ROLE_USER')) {
+            $shareUsers = $userRepo->findShareUsers(['user' => $this->user(), 'type' => 'following']);
+        } else {
+            $shareUsers = null;
+        }
+
+        $followers = $userRepo->followsCount(['user' => $user, 'type' => 'followers', 'accepted' => true]);
+        $following = $userRepo->followsCount(['user' => $user, 'type' => 'following', 'accepted' => true]);
+
         return $this->render('interface/user/profile.html.twig', [
             'invitees' => $this->getDoctrine()->getRepository(User::class)->count(['invitedBy' => $user, 'status' => true]),
             'posts' => $paginator->getData(),
             'paginator' => $paginator,
             'profile' => $user->getProfile(),
             'user' => $user,
-            'type' => 'tagged'
+            'type' => 'tagged',
+            'shareUsers' => $shareUsers,
+            'followers' => $followers,
+            'following' => $following
         ]);
     }
 
@@ -263,6 +286,11 @@ class UserController extends CustomAbstractController
             ])
             ->add('hideOnline', CheckboxType::class, [
                 'label' => 'hide.online',
+                'required' => false,
+                'label_attr' => ['class' => 'switch-custom']
+            ])
+            ->add('closedAccount', CheckboxType::class, [
+                'label' => 'closed.account',
                 'required' => false,
                 'label_attr' => ['class' => 'switch-custom']
             ])
@@ -375,9 +403,10 @@ class UserController extends CustomAbstractController
     {
         $this->updateLastActivity();
         $user = $userRepo->findOneBy(['username' => $this->getUser()->getUsername()]);
+        $requests = $this->getDoctrine()->getRepository(Follow::class)->count(['followed' => $this->getUser(),'accepted' => false]);
 
-        if ($notifyRepo->count(['receiver' => $user]) > 100) {
-            $notifications = $notifyRepo->findBy(['receiver' => $user], ['id' => 'DESC'], null, 100);
+        if ($notifyRepo->count(['receiver' => $user]) > 90) {
+            $notifications = $notifyRepo->findBy(['receiver' => $user], ['id' => 'DESC'], null, 90);
             foreach ($notifications as $notification) {
                 $user->removeReceivedNotification($notification);
             }
@@ -395,11 +424,34 @@ class UserController extends CustomAbstractController
             ->setType('notification')
             ->setOrder(['publishedAt' => 'DESC'])
             ->setCriteria(['receiver' => $user, 'status' => true])
-            ->setLimit(50)
+            ->setLimit(30)
             ->setPage($page);
 
         return $this->render('interface/user/notifications.html.twig', [
             'notifications' => $paginator->getData(),
+            'paginator' => $paginator,
+            'requests' => $requests
+        ]);
+    }
+
+    /**
+     * @Route("/requests/{page<\d+>?1}", name="user_requests")
+     * @Security("is_granted('ROLE_USER')")
+     * @param $page
+     * @param Paginator $paginator
+     * @return Response
+     */
+    public function requests($page, Paginator $paginator): Response
+    {
+        $paginator
+            ->setClass(Follow::class)
+            ->setType('follow')
+            ->setCriteria(['followed' => $this->user(), 'accepted' => false])
+            ->setLimit(50)
+            ->setPage($page);
+
+        return $this->render('interface/user/requests.html.twig', [
+            'requests' => $paginator->getData(),
             'paginator' => $paginator
         ]);
     }

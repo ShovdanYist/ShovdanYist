@@ -97,11 +97,14 @@ gender: Пол
 gender.male: Мужской
 gender.female: Женский
 hide.online: "Скрыть статус «В сети»"
+closed.account: "Закрытый аккаунт"
 
 followers: Подписчики
 following: Подписки
 follow: Подписаться
 unfollow: Отписаться
+requested: Запрошено
+follow.requests: "Запросы на подписки"
 unfollow.from.me: Отписать
 write: Написать
 
@@ -333,6 +336,9 @@ in.page: "на странице «{ page }»"
 followed.to.you.male: "подписался на ваши обновлении"
 followed.to.you.female: "подписалась на ваши обновлении"
 
+accepted.request.male: "принял ваш запрос на подписку"
+accepted.request.female: "приняла ваш запрос на подписку"
+
 tagged.you.in.post.male: "отметил вас в публикации"
 tagged.you.in.post.female: "отметила вас в публикации"
 
@@ -361,6 +367,7 @@ sure.to.delete.user: "Вы уверены что хотите удалить э�
 sure.to.delete.account: "Вы уверены что хотите удалить свой аккаунт навсегда?"
 sure.to.delete.notification: "Вы уверены что хотите удалить это уведомление?"
 sure.to.delete.follower: "Вы уверены что хотите отписать от себя подписчика { username }?"
+sure.to.reject.request: "Вы уверены что хотите отклонить запрос от { username }?"
 sure.to.delete.comment: "Вы уверены что хотите удалить этот комментарий?"
 sure.to.delete.conversation.for.me: "Вы уверены что хотите удалить все сообщении с { username } только у себя?"
 sure.to.delete.conversation.for.everyone: "Вы уверены что хотите удалить все сообщении с { username } у себя и у { username }?"
@@ -461,11 +468,13 @@ you.have.not.notifications: "У вас еще нет уведомлений"
 you.have.not.bookmarks: "У вас еще нет закладок"
 you.have.not.followers: "У вас еще нет подписчиков"
 you.have.not.following: "У вас еще нет подписок"
+you.have.not.follow.requests: "У вас больше нет запросов на подписки"
 you.have.not.posts: "У вас еще нет публикаций"
 you.have.not.tagged.posts: "Еще нет публикаций на которых вы отмечены"
 post.have.not.likes: "У публикации еще нет отметок «Нравится»"
 categoy.have.not.posts: "В категории «{ category }» еще нет публикаций"
 user.have.not.posts: "У пользователя { username } еще нет публикаций"
+user.account.is.closed: "У пользователя { username } закрытый аккаунт"
 user.you.followed.have.not.posts: "У пользователя на которого вы подписаны еще нет публикации"
 users.you.followed.have.not.posts: "У пользователей на которых вы подписаны еще нет публикаций"
 user.have.not.tagged.posts: "Еще нет публикаций на которых отмечен пользователь { username }"

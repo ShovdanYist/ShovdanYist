@@ -47,20 +47,23 @@ class UserExtension extends AbstractExtension
      * @throws RuntimeError
      * @throws LoaderError
      */
-    public function userLine(Environment $twig, User $follower, $unfollow = false): string
+    public function userLine(Environment $twig, User $follower, $unfollow = false, $request = false): string
     {
         return $twig->render('interface/layouts/user/user_line.html.twig', [
             'follower' => $follower,
-            'unfollow' => $unfollow
+            'unfollow' => $unfollow,
+            'request' => $request
         ]);
     }
 
-    public function userIsFollowed(User $follower): bool
+    public function userIsFollowed(User $follower): string
     {
-        if ($this->follows->findOneBy(['follower' => $this->getUser(), 'followed' => $follower])) {
-            $followed = true;
+        if ($this->follows->findOneBy(['follower' => $this->getUser(), 'followed' => $follower, 'accepted' => true])) {
+            $followed = 'followed';
+        } else if ($this->follows->findOneBy(['follower' => $this->getUser(), 'followed' => $follower, 'accepted' => false])) {
+            $followed = 'requested';
         } else {
-            $followed = false;
+            $followed = 'unfollowed';
         }
 
         return $followed;

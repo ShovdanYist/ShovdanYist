@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\CustomAbstracts\CustomAbstractController;
 use App\Entity\Post;
 use App\Entity\User;
+use App\Repository\FollowRepository;
 use App\Service\Defender;
 use App\Service\Initializer;
 use App\Form\PostType;
@@ -59,16 +60,13 @@ class PostController extends CustomAbstractController
      */
     public function feed($page, Paginator $paginator): Response
     {
-        $following = $this->getDoctrine()->getRepository(User::class)->findFollows(['user' => $this->user(), 'type' => 'following']);
-
         $paginator
             ->setClass(Post::class)
             ->setMethod('findFeedPosts')
             ->setOrder(['publishedAt' => 'DESC'])
-            ->setCriteria(['following' => $following, 'status' => true])
+            ->setCriteria(['status' => true,'user' => $this->user()])
             ->setLimit(15)
-            ->setPage($page)
-        ;
+            ->setPage($page);
 
         if ($this->isGranted('ROLE_USER')) {
             $shareUsers = $this->getDoctrine()->getRepository(User::class)->findShareUsers(['user' => $this->user(), 'type' => 'following']);
@@ -79,7 +77,6 @@ class PostController extends CustomAbstractController
         return $this->render('interface/post/feed.html.twig', [
             'posts' => $paginator->getData(),
             'paginator' => $paginator,
-            'following' => $this->getDoctrine()->getRepository(User::class)->findFollows(['user' => $this->user(), 'type' => 'following']),
             'shareUsers' => $shareUsers
         ]);
     }
@@ -120,12 +117,13 @@ class PostController extends CustomAbstractController
      * @Route("/post/{id}/{page<\d+>?1}", name="post_show")
      * @param Post $post
      * @param $page
+     * @param FollowRepository $followRepo
      * @return Response
      */
-    public function show(Post $post, $page): Response
+    public function show(Post $post, $page, FollowRepository $followRepo): Response
     {
-        if ($post->getAuthor() === $this->getUser() || $this->isGranted('ROLE_POST_MODERATOR') || $post->getStatus() === true) {
-
+        $followed = $followRepo->findOneBy(['follower' => $this->getUser(), 'followed' => $post->getAuthor(), 'accepted' => true]);
+        if ($followed && $post->getStatus() === true || $post->getStatus() === true && $post->getAuthor()->getClosedAccount() === false || $this->getUser() === $post->getAuthor() || $this->isGranted('ROLE_OWNER')) {
             if ($this->isGranted('ROLE_USER')) {
                 $shareUsers = $this->getDoctrine()->getRepository(User::class)->findShareUsers(['user' => $this->user(), 'type' => 'following']);
             } else {
@@ -137,9 +135,11 @@ class PostController extends CustomAbstractController
                 'page' => $page,
                 'shareUsers' => $shareUsers
             ]);
+        } else {
+            return $this->redirectToRoute('user_profile', [
+                'username' => $post->getAuthor()->getUsername()
+            ]);
         }
-
-        return $this->redirectToRoute('app_home');
     }
 
     /**
