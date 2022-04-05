@@ -24,7 +24,14 @@
 
             <div class="username-container">
 
-                <span class="username">{% if user.closedAccount and is_granted('ROLE_OWNER') %}<i class="fas fa-lock"></i>{% endif %} {{ user.username }}</span>
+                <span class="username">
+                    {% if user.closedAccount %}
+                        <span class="profile-lock">
+                            <i class="fas fa-lock"></i>
+                        </span>
+                    {% endif %}
+                    {{ user.username }}
+                </span>
 
                 {% if profile.verified == true %}
                     <span class="verified">
