@@ -142,8 +142,8 @@
                 </div>
 
                 <span class="md-link">
-                        <a href="{{ profile.url }}" target="_blank">{{ profile.url | replace({'http://': '', 'https://': '', 'http://www.': '', 'https://www.': ''}) }}</a>
-                    </span>
+                    <a href="{{ profile.url }}" target="_blank">{{ profile.url | replace({'http://': '', 'https://': '', 'http://www.': '', 'https://www.': ''}) }}</a>
+                </span>
 
             </div>
 
@@ -185,6 +185,9 @@
             <div class="md-profile-posts-menu">
                 <a href="{{ path('user_profile', {'username':user.username}) }}" {% if pathname == 'user_profile' %}class="active"{% endif %}>
                     <i class="fas fa-th"></i>
+                </a>
+                <a href="{{ path('user_list', {'username':user.username}) }}" {% if pathname == 'user_list' %}class="active"{% endif %}>
+                    <i class="fas fa-th-list"></i>
                 </a>
                 <a href="{{ path('user_tagged', {'username':user.username}) }}" {% if pathname == 'user_tagged' %}class="active"{% endif %}>
                     <i class="fas fa-user-tag"></i>
@@ -229,62 +232,68 @@
 
             </div>
 
-            <div class="md-grid-posts">
+            {% if type == 'profile' or type == 'tagged' %}
 
-                {% for post in posts %}
+                <div class="md-grid-posts">
 
-                    <div class="md-grid-post">
+                    {% for post in posts %}
 
-                        <a href="{{ path('post_show', {'id':post.id}) }}">
+                        <div class="md-grid-post">
 
-                            <img src="{% if post.image %}{{ vich_uploader_asset(post) | imagine_filter('avatar') }}{% else %}{{ asset('assets/images/question.jpg') | imagine_filter('avatar') }}{% endif %}" alt="{{ post.slug }}">
+                            <a href="{{ path('post_show', {'id':post.id}) }}">
 
-                            <div class="md-grid-post-actions">
+                                <img src="{% if post.image %}{{ vich_uploader_asset(post) | imagine_filter('avatar') }}{% else %}{{ asset('assets/images/question.jpg') | imagine_filter('avatar') }}{% endif %}" alt="{{ post.slug }}">
 
-                                {% if not post.status %}
+                                <div class="md-grid-post-actions">
 
-                                    <span class="status-icon" data-toggle="tooltip" title="{% if post.status is null %}{{ 'post.in.moderation' | trans }}{% else %}{{ 'post.is.rejected' | trans }}{% endif %}">
-                                        {% if post.status is null %}
-                                            <i class="fas fa-history"></i>
-                                        {% else %}
-                                            <i class="fas fa-ban"></i>
-                                        {% endif %}
-                                    </span>
+                                    {% if not post.status %}
 
+                                        <span class="status-icon" data-toggle="tooltip" title="{% if post.status is null %}{{ 'post.in.moderation' | trans }}{% else %}{{ 'post.is.rejected' | trans }}{% endif %}">
+                                            {% if post.status is null %}
+                                                <i class="fas fa-history"></i>
+                                            {% else %}
+                                                <i class="fas fa-ban"></i>
+                                            {% endif %}
+                                        </span>
+
+                                    {% endif %}
+
+                                    {% if '.gif' in post.image %}
+                                        <span class="type-icon" data-toggle="tooltip" title="{{ 'animated.image' | trans }}">
+                                            <i class="fas fa-magic"></i>
+                                        </span>
+                                    {% endif %}
+
+                                </div>
+
+                            </a>
+
+                        </div>
+
+                    {% else %}
+
+                        <div class="profile-no-posts not-have-message">
+                            <i class="far fa-clone" style="margin-right: 3px"></i>
+                            {% if type == 'profile' %}
+                                {% if app.user == user %}
+                                    {{ 'you.have.not.posts' | trans }}
+                                {% else %}
+                                    {{ 'user.have.not.posts' | trans({'username':user.username}) }}
                                 {% endif %}
-
-                                {% if '.gif' in post.image %}
-                                    <span class="type-icon" data-toggle="tooltip" title="{{ 'animated.image' | trans }}">
-                                        <i class="fas fa-magic"></i>
-                                    </span>
+                            {% else %}
+                                {% if app.user == user %}
+                                    {{ 'you.have.not.tagged.posts' | trans }}
+                                {% else %}
+                                    {{ 'user.have.not.tagged.posts' | trans({'username':user.username}) }}
                                 {% endif %}
-
-                            </div>
-
-                        </a>
-
-                    </div>
-
-                {% else %}
-
-                    <div class="profile-no-posts not-have-message">
-                        <i class="far fa-clone" style="margin-right: 3px"></i>
-                        {% if type == 'profile' %}
-                            {% if app.user == user %}
-                                {{ 'you.have.not.posts' | trans }}
-                            {% else %}
-                                {{ 'user.have.not.posts' | trans({'username':user.username}) }}
                             {% endif %}
-                        {% else %}
-                            {% if app.user == user %}
-                                {{ 'you.have.not.tagged.posts' | trans }}
-                            {% else %}
-                                {{ 'user.have.not.tagged.posts' | trans({'username':user.username}) }}
-                            {% endif %}
-                        {% endif %}
-                    </div>
+                        </div>
 
-                {% endfor %}
+                    {% endfor %}
+
+                </div>
+
+            {% endif %}
 
         {% else %}
 
@@ -295,12 +304,19 @@
 
         {% endif %}
 
-        </div>
-
         {% include 'interface/user/_share_profile.html.twig' %}
 
-
     </div>
+
+    {% if type == 'list' %}
+        <div class="md-list-posts">
+            {% for post in posts %}
+                {{ postView(post) }}
+            {% else %}
+
+            {% endfor %}
+        </div>
+    {% endif %}
 
     {{ paginator.display('margin-top') }}
 

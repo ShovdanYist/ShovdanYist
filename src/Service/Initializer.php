@@ -7,11 +7,14 @@ use App\Entity\Notification;
 use App\Entity\Post;
 use App\Entity\Person;
 use App\Entity\Song;
+use App\Entity\User;
 use App\Entity\View;
 use App\Repository\NotificationRepository;
 use App\Repository\UserRepository;
 use Cocur\Slugify\SlugifyInterface;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -174,6 +177,34 @@ class Initializer
 
         $this->em->persist($person);
         $this->em->flush();
+    }
+
+    public function initializeProfile(User $user): array
+    {
+        $userRepo = $this->users;
+
+        if ($this->defender->isGranted($this->getUser(),'ROLE_USER')) {
+            $shareUsers = $userRepo->findShareUsers(['user' => $this->getUser(), 'type' => 'following']);
+        } else {
+            $shareUsers = null;
+        }
+
+        try {
+            $followers = $userRepo->followsCount(['user' => $user, 'type' => 'followers', 'accepted' => true]);
+        } catch (NoResultException|NonUniqueResultException $e) {
+            $followers = 0;
+        }
+        try {
+            $following = $userRepo->followsCount(['user' => $user, 'type' => 'following', 'accepted' => true]);
+        } catch (NoResultException|NonUniqueResultException $e) {
+            $following = 0;
+        }
+
+        return [
+            'sharedUsers' => $shareUsers,
+            'followers' => $followers,
+            'following' => $following
+        ];
     }
 
     public function initializePersonEdit(Person $person)

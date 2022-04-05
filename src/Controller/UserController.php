@@ -16,6 +16,7 @@ use App\Form\ProfileType;
 use App\Repository\NotificationRepository;
 use App\Repository\UserRepository;
 use App\Service\Defender;
+use App\Service\Initializer;
 use App\Service\Mailer;
 use App\Service\Paginator;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -109,9 +110,10 @@ class UserController extends CustomAbstractController
      * @param $page
      * @param Paginator $paginator
      * @param Defender $defender
+     * @param Initializer $initializer
      * @return Response
      */
-    public function profile(User $user, $page, Paginator $paginator, Defender $defender): Response
+    public function profile(User $user, $page, Paginator $paginator, Defender $defender, Initializer $initializer): Response
     {
         $this->updateLastActivity();
         if (!$defender->isGranted($this->getUser(),'ROLE_GUEST') && $user === $this->user() || $this->isGranted('ROLE_POST_MODERATOR')) {
@@ -129,16 +131,7 @@ class UserController extends CustomAbstractController
             ->setPage($page)
         ;
 
-        $userRepo = $this->getDoctrine()->getRepository(User::class);
-
-        if ($this->isGranted('ROLE_USER')) {
-            $shareUsers = $userRepo->findShareUsers(['user' => $this->user(), 'type' => 'following']);
-        } else {
-            $shareUsers = null;
-        }
-
-        $followers = $userRepo->followsCount(['user' => $user, 'type' => 'followers', 'accepted' => true]);
-        $following = $userRepo->followsCount(['user' => $user, 'type' => 'following', 'accepted' => true]);
+        $follows = $initializer->initializeProfile($user);
 
         return $this->render('interface/user/profile.html.twig', [
             'invitees' => $this->getDoctrine()->getRepository(User::class)->count(['invitedBy' => $user, 'status' => true]),
@@ -147,9 +140,51 @@ class UserController extends CustomAbstractController
             'profile' => $user->getProfile(),
             'user' => $user,
             'type' => 'profile',
-            'shareUsers' => $shareUsers,
-            'followers' => $followers,
-            'following' => $following
+            'shareUsers' => $follows['sharedUsers'],
+            'followers' => $follows['followers'],
+            'following' => $follows['following']
+        ]);
+    }
+
+    /**
+     * @Route("/user/{username}/list/{page<\d+>?1}", name="user_list")
+     * @param User $user
+     * @param $page
+     * @param Paginator $paginator
+     * @param Defender $defender
+     * @param Initializer $initializer
+     * @return Response
+     */
+    public function listProfile(User $user, $page, Paginator $paginator, Defender $defender, Initializer $initializer): Response
+    {
+        $this->updateLastActivity();
+        if (!$defender->isGranted($this->getUser(),'ROLE_GUEST') && $user === $this->user() || $this->isGranted('ROLE_POST_MODERATOR')) {
+            $criteria = ['author' => $user];
+        } else {
+            $criteria = ['author' => $user, 'status' => true];
+        }
+
+        $paginator
+            ->setClass(Post::class)
+            ->setOrder(['publishedAt' => 'DESC'])
+            ->setCriteria($criteria)
+            ->setParameters(['username' => $user->getUsername()])
+            ->setLimit(15)
+            ->setPage($page)
+        ;
+
+        $follows = $initializer->initializeProfile($user);
+
+        return $this->render('interface/user/profile.html.twig', [
+            'invitees' => $this->getDoctrine()->getRepository(User::class)->count(['invitedBy' => $user, 'status' => true]),
+            'posts' => $paginator->getData(),
+            'paginator' => $paginator,
+            'profile' => $user->getProfile(),
+            'user' => $user,
+            'type' => 'list',
+            'shareUsers' => $follows['sharedUsers'],
+            'followers' => $follows['followers'],
+            'following' => $follows['following']
         ]);
     }
 
@@ -158,9 +193,10 @@ class UserController extends CustomAbstractController
      * @param User $user
      * @param $page
      * @param Paginator $paginator
+     * @param Initializer $initializer
      * @return Response
      */
-    public function tagged(User $user, $page, Paginator $paginator): Response
+    public function tagged(User $user, $page, Paginator $paginator, Initializer $initializer): Response
     {
         $paginator
             ->setClass(Post::class)
@@ -168,20 +204,11 @@ class UserController extends CustomAbstractController
             ->setOrder(['publishedAt' => 'DESC'])
             ->setCriteria(['user' => $user])
             ->setParameters(['username' => $user->getUsername()])
-            ->setLimit(40)
+            ->setLimit(30)
             ->setPage($page)
         ;
 
-        $userRepo = $this->getDoctrine()->getRepository(User::class);
-
-        if ($this->isGranted('ROLE_USER')) {
-            $shareUsers = $userRepo->findShareUsers(['user' => $this->user(), 'type' => 'following']);
-        } else {
-            $shareUsers = null;
-        }
-
-        $followers = $userRepo->followsCount(['user' => $user, 'type' => 'followers', 'accepted' => true]);
-        $following = $userRepo->followsCount(['user' => $user, 'type' => 'following', 'accepted' => true]);
+        $follows = $initializer->initializeProfile($user);
 
         return $this->render('interface/user/profile.html.twig', [
             'invitees' => $this->getDoctrine()->getRepository(User::class)->count(['invitedBy' => $user, 'status' => true]),
@@ -190,9 +217,9 @@ class UserController extends CustomAbstractController
             'profile' => $user->getProfile(),
             'user' => $user,
             'type' => 'tagged',
-            'shareUsers' => $shareUsers,
-            'followers' => $followers,
-            'following' => $following
+            'shareUsers' => $follows['sharedUsers'],
+            'followers' => $follows['followers'],
+            'following' => $follows['following']
         ]);
     }
 

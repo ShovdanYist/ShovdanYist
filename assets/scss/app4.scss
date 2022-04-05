@@ -1645,6 +1645,7 @@ td {
  display: flex;
  flex-wrap: wrap;
  padding: 15px 15px 0;
+ border-top: 1px solid #eef1f5;
 }
 
 .md-grid-post {
@@ -1693,6 +1694,10 @@ td {
   padding: 1px 3px;
 }
 
+.md-list-posts {
+  margin-top: $box-space;
+}
+
 .profile-no-posts {
   padding: 24px;
   margin-bottom: 15px;
@@ -1703,7 +1708,6 @@ td {
 .md-profile-posts-menu {
   justify-content: space-around;
   border-top: 1px solid #eef1f5;
-  border-bottom: 1px solid #eef1f5;
   display: flex;
   padding: 10px;
 }
@@ -1807,19 +1811,19 @@ td {
 }
 
 .md-margin-bottom {
-  margin-bottom: 12px;
+  margin-bottom: $box-space;
 }
 
 .md-margin-top {
-  margin-top: 12px;
+  margin-top: $box-space;
 }
 
 .md-margin-right {
-  margin-right: 12px;
+  margin-right: $box-space;
 }
 
 .md-margin-left {
-  margin-left: 12px;
+  margin-left: $box-space;
 }
 
 .user-title-block {
@@ -1854,7 +1858,7 @@ td {
 
 .md-box {
   background-color: $box-background;
-  box-shadow: 0 1px 0 0 #d7d8db, 0 0 0 1px #e3e4e8;
+  box-shadow: $box-shadow;
   border-radius: 3px;
 }
 

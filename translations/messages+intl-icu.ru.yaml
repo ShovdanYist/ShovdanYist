@@ -497,6 +497,8 @@ actions: Действия
 post.moderation: "Модерация публикаций"
 music.moderation: "Модерация музыки"
 in.moderation: "На модерации"
+rejected.male: "Отклонен"
+rejected.female: "Отклонена"
 to.moderation: "На модерацию"
 my.songs: "Мои песни"
 pending: "В ожидании"

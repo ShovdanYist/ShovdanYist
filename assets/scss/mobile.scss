@@ -520,6 +520,10 @@
   .md-pagination-box {
     margin-top: 0 !important;
   }
+  .md-list-posts {
+    margin-top: unset !important;
+    border-top: 1px solid #eef1f5;
+  }
 }
 
 @media only screen and (max-width: 400px) {
