@@ -137,26 +137,16 @@ class MessageController extends CustomAbstractController
      */
     public function deleteConversationForEveryone(User $user): Response
     {
-        $sentMessages = $this->getDoctrine()->getRepository(Message::class)->findBy(['sender' => $this->user(),'receiver' => $user]);
-        $receivedMessages = $this->getDoctrine()->getRepository(Message::class)->findBy(['sender' => $user,'receiver' => $this->user()]);;
+        $messages = $this->getDoctrine()->getRepository(Message::class)->findConversation(['user_one' => $this->user(),'user_two' => $user]);
         $em = $this->getDoctrine()->getManager();
 
-        foreach ($sentMessages as $sentMessage) {
-            $replySentMessages = $this->getDoctrine()->getRepository(Message::class)->findBy(['replyTo' => $sentMessage]);
-            foreach ($replySentMessages as $replySentMessage) {
-                $em->remove($replySentMessage);
-            }
-
-            $em->remove($sentMessage);
+        foreach ($messages as $message) {
+            $message->setReplyTo(null);
+            $em->flush();
         }
-        foreach ($receivedMessages as $receivedMessage) {
-            $replyReceivedMessages = $this->getDoctrine()->getRepository(Message::class)->findBy(['replyTo' => $receivedMessage]);
-            foreach ($replyReceivedMessages as $replyReceivedMessage) {
-                $em->remove($replyReceivedMessage);
-            }
 
-            $receivedMessage->setReplyTo(null);
-            $em->remove($receivedMessage);
+        foreach ($messages as $message) {
+            $em->remove($message);
         }
 
         $em->flush();
