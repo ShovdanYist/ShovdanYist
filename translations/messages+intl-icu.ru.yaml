@@ -180,6 +180,7 @@ delete.for.me: "Удалить у себя"
 delete.for.everyone: "Удалить у всех"
 delete.only.for.me: "Удалить только у себя"
 delete.for.me.and.interlocutor: "Удалить у себя и у { username }"
+messages.over.are.automatically.deleted: "Сообщении больше 200 автоматически удаляются"
 
 # DATE
 

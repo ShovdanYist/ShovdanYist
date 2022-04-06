@@ -1936,7 +1936,7 @@ td {
 }
 
 .md-conversation-line {
-  border-radius: 3px;
+  border-radius: 6px;
   position: relative;
 }
 
@@ -2063,19 +2063,19 @@ td {
   max-width: 52%;
 }
 
-.message.me:hover .text {
+.md-conversation .message.me:hover .text {
   background: #3ca7f0 !important;
 }
 
-.message.me:hover .replied-message::after {
+.md-conversation .message.me:hover .replied-message::after {
   background: -moz-linear-gradient(right, #3ca7f0 0%, rgba(255, 255, 255, 0) 100%);
 }
 
-.message:hover .text {
+.md-conversation .message:hover .text {
   background: #f5f8f9 !important;
 }
 
-.message:hover .replied-message::after {
+.md-conversation .message:hover .replied-message::after {
   background: -moz-linear-gradient(right, #f5f8f9 0%, rgba(255, 255, 255, 0) 100%);
 }
 
@@ -2318,6 +2318,17 @@ td {
 
 .message.me .replied-message::after {
   background: -moz-linear-gradient(right, rgb(82, 167, 224) 0%, rgba(255,255,255,0) 100%);
+}
+
+.messages-length-alert {
+  background: #f2f2f2;
+  text-align: center;
+  padding: 20px 20px;
+  margin-bottom: 8px;
+  border-radius: 10px;
+  color: #777;
+  z-index: 9999;
+  position: relative;
 }
 
 // Message Song

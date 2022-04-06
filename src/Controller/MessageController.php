@@ -77,6 +77,10 @@ class MessageController extends CustomAbstractController
 
                 if ($messageRepo->findConversationMessagesCount(['user_one' => $this->user(),'user_two' => $user])[0]['count'] > 200) {
                     foreach ($messageRepo->findConversation(['user_one' => $this->user(),'user_two' => $user],['sentAt' => 'DESC'],null,200) as $messageToDelete) {
+                        $replyMessages = $messageRepo->findBy(['replyTo' => $messageToDelete]);
+                        foreach ($replyMessages as $replyMessage) {
+                            $replyMessage->setReplyTo(null);
+                        }
                         $em->remove($messageToDelete);
                     }
                 }
