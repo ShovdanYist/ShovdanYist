@@ -352,6 +352,7 @@ commented.your.post.female: "оставила комментарий на ваш
 commented.your.post.users: "и другие оставили комментарии на вашу публикацию"
 
 like.your.post: "понравилась ваша публикация"
+like.your.comment: "понравился ваш комментарий"
 
 rejected.your.post: "отклонил вашу публикацию"
 approved.your.post: "утвердил вашу публикацию"
@@ -473,6 +474,7 @@ you.have.not.follow.requests: "У вас больше нет запросов н
 you.have.not.posts: "У вас еще нет публикаций"
 you.have.not.tagged.posts: "Еще нет публикаций на которых вы отмечены"
 post.have.not.likes: "У публикации еще нет отметок «Нравится»"
+comment.have.not.likes: "У комментарии еще нет отметок «Нравится»"
 categoy.have.not.posts: "В категории «{ category }» еще нет публикаций"
 user.have.not.posts: "У пользователя { username } еще нет публикаций"
 user.account.is.closed: "У пользователя { username } закрытый аккаунт"

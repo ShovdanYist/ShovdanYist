@@ -1,9 +1,13 @@
 <div class="md-box md-breadcrumb">
 
+    {% if name == 'post' %}
+        <div class="back-picture bp-24 mr-2" style="background-image: url('{% if entity.image %}{{ vich_uploader_asset(entity) | imagine_filter('thumbnail') }}{% else %}{{ asset('assets/images/question.jpg') }}{% endif %}'); border-radius: 3px;">
+        </div>
+    {% endif %}
+
     <div class="md-breadcrumb-nav">
 
         <ol>
-
             {% for link,title in links %}
 
                 {% if link != 'active' %}
@@ -13,7 +17,6 @@
                 {% endif %}
 
             {% endfor %}
-
         </ol>
 
     </div>

@@ -3372,6 +3372,30 @@ select {
   position: relative;
 }
 
+.comment-like {
+  position: absolute;
+  right: 7px;
+  bottom: 0;
+}
+
+.comment-like .like-toggle .like-icon::before {
+  color: #909499;
+}
+
+.comment-like .like-toggle.added .like-icon::before {
+  color: #e63b31;
+}
+
+.comment-like .like-toggle .like-icon::before {
+  font-size: 12px;
+}
+
+.comment-likes-counter {
+   display: none;
+   font-weight: 500;
+  font-size: 80%;
+ }
+
 .feed-types {
   display: flex;
   justify-content: space-evenly;

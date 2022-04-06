@@ -54,10 +54,15 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
     {
         $qb = $this->createQueryBuilder('u');
 
-        $qb->join('u.likes', 'l')
-            ->where('l.post = :post');
+        $qb->join('u.likes', 'l');
 
-        $qb->setParameter('post', $criteria['post']);
+        if (isset($criteria['post'])) {
+            $qb->where('l.post = :post');
+            $qb->setParameter('post', $criteria['post']);
+        } else {
+            $qb->where('l.comment = :comment');
+            $qb->setParameter('comment', $criteria['comment']);
+        }
 
         foreach ($orderBy as $key => $value) {
             $qb->orderBy('u.'.$key,$value);

@@ -54,6 +54,7 @@ class CounterExtension extends AbstractExtension
             new TwigFunction('userContainSong', [$this, 'userContainSong'], ['is_safe' => ['html']]),
             new TwigFunction('userBookmarkedPost', [$this, 'userBookmarkedPost'], ['is_safe' => ['html']]),
             new TwigFunction('userLikedPost', [$this, 'userLikedPost'], ['is_safe' => ['html']]),
+            new TwigFunction('userLikedComment', [$this, 'userLikedComment'], ['is_safe' => ['html']]),
             new TwigFunction('notifyCount', [$this, 'notifyCount'], ['is_safe' => ['html']]),
             new TwigFunction('messagesCount', [$this, 'messagesCount'], ['is_safe' => ['html']]),
             new TwigFunction('conversationMessagesCount', [$this, 'conversationMessagesCount'], ['is_safe' => ['html']]),
@@ -103,6 +104,11 @@ class CounterExtension extends AbstractExtension
     public function userLikedPost($user, $post): ?Like
     {
         return $this->likes->findOneBy(['user' => $user, 'post' => $post]);
+    }
+
+    public function userLikedComment($user, $comment): ?Like
+    {
+        return $this->likes->findOneBy(['user' => $user, 'comment' => $comment]);
     }
 
     public function userHavePlaylistSongs($user): bool

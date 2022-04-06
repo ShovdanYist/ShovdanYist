@@ -84,6 +84,20 @@
                     </span>
                 </a>
 
+            {% elseif notification.type == 'comment_like' %}
+
+                {% if notification.post %}
+                    <a href="{{ path('post_show',{'id':notification.post.id}) }}">
+                        <span class="back-picture bp-50" style="border-radius: 3px;margin-right: 14px;background-image: url('{% if notification.post.image %}{{ vich_uploader_asset(notification.post) | imagine_filter('thumbnail') }}{% else %}{{ asset('assets/images/question.jpg') | imagine_filter('thumbnail') }}{% endif %}')">
+                        </span>
+                    </a>
+                {% else %}
+                    <a href="{{ path('song_show',{'slug':notification.song.slug}) }}">
+                        <span class="back-picture bp-50" style="border-radius: 3px;margin-right: 14px;background-image: url('{% if notification.song.vocalist.picture %}{{ vich_uploader_asset(notification.song.vocalist) | imagine_filter('thumbnail') }}{% else %}{{ asset('assets/images/avatar.jpg') | imagine_filter('thumbnail') }}{% endif %}')">
+                        </span>
+                    </a>
+                {% endif %}
+
             {% endif %}
 
         </div>

@@ -92,7 +92,7 @@
         {% endif %}
     {% endif %}
 
-{% elseif notification.type == 'post_like' %}
+{% elseif notification.type == 'post_like' or notification.type == 'comment_like' %}
 
     {% if notification.quantity > 1 %}
         <a href="{{ path('user_profile', {'username' : notification.sender.username}) }}" style="font-weight: 600">
@@ -100,7 +100,20 @@
         </a>
     {% endif %}
 
-    {{ 'like.your.post' | trans }}
+    {% if notification.type == 'post_like' %}
+        {{ 'like.your.post' | trans }}
+    {% else %}
+        {{ 'like.your.comment' | trans }}:
+        {% if notification.post %}
+            <a class="notify-message-link" href="{{ path('post_show',{'id':notification.post.id}) }}">
+                {{ notification.comment.message }}
+            </a>
+        {% else %}
+            <a class="notify-message-link" href="{{ path('song_show', {'slug': notification.song.slug}) }}">
+                {{ notification.comment.message }}
+            </a>
+        {% endif %}
+    {% endif %}
 
 {% elseif notification.type == 'post_approved' %}
 
@@ -113,3 +126,15 @@
     {{ notification.message }}
 
 {% endif %}
+
+{#{% if notification.quantity == 1 %}#}
+{#    {% if notification.comment.song %}#}
+{#        <a class="notify-message-link" href="{{ path('song_show', {'slug': notification.comment.song.slug}) }}">#}
+{#            {{ notification.comment.message }}#}
+{#        </a>#}
+{#    {% else %}#}
+{#        <a class="notify-message-link" href="{{ path( 'post_show', {'id': notification.comment.post.id}) }}">#}
+{#            {{ notification.comment.message }}#}
+{#        </a>#}
+{#    {% endif %}#}
+{#{% endif %}#}

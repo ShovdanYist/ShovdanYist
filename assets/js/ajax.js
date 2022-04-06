@@ -195,11 +195,11 @@ featured.forEach((featured) => {
     featured.addEventListener('click', featuredPost);
 });
 
-// Post like
+// Likes
 
 let like = document.querySelectorAll('.like-toggle');
 
-function likePost(event) {
+function liker(event) {
     event.preventDefault();
     let url = this.href;
 
@@ -207,13 +207,27 @@ function likePost(event) {
         let status = String(response.data.response.status);
         (status === 'added') ? this.classList.add('added') : this.classList.remove('added');
 
-        let postLikeCounter = 'post-like-counter-' + this.id.replace('post-like-','');
-        let currentLikes = parseInt(document.getElementById(postLikeCounter).innerHTML);
+        function contains(value) {
+            return value.includes('post') ? "post" : "comment";
+        }
+
+        let likeCounter = contains(this.id) + '-like-counter-' + this.id.replace(contains(this.id) + '-like-','');
+        let currentLikes = parseInt(document.getElementById(likeCounter).innerHTML);
 
         if (status === 'added') {
-            document.getElementById(postLikeCounter).innerHTML = currentLikes + 1;
+            if (contains(this.id) === 'comment') {
+                if (currentLikes === 0) {
+                    document.getElementById(likeCounter).parentElement.style.display = 'unset';
+                }
+            }
+            document.getElementById(likeCounter).innerHTML = currentLikes + 1;
         } else  {
-            document.getElementById(postLikeCounter).innerHTML = currentLikes - 1;
+            if (contains(this.id) === 'comment') {
+                if (currentLikes === 1) {
+                    document.getElementById(likeCounter).parentElement.style.display = 'none';
+                }
+            }
+            document.getElementById(likeCounter).innerHTML = currentLikes - 1;
         }
 
         setTimeout(() => {
@@ -225,7 +239,7 @@ function likePost(event) {
 }
 
 like.forEach((like) => {
-    like.addEventListener('click', likePost);
+    like.addEventListener('click', liker);
 });
 
 // Post double-click like

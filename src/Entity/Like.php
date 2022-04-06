@@ -37,6 +37,11 @@ class Like
     private $post;
 
     /**
+     * @ORM\ManyToOne(targetEntity=Comment::class, inversedBy="likes")
+     */
+    private $comment;
+
+    /**
      * @ORM\PrePersist()
      */
     public function initializePrePersist()
@@ -81,6 +86,18 @@ class Like
     public function setPost(?Post $post): self
     {
         $this->post = $post;
+
+        return $this;
+    }
+
+    public function getComment(): ?Comment
+    {
+        return $this->comment;
+    }
+
+    public function setComment(?Comment $comment): self
+    {
+        $this->comment = $comment;
 
         return $this;
     }

@@ -121,6 +121,11 @@
             {{ comment.publishedAt ? comment.publishedAt | date(' H:i') }}
         </small>
 
+        <a href="{{ path('comment_likes',{'id':comment.id}) }}" class="comment-likes-counter text-muted" {% if comment.likes.count %}style="display: unset" {% endif %}>
+            {{ 'likes' | trans }}:
+            <span id="comment-like-counter-{{ comment.id }}" class="count">{{ comment.likes.count }}</span>
+        </a>
+
         {% if app.user and comment.author.username != app.user.username %}
             <small class="md-comment-reply text-muted">
                 <span class="comment-reply">
@@ -128,6 +133,13 @@
                     <span class="reply-comment d-none">{{ comment.id }}</span>
                     {{ 'reply' | trans }}
                 </span>
+            </small>
+        {% endif %}
+        {% if app.user %}
+            <small class="comment-like">
+                <a class="like-toggle{% if userLikedComment(app.user, comment) %} added{% endif %}" id="comment-like-{{ comment.id }}" href="{{ path('comment_like',{'id':comment.id}) }}">
+                    <span class="like-icon"></span>
+                </a>
             </small>
         {% endif %}
     </div>

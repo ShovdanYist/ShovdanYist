@@ -70,10 +70,16 @@ class Comment
      */
     private $children;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Like::class, mappedBy="comment", orphanRemoval=true)
+     */
+    private $likes;
+
     public function __construct()
     {
         $this->notifications = new ArrayCollection();
         $this->children = new ArrayCollection();
+        $this->likes = new ArrayCollection();
     }
 
     /**
@@ -243,6 +249,37 @@ class Comment
             // set the owning side to null (unless already changed)
             if ($children->getParent() === $this) {
                 $children->setParent(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Like[]
+     */
+    public function getLikes(): Collection
+    {
+        return $this->likes;
+    }
+
+    public function addLike(Like $like): self
+    {
+        if (!$this->likes->contains($like)) {
+            $this->likes[] = $like;
+            $like->setComment($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLike(Like $like): self
+    {
+        if ($this->likes->contains($like)) {
+            $this->likes->removeElement($like);
+            // set the owning side to null (unless already changed)
+            if ($like->getComment() === $this) {
+                $like->setComment(null);
             }
         }
 
