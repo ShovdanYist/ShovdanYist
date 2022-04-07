@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\CustomAbstracts\CustomAbstractController;
 use App\Entity\Action;
+use App\Entity\Follow;
 use App\Entity\Person;
 use App\Entity\Report;
 use App\Entity\Song;
@@ -64,6 +65,12 @@ class ModerationController extends CustomAbstractController
                 'total' => $people->count([])
             ]
         ];
+
+        foreach ($this->getDoctrine()->getRepository(Follow::class)->findAll() as $follow) {
+            $follow->setAccepted(true);
+        }
+
+        $this->getDoctrine()->getManager()->flush();
 
         return $this->render('interface/moderation/index.html.twig', [
             'stats' => $stats
