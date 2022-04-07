@@ -39,11 +39,6 @@
                             <a class="font-weight-bold" href="{{ path('user_profile', {'username': report.accused.username }) }}">
                                 {{ report.accused.username }}
                             </a>
-                        {% elseif report.message %}
-                            {{ 'message' | trans }} «{{ report.content }}» {{ 'from' | trans | lower }}
-                            <a class="font-weight-bold" href="{{ path('user_profile', {'username': report.accused.username }) }}">
-                                {{ report.accused.username }}
-                            </a>
                         {% endif %}
                     </div>
 

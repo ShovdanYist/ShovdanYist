@@ -195,35 +195,6 @@ class JsonController extends CustomAbstractController
 
     /**
      * @Security("is_granted('ROLE_USER')")
-     * @Route("/reportMessage/{id}", name="report_message", methods={"GET","POST"})
-     * @param Message $message
-     * @return Response
-     */
-    public function message(Message $message): Response
-    {
-        $exist = $this->getDoctrine()->getRepository(Report::class)->findOneBy(['sender' => $this->user(), 'message' => $message]);
-
-        if (!$exist) {
-            $report = new Report();
-            $report->setMessage($message);
-            $report->setSender($this->user());
-            $report->setAccused($message->getSender());
-            $report->setContent($message->getContent());
-
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($report);
-            $em->flush();
-        }
-
-        $this->addFlash('success', $this->trans('flash.report.is.sent'));
-
-        return $this->redirectToRoute('message_conversation', [
-            'username' => $message->getSender()->getUsername()
-        ]);
-    }
-
-    /**
-     * @Security("is_granted('ROLE_USER')")
      * @Route("/reportProfile/{id}", name="report_profile", methods={"GET","POST"})
      * @param User $user
      * @return Response
