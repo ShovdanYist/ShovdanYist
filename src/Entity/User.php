@@ -199,6 +199,11 @@ class User implements UserInterface
      */
     private $closedAccount;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Report::class, mappedBy="sender", orphanRemoval=true)
+     */
+    private $reports;
+
     public function __construct()
     {
         $this->songs = new ArrayCollection();
@@ -219,6 +224,7 @@ class User implements UserInterface
         $this->likes = new ArrayCollection();
         $this->sentMessages = new ArrayCollection();
         $this->receivedMessages = new ArrayCollection();
+        $this->reports = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -963,6 +969,37 @@ class User implements UserInterface
     public function setClosedAccount(bool $closedAccount): self
     {
         $this->closedAccount = $closedAccount;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Report[]
+     */
+    public function getReports(): Collection
+    {
+        return $this->reports;
+    }
+
+    public function addReport(Report $report): self
+    {
+        if (!$this->reports->contains($report)) {
+            $this->reports[] = $report;
+            $report->setSender($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReport(Report $report): self
+    {
+        if ($this->reports->contains($report)) {
+            $this->reports->removeElement($report);
+            // set the owning side to null (unless already changed)
+            if ($report->getSender() === $this) {
+                $report->setSender(null);
+            }
+        }
 
         return $this;
     }

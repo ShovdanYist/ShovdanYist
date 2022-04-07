@@ -737,7 +737,7 @@ blockquote, .ck.ck-content blockquote {
 }
 
 .md-user-sidebar-profile .md-username::after {
-  right: 20px;
+  right: 0;
 }
 
 #sideNav .md-username {
@@ -3531,29 +3531,6 @@ select {
   margin: 0 auto;
 }
 
-// Other
-
-.manager-menu {
-  display: none;
-  justify-content: space-between;
-}
-
-.manager-menu a {
-  background: #f2f4f6;
-  border-radius: 100px;
-  padding: 4px 10px 5px 10px;
-  font-weight: 500;
-}
-
-.settings-footer {
-  padding: 22px 12px !important;
-  text-align: center;
-}
-
-.not-have-message {
-  text-align: center;
-}
-
 // Mobile menu
 
 .mobile-menu {
@@ -3584,4 +3561,41 @@ select {
   padding: 0 6px;
   bottom: 0;
   right: -12px;
+}
+
+// Other
+
+.manager-menu {
+  display: none;
+  justify-content: space-between;
+}
+
+.manager-menu a {
+  background: #f2f4f6;
+  border-radius: 100px;
+  padding: 4px 10px 5px 10px;
+  font-weight: 500;
+}
+
+.settings-footer {
+  padding: 22px 12px !important;
+  text-align: center;
+}
+
+.not-have-message {
+  text-align: center;
+}
+
+.md-report:last-child {
+  margin: unset;
+}
+
+.md-report {
+  display: table;
+  width: 100%;
+}
+
+.md-report .message {
+  margin-top: 13px;
+  margin-left: 56px;
 }

@@ -57,7 +57,7 @@
                 <i class="far fa-user"></i>
                 {% if is_granted('ROLE_POST_MODERATOR') %}
                     {% if postModerationCount() != 0 %}
-                        <span class="mobile-menu-badge" style="background: #2f9b59">
+                        <span class="mobile-menu-badge" style="background: {% if not reportsCount() %}#2f9b59{% endif %}">
                             {% if postModerationCount() > 99 %}
                                 99+
                             {% else %}

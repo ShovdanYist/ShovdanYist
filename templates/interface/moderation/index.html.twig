@@ -11,8 +11,54 @@
 
 {% block main %}
 
+    <div class="md-box md-content-padding md-mobile-padding">
+        <h3 class="text-center">{{ 'statistics' | trans }}</h3>
+        <div class="scrollable-table">
+            <table class="table table-center">
+                <tbody>
+
+                {% for stat in stats %}
+                    <tr>
+                        <th scope="row" style="text-align: left;">{{ stat.name | trans }}</th>
+
+                        <td>
+                            {% if stat.moderation != 0 %}
+                                <a href="{% if stat.name == 'songs' %}{{ path('moderation_ready' ) }}{% elseif stat.name == 'posts' %}{{ path('moderation_posts' ) }}{% endif %}">
+                                        <span class="badge badge-pill badge-danger">
+                                            {{ stat.moderation }}
+                                        </span>
+                                </a>
+                            {% else %}
+                                -
+                            {% endif %}
+                        </td>
+
+                        <td>
+                            {% if stat.published != 0 %}
+                                <span class="badge badge-pill badge-success">
+                                    {{ stat.published }}
+                                </span>
+                            {% else %}
+                                -
+                            {% endif %}
+                        </td>
+
+                        <td>
+                                <span class="badge badge-pill badge-primary">
+                                    {{ stat.total }}
+                                </span>
+                        </td>
+
+                    </tr>
+                {% endfor %}
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+
     <div class="md-box md-margin-bottom">
-        <div class="md-vertical-menu">
+        <div class="md-vertical-menu m-0">
 
             <a href="{{ path('moderation_posts') }}">
                 <span class="icon">
@@ -41,6 +87,19 @@
                 </span>
             </a>
 
+            <a href="{{ path('moderation_reports') }}">
+                <span class="icon">
+                    <i class="fas fa-exclamation-triangle"></i>
+                </span>
+                <span>
+                    {{ 'reports' | trans }}
+                </span>
+            </a>
+
+        </div>
+
+        <div class="md-vertical-menu">
+
             <a href="{{ path('users_index') }}">
                 <span class="icon">
                     <i class="fas fa-users"></i>
@@ -68,52 +127,6 @@
                 </span>
             </a>
 
-        </div>
-    </div>
-
-    <div class="md-box md-content-padding md-mobile-padding">
-        <h3 class="text-center">{{ 'statistics' | trans }}</h3>
-        <div class="scrollable-table">
-            <table class="table table-center">
-                <tbody>
-
-                    {% for stat in stats %}
-                        <tr>
-                            <th scope="row" style="text-align: left;">{{ stat.name | trans }}</th>
-
-                            <td>
-                                {% if stat.moderation != 0 %}
-                                    <a href="{% if stat.name == 'songs' %}{{ path('moderation_ready' ) }}{% elseif stat.name == 'posts' %}{{ path('moderation_posts' ) }}{% endif %}">
-                                        <span class="badge badge-pill badge-danger">
-                                            {{ stat.moderation }}
-                                        </span>
-                                    </a>
-                                {% else %}
-                                    -
-                                {% endif %}
-                            </td>
-
-                            <td>
-                                {% if stat.published != 0 %}
-                                    <span class="badge badge-pill badge-success">
-                                    {{ stat.published }}
-                                </span>
-                                {% else %}
-                                    -
-                                {% endif %}
-                            </td>
-
-                            <td>
-                                <span class="badge badge-pill badge-primary">
-                                    {{ stat.total }}
-                                </span>
-                            </td>
-
-                        </tr>
-                    {% endfor %}
-
-                </tbody>
-            </table>
         </div>
     </div>
 

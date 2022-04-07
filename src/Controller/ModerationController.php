@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\CustomAbstracts\CustomAbstractController;
 use App\Entity\Action;
 use App\Entity\Person;
+use App\Entity\Report;
 use App\Entity\Song;
 use App\Entity\User;
 use App\Repository\EmailAddressRepository;
@@ -89,6 +90,35 @@ class ModerationController extends CustomAbstractController
 
         return $this->render('interface/moderation/songs.html.twig', [
             'songs' => $paginator->getData(),
+            'paginator' => $paginator
+        ]);
+    }
+
+    /**
+     * @Security("is_granted('ROLE_REPORT_MODERATOR')")
+     * @Route("/reports/{page<\d+>?1}", name="reports")
+     * @param $page
+     * @param Paginator $paginator
+     * @return Response
+     */
+    public function reports($page, Paginator $paginator): Response
+    {
+        $paginator
+            ->setClass(Report::class)
+            ->setPage($page)
+            ->setLimit(20)
+            ->setOrder(['id' => 'DESC'])
+        ;
+
+        foreach ($this->getDoctrine()->getRepository(Report::class)->findBy(['seen' => false]) as $report) {
+            $report->setSeen(true);
+        }
+
+        $em = $this->getDoctrine()->getManager();
+        $em->flush();
+
+        return $this->render('interface/moderation/reports.html.twig', [
+            'reports' => $paginator->getData(),
             'paginator' => $paginator
         ]);
     }

@@ -17,7 +17,7 @@
             </span>
         {% endif %}
 
-        {% if rightToDeleteComment(app.user,comment) or rightToBlockUser(app.user,comment.author) %}
+        {% if app.user %}
 
             <button type="button" class="btn md-comment-dot-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <i class="fas fa-ellipsis-h"></i>
@@ -25,17 +25,32 @@
 
             <div class="dropdown-menu dropdown-menu-right">
 
+                {% if app.user != comment.author %}
+                    <a href="javascript:void(0)" class="dropdown-item" data-toggle="modal" data-target="#reportCommentModal{{ comment.id }}">
+                        <span class="icon">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </span>
+                        {{ 'report' | trans }}
+                    </a>
+                {% endif %}
+
                 {% if rightToBlockUser(app.user,comment.author) %}
 
                     {% if comment.author.status != false %}
 
                         <button type="button" class="dropdown-item" data-toggle="modal" data-target="#banUser{{ comment.author.id }}">
+                            <span class="icon">
+                                <i class="fas fa-user-times"></i>
+                            </span>
                             {{ 'ban' | trans }}
                         </button>
 
                     {% else %}
 
                         <button type="button" class="dropdown-item" data-toggle="modal" data-target="#unbanUser{{ comment.author.id }}">
+                            <span class="icon">
+                                <i class="fas fa-user-times"></i>
+                            </span>
                             {{ 'unban' | trans }}
                         </button>
 
@@ -45,11 +60,28 @@
 
                 {% if rightToDeleteComment(app.user,comment) %}
                     <button type="button" class="dropdown-item" data-toggle="modal" data-target="#deleteCommentModal{{ comment.id }}">
+                        <span class="icon">
+                            <i class="far fa-trash-alt"></i>
+                        </span>
                         {{ 'delete' | trans }}
                     </button>
                 {% endif %}
 
             </div>
+
+            {% if app.user != comment.author %}
+                <div class="modal fade md-confirm-modal" id="reportCommentModal{{ comment.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="md-modal-container">
+                                <div class="md-modal-message">{{ 'sure.to.report.comment' | trans }}</div>
+                                <a class="btn btn-modal-danger md-modal-item" href="{{ path('report_comment',{'id':comment.id}) }}">{{ 'report' | trans }}</a>
+                                <button type="button" class="btn btn-modal-default md-modal-item" data-dismiss="modal">{{ 'cancel' | trans }}</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
 
             {% if rightToDeleteComment(app.user,comment) %}
                 <div class="modal fade md-confirm-modal" id="deleteCommentModal{{ comment.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">

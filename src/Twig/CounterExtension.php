@@ -12,10 +12,13 @@ use App\Repository\BookmarkRepository;
 use App\Repository\FollowRepository;
 use App\Repository\LikeRepository;
 use App\Repository\MessageRepository;
+use App\Repository\ReportRepository;
 use App\Repository\SongRepository;
 use App\Repository\NotificationRepository;
 use App\Repository\PostRepository;
 use App\Repository\PlaylistSongRepository;
+use App\Repository\UserRepository;
+use App\Service\Defender;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Extension\AbstractExtension;
@@ -32,8 +35,12 @@ class CounterExtension extends AbstractExtension
     private $likes;
     private $postRepo;
     private $followRepo;
+    private $reportRepo;
+    private $defender;
+    private $security;
+    private $users;
 
-    public function __construct(SongRepository $songRepository, PostRepository $postRepo, BookmarkRepository $bookmarks, LikeRepository $likes, PlaylistSongRepository $playlistSongRepo, NotificationRepository $notifyRepo, MessageRepository $messageRepo, TranslatorInterface $translator, FollowRepository $followRepo)
+    public function __construct(SongRepository $songRepository, PostRepository $postRepo, Security $security, UserRepository $users, Defender $defender, ReportRepository $reportRepo, BookmarkRepository $bookmarks, LikeRepository $likes, PlaylistSongRepository $playlistSongRepo, NotificationRepository $notifyRepo, MessageRepository $messageRepo, TranslatorInterface $translator, FollowRepository $followRepo)
     {
         $this->songRepo = $songRepository;
         $this->postRepo = $postRepo;
@@ -44,6 +51,10 @@ class CounterExtension extends AbstractExtension
         $this->messageRepo = $messageRepo;
         $this->translator = $translator;
         $this->followRepo = $followRepo;
+        $this->reportRepo = $reportRepo;
+        $this->defender = $defender;
+        $this->security = $security;
+        $this->users = $users;
     }
 
     public function getFunctions(): array
@@ -59,6 +70,7 @@ class CounterExtension extends AbstractExtension
             new TwigFunction('messagesCount', [$this, 'messagesCount'], ['is_safe' => ['html']]),
             new TwigFunction('conversationMessagesCount', [$this, 'conversationMessagesCount'], ['is_safe' => ['html']]),
             new TwigFunction('postModerationCount', [$this, 'postModerationCount'], ['is_safe' => ['html']]),
+            new TwigFunction('reportsCount', [$this, 'reportsCount'], ['is_safe' => ['html']]),
             new TwigFunction('songModerationCount', [$this, 'songModerationCount'], ['is_safe' => ['html']]),
             new TwigFunction('notifyIndicator', [$this, 'notifyIndicator'], ['is_safe' => ['html']]),
             new TwigFunction('userHavePlaylistSongs', [$this, 'userHavePlaylistSongs'], ['is_safe' => ['html']]),
@@ -135,7 +147,22 @@ class CounterExtension extends AbstractExtension
 
     public function postModerationCount(): int
     {
-        return $this->postRepo->count(['status' => null]);
+        $count = $this->postRepo->count(['status' => null]);
+
+        if ($this->defender->isGranted($this->getUser(),'ROLE_REPORT_MODERATOR')) {
+            $count += $this->reportsCount();
+        }
+
+        return $count;
+    }
+
+    public function reportsCount(): ?int
+    {
+        if ($this->defender->isGranted($this->getUser(),'ROLE_REPORT_MODERATOR')) {
+            return $this->reportRepo->count(['seen' => false]);
+        } else {
+            return null;
+        }
     }
 
     public function songModerationCount(): int
@@ -151,5 +178,14 @@ class CounterExtension extends AbstractExtension
     public function songViewsCount(Song $song): float
     {
         return $this->songRepo->getSongViews($song);
+    }
+
+    private function getUser()
+    {
+        if ($this->defender->isGranted($this->security->getUser(),'ROLE_GUEST')) {
+            return $this->security->getUser();
+        } else {
+            return $this->users->findOneBy(['username' => $this->security->getUser()->getUsername()]);
+        }
     }
 }

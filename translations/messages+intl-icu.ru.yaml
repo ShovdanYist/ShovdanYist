@@ -46,6 +46,8 @@ year: Год
 author: Автор
 management: Управление
 manager: Менеджер
+reports: Жалобы
+report: Пожаловаться
 translation: Перевод
 featured: Избранное
 content: Содержание
@@ -68,6 +70,7 @@ change: Изменить
 update: Обновить
 more: Еще
 and: И
+from: От
 status: Статус
 
 # PROFILE
@@ -291,6 +294,7 @@ post.has.been.added: "Публикация успешно отправлена, 
 # COMMENTS
 
 comments: Комментарии
+comment: Комментарий
 to.leave.a.comment: "чтобы оставлять комментарии"
 write.comment: "Написать комментарий.."
 reply: Ответить
@@ -364,6 +368,9 @@ sure.to.ban.user: "Вы уверены что хотите забанить эт
 sure.to.unban.user: "Вы уверены что хотите разбанить этого пользователя?"
 sure.to.approve.post: "Вы уверены что хотите утвердить эту публикацию?"
 sure.to.reject.post: "Вы уверены что хотите отклонить эту публикацию?"
+sure.to.report.comment: "Вы уверены что хотите пожаловаться на комментарий?"
+sure.to.report.profile: "Вы уверены что хотите пожаловаться на профиль?"
+sure.to.report.message: "Вы уверены что хотите пожаловаться на сообщение?"
 sure.to.delete.post: "Вы уверены что хотите удалить эту публикацию?"
 sure.to.delete.user: "Вы уверены что хотите удалить этого пользователя?"
 sure.to.delete.account: "Вы уверены что хотите удалить свой аккаунт навсегда?"
@@ -402,6 +409,7 @@ flash.comment.deleting.error: "Ошибка при удалении коммен
 flash.password.successful.recovered: "Пароль успешно восстановлен"
 flash.password.changed: "Пароль изменен"
 flash.password.is.wrong: "Введен неверный пароль"
+flash.report.is.sent: "Жалобо успешно отправлена"
 
 user.is.banned: "Пользователь { username } забанен"
 user.is.unbanned: "Пользователь { username } разбанен"

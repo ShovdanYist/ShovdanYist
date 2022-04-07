@@ -29,6 +29,7 @@
                 {% endif %}
 
                 {% if is_granted('ROLE_OWNER') or post.author == app.user %}
+                    <span class="dropdown-divider"></span>
                     <button type="button" class="dropdown-item" data-toggle="modal" data-target="#deletePostModal">
                         <span class="icon">
                             <i class="far fa-trash-alt"></i>

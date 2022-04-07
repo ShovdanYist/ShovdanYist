@@ -75,6 +75,11 @@ class Comment
      */
     private $likes;
 
+    /**
+     * @ORM\OneToOne(targetEntity=Report::class, mappedBy="comment", cascade={"persist", "remove"})
+     */
+    private $report;
+
     public function __construct()
     {
         $this->notifications = new ArrayCollection();
@@ -281,6 +286,24 @@ class Comment
             if ($like->getComment() === $this) {
                 $like->setComment(null);
             }
+        }
+
+        return $this;
+    }
+
+    public function getReport(): ?Report
+    {
+        return $this->report;
+    }
+
+    public function setReport(?Report $report): self
+    {
+        $this->report = $report;
+
+        // set (or unset) the owning side of the relation if necessary
+        $newComment = null === $report ? null : $this;
+        if ($report->getComment() !== $newComment) {
+            $report->setComment($newComment);
         }
 
         return $this;

@@ -54,6 +54,12 @@
 
                                 <span class="dropdown-divider"></span>
 
+                                {% if app.user != message.sender %}
+                                    <a href="javascript:void(0)" class="dropdown-item" data-toggle="modal" data-target="#reportMessageModal{{ message.id }}">
+                                        {{ 'report' | trans }}
+                                    </a>
+                                {% endif %}
+
                                 <button type="button" class="dropdown-item" data-toggle="modal" data-target="#deleteMessage{{ message.id }}ForMe">
                                     {{ 'delete.for.me' | trans }}
                                 </button>
@@ -62,6 +68,20 @@
                                 </button>
                             </div>
                         </div>
+
+                        {% if app.user != message.sender %}
+                            <div class="modal fade md-confirm-modal" id="reportMessageModal{{ message.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                        <div class="md-modal-container">
+                                            <div class="md-modal-message">{{ 'sure.to.report.message' | trans }}</div>
+                                            <a class="btn btn-modal-danger md-modal-item" href="{{ path('report_message',{'id':message.id}) }}">{{ 'report' | trans }}</a>
+                                            <button type="button" class="btn btn-modal-default md-modal-item" data-dismiss="modal">{{ 'cancel' | trans }}</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
 
                         <div class="modal fade md-confirm-modal" id="deleteMessage{{ message.id }}ForMe" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                             <div class="modal-dialog modal-dialog-centered" role="document">
@@ -76,6 +96,7 @@
                                 </div>
                             </div>
                         </div>
+
                         <div class="modal fade md-confirm-modal" id="deleteMessage{{ message.id }}ForEveryone" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                             <div class="modal-dialog modal-dialog-centered" role="document">
                                 <div class="modal-content">

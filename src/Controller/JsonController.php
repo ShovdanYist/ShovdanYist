@@ -4,10 +4,12 @@ namespace App\Controller;
 
 use App\CustomAbstracts\CustomAbstractController;
 use App\Entity\Bookmark;
+use App\Entity\Comment;
 use App\Entity\Message;
 use App\Entity\PlaylistSong;
 use App\Entity\Post;
 use App\Entity\Profile;
+use App\Entity\Report;
 use App\Entity\Song;
 use App\Entity\User;
 use App\Repository\PlaylistSongRepository;
@@ -188,6 +190,92 @@ class JsonController extends CustomAbstractController
 
         return $this->json([
             'response' => ['status' => 'sent', 'message' => $this->trans('flash.profile.is.sent') . ' ' . $user->getUsername()]
+        ]);
+    }
+
+    /**
+     * @Security("is_granted('ROLE_USER')")
+     * @Route("/reportMessage/{id}", name="report_message", methods={"GET","POST"})
+     * @param Message $message
+     * @return Response
+     */
+    public function message(Message $message): Response
+    {
+        $exist = $this->getDoctrine()->getRepository(Report::class)->findOneBy(['sender' => $this->user(), 'message' => $message]);
+
+        if (!$exist) {
+            $report = new Report();
+            $report->setMessage($message);
+            $report->setSender($this->user());
+            $report->setAccused($message->getSender());
+            $report->setContent($message->getContent());
+
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($report);
+            $em->flush();
+        }
+
+        $this->addFlash('success', $this->trans('flash.report.is.sent'));
+
+        return $this->redirectToRoute('message_conversation', [
+            'username' => $message->getSender()->getUsername()
+        ]);
+    }
+
+    /**
+     * @Security("is_granted('ROLE_USER')")
+     * @Route("/reportProfile/{id}", name="report_profile", methods={"GET","POST"})
+     * @param User $user
+     * @return Response
+     */
+    public function profile(User $user): Response
+    {
+        $exist = $this->getDoctrine()->getRepository(Report::class)->findOneBy(['sender' => $this->user(), 'profile' => $user]);
+
+        if (!$exist) {
+            $report = new Report();
+            $report->setProfile($user);
+            $report->setSender($this->user());
+            $report->setAccused($user);
+
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($report);
+            $em->flush();
+        }
+
+        $this->addFlash('success', $this->trans('flash.report.is.sent'));
+
+        return $this->redirectToRoute('user_profile', [
+            'username' => $user->getUsername()
+        ]);
+    }
+
+    /**
+     * @Security("is_granted('ROLE_USER')")
+     * @Route("/reportComment/{id}", name="report_comment", methods={"GET","POST"})
+     * @param Comment $comment
+     * @return Response
+     */
+    public function comment(Comment $comment): Response
+    {
+        $exist = $this->getDoctrine()->getRepository(Report::class)->findOneBy(['sender' => $this->user(), 'comment' => $comment]);
+
+        if (!$exist) {
+            $report = new Report();
+            $report->setComment($comment);
+            $report->setSender($this->user());
+            $report->setAccused($comment->getAuthor());
+            $report->setContent($comment->getMessage());
+
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($report);
+            $em->flush();
+        }
+
+        $this->addFlash('success', $this->trans('flash.report.is.sent'));
+
+        return $this->redirectToRoute('post_show', [
+            'id' => $comment->getPost()->getId()
         ]);
     }
 }
