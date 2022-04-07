@@ -66,12 +66,6 @@ class ModerationController extends CustomAbstractController
             ]
         ];
 
-        foreach ($this->getDoctrine()->getRepository(Follow::class)->findAll() as $follow) {
-            $follow->setAccepted(true);
-        }
-
-        $this->getDoctrine()->getManager()->flush();
-
         return $this->render('interface/moderation/index.html.twig', [
             'stats' => $stats
         ]);
