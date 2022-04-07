@@ -6,7 +6,7 @@
  */
 
 // any CSS you import will output into a single scss file (appFile.scss in this case)
-import '../scss/app4.scss';
+import '../scss/app6.scss';
 
 // Awesome fonts
 require('@fortawesome/fontawesome-free/css/all.min.css');

@@ -1,9 +1,9 @@
 {
-  "build/app4.css": "/build/app4.css",
-  "build/app4.js": "/build/app4.js",
+  "build/app6.css": "/build/app6.css",
+  "build/app6.js": "/build/app6.js",
   "build/runtime.js": "/build/runtime.js",
-  "build/vendors-node_modules_fortawesome_fontawesome-free_js_all_js-node_modules_fortawesome_fontawes-a7977b.css": "/build/vendors-node_modules_fortawesome_fontawesome-free_js_all_js-node_modules_fortawesome_fontawes-a7977b.css",
-  "build/vendors-node_modules_fortawesome_fontawesome-free_js_all_js-node_modules_fortawesome_fontawes-a7977b.js": "/build/vendors-node_modules_fortawesome_fontawesome-free_js_all_js-node_modules_fortawesome_fontawes-a7977b.js",
+  "build/vendors-node_modules_fortawesome_fontawesome-free_js_all_js-node_modules_fortawesome_fontawes-8625a3.css": "/build/vendors-node_modules_fortawesome_fontawesome-free_js_all_js-node_modules_fortawesome_fontawes-8625a3.css",
+  "build/vendors-node_modules_fortawesome_fontawesome-free_js_all_js-node_modules_fortawesome_fontawes-8625a3.js": "/build/vendors-node_modules_fortawesome_fontawesome-free_js_all_js-node_modules_fortawesome_fontawes-8625a3.js",
   "build/images/fa-solid-900.svg": "/build/images/fa-solid-900.371dbce0.svg",
   "build/images/fa-brands-400.svg": "/build/images/fa-brands-400.e33e2cf6.svg",
   "build/fonts/fa-solid-900.eot": "/build/fonts/fa-solid-900.3a24a60e.eot",
@@ -18,11 +18,5 @@
   "build/fonts/fa-regular-400.eot": "/build/fonts/fa-regular-400.08f9891a.eot",
   "build/fonts/fa-regular-400.ttf": "/build/fonts/fa-regular-400.1495f578.ttf",
   "build/fonts/fa-regular-400.woff": "/build/fonts/fa-regular-400.1069ea55.woff",
-  "build/fonts/fa-regular-400.woff2": "/build/fonts/fa-regular-400.1008b522.woff2",
-  "build/vendors-node_modules_fortawesome_fontawesome-free_js_all_js-node_modules_fortawesome_fontawes-27cf5d.css": "/build/vendors-node_modules_fortawesome_fontawesome-free_js_all_js-node_modules_fortawesome_fontawes-27cf5d.css",
-  "build/vendors-node_modules_fortawesome_fontawesome-free_js_all_js-node_modules_fortawesome_fontawes-27cf5d.js": "/build/vendors-node_modules_fortawesome_fontawesome-free_js_all_js-node_modules_fortawesome_fontawes-27cf5d.js",
-  "build/vendors-node_modules_fortawesome_fontawesome-free_js_all_js-node_modules_fortawesome_fontawes-8625a3.css": "/build/vendors-node_modules_fortawesome_fontawesome-free_js_all_js-node_modules_fortawesome_fontawes-8625a3.css",
-  "build/vendors-node_modules_fortawesome_fontawesome-free_js_all_js-node_modules_fortawesome_fontawes-8625a3.js": "/build/vendors-node_modules_fortawesome_fontawesome-free_js_all_js-node_modules_fortawesome_fontawes-8625a3.js",
-  "build/vendors-node_modules_fortawesome_fontawesome-free_js_all_js-node_modules_fortawesome_fontawes-98cbed.css": "/build/vendors-node_modules_fortawesome_fontawesome-free_js_all_js-node_modules_fortawesome_fontawes-98cbed.css",
-  "build/vendors-node_modules_fortawesome_fontawesome-free_js_all_js-node_modules_fortawesome_fontawes-98cbed.js": "/build/vendors-node_modules_fortawesome_fontawesome-free_js_all_js-node_modules_fortawesome_fontawes-98cbed.js"
+  "build/fonts/fa-regular-400.woff2": "/build/fonts/fa-regular-400.1008b522.woff2"
 }
