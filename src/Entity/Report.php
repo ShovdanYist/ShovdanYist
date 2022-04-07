@@ -45,7 +45,7 @@ class Report
     private $sender;
 
     /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="reports")
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="accusations")
      * @ORM\JoinColumn(nullable=false)
      */
     private $accused;
@@ -58,7 +58,7 @@ class Report
     /**
      * @ORM\PrePersist()
      */
-    public function initializeAddedDate()
+    public function initialize()
     {
         $this->seen = false;
     }

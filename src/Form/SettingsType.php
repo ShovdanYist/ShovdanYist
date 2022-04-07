@@ -3,123 +3,72 @@
 namespace App\Form;
 
 use App\Entity\User;
+use App\Service\Defender;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
-use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints\Length;
-use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Security\Core\Security;
 
 class SettingsType extends AbstractType
 {
+    private $user;
+    private $defender;
+
+    public function __construct(Security $security, Defender $defender)
+    {
+        $this->user = $security->getUser();
+        $this->defender = $defender;
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
             ->add('username', TextType::class, [
                 'label' => 'username',
-                'help' => 'username.help',
-                'constraints' => [
-                    new Length([
-                        'min' => 6,
-                        'max' => 28,
-                        'minMessage' => 'username.min.length.message',
-                        'maxMessage' => 'username.max.length.message'
-                    ])
-                ],
+                'mapped' => false,
                 'attr' => [
+                    'value' => $this->user->getUsername(),
                     'class' => 'username-input',
                     'maxlength' => 28,
-                    'minlength' => 6
-                ]
+                    'minlength' => 8
+                ],
             ])
             ->add('email', EmailType::class, [
-                'label' => 'email'
-            ])
-            ->add('password', RepeatedType::class, [
-                'type' => PasswordType::class,
-                'invalid_message' => 'password.not.same',
-                'second_options' => ['label' => 'confirm.password'],
-                'first_options' => [
-                    'label' => 'password',
-                    'constraints' => [
-                        new NotBlank([
-                            'message' => 'password.is.empty',
-                        ]),
-                        new Length([
-                            'min' => 6,
-                            'max' => 80,
-                            'minMessage' => 'password.min.length.message',
-                            'maxMessage' => 'password.max.length.message'
-                        ]),
-                    ],
-                    'attr' => [
-                        'minlength' => 6,
-                        'maxlength' => 80,
-                    ]
-                ],
-            ])
-            ->add('gender', ChoiceType::class, [
-                'label' => 'gender',
-                'mapped' => false,
-                'expanded' => true,
-                'label_attr' => ['class' => 'radio-custom'],
-                'choices' => [
-                    'gender.male' => 0,
-                    'gender.female' => 1
-                ],
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'gender.required.message'
-                    ])
-                ]
-            ])
-            ->add('birthday', DateType::class, [
-                'label' => 'birth.date',
-                'years' => range(date('Y')-10, date('Y')-100),
-                'mapped' => false,
-                'widget' => 'choice',
-                'format' => 'ddMMMMyyyy',
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'birthday.required'
-                    ])
-                ],
-                'placeholder' => [
-                    'year' => 'Год',
-                    'month' => 'Месяц',
-                    'day' => 'День',
-                ],
+                'label' => 'email',
+                'help' => 'email.help',
                 'attr' => [
-                    'class' => 'user-birthday'
+                    'class' => ($options['user']->getEmail() != $options['user']->getConfirmedEmail()) ? 'is-invalid' : null,
                 ]
             ])
-            ->add('invitedBy', TextType::class, [
-                'label' => 'invited.by',
-                'help' => 'invited.by.help',
+            ->add('hideOnline', CheckboxType::class, [
+                'label' => 'hide.online',
+                'required' => false,
+                'label_attr' => ['class' => 'switch-custom']
+            ])
+            ->add('closedAccount', CheckboxType::class, [
+                'label' => 'closed.account',
+                'required' => false,
+                'label_attr' => ['class' => 'switch-custom']
+            ])
+        ;
+        if ($this->defender->isGranted($this->user,'ROLE_OWNER') && $options['user'] !== $this->user) {
+            $builder->add('password', PasswordType::class, [
+                'label' => 'password',
                 'mapped' => false,
                 'required' => false
-            ])
-//            ->add('agreeTerms', CheckboxType::class, [
-//                'mapped' => false,
-//                'label_attr' => ['class' => 'checkbox-custom'],
-//                'constraints' => [
-//                    new IsTrue([
-//                        'message' => 'agree.terms.message',
-//                    ])
-//                ]
-//            ])
-        ;
+            ]);
+        }
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
             'data_class' => User::class,
+            'user' => null
         ]);
     }
 }

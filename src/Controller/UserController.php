@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\CustomAbstracts\CustomAbstractController;
 use App\Entity\EmailAddress;
 use App\Entity\Follow;
+use App\Entity\Message;
 use App\Entity\Profile;
 use App\Entity\Song;
 use App\Entity\Notification;
@@ -13,6 +14,7 @@ use App\Entity\User;
 use App\Form\NewUserType;
 use App\Form\ResetPasswordType;
 use App\Form\ProfileType;
+use App\Form\SettingsType;
 use App\Repository\NotificationRepository;
 use App\Repository\UserRepository;
 use App\Service\Defender;
@@ -82,12 +84,8 @@ class UserController extends CustomAbstractController
 
             $profile = new Profile();
             $user->setProfile($profile);
-            $user->setRoles(["ROLE_USER"]);
             $user->getProfile()->setGender(0);
             $user->getProfile()->setAvatar('avatar.jpg');
-            $user->setRegisteredAt(new \DateTime('now'));
-            $user->setHideOnline(false);
-            $user->setClosedAccount(false);
 
             $em = $this->getDoctrine()->getManager();
             $em->persist($user);
@@ -293,43 +291,7 @@ class UserController extends CustomAbstractController
             ]);
         }
 
-        $form = $this->createFormBuilder($user)
-            ->add('username', TextType::class, [
-                'label' => 'username',
-                'mapped' => false,
-                'attr' => [
-                    'value' => $user->getUsername(),
-                    'class' => 'username-input',
-                    'maxlength' => 28,
-                    'minlength' => 8
-                ],
-            ])
-            ->add('email', EmailType::class, [
-                'label' => 'email',
-                'help' => 'email.help',
-                'attr' => [
-                    'class' => ($user->getEmail() != $user->getConfirmedEmail()) ? 'is-invalid' : null,
-                ]
-            ])
-            ->add('hideOnline', CheckboxType::class, [
-                'label' => 'hide.online',
-                'required' => false,
-                'label_attr' => ['class' => 'switch-custom']
-            ])
-            ->add('closedAccount', CheckboxType::class, [
-                'label' => 'closed.account',
-                'required' => false,
-                'label_attr' => ['class' => 'switch-custom']
-            ])
-            ->getForm();
-
-        if ($this->isGranted('ROLE_OWNER') && $user !== $this->user()) {
-            $form->add('password', PasswordType::class, [
-                'label' => 'password',
-                'mapped' => false,
-                'required' => false
-            ]);
-        }
+        $form = $this->createForm(SettingsType::class, $user,['user' => $user]);
 
         if ($user->getEmail() != $user->getConfirmedEmail()) {
             $form->get('email')->addError(new FormError($this->trans('email.not.verified')));
@@ -599,10 +561,24 @@ class UserController extends CustomAbstractController
 
             return $this->redirectToRoute('users_index');
         } elseif ($user === $this->user() && $this->isCsrfTokenValid('delete'.$user->getId(), $request->request->get('_token')) && $encoder->isPasswordValid($user, $request->request->get('password'))) {
+            $sentMessages = $this->getDoctrine()->getRepository(Message::class)->findBy(['sender' => $user]);
+            $receivedMessages = $this->getDoctrine()->getRepository(Message::class)->findBy(['receiver' => $user]);
+
+            foreach ($sentMessages as $sentMessage) {
+                $sentMessage->setReplyTo(null);
+            }
+            foreach ($receivedMessages as $receivedMessage) {
+                $receivedMessage->setReplyTo(null);
+            }
+            foreach ($user->getInvitees() as $invitee) {
+                $invitee->setInvitedBy(null);
+            }
+            $em = $this->getDoctrine()->getManager();
+            $em->flush();
+
             $session = new Session();
             $session->invalidate();
 
-            $em = $this->getDoctrine()->getManager();
             $em->remove($user);
             $em->flush();
 

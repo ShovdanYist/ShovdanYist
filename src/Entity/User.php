@@ -95,7 +95,7 @@ class User implements UserInterface
     private $replies;
 
     /**
-     * @ORM\OneToMany(targetEntity=Notification::class, mappedBy="sender")
+     * @ORM\OneToMany(targetEntity=Notification::class, mappedBy="sender", orphanRemoval=true)
      */
     private $sentNotifications;
 
@@ -204,6 +204,11 @@ class User implements UserInterface
      */
     private $reports;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Report::class, mappedBy="accused", orphanRemoval=true)
+     */
+    private $accusations;
+
     public function __construct()
     {
         $this->songs = new ArrayCollection();
@@ -225,6 +230,18 @@ class User implements UserInterface
         $this->sentMessages = new ArrayCollection();
         $this->receivedMessages = new ArrayCollection();
         $this->reports = new ArrayCollection();
+        $this->accusations = new ArrayCollection();
+    }
+
+    /**
+     * @ORM\PrePersist()
+     */
+    public function initialize()
+    {
+        $this->closedAccount = false;
+        $this->hideOnline = false;
+        $this->registeredAt = new \DateTime('now');
+        $this->roles = ["ROLE_USER"];
     }
 
     public function getId(): ?int
@@ -998,6 +1015,37 @@ class User implements UserInterface
             // set the owning side to null (unless already changed)
             if ($report->getSender() === $this) {
                 $report->setSender(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Report[]
+     */
+    public function getAccusations(): Collection
+    {
+        return $this->accusations;
+    }
+
+    public function addAccusation(Report $accusation): self
+    {
+        if (!$this->accusations->contains($accusation)) {
+            $this->accusations[] = $accusation;
+            $accusation->setSender($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAccusation(Report $accusation): self
+    {
+        if ($this->accusations->contains($accusation)) {
+            $this->accusations->removeElement($accusation);
+            // set the owning side to null (unless already changed)
+            if ($accusation->getSender() === $this) {
+                $accusation->setSender(null);
             }
         }
 

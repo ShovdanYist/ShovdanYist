@@ -131,14 +131,11 @@ class HomeController extends CustomAbstractController
 
             $profile = new Profile();
             $user->setProfile($profile);
-            $user->setRoles(["ROLE_USER"]);
             $user->setToken($tokenGenerator->generateToken());
             $user->setUsername(strtolower($form->get('username')->getData()));
             $user->getProfile()->setGender($form->get('gender')->getData());
             $user->getProfile()->setBirthday($form->get('birthday')->getData());
             $user->getProfile()->setAvatar('avatar.jpg');
-            $user->setRegisteredAt(new \DateTime('now'));
-            $user->setHideOnline(false);
 
             if ($form->get('invitedBy')->getData() && $this->getDoctrine()->getRepository(User::class)->findOneBy(['username' => $form->get('invitedBy')->getData()])) {
                 $user->setInvitedBy($this->getDoctrine()->getRepository(User::class)->findOneBy(['username' => $form->get('invitedBy')->getData()]));

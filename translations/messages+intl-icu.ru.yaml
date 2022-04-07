@@ -409,7 +409,7 @@ flash.comment.deleting.error: "Ошибка при удалении коммен
 flash.password.successful.recovered: "Пароль успешно восстановлен"
 flash.password.changed: "Пароль изменен"
 flash.password.is.wrong: "Введен неверный пароль"
-flash.report.is.sent: "Жалобо успешно отправлена"
+flash.report.is.sent: "Жалоба успешно отправлена"
 
 user.is.banned: "Пользователь { username } забанен"
 user.is.unbanned: "Пользователь { username } разбанен"
