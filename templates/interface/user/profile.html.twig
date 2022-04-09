@@ -316,6 +316,8 @@
     </div>
 
     {% if type == 'list' %}
+        {% include 'interface/post/_share_post.html.twig' %}
+
         <div class="md-list-posts">
             {% for post in posts %}
                 {{ postView(post) }}
