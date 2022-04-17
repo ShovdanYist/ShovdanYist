@@ -7,31 +7,27 @@ use App\Entity\Message;
 use App\Entity\User;
 use App\Form\MessageType;
 use App\Repository\MessageRepository;
-use Doctrine\DBAL\DBALException;
+use App\Repository\UserRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+#[Security('is_granted("ROLE_USER")')]
 class MessageController extends CustomAbstractController
 {
-    /**
-     * @Route("/messages", name="message_conversations", methods={"GET"})
-     * @Security("is_granted('ROLE_USER')")
-     * @return Response
-     * @throws DBALException
-     */
-    public function index(): Response
+    #[Route('/messages', name: 'message_conversations', methods: ['GET'])]
+    public function index(UserRepository $userRepo): Response
     {
         $this->updateLastActivity();
-        $conversations = $this->getDoctrine()->getRepository(User::class)->findConversations($this->user()->getId());
+        $conversations = $userRepo->findConversations($this->user()->getId());
         $users = [];
 
         foreach ($conversations as $conversation) {
-            $users[] = $this->getDoctrine()->getRepository(User::class)->findOneBy(['id' => $conversation['user']]);
+            $users[] = $userRepo->findOneBy(['id' => $conversation['user']]);
         }
 
-        $onlineUsers = $this->getDoctrine()->getRepository(User::class)->findOnlineFollows(['user' => $this->user(), 'type' => 'following']);
+        $onlineUsers = $userRepo->findOnlineFollows(['user' => $this->user(), 'type' => 'following']);
 
         return $this->render('interface/message/conversations.html.twig', [
             'users' => $users,
@@ -39,25 +35,17 @@ class MessageController extends CustomAbstractController
         ]);
     }
 
-    /**
-     * @Route("/messages/{username}", name="message_conversation", methods={"GET", "POST"})
-     * @Security("is_granted('ROLE_USER')")
-     * @param Request $request
-     * @param User $user
-     * @param MessageRepository $messageRepo
-     * @return Response
-     */
+    #[Route('/messages/{username}', name: 'message_conversation', methods: ['GET','POST'])]
     public function conversation(Request $request, User $user, MessageRepository $messageRepo): Response
     {
         $message = new Message();
-        $em = $this->getDoctrine()->getManager();
         $form = $this->createForm(MessageType::class,$message);
         $form->handleRequest($request);
 
         foreach ($messageRepo->findBy(['receiver' => $this->user(), 'sender' => $user, 'seen' => false]) as $unseenMessage) {
             $unseenMessage->setSeen(true);
         }
-        $em->flush();
+        $messageRepo->flush();
 
         if ($form->isSubmitted() && $form->isValid()) {
 
@@ -81,12 +69,11 @@ class MessageController extends CustomAbstractController
                         foreach ($replyMessages as $replyMessage) {
                             $replyMessage->setReplyTo(null);
                         }
-                        $em->remove($messageToDelete);
+                        $messageRepo->remove($messageToDelete);
                     }
                 }
 
-                $em->persist($message);
-                $em->flush();
+                $messageRepo->add($message);
             }
 
             return $this->redirectToRoute('message_conversation', [
@@ -101,78 +88,57 @@ class MessageController extends CustomAbstractController
         ]);
     }
 
-    /**
-     * @Route("/conversation/{username}/deleteForMe", name="delete_conversation_for_me", methods={"GET", "POST"})
-     * @Security("is_granted('ROLE_USER')")
-     * @param User $user
-     * @return Response
-     */
-    public function deleteConversationForMe(User $user): Response
+    #[Route('/conversation/{username}/deleteForMe', name: 'delete_conversation_for_me', methods: ['GET'])]
+    public function deleteConversationForMe(User $user, MessageRepository $messageRepo): Response
     {
-        $messages = $this->getDoctrine()->getRepository(Message::class)->findConversation(['user_one' => $this->user(),'user_two' => $user]);
-        $em = $this->getDoctrine()->getManager();
+        $messages = $messageRepo->findConversation(['user_one' => $this->user(),'user_two' => $user]);
 
         foreach ($messages as $message) {
             if ($message->getSender() === $this->user()) {
                 if ($message->getReceiverDeleted()) {
-                    $em->remove($message);
+                    $messageRepo->remove($message);
                 } else {
                     $message->setSenderDeleted(true);
                 }
             } elseif ($message->getReceiver() === $this->user()) {
                 if ($message->getSenderDeleted()) {
-                    $em->remove($message);
+                    $messageRepo->remove($message);
                 } else {
                     $message->setReceiverDeleted(true);
                 }
             }
         }
 
-        $em->flush();
+        $messageRepo->flush();
 
         return $this->redirectToRoute('message_conversations');
     }
 
-    /**
-     * @Route("/conversation/{username}/deleteForEveryone", name="delete_conversation_for_everyone", methods={"GET", "POST"})
-     * @Security("is_granted('ROLE_USER')")
-     * @param User $user
-     * @return Response
-     */
-    public function deleteConversationForEveryone(User $user): Response
+    #[Route('/conversation/{username}/deleteForEveryone', name: 'delete_conversation_for_everyone', methods: ['GET'])]
+    public function deleteConversationForEveryone(User $user, MessageRepository $messageRepo): Response
     {
-        $messages = $this->getDoctrine()->getRepository(Message::class)->findConversation(['user_one' => $this->user(),'user_two' => $user]);
-        $em = $this->getDoctrine()->getManager();
+        $messages = $messageRepo->findConversation(['user_one' => $this->user(),'user_two' => $user]);
 
         foreach ($messages as $message) {
             $message->setReplyTo(null);
-            $em->flush();
+            $messageRepo->flush();
         }
 
         foreach ($messages as $message) {
-            $em->remove($message);
+            $messageRepo->remove($message);
         }
-
-        $em->flush();
 
         return $this->redirectToRoute('message_conversations');
     }
 
-    /**
-     * @Route("/message/{id}/deleteForMe", name="delete_message_for_me", methods={"GET", "POST"})
-     * @Security("is_granted('ROLE_USER')")
-     * @param Message $message
-     * @return Response
-     */
-    public function deleteMessageForMe(Message $message): Response
+    #[Route('/message/{id}/deleteForMe', name: 'delete_message_for_me', methods: ['GET'])]
+    public function deleteMessageForMe(Message $message, MessageRepository $messageRepo): Response
     {
-        $em = $this->getDoctrine()->getManager();
-
         if ($message->getSender() === $this->user()) {
             $username = $message->getReceiver()->getUsername();
 
             if ($message->getReceiverDeleted()) {
-                $em->remove($message);
+                $messageRepo->remove($message);
             } else {
                 $message->setSenderDeleted(true);
             }
@@ -180,7 +146,7 @@ class MessageController extends CustomAbstractController
             $username = $message->getSender()->getUsername();
 
             if ($message->getSenderDeleted()) {
-                $em->remove($message);
+                $messageRepo->remove($message);
             } else {
                 $message->setReceiverDeleted(true);
             }
@@ -188,23 +154,16 @@ class MessageController extends CustomAbstractController
             return $this->redirectToRoute('message_conversations');
         }
 
-        $em->flush();
+        $messageRepo->flush();
 
         return $this->redirectToRoute('message_conversation', [
             'username' => $username
         ]);
     }
 
-    /**
-     * @Route("/message/{id}/deleteForEveryone", name="delete_message_for_everyone", methods={"GET", "POST"})
-     * @Security("is_granted('ROLE_USER')")
-     * @param Message $message
-     * @return Response
-     */
-    public function deleteMessageForEveryone(Message $message): Response
+    #[Route('/message/{id}/deleteForEveryone', name: 'delete_message_for_everyone', methods: ['GET'])]
+    public function deleteMessageForEveryone(Message $message, MessageRepository $messageRepo): Response
     {
-        $em = $this->getDoctrine()->getManager();
-
         if ($message->getSender() === $this->user()) {
             $username = $message->getReceiver()->getUsername();
         } elseif ($message->getReceiver() === $this->user()) {
@@ -213,14 +172,13 @@ class MessageController extends CustomAbstractController
             return $this->redirectToRoute('message_conversations');
         }
 
-        $replyMessages = $this->getDoctrine()->getRepository(Message::class)->findBy(['replyTo' => $message]);
+        $replyMessages = $messageRepo->findBy(['replyTo' => $message]);
 
         foreach ($replyMessages as $replyMessage) {
             $replyMessage->setReplyTo(null);
         }
 
-        $em->remove($message);
-        $em->flush();
+        $messageRepo->remove($message);
 
         return $this->redirectToRoute('message_conversation', [
             'username' => $username

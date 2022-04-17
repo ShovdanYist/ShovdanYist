@@ -3,17 +3,16 @@
 namespace App\CustomAbstracts;
 
 use App\Entity\User;
+use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class CustomAbstractController extends AbstractController
 {
-    private $translator;
-
-    public function __construct(TranslatorInterface $translator)
-    {
-        $this->translator = $translator;
-    }
+    public function __construct(
+        private TranslatorInterface $translator,
+        private UserRepository $userRepo
+    ){}
 
     public function trans(string $id, array $parameters = [], string $domain = null, string $locale = null): string
     {
@@ -22,15 +21,14 @@ class CustomAbstractController extends AbstractController
 
     public function user(): User
     {
-        return $this->getDoctrine()->getRepository(User::class)->findOneBy(['username' => $this->getUser()->getUsername()]);
+        return $this->userRepo->findOneBy(['username' => $this->getUser()->getUsername()]);
     }
 
     public function updateLastActivity()
     {
         if ($this->getUser()) {
-            $em = $this->getDoctrine()->getManager();
             $this->user()->setLastActivityAt(new \DateTime('now'));
-            $em->flush();
+            $this->userRepo->flush();
         }
     }
 }

@@ -15,16 +15,11 @@ use Twig\Error\SyntaxError;
 
 class Sitemap
 {
-    private $em;
-    private $generator;
-    private $twig;
-
-    public function __construct(EntityManagerInterface $em, UrlGeneratorInterface $generator, Environment $twig)
-    {
-        $this->em = $em;
-        $this->generator = $generator;
-        $this->twig = $twig;
-    }
+    public function __construct(
+        private UrlGeneratorInterface $generator,
+        private EntityManagerInterface $em,
+        private Environment $twig
+    ){}
 
     /**
      * @throws RuntimeError

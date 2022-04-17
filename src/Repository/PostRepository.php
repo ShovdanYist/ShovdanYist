@@ -19,6 +19,32 @@ class PostRepository extends ServiceEntityRepository
         parent::__construct($registry, Post::class);
     }
 
+    public function flush(): void
+    {
+        $this->_em->flush();
+    }
+
+    public function persist(Post $entity): void
+    {
+        $this->_em->persist($entity);
+    }
+
+    public function add(Post $entity, bool $flush = true): void
+    {
+        $this->_em->persist($entity);
+        if ($flush) {
+            $this->_em->flush();
+        }
+    }
+
+    public function remove(Post $entity, bool $flush = true): void
+    {
+        $this->_em->remove($entity);
+        if ($flush) {
+            $this->_em->flush();
+        }
+    }
+
     public function findRecommendations($criteria, $orderBy = ['id' => 'DESC'], $limit = null, $offset = null)
     {
         $qb = $this->createQueryBuilder('p');

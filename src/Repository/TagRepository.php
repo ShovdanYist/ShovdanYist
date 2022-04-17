@@ -19,6 +19,32 @@ class TagRepository extends ServiceEntityRepository
         parent::__construct($registry, Tag::class);
     }
 
+    public function flush(): void
+    {
+        $this->_em->flush();
+    }
+
+    public function persist(Tag $entity): void
+    {
+        $this->_em->persist($entity);
+    }
+
+    public function add(Tag $entity, bool $flush = true): void
+    {
+        $this->_em->persist($entity);
+        if ($flush) {
+            $this->_em->flush();
+        }
+    }
+
+    public function remove(Tag $entity, bool $flush = true): void
+    {
+        $this->_em->remove($entity);
+        if ($flush) {
+            $this->_em->flush();
+        }
+    }
+
     public function findByType($type)
     {
         $qb = $this->createQueryBuilder('t')

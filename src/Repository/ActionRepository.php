@@ -19,6 +19,32 @@ class ActionRepository extends ServiceEntityRepository
         parent::__construct($registry, Action::class);
     }
 
+    public function flush(): void
+    {
+        $this->_em->flush();
+    }
+
+    public function persist(Action $entity): void
+    {
+        $this->_em->persist($entity);
+    }
+
+    public function add(Action $entity, bool $flush = true): void
+    {
+        $this->_em->persist($entity);
+        if ($flush) {
+            $this->_em->flush();
+        }
+    }
+
+    public function remove(Action $entity, bool $flush = true): void
+    {
+        $this->_em->remove($entity);
+        if ($flush) {
+            $this->_em->flush();
+        }
+    }
+
     // /**
     //  * @return Action[] Returns an array of Action objects
     //  */

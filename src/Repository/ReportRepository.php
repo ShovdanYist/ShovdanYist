@@ -19,6 +19,32 @@ class ReportRepository extends ServiceEntityRepository
         parent::__construct($registry, Report::class);
     }
 
+    public function flush(): void
+    {
+        $this->_em->flush();
+    }
+
+    public function persist(Report $entity): void
+    {
+        $this->_em->persist($entity);
+    }
+
+    public function add(Report $entity, bool $flush = true): void
+    {
+        $this->_em->persist($entity);
+        if ($flush) {
+            $this->_em->flush();
+        }
+    }
+
+    public function remove(Report $entity, bool $flush = true): void
+    {
+        $this->_em->remove($entity);
+        if ($flush) {
+            $this->_em->flush();
+        }
+    }
+
     // /**
     //  * @return Report[] Returns an array of Report objects
     //  */

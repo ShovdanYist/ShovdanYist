@@ -8,7 +8,7 @@ use Symfony\Component\Validator\Constraint;
 /**
  * @Annotation
  */
-class BlockedEmail extends Constraint
+#[\Attribute] class BlockedEmail extends Constraint
 {
     public $message = '{{ message }}';
     public $fields = [];
@@ -18,7 +18,7 @@ class BlockedEmail extends Constraint
         return \get_class($this).'Validator';
     }
 
-    public function getTargets()
+    public function getTargets(): array|string
     {
         return self::CLASS_CONSTRAINT;
     }

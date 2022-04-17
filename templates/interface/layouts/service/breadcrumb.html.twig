@@ -1,8 +1,10 @@
 <div class="md-box md-breadcrumb">
 
     {% if name == 'post' %}
-        <div class="back-picture bp-24 mr-2" style="background-image: url('{% if entity.image %}{{ vich_uploader_asset(entity) | imagine_filter('thumbnail') }}{% else %}{{ asset('assets/images/question.jpg') }}{% endif %}'); border-radius: 3px;">
-        </div>
+        <a href="{{ path('post_show', {'id':entity.id}) }}">
+            <div class="back-picture bp-24 mr-2" style="background-image: url('{% if entity.image %}{{ vich_uploader_asset(entity) | imagine_filter('thumbnail') }}{% else %}{{ asset('assets/images/question.jpg') }}{% endif %}'); border-radius: 3px;">
+            </div>
+        </a>
     {% endif %}
 
     <div class="md-breadcrumb-nav">

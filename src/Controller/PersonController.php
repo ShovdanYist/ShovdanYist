@@ -17,13 +17,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class PersonController extends CustomAbstractController
 {
-    /**
-     * @Route("/people/{letter}", name="people_by_letter", methods={"GET"})
-     * @param $letter
-     * @param PeopleRepository $personRepo
-     * @param SongExtension $extension
-     * @return Response
-     */
+    #[Route('/people/{letter}', name: 'people_by_letter',  methods: ['GET'])]
     public function people($letter, PeopleRepository $personRepo, SongExtension $extension): Response
     {
         if (!key_exists($letter,$extension->letters())) {
@@ -42,13 +36,8 @@ class PersonController extends CustomAbstractController
         ]);
     }
 
-    /**
-     * @Route("/person/new", name="person_new", methods={"GET","POST"})
-     * @Security("is_granted('ROLE_PEOPLE_MODERATOR')")
-     * @param Request $request
-     * @param Initializer $initializer
-     * @return Response
-     */
+    #[Route('/person/new', name: 'person_new',  methods: ['GET','POST'])]
+    #[Security('is_granted("ROLE_PEOPLE_MODERATOR")')]
     public function new(Request $request, Initializer $initializer): Response
     {
         $person = new Person();
@@ -69,14 +58,8 @@ class PersonController extends CustomAbstractController
         ]);
     }
 
-    /**
-     * @Route("/person/{slug}", name="person_show", methods={"GET"})
-     * @param $slug
-     * @param SongRepository $songRepo
-     * @param PeopleRepository $people
-     * @return Response
-     */
-    public function show($slug, SongRepository $songRepo, PeopleRepository $people): Response
+    #[Route('/person/{slug}', name: 'person_show',  methods: ['GET'])]
+    public function show($slug, SongRepository $songRepo, PeopleRepository $people, PeopleRepository $peopleRepo): Response
     {
         if (!$this->isGranted("ROLE_PEOPLE_MODERATOR")) {
             try {
@@ -86,7 +69,7 @@ class PersonController extends CustomAbstractController
                 return $this->redirectToRoute('song_index');
             }
         } else {
-            $person = $this->getDoctrine()->getRepository(Person::class)->findOneBy(['slug' => $slug]);
+            $person = $peopleRepo->findOneBy(['slug' => $slug]);
         }
 
         $songs = $songRepo->findBy(['vocalist' => $person, 'status' => true], ['releaseDate' => 'DESC']);
@@ -97,14 +80,8 @@ class PersonController extends CustomAbstractController
         ]);
     }
 
-    /**
-     * @Route("/person/{slug}/edit", name="person_edit", methods={"GET","POST"})
-     * @Security("is_granted('ROLE_PEOPLE_MODERATOR')")
-     * @param Request $request
-     * @param Person $person
-     * @param Initializer $initializer
-     * @return Response
-     */
+    #[Route('/person/{slug}/edit', name: 'person_edit',  methods: ['GET','POST'])]
+    #[Security('is_granted("ROLE_PEOPLE_MODERATOR")')]
     public function edit(Request $request, Person $person, Initializer $initializer): Response
     {
         $form = $this->createForm(PersonType::class, $person);
@@ -122,19 +99,12 @@ class PersonController extends CustomAbstractController
         ]);
     }
 
-    /**
-     * @Route("/{id}", name="person_delete", methods={"DELETE"})
-     * @Security("is_granted('ROLE_OWNER')")
-     * @param Request $request
-     * @param Person $person
-     * @return Response
-     */
-    public function delete(Request $request, Person $person): Response
+    #[Route('/{id}', name: 'person_delete',  methods: ['POST'])]
+    #[Security('is_granted("ROLE_OWNER")')]
+    public function delete(Request $request, Person $person, PeopleRepository $peopleRepo): Response
     {
         if ($this->isCsrfTokenValid('delete'.$person->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($person);
-            $entityManager->flush();
+            $peopleRepo->remove($person);
         }
 
         return $this->redirectToRoute('app_home');

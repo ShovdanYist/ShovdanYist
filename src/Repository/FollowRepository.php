@@ -19,6 +19,32 @@ class FollowRepository extends ServiceEntityRepository
         parent::__construct($registry, Follow::class);
     }
 
+    public function flush(): void
+    {
+        $this->_em->flush();
+    }
+
+    public function persist(Follow $entity): void
+    {
+        $this->_em->persist($entity);
+    }
+
+    public function add(Follow $entity, bool $flush = true): void
+    {
+        $this->_em->persist($entity);
+        if ($flush) {
+            $this->_em->flush();
+        }
+    }
+
+    public function remove(Follow $entity, bool $flush = true): void
+    {
+        $this->_em->remove($entity);
+        if ($flush) {
+            $this->_em->flush();
+        }
+    }
+
     // /**
     //  * @return Follow[] Returns an array of Follow objects
     //  */

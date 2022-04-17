@@ -6,40 +6,28 @@ use App\Repository\BookmarkRepository;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass=BookmarkRepository::class)
- * @ORM\HasLifecycleCallbacks()
- */
+#[ORM\Entity(repositoryClass: BookmarkRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 class Bookmark
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="bookmarks")
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'bookmarks')]
+    #[ORM\JoinColumn(nullable: false)]
     private $user;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Post::class, inversedBy="bookmarks")
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[ORM\ManyToOne(targetEntity: Post::class, inversedBy: 'bookmarks')]
+    #[ORM\JoinColumn(nullable: false)]
     private $post;
 
-    /**
-     * @ORM\Column(type="datetime")
-     */
+    #[ORM\Column(type: 'datetime')]
     private $addedAt;
 
-    /**
-     * @ORM\PrePersist()
-     */
-    public function initializePrePersist()
+    #[ORM\PrePersist]
+    public function initialize()
     {
         $this->addedAt = new DateTime('now');
     }

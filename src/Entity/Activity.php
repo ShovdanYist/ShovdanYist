@@ -2,45 +2,37 @@
 
 namespace App\Entity;
 
+use App\Repository\ActivityRepository;
 use App\Validator\Constraints as MyAssert;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use JetBrains\PhpStorm\Pure;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\ActivityRepository")
- * @MyAssert\UniqueTitleSlug(message="form.title.or.slug.exists")
- */
+#[ORM\Entity(repositoryClass: ActivityRepository::class)]
+#[MyAssert\UniqueTitleSlug(message: 'form.title.or.slug.exists')]
 class Activity
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank()
-     * @Assert\Type("string")
-     */
+    #[ORM\Column(type: 'string', length: 255)]
+    #[Assert\NotBlank]
+    #[Assert\Type('string')]
     private $title;
 
-    /**
-     * @ORM\ManyToMany(targetEntity=Person::class, mappedBy="activity")
-     */
+    #[ORM\ManyToMany(targetEntity: Person::class, mappedBy: 'activity')]
     private $people;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     * @Assert\Type("string")
-     * @Assert\NotBlank()
-     */
+    #[ORM\Column(type: 'string', length: 255)]
+    #[Assert\NotBlank]
+    #[Assert\Type('string')]
     private $slug;
 
-    public function __construct()
+    #[Pure] public function __construct()
     {
         $this->people = new ArrayCollection();
     }

@@ -3,138 +3,91 @@
 namespace App\Entity;
 
 use App\Repository\PostRepository;
-use App\Validator\Constraints as MyAssert;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use JetBrains\PhpStorm\Pure;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Validator\Constraints as Assert;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
-/**
- * @ORM\Entity(repositoryClass=PostRepository::class)
- * @Vich\Uploadable
- */
+#[ORM\Entity(repositoryClass: PostRepository::class)]
+#[Vich\Uploadable]
 class Post
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
-    /**
-     * @Vich\UploadableField(mapping="post_images", fileNameProperty="image")
-     * @Assert\File(mimeTypes={"image/jpeg","image/png","image/gif"}, mimeTypesMessage="image.have.to.be.jpg.or.png")
-     * @var File|null
-     */
+    #[Vich\UploadableField(mapping: 'post_images', fileNameProperty: 'image')]
+    #[Assert\File(mimeTypes: ['image/jpeg','image/png','image/gif'], mimeTypesMessage: 'image.have.to.be.jpg.or.png')]
     private $imageFile;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $image;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
+    #[ORM\Column(type: 'text', nullable: true)]
     private $content;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     * @Assert\Length(max="150", maxMessage="form.max.message")
-     */
+    #[ORM\Column(type: 'text', nullable: true)]
+    #[Assert\Length(max: '150', maxMessage: 'form.max.message')]
     private $description;
 
-    /**
-     * @ORM\Column(type="boolean", nullable=true)
-     */
+    #[ORM\Column(type: 'boolean', nullable: true)]
     private $status;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+    #[ORM\Column(type: 'string', length: 255)]
     private $slug;
 
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
+    #[ORM\Column(type: 'datetime', nullable: true)]
     private $publishedAt;
 
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     * @Assert\DateTime()
-     */
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    #[Assert\Type(\DateTimeInterface::class)]
     private $updatedAt;
 
-    /**
-     * @ORM\ManyToMany(targetEntity=Song::class, inversedBy="posts")
-     */
+    #[ORM\ManyToMany(targetEntity: Song::class, inversedBy: 'posts')]
     private $songs;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="posts")
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'posts')]
+    #[ORM\JoinColumn(nullable: false)]
     private $author;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="post", orphanRemoval=true)
-     */
+    #[ORM\OneToMany(mappedBy: 'post', targetEntity: Comment::class, orphanRemoval: true)]
     private $comments;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Bookmark::class, mappedBy="post", orphanRemoval=true)
-     */
+    #[ORM\OneToMany(mappedBy: 'post', targetEntity: Bookmark::class, orphanRemoval: true)]
     private $bookmarks;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Notification::class, mappedBy="post", orphanRemoval=true)
-     */
+    #[ORM\OneToMany(mappedBy: 'post', targetEntity: Notification::class, orphanRemoval: true)]
     private $notifications;
 
-    /**
-     * @ORM\ManyToMany(targetEntity=Tag::class, inversedBy="posts")
-     */
+    #[ORM\ManyToMany(targetEntity: Tag::class, inversedBy: 'posts')]
     private $tags;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Action::class, mappedBy="post", orphanRemoval=true)
-     */
+    #[ORM\OneToMany(mappedBy: 'post', targetEntity: Action::class, orphanRemoval: true)]
     private $actions;
 
-    /**
-     * @ORM\ManyToMany(targetEntity=User::class, inversedBy="taggedPosts")
-     */
+    #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'taggedPosts')]
     private $taggedUsers;
 
-    /**
-     * @ORM\Column(type="boolean", nullable=true)
-     */
+    #[ORM\Column(type: 'boolean', nullable: true)]
     private $featured;
 
-    /**
-     * @ORM\Column(type="boolean", nullable=true)
-     */
+    #[ORM\Column(type: 'boolean', nullable: true)]
     private $gender;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $title;
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private $title = null;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Like::class, mappedBy="post", orphanRemoval=true)
-     */
+    #[ORM\OneToMany(mappedBy: 'post', targetEntity: Like::class, orphanRemoval: true)]
     private $likes;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Message::class, mappedBy="post")
-     */
+    #[ORM\OneToMany(mappedBy: 'post', targetEntity: Message::class)]
     private $messages;
 
-    public function __construct()
+    #[Pure] public function __construct()
     {
         $this->songs = new ArrayCollection();
         $this->comments = new ArrayCollection();
@@ -254,7 +207,7 @@ class Post
     }
 
     /**
-     * @return Collection|Song[]
+     * @return Collection
      */
     public function getSongs(): Collection
     {
@@ -292,7 +245,7 @@ class Post
     }
 
     /**
-     * @return Collection|Comment[]
+     * @return Collection
      */
     public function getComments(): Collection
     {
@@ -313,7 +266,6 @@ class Post
     {
         if ($this->comments->contains($comment)) {
             $this->comments->removeElement($comment);
-            // set the owning side to null (unless already changed)
             if ($comment->getPost() === $this) {
                 $comment->setPost(null);
             }
@@ -323,7 +275,7 @@ class Post
     }
 
     /**
-     * @return Collection|Bookmark[]
+     * @return Collection
      */
     public function getBookmarks(): Collection
     {
@@ -344,7 +296,6 @@ class Post
     {
         if ($this->bookmarks->contains($bookmark)) {
             $this->bookmarks->removeElement($bookmark);
-            // set the owning side to null (unless already changed)
             if ($bookmark->getPost() === $this) {
                 $bookmark->setPost(null);
             }
@@ -354,7 +305,7 @@ class Post
     }
 
     /**
-     * @return Collection|Notification[]
+     * @return Collection
      */
     public function getNotifications(): Collection
     {
@@ -375,7 +326,6 @@ class Post
     {
         if ($this->notifications->contains($notification)) {
             $this->notifications->removeElement($notification);
-            // set the owning side to null (unless already changed)
             if ($notification->getPost() === $this) {
                 $notification->setPost(null);
             }
@@ -385,7 +335,7 @@ class Post
     }
 
     /**
-     * @return Collection|Tag[]
+     * @return Collection
      */
     public function getTags(): Collection
     {
@@ -411,7 +361,7 @@ class Post
     }
 
     /**
-     * @return Collection|Action[]
+     * @return Collection
      */
     public function getActions(): Collection
     {
@@ -432,7 +382,6 @@ class Post
     {
         if ($this->actions->contains($action)) {
             $this->actions->removeElement($action);
-            // set the owning side to null (unless already changed)
             if ($action->getPost() === $this) {
                 $action->setPost(null);
             }
@@ -442,7 +391,7 @@ class Post
     }
 
     /**
-     * @return Collection|User[]
+     * @return Collection
      */
     public function getTaggedUsers(): Collection
     {
@@ -504,7 +453,7 @@ class Post
     }
 
     /**
-     * @return Collection|Like[]
+     * @return Collection
      */
     public function getLikes(): Collection
     {
@@ -525,7 +474,6 @@ class Post
     {
         if ($this->likes->contains($like)) {
             $this->likes->removeElement($like);
-            // set the owning side to null (unless already changed)
             if ($like->getPost() === $this) {
                 $like->setPost(null);
             }
@@ -535,7 +483,7 @@ class Post
     }
 
     /**
-     * @return Collection|Message[]
+     * @return Collection
      */
     public function getMessages(): Collection
     {
@@ -556,7 +504,6 @@ class Post
     {
         if ($this->messages->contains($message)) {
             $this->messages->removeElement($message);
-            // set the owning side to null (unless already changed)
             if ($message->getPost() === $this) {
                 $message->setPost(null);
             }

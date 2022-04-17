@@ -8,62 +8,41 @@ use App\Entity\Profile;
 use App\Entity\User;
 use App\Form\RegistrationFormType;
 use App\Form\NewPasswordType;
+use App\Repository\EmailAddressRepository;
+use App\Repository\UserRepository;
 use App\Security\UserAuthenticator;
 use App\Service\Mailer;
 use App\Service\Sitemap;
 use App\Validator\Constraints\MailExists;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Csrf\TokenGenerator\TokenGeneratorInterface;
-use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
+use Symfony\Component\Security\Http\Authentication\UserAuthenticatorInterface;
 use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\NotBlank;
-use Twig\Error\LoaderError;
-use Twig\Error\RuntimeError;
-use Twig\Error\SyntaxError;
 
-/**
- * @Route(name="app_")
- */
+#[Route(name: 'app_')]
 class HomeController extends CustomAbstractController
 {
-    /**
-     * @Route("/sitemap.xml", name="sitemap", defaults={"_format"="xml"})
-     * @param Request $request
-     * @param Sitemap $sitemap
-     * @throws RuntimeError
-     * @throws SyntaxError
-     * @throws LoaderError
-     * @return Response
-     */
+    #[Route('/sitemap.xml', name: 'sitemap', defaults: ['_format'=>'xml'], methods: ['GET'])]
     public function sitemap(Request $request, Sitemap $sitemap): Response
     {
         return $sitemap->urls($request->getSchemeAndHttpHost());
     }
 
-    /**
-     * @Route("/posts/sitemap.xml", name="posts_sitemap", defaults={"_format"="xml"})
-     * @param Request $request
-     * @param Sitemap $sitemap
-     * @throws RuntimeError
-     * @throws SyntaxError
-     * @throws LoaderError
-     * @return Response
-     */
+    #[Route('/posts/sitemap.xml', name: 'posts_sitemap', defaults: ['_format'=>'xml'], methods: ['GET'])]
     public function postsSitemap(Request $request, Sitemap $sitemap): Response
     {
         return $sitemap->postsUrls($request->getSchemeAndHttpHost());
     }
 
-    /**
-     * @Route("/terms", name="terms", methods={"GET"})
-     * @return Response
-     */
+    #[Route('/terms', name: 'terms', methods: ['GET'])]
     public function terms(): Response
     {
         return $this->render('interface/home/terms.html.twig');
@@ -74,6 +53,7 @@ class HomeController extends CustomAbstractController
      * @param AuthenticationUtils $authenticationUtils
      * @return Response
      */
+    #[Route('/login', name: 'login')]
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
         if ($this->getUser()) {
@@ -92,25 +72,22 @@ class HomeController extends CustomAbstractController
         ]);
     }
 
-    /**
-     * @Route("/logout", name="logout")
-     */
+    #[Route('/logout', name: 'logout')]
     public function logout(): Response
     {
         return $this->redirectToRoute('app_home');
     }
 
-    /**
-     * @Route("/register", name="register")
-     * @param Request $request
-     * @param UserPasswordEncoderInterface $passwordEncoder
-     * @param GuardAuthenticatorHandler $guardHandler
-     * @param UserAuthenticator $authenticator
-     * @param Mailer $mailer
-     * @param TokenGeneratorInterface $tokenGenerator
-     * @return Response
-     */
-    public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder, GuardAuthenticatorHandler $guardHandler, UserAuthenticator $authenticator, Mailer $mailer, TokenGeneratorInterface $tokenGenerator): Response
+    #[Route('/register', name: 'register', methods: ['GET','POST'])]
+    public function register(
+        Request $request,
+        UserPasswordHasherInterface $userPasswordHash,
+        UserAuthenticatorInterface $userAuthenticator,
+        UserAuthenticator $authenticator,
+        Mailer $mailer,
+        TokenGeneratorInterface $tokenGenerator,
+        UserRepository $userRepo
+    ): Response
     {
         if ($this->getUser()) {
             return $this->redirectToRoute('app_home');
@@ -121,9 +98,8 @@ class HomeController extends CustomAbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
             $user->setPassword(
-                $passwordEncoder->encodePassword(
+                $userPasswordHash->hashPassword(
                     $user,
                     $form->get('password')->getData()
                 )
@@ -137,13 +113,11 @@ class HomeController extends CustomAbstractController
             $user->getProfile()->setBirthday($form->get('birthday')->getData());
             $user->getProfile()->setAvatar('avatar.jpg');
 
-            if ($form->get('invitedBy')->getData() && $this->getDoctrine()->getRepository(User::class)->findOneBy(['username' => $form->get('invitedBy')->getData()])) {
-                $user->setInvitedBy($this->getDoctrine()->getRepository(User::class)->findOneBy(['username' => $form->get('invitedBy')->getData()]));
+            if ($form->get('invitedBy')->getData() && $userRepo->findOneBy(['username' => $form->get('invitedBy')->getData()])) {
+                $user->setInvitedBy($userRepo->findOneBy(['username' => $form->get('invitedBy')->getData()]));
             }
 
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($user);
-            $em->flush();
+            $userRepo->add($user);
 
             $this->addFlash('success', $this->trans('flash.registration.successful.completed'));
 
@@ -153,11 +127,10 @@ class HomeController extends CustomAbstractController
                 ->setVariables(['user' => $user])
                 ->notify();
 
-            return $guardHandler->authenticateUserAndHandleSuccess(
+            return $userAuthenticator->authenticateUser(
                 $user,
-                $request,
                 $authenticator,
-                'main' // firewall name in security.yaml
+                $request
             );
         }
 
@@ -166,14 +139,8 @@ class HomeController extends CustomAbstractController
         ]);
     }
 
-    /**
-     * @Route("/accountRecovery", name="account_recovery")
-     * @param Request $request
-     * @param Mailer $mailer
-     * @param TokenGeneratorInterface $tokenGenerator
-     * @return Response
-     */
-    public function accountRecovery(Request $request, Mailer $mailer, TokenGeneratorInterface $tokenGenerator): Response
+    #[Route('/accountRecovery', name: 'account_recovery', methods: ['GET', 'POST'])]
+    public function accountRecovery(Request $request, Mailer $mailer, TokenGeneratorInterface $tokenGenerator, UserRepository $userRepo): Response
     {
         if ($this->getUser()) {
             return $this->redirectToRoute('app_home');
@@ -188,12 +155,10 @@ class HomeController extends CustomAbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $user = $em->getRepository(User::class)->findOneBy(['email' => $form->getData()['email']]);
-
+            $user = $userRepo->findOneBy(['email' => $form->getData()['email']]);
             $user->setToken($tokenGenerator->generateToken());
             $user->setPasswordRequestedAt(new \Datetime());
-            $em->flush();
+            $userRepo->flush();
 
             $mailer ->setTo($form->getData()['email'])
                 ->setSubject($this->trans('mailer.shovdanyist.account.recovery'))
@@ -222,15 +187,8 @@ class HomeController extends CustomAbstractController
         return !($interval > $daySeconds);
     }
 
-    /**
-     * @Route("/newPassword/{id}/{token}", name="new_password")
-     * @param User $user
-     * @param $token
-     * @param Request $request
-     * @param UserPasswordEncoderInterface $encoder
-     * @return Response
-     */
-    public function newPassword(User $user, $token, Request $request, UserPasswordEncoderInterface $encoder): Response
+    #[Route('/newPassword/{id}/{token}', name: 'new_password', methods: ['GET', 'POST'])]
+    public function newPassword(User $user, $token, Request $request, UserPasswordHasherInterface $userPasswordHash, UserRepository $userRepo): Response
     {
         if ($this->getUser()) {
             return $this->redirectToRoute('app_home');
@@ -243,15 +201,13 @@ class HomeController extends CustomAbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $password = $encoder->encodePassword($user, $user->getPassword());
-            $user->setPassword($password);
+            $password = $userPasswordHash->hashPassword($user, $user->getPassword());
 
+            $user->setPassword($password);
             $user->setToken(null);
             $user->setPasswordRequestedAt(null);
 
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($user);
-            $em->flush();
+            $userRepo->flush();
 
             $this->addFlash('success', $this->trans('flash.password.successful.recovered'));
             return $this->redirectToRoute('app_login');
@@ -262,28 +218,23 @@ class HomeController extends CustomAbstractController
         ]);
     }
 
-    /**
-     * @Route("/emailValidation/{token}", name="email_validation")
-     * @param $token
-     * @return Response
-     */
-    public function emailValidation($token): Response
+    #[Route('/emailValidation/{token}', name: 'email_validation', methods: ['GET'])]
+    public function emailValidation($token, UserRepository $userRepo, EmailAddressRepository $emailAddressRepo, EntityManagerInterface $em): Response
     {
-        $user = $this->getDoctrine()->getRepository(User::class)->findOneBy(['token' => $token]);
+        $user = $userRepo->findOneBy(['token' => $token]);
 
         if ($user && $user->getStatus() !== false) {
             $user->setToken(null);
             $user->setStatus(true);
             $user->setConfirmedEmail($user->getEmail());
-            $em = $this->getDoctrine()->getManager();
 
-            if (!$this->getDoctrine()->getRepository(EmailAddress::class)->findOneBy(['address' => $user->getEmail()])) {
+            if (!$emailAddressRepo->findOneBy(['address' => $user->getEmail()])) {
                 $email = new EmailAddress();
                 $email->setGender($user->getProfile()->getGender());
                 $email->setAddress($user->getEmail());
                 $email->setStatus($user->getStatus());
                 $email->setBirthday($user->getProfile()->getBirthday());
-                $em->persist($email);
+                $emailAddressRepo->persist($email);
             }
 
             $em->flush();

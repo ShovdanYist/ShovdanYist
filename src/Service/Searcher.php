@@ -18,26 +18,17 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class Searcher
 {
-    private $tagRepo;
-    private $userRepo;
-    private $songRepo;
-    private $postRepo;
-    private $requestStack;
-    private $formFactory;
-    private $keyword;
-    private $translator;
-    private $compiler;
-
-    public function __construct(TagRepository $tagRepo,UserRepository $userRepo, SongRepository $songRepo, PostRepository $postRepo, RequestStack $requestStack, FormFactoryInterface $formFactory, TranslatorInterface $translator, Compiler $compiler) {
-        $this->tagRepo = $tagRepo;
-        $this->userRepo = $userRepo;
-        $this->songRepo = $songRepo;
-        $this->postRepo = $postRepo;
-        $this->requestStack = $requestStack;
-        $this->formFactory = $formFactory;
-        $this->translator = $translator;
-        $this->compiler = $compiler;
-    }
+    public function __construct(
+        private TagRepository $tagRepo,
+        private UserRepository $userRepo,
+        private SongRepository $songRepo,
+        private PostRepository $postRepo,
+        private RequestStack $requestStack,
+        private FormFactoryInterface $formFactory,
+        private TranslatorInterface $translator,
+        private Compiler $compiler,
+        private ?string $keyword = null
+    ) {}
 
     public function searchForm($keyword): FormInterface
     {

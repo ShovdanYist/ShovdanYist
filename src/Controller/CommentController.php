@@ -5,35 +5,30 @@ namespace App\Controller;
 use App\CustomAbstracts\CustomAbstractController;
 use App\Entity\Action;
 use App\Entity\Comment;
-use App\Entity\Song;
 use App\Entity\Notification;
-use App\Entity\Post;
 use App\Form\CommentType;
+use App\Repository\ActionRepository;
+use App\Repository\CommentRepository;
+use App\Repository\NotificationRepository;
+use App\Repository\PostRepository;
+use App\Repository\SongRepository;
 use App\Repository\UserRepository;
 use App\Service\Defender;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+#[Security('is_granted("ROLE_USER")')]
 class CommentController extends CustomAbstractController
 {
-    /**
-     * @Route("/comment/new/{type}/{id}", name="comment_new", methods={"POST"})
-     * @Security("is_granted('ROLE_USER')")
-     * @param Request $request
-     * @param $type
-     * @param $id
-     * @param UserRepository $userRepo
-     * @return Response
-     */
-    public function newComment(Request $request, $type, $id, UserRepository $userRepo): Response
+    #[Route('/comment/new/{type}/{id}', name: 'comment_new', methods: ['POST'])]
+    public function newComment(Request $request, $type, $id, UserRepository $userRepo, NotificationRepository $notificationRepository, CommentRepository $commentRepository, SongRepository $songRepository, PostRepository $postRepository): Response
     {
         if ($type == 'song') {
-            $entity = $this->getDoctrine()->getRepository(Song::class)->findOneBy(['id' => $id]);
+            $entity = $songRepository->findOneBy(['id' => $id]);
         } else {
-            $entity = $this->getDoctrine()->getRepository(Post::class)->findOneBy(['id' => $id]);
+            $entity = $postRepository->findOneBy(['id' => $id]);
         }
 
         $comment = new Comment();
@@ -44,12 +39,11 @@ class CommentController extends CustomAbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
 
             if ($form->get('replyTo')->getData()) {
                 $receiver = $userRepo->findOneBy(['username' => $form->get('replyTo')->getData()]);
-                $replyingComment = $this->getDoctrine()->getRepository(Comment::class)->findOneBy(['id' => $form->get('replyFor')->getData()]);
-                $existNotify = $this->getDoctrine()->getRepository(Notification::class)->findOneBy(['type' => 'comment_reply', $type => $entity, 'receiver' => $receiver]);
+                $replyingComment = $commentRepository->findOneBy(['id' => $form->get('replyFor')->getData()]);
+                $existNotify = $notificationRepository->findOneBy(['type' => 'comment_reply', $type => $entity, 'receiver' => $receiver]);
 
                 if ($existNotify) {
                     if ($existNotify->getSeen()) {
@@ -74,7 +68,7 @@ class CommentController extends CustomAbstractController
                     } else {
                         $notification->setPost($entity);
                     }
-                    $em->persist($notification);
+                    $notificationRepository->persist($notification);
                 }
 
                 $comment->setReplyTo($receiver);
@@ -86,7 +80,7 @@ class CommentController extends CustomAbstractController
                 }
             }
 
-            $existNotify = $this->getDoctrine()->getRepository(Notification::class)->findOneBy(['type' => 'post_comment', 'post' => $comment->getPost()]);
+            $existNotify = $notificationRepository->findOneBy(['type' => 'post_comment', 'post' => $comment->getPost()]);
 
             if ($type == 'post' && $existNotify && $this->user() !== $comment->getPost()->getAuthor() && $form->get('replyTo')->getData() !== $comment->getPost()->getAuthor()->getUsername()) {
                 if ($existNotify->getSeen()) {
@@ -106,11 +100,10 @@ class CommentController extends CustomAbstractController
                 $notify->setPost($comment->getPost());
                 $notify->setSender($this->user());
                 $notify->setType('post_comment');
-                $em->persist($notify);
+                $notificationRepository->persist($notify);
             }
 
-            $em->persist($comment);
-            $em->flush();
+            $commentRepository->add($comment);
 
             $this->addFlash('success', $this->trans('flash.comment.added'));
 
@@ -138,19 +131,10 @@ class CommentController extends CustomAbstractController
         }
     }
 
-    /**
-     * @Route("/comment/delete/{id}", name="delete_comment")
-     * @Security("is_granted('ROLE_USER')")
-     * @param Request $request
-     * @param Comment $comment
-     * @param Defender $defender
-     * @return RedirectResponse
-     */
-    public function deleteComment(Request $request, Comment $comment, Defender $defender): Response
+    #[Route('/comment/delete/{id}', name: 'delete_comment', methods: ['POST'])]
+    public function deleteComment(Request $request, Comment $comment, Defender $defender, ActionRepository $actionRepository, CommentRepository $commentRepository): Response
     {
         if ($this->isCsrfTokenValid('delete'.$comment->getId(), $request->request->get('_token')) && $defender->rightToDeleteComment($this->user(),$comment)) {
-
-            $em = $this->getDoctrine()->getManager();
 
             if ($comment->getPost() && $comment->getPost()->getAuthor() !== $this->user() && $comment->getAuthor() !== $this->user() || $comment->getSong() && $comment->getSong()->getAuthor() !== $this->user() && $comment->getAuthor() !== $this->user()) {
                 $action = new Action();
@@ -165,11 +149,10 @@ class CommentController extends CustomAbstractController
                     $action->setPost($comment->getPost());
                 }
 
-                $em->persist($action);
+                $actionRepository->persist($action);
             }
 
-            $em->remove($comment);
-            $em->flush();
+            $commentRepository->remove($comment);
 
             $this->addFlash('success', $this->trans('flash.comment.deleted'));
         } else {

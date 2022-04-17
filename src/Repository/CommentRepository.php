@@ -4,7 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Comment;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * @method Comment|null find($id, $lockMode = null, $lockVersion = null)
@@ -17,6 +17,32 @@ class CommentRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Comment::class);
+    }
+
+    public function flush(): void
+    {
+        $this->_em->flush();
+    }
+
+    public function persist(Comment $entity): void
+    {
+        $this->_em->persist($entity);
+    }
+
+    public function add(Comment $entity, bool $flush = true): void
+    {
+        $this->_em->persist($entity);
+        if ($flush) {
+            $this->_em->flush();
+        }
+    }
+
+    public function remove(Comment $entity, bool $flush = true): void
+    {
+        $this->_em->remove($entity);
+        if ($flush) {
+            $this->_em->flush();
+        }
     }
 
     public function getNoParentComments($criteria, $orderBy = ['id' => 'DESC'], $limit = null, $offset = null)

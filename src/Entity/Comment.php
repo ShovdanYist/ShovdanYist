@@ -2,96 +2,67 @@
 
 namespace App\Entity;
 
+use App\Repository\CommentRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use JetBrains\PhpStorm\Pure;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\CommentRepository")
- * @ORM\HasLifecycleCallbacks()
- */
+#[ORM\Entity(repositoryClass: CommentRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 class Comment
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
-    /**
-     * @ORM\Column(type="text")
-     */
+    #[ORM\Column(type: 'text')]
     private $message;
 
-    /**
-     * @ORM\Column(type="datetime")
-     */
+    #[ORM\Column(type: 'datetime')]
     private $publishedAt;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Song::class, inversedBy="comments")
-     */
+    #[ORM\ManyToOne(targetEntity: Song::class, inversedBy: 'comments')]
     private $song;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="comments")
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'comments')]
+    #[ORM\JoinColumn(nullable: false)]
     private $author;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="replies")
-     */
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'replies')]
     private $replyTo;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Notification", mappedBy="comment", orphanRemoval=true)
-     */
+    #[ORM\OneToMany(mappedBy: 'comment', targetEntity: Notification::class, orphanRemoval: true)]
     private $notifications;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Post::class, inversedBy="comments")
-     */
+    #[ORM\ManyToOne(targetEntity: Post::class, inversedBy: 'comments')]
     private $post;
 
-    /**
-     * @ORM\Column(type="boolean")
-     */
+    #[ORM\Column(type: 'boolean')]
     private $status;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Comment::class, inversedBy="children")
-     */
+    #[ORM\ManyToOne(targetEntity: Comment::class, inversedBy: 'children')]
     private $parent;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="parent", orphanRemoval=true)
-     */
+    #[ORM\OneToMany(mappedBy: 'parent', targetEntity: Comment::class, orphanRemoval: true)]
     private $children;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Like::class, mappedBy="comment", orphanRemoval=true)
-     */
+    #[ORM\OneToMany(mappedBy: 'comment', targetEntity: Like::class, orphanRemoval: true)]
     private $likes;
 
-    /**
-     * @ORM\OneToOne(targetEntity=Report::class, mappedBy="comment", cascade={"persist", "remove"})
-     */
+    #[ORM\OneToOne(mappedBy: 'comment', targetEntity: Report::class, cascade: ['persist', 'remove'])]
     private $report;
 
-    public function __construct()
+    #[Pure] public function __construct()
     {
         $this->notifications = new ArrayCollection();
         $this->children = new ArrayCollection();
         $this->likes = new ArrayCollection();
     }
 
-    /**
-     * Automatic initialisation of publication date
-     * @ORM\PrePersist()
-     */
-    public function initializePrePersist()
+    #[ORM\PrePersist]
+    public function initialize()
     {
         $this->status = true;
         $this->publishedAt = new \DateTime('now');
@@ -184,7 +155,6 @@ class Comment
     {
         if ($this->notifications->contains($notification)) {
             $this->notifications->removeElement($notification);
-            // set the owning side to null (unless already changed)
             if ($notification->getComment() === $this) {
                 $notification->setComment(null);
             }
@@ -251,7 +221,6 @@ class Comment
     {
         if ($this->children->contains($children)) {
             $this->children->removeElement($children);
-            // set the owning side to null (unless already changed)
             if ($children->getParent() === $this) {
                 $children->setParent(null);
             }
@@ -282,7 +251,6 @@ class Comment
     {
         if ($this->likes->contains($like)) {
             $this->likes->removeElement($like);
-            // set the owning side to null (unless already changed)
             if ($like->getComment() === $this) {
                 $like->setComment(null);
             }

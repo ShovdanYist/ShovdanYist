@@ -11,38 +11,26 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+#[Security('is_granted("ROLE_OWNER")')]
 class ActivityController extends AbstractController
 {
-    /**
-     * @Route("/activities", name="activities_index", methods={"GET"})
-     * @Security("is_granted('ROLE_OWNER')")
-     * @param ActivityRepository $activityRepository
-     * @return Response
-     */
-    public function index(ActivityRepository $activityRepository): Response
+    #[Route('/activities', name: 'activities_index', methods: ['GET'])]
+    public function index(ActivityRepository $activityRepo): Response
     {
         return $this->render('interface/activity/index.html.twig', [
-            'activities' => $activityRepository->findAll(),
+            'activities' => $activityRepo->findAll(),
         ]);
     }
 
-    /**
-     * @Route("/activity/new", name="activity_new", methods={"GET","POST"})
-     * @Security("is_granted('ROLE_OWNER')")
-     * @param Request $request
-     * @return Response
-     */
-    public function new(Request $request): Response
+    #[Route('/activity/new', name: 'activity_new', methods: ['GET','POST'])]
+    public function new(Request $request, ActivityRepository $activityRepo): Response
     {
         $activity = new Activity();
         $form = $this->createForm(ActivityType::class, $activity);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($activity);
-            $entityManager->flush();
-
+            $activityRepo->add($activity);
             return $this->redirectToRoute('activities_index');
         }
 
@@ -52,21 +40,14 @@ class ActivityController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/activity/{id}/edit", name="activity_edit", methods={"GET","POST"})
-     * @Security("is_granted('ROLE_OWNER')")
-     * @param Request $request
-     * @param Activity $activity
-     * @return Response
-     */
-    public function edit(Request $request, Activity $activity): Response
+    #[Route('/activity/{id}/edit', name: 'activity_edit', methods: ['GET','POST'])]
+    public function edit(Request $request, Activity $activity, ActivityRepository $activityRepo): Response
     {
         $form = $this->createForm(ActivityType::class, $activity);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
-
+            $activityRepo->flush();
             return $this->redirectToRoute('activities_index');
         }
 
@@ -76,19 +57,11 @@ class ActivityController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/activity/{id}", name="activity_delete", methods={"DELETE"})
-     * @Security("is_granted('ROLE_OWNER')")
-     * @param Request $request
-     * @param Activity $activity
-     * @return Response
-     */
-    public function delete(Request $request, Activity $activity): Response
+    #[Route('/activity/{id}', name: 'activity_delete', methods: ['POST'])]
+    public function delete(Request $request, Activity $activity, ActivityRepository $activityRepo): Response
     {
         if ($this->isCsrfTokenValid('delete'.$activity->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($activity);
-            $entityManager->flush();
+            $activityRepo->remove($activity);
         }
 
         return $this->redirectToRoute('activities_index');

@@ -15,32 +15,26 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class Defender
 {
-    private $accessDecisionManager;
-    private $translator;
-    private $usersRepo;
-    private $user;
-    private $postRepo;
-    private $roles = [
-        'ROLE_POST_COMMENT_REMOVER',
-        'ROLE_POST_MODERATOR',
-        'ROLE_SONG_AUTHOR',
-        'ROLE_SONG_EDITOR',
-        'ROLE_SONG_COMMENT_REMOVER',
-        'ROLE_SONG_MODERATOR',
-        'ROLE_PEOPLE_MODERATOR',
-        'ROLE_USER_RIGHTS',
-        'ROLE_USER_BAN',
-        'ROLE_USER_ANALYST',
-        'ROLE_USER_ACTIONS'
-    ];
-
-    public function __construct(Security $security, UserRepository $usersRepo, PostRepository $postRepo, AccessDecisionManagerInterface $accessDecisionManager, TranslatorInterface $translator) {
-        $this->user = $security->getUser();
-        $this->accessDecisionManager = $accessDecisionManager;
-        $this->translator = $translator;
-        $this->usersRepo = $usersRepo;
-        $this->postRepo = $postRepo;
-    }
+    public function __construct(
+        private Security $security,
+        private UserRepository $usersRepo,
+        private PostRepository $postRepo,
+        private AccessDecisionManagerInterface $accessDecisionManager,
+        private TranslatorInterface $translator,
+        private array $roles = [
+            'ROLE_POST_COMMENT_REMOVER',
+            'ROLE_POST_MODERATOR',
+            'ROLE_SONG_AUTHOR',
+            'ROLE_SONG_EDITOR',
+            'ROLE_SONG_COMMENT_REMOVER',
+            'ROLE_SONG_MODERATOR',
+            'ROLE_PEOPLE_MODERATOR',
+            'ROLE_USER_RIGHTS',
+            'ROLE_USER_BAN',
+            'ROLE_USER_ANALYST',
+            'ROLE_USER_ACTIONS'
+        ]
+    ){}
 
     public function getRoles(): array
     {
@@ -57,7 +51,7 @@ class Defender
         if ($user === null) {
             ($role === 'ROLE_GUEST') ? $granted = true : $granted = false;
         } else {
-            $token = new UsernamePasswordToken($user, 'none', 'none', $user->getRoles());
+            $token = new UsernamePasswordToken($user, null, $user->getRoles());
 
             if ($this->accessDecisionManager->decide($token, [$role], $object)) {
                 $granted = true;
@@ -135,9 +129,9 @@ class Defender
     {
         $right = false;
 
-        if ($song->getAuthor() === $this->user && $song->getStatus() === null) {
+        if ($song->getAuthor() === $this->security->getUser() && $song->getStatus() === null) {
             $right = true;
-        } elseif ($this->isGranted($this->user,'ROLE_SONG_MODERATOR') || $this->isGranted($this->user,'ROLE_SONG_EDITOR')) {
+        } elseif ($this->isGranted($this->security->getUser(),'ROLE_SONG_MODERATOR') || $this->isGranted($this->security->getUser(),'ROLE_SONG_EDITOR')) {
             $right = true;
         }
 

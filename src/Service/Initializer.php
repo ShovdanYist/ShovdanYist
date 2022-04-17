@@ -3,7 +3,6 @@
 namespace App\Service;
 
 use App\Entity\Action;
-use App\Entity\Notification;
 use App\Entity\Post;
 use App\Entity\Person;
 use App\Entity\Song;
@@ -15,35 +14,19 @@ use Cocur\Slugify\SlugifyInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
-use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\Security\Core\Security;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 class Initializer
-
 {
-    private $notifications;
-    private $translator;
-    private $compiler;
-    private $security;
-    private $defender;
-    private $slugify;
-    private $users;
-    private $flash;
-    private $em;
-
-    public function __construct(TranslatorInterface $translator, Security $security, UserRepository $users, NotificationRepository $notifications, Defender $defender, Compiler $compiler, SlugifyInterface $slugify, EntityManagerInterface $em, FlashBagInterface $flash)
-    {
-        $this->notifications = $notifications;
-        $this->translator = $translator;
-        $this->security = $security;
-        $this->defender = $defender;
-        $this->compiler = $compiler;
-        $this->slugify = $slugify;
-        $this->flash = $flash;
-        $this->users = $users;
-        $this->em = $em;
-    }
+    public function __construct(
+        private NotificationRepository $notifications,
+        private Security $security,
+        private Defender $defender,
+        private Compiler $compiler,
+        private SlugifyInterface $slugify,
+        private UserRepository $users,
+        private EntityManagerInterface $em
+    ){}
 
     public function initializeSongShow(Song $song)
     {
@@ -92,7 +75,6 @@ class Initializer
         }
 
         if ($this->defender->hasOnlyAuthorRightsInSongs($this->getUser()) && $form->get('sendForModeration')->getData()) {
-            $this->flash->add('success', $this->translator->trans('song.sent.for.moderation'));
             $song->setPublicationDate(new \DateTime('now'));
             $song->setStatus(0);
         }
@@ -183,12 +165,6 @@ class Initializer
     {
         $userRepo = $this->users;
 
-        if ($this->defender->isGranted($this->getUser(),'ROLE_USER')) {
-            $shareUsers = $userRepo->findShareUsers(['user' => $this->getUser(), 'type' => 'following']);
-        } else {
-            $shareUsers = null;
-        }
-
         try {
             $followers = $userRepo->followsCount(['user' => $user, 'type' => 'followers', 'accepted' => true]);
         } catch (NoResultException|NonUniqueResultException $e) {
@@ -201,7 +177,6 @@ class Initializer
         }
 
         return [
-            'sharedUsers' => $shareUsers,
             'followers' => $followers,
             'following' => $following
         ];

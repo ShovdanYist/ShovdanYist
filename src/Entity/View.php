@@ -5,38 +5,26 @@ namespace App\Entity;
 use App\Repository\ViewRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass=ViewRepository::class)
- */
+#[ORM\Entity(repositoryClass: ViewRepository::class)]
 class View
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
-    /**
-     * @ORM\Column(type="datetime")
-     */
+    #[ORM\Column(type: 'datetime')]
     private $viewedAt;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="views")
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'views')]
+    #[ORM\JoinColumn(nullable: false)]
     private $user;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Song::class, inversedBy="views")
-     */
+    #[ORM\ManyToOne(targetEntity: Song::class, inversedBy: 'views')]
     private $song;
 
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private $quantity;
+    #[ORM\Column(type: 'integer')]
+    private ?int $quantity;
 
     public function getId(): ?int
     {

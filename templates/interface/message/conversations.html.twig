@@ -21,9 +21,13 @@
             </div>
         {% endif %}
 
-        <div class="md-conversations-list">
+        {% if users %}
+
+            <div class="md-conversations-list">
 
             {% for user in users %}
+
+                {% set lastMessage = lastMessage(user) %}
 
                 <div class="md-conversation-line">
                     <a href="{{ path('message_conversation', {'username':user.username}) }}">
@@ -43,31 +47,31 @@
                                 {% endif %}
                             </div>
 
-                            <div class="message{% if lastMessage(user).post or lastMessage(user).image %} message-post-preview{% endif %}{% if lastMessage(user).profile %} message-profile-preview{% endif %}">
+                            <div class="message{% if lastMessage.post or lastMessage.image %} message-post-preview{% endif %}{% if lastMessage.profile %} message-profile-preview{% endif %}">
                                 <div class="text">
                                     <span>
-                                        {% if lastMessage(user).sender == app.user %}
+                                        {% if lastMessage.sender == app.user %}
                                             Вы:
                                         {% endif %}
 
-                                        {% if lastMessage(user).song %}
+                                        {% if lastMessage.song %}
                                             <i class="fas fa-play-circle"></i>
-                                            {{ lastMessage(user).song.vocalist.fullName ~ ' - ' ~ lastMessage(user).song.title }}
-                                        {% elseif lastMessage(user).post %}
-                                            <div class="back-picture bp-24" style="background-image: url('{% if lastMessage(user).post.image %}{{ vich_uploader_asset(lastMessage(user).post) | imagine_filter('thumbnail') }}{% else %}{{ asset('assets/images/question.jpg') }}{% endif %}'); border-radius: 3px; {% if lastMessage(user).sender != app.user %}margin-left: unset !important;{% endif %}">
+                                            {{ lastMessage.song.vocalist.fullName ~ ' - ' ~ lastMessage.song.title }}
+                                        {% elseif lastMessage.post %}
+                                            <div class="back-picture bp-24" style="background-image: url('{% if lastMessage.post.image %}{{ vich_uploader_asset(lastMessage.post) | imagine_filter('thumbnail') }}{% else %}{{ asset('assets/images/question.jpg') }}{% endif %}'); border-radius: 3px; {% if lastMessage.sender != app.user %}margin-left: unset !important;{% endif %}">
                                             </div>
                                             {{ 'post' | trans }}
-                                        {% elseif lastMessage(user).profile %}
-                                            <div class="back-picture bp-24" style="background-image: url('{% if lastMessage(user).profile.avatar != 'avatar.jpg' %}{{ vich_uploader_asset(lastMessage(user).profile) | imagine_filter('thumbnail') }}{% else %}{{ asset('assets/images/avatar.jpg') | imagine_filter('thumbnail') }}{% endif %}'); border-radius: 3px; {% if lastMessage(user).sender != app.user %}margin-left: unset !important;{% endif %}">
+                                        {% elseif lastMessage.profile %}
+                                            <div class="back-picture bp-24" style="background-image: url('{% if lastMessage.profile.avatar != 'avatar.jpg' %}{{ vich_uploader_asset(lastMessage.profile) | imagine_filter('thumbnail') }}{% else %}{{ asset('assets/images/avatar.jpg') | imagine_filter('thumbnail') }}{% endif %}'); border-radius: 3px; {% if lastMessage.sender != app.user %}margin-left: unset !important;{% endif %}">
                                             </div>
-                                            {{ lastMessage(user).profile.user.username }}
+                                            {{ lastMessage.profile.user.username }}
                                         {% else %}
-                                            {% if lastMessage(user).image %}
-                                                <div class="back-picture bp-24" style="background-image: url('{% if lastMessage(user).image %}{{ vich_uploader_asset(lastMessage(user)) | imagine_filter('thumbnail') }}{% else %}{{ asset('assets/images/question.jpg') }}{% endif %}'); border-radius: 3px; {% if lastMessage(user).sender != app.user %}margin-left: unset !important;{% endif %}">
+                                            {% if lastMessage.image %}
+                                                <div class="back-picture bp-24" style="background-image: url('{% if lastMessage.image %}{{ vich_uploader_asset(lastMessage) | imagine_filter('thumbnail') }}{% else %}{{ asset('assets/images/question.jpg') }}{% endif %}'); border-radius: 3px; {% if lastMessage.sender != app.user %}margin-left: unset !important;{% endif %}">
                                                 </div>
                                             {% endif %}
-                                            {% if lastMessage(user).content %}
-                                                {{ lastMessage(user).content }}
+                                            {% if lastMessage.content %}
+                                                {{ lastMessage.content }}
                                             {% else %}
                                                 {{ 'photo' | trans }}
                                             {% endif %}
@@ -76,13 +80,13 @@
                                 </div>
                                 <div class="time text-muted">
                                     <small>
-                                        {% if ("now" | date('d.m.y')) == (lastMessage(user).sentAt ? lastMessage(user).sentAt | date('d.m.y')) %}
-                                            {{ lastMessage(user).sentAt ? lastMessage(user).sentAt | date('G:i') }}
-                                        {% elseif ("now" | date('Y')) == (lastMessage(user).sentAt ? lastMessage(user).sentAt | date('Y')) %}
-                                            {{ lastMessage(user).sentAt ? lastMessage(user).sentAt | date('d') }}
-                                            {{ lastMessage(user).sentAt ? lastMessage(user).sentAt | date('M') | trans | lower }}
+                                        {% if ("now" | date('d.m.y')) == (lastMessage.sentAt ? lastMessage.sentAt | date('d.m.y')) %}
+                                            {{ lastMessage.sentAt ? lastMessage.sentAt | date('G:i') }}
+                                        {% elseif ("now" | date('Y')) == (lastMessage.sentAt ? lastMessage.sentAt | date('Y')) %}
+                                            {{ lastMessage.sentAt ? lastMessage.sentAt | date('d') }}
+                                            {{ lastMessage.sentAt ? lastMessage.sentAt | date('M') | trans | lower }}
                                         {% else %}
-                                            {{ lastMessage(user).sentAt ? lastMessage(user).sentAt | date('d.m.y') }}
+                                            {{ lastMessage.sentAt ? lastMessage.sentAt | date('d.m.y') }}
                                         {% endif %}
                                     </small>
                                 </div>
@@ -142,16 +146,22 @@
                     </div>
                 </div>
 
-            {% else %}
+            {% endfor %}
 
+            </div>
+
+        {% endif %}
+
+        {% if not users %}
+
+            <div class="md-content-padding md-mobile-padding">
                 <div class="not-have-message not-have-message-center">
                     <i class="far fa-comment" style="margin-right: 3px"></i>
                     {{ 'you.have.not.conversations' | trans }}
                 </div>
+            </div>
 
-            {% endfor %}
-
-        </div>
+        {% endif %}
 
     </div>
 

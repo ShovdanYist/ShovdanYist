@@ -19,6 +19,32 @@ class ViewRepository extends ServiceEntityRepository
         parent::__construct($registry, View::class);
     }
 
+    public function flush(): void
+    {
+        $this->_em->flush();
+    }
+
+    public function persist(View $entity): void
+    {
+        $this->_em->persist($entity);
+    }
+
+    public function add(View $entity, bool $flush = true): void
+    {
+        $this->_em->persist($entity);
+        if ($flush) {
+            $this->_em->flush();
+        }
+    }
+
+    public function remove(View $entity, bool $flush = true): void
+    {
+        $this->_em->remove($entity);
+        if ($flush) {
+            $this->_em->flush();
+        }
+    }
+
     // /**
     //  * @return View[] Returns an array of View objects
     //  */

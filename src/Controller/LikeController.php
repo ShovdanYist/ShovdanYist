@@ -8,21 +8,18 @@ use App\Entity\Like;
 use App\Entity\Notification;
 use App\Entity\Post;
 use App\Entity\User;
+use App\Repository\LikeRepository;
+use App\Repository\NotificationRepository;
 use App\Service\Paginator;
+use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+#[Route(methods: ['GET'])]
 class LikeController extends CustomAbstractController
 {
-    /**
-     * @Route("/post/{id}/likes/{page<\d+>?1}", name="post_likes", methods={"GET"})
-     * @param Post $post
-     * @param $page
-     * @param Paginator $paginator
-     * @return Response
-     */
+    #[Route('/post/{id}/likes/{page<\d+>?1}', name: 'post_likes')]
     public function postLikes(Post $post, $page, Paginator $paginator): Response
     {
         $paginator
@@ -42,13 +39,7 @@ class LikeController extends CustomAbstractController
         ]);
     }
 
-    /**
-     * @Route("/comment/{id}/likes/{page<\d+>?1}", name="comment_likes", methods={"GET"})
-     * @param Comment $comment
-     * @param $page
-     * @param Paginator $paginator
-     * @return Response
-     */
+    #[Route('/comment/{id}/likes/{page<\d+>?1}', name: 'comment_likes')]
     public function commentLikes(Comment $comment, $page, Paginator $paginator): Response
     {
         $paginator
@@ -68,21 +59,16 @@ class LikeController extends CustomAbstractController
         ]);
     }
 
-    /**
-     * @Route("/postLike/{id}", name="post_like", methods={"POST", "GET"})
-     * @Security("is_granted('ROLE_USER')")
-     * @param Post $post
-     * @return JsonResponse
-     */
-    public function postLike(Post $post): Response
+    #[Route('/postLike/{id}', name: 'post_like')]
+    #[Security('is_granted("ROLE_USER")')]
+    public function postLike(Post $post, LikeRepository $likeRepo, NotificationRepository $notificationRepo, EntityManagerInterface $em): Response
     {
-        $like = $this->getDoctrine()->getRepository(Like::class)->findOneBy(['user' => $this->user(), 'post' => $post]);
-        $em = $this->getDoctrine()->getManager();
+        $like = $likeRepo->findOneBy(['user' => $this->user(), 'post' => $post]);
 
         if ($like) {
-            $notification = $this->getDoctrine()->getRepository(Notification::class)->findOneBy(['post' => $post, 'type' => 'post_like', 'sender' => $this->user()]);
+            $notification = $notificationRepo->findOneBy(['post' => $post, 'type' => 'post_like', 'sender' => $this->user()]);
             if ($notification) {
-                $em->remove($notification);
+                $notificationRepo->remove($notification);
             }
 
             $this->user()->removeLike($like);
@@ -91,11 +77,11 @@ class LikeController extends CustomAbstractController
             $like = new Like();
             $like->setUser($this->user());
             $like->setPost($post);
-            $em->persist($like);
+            $likeRepo->persist($like);
             $response = ['status' => 'added'];
 
             if ($post->getAuthor() !== $this->user()) {
-                $existNotify = $this->getDoctrine()->getRepository(Notification::class)->findOneBy(['post' => $post, 'type' => 'post_like']);
+                $existNotify = $notificationRepo->findOneBy(['post' => $post, 'type' => 'post_like']);
 
                 if ($existNotify) {
                     if ($existNotify->getSeen()) {
@@ -113,7 +99,7 @@ class LikeController extends CustomAbstractController
                     $notification->setPost($post);
                     $notification->setQuantity(1);
                     $notification->setSender($this->user());
-                    $em->persist($notification);
+                    $notificationRepo->persist($notification);
                 }
             }
         }
@@ -125,21 +111,16 @@ class LikeController extends CustomAbstractController
         ]);
     }
 
-    /**
-     * @Route("/commentLike/{id}", name="comment_like", methods={"POST", "GET"})
-     * @Security("is_granted('ROLE_USER')")
-     * @param Comment $comment
-     * @return JsonResponse
-     */
-    public function commentLike(Comment $comment): Response
+    #[Route('/commentLike/{id}', name: 'comment_like')]
+    #[Security('is_granted("ROLE_USER")')]
+    public function commentLike(Comment $comment, LikeRepository $likeRepo, NotificationRepository $notificationRepo, EntityManagerInterface $em): Response
     {
-        $like = $this->getDoctrine()->getRepository(Like::class)->findOneBy(['user' => $this->user(), 'comment' => $comment]);
-        $em = $this->getDoctrine()->getManager();
+        $like = $likeRepo->findOneBy(['user' => $this->user(), 'comment' => $comment]);
 
         if ($like) {
-            $notification = $this->getDoctrine()->getRepository(Notification::class)->findOneBy(['comment' => $comment, 'type' => 'comment_like', 'sender' => $this->user()]);
+            $notification = $notificationRepo->findOneBy(['comment' => $comment, 'type' => 'comment_like', 'sender' => $this->user()]);
             if ($notification) {
-                $em->remove($notification);
+                $notificationRepo->remove($notification);
             }
 
             $this->user()->removeLike($like);
@@ -148,11 +129,11 @@ class LikeController extends CustomAbstractController
             $like = new Like();
             $like->setUser($this->user());
             $like->setComment($comment);
-            $em->persist($like);
+            $likeRepo->persist($like);
             $response = ['status' => 'added'];
 
             if ($comment->getAuthor() !== $this->user()) {
-                $existNotify = $this->getDoctrine()->getRepository(Notification::class)->findOneBy(['comment' => $comment, 'type' => 'comment_like']);
+                $existNotify = $notificationRepo->findOneBy(['comment' => $comment, 'type' => 'comment_like']);
 
                 if ($existNotify) {
                     if ($existNotify->getSeen()) {
@@ -175,7 +156,7 @@ class LikeController extends CustomAbstractController
                     }
                     $notification->setQuantity(1);
                     $notification->setSender($this->user());
-                    $em->persist($notification);
+                    $notificationRepo->persist($notification);
                 }
             }
         }

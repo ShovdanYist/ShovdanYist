@@ -3,27 +3,19 @@
 namespace App\Controller;
 
 use App\CustomAbstracts\CustomAbstractController;
-use App\Entity\Follow;
 use App\Entity\Notification;
 use App\Entity\User;
 use App\Repository\FollowRepository;
+use App\Repository\NotificationRepository;
 use App\Service\Paginator;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class FollowController extends CustomAbstractController
 {
-    /**
-     * @Route("/user/{username}/followers/{page<\d+>?1}", name="user_followers", methods={"GET"})
-     * @param User $user
-     * @param $page
-     * @param Paginator $paginator
-     * @param FollowRepository $followRepo
-     * @return Response
-     */
+    #[Route('/user/{username}/followers/{page<\d+>?1}', name: 'user_followers', methods: ['GET'])]
     public function followers(User $user, $page, Paginator $paginator, FollowRepository $followRepo): Response
     {
         $followed = $followRepo->findOneBy(['follower' => $this->getUser(), 'followed' => $user, 'accepted' => true]);
@@ -52,14 +44,7 @@ class FollowController extends CustomAbstractController
         }
     }
 
-    /**
-     * @Route("/user/{username}/following/{page<\d+>?1}", name="user_following", methods={"GET"})
-     * @param User $user
-     * @param $page
-     * @param Paginator $paginator
-     * @param FollowRepository $followRepo
-     * @return Response
-     */
+    #[Route('/user/{username}/following/{page<\d+>?1}', name: 'user_following', methods: ['GET'])]
     public function following(User $user, $page, Paginator $paginator, FollowRepository $followRepo): Response
     {
         $followed = $followRepo->findOneBy(['follower' => $this->getUser(), 'followed' => $user, 'accepted' => true]);
@@ -88,14 +73,9 @@ class FollowController extends CustomAbstractController
         }
     }
 
-    /**
-     * @Route("/follow/{username}", name="user_follow", methods={"POST", "GET"})
-     * @Security("is_granted('ROLE_USER')")
-     * @param User $user
-     * @param EntityManagerInterface $em
-     * @return JsonResponse
-     */
-    public function follow(User $user, EntityManagerInterface $em): Response
+    #[Route('/follow/{username}', name: 'user_follow', methods: ['GET'])]
+    #[Security('is_granted("ROLE_USER")')]
+    public function follow(User $user, NotificationRepository $notificationRepo, FollowRepository $followRepo, EntityManagerInterface $em): Response
     {
         if ($this->user() === $user) {
             return $this->redirectToRoute('user_profile', [
@@ -103,7 +83,7 @@ class FollowController extends CustomAbstractController
             ]);
         }
 
-        $follow = $this->getDoctrine()->getRepository(Follow::class)->findOneBy(['follower' => $this->user(), 'followed' => $user]);
+        $follow = $followRepo->findOneBy(['follower' => $this->user(), 'followed' => $user]);
 
         if ($follow) {
             $this->user()->removeFollow($follow);
@@ -122,9 +102,9 @@ class FollowController extends CustomAbstractController
 
                 $follow->setAccepted(true);
                 $response = ['status' => 'added'];
-                $em->persist($notification);
+                $notificationRepo->persist($notification);
             }
-            $em->persist($follow);
+            $followRepo->persist($follow);
         }
 
         $em->flush();
@@ -134,16 +114,11 @@ class FollowController extends CustomAbstractController
         ]);
     }
 
-    /**
-     * @Route("/unfollow/{username}", name="user_unfollow", methods={"POST", "GET"})
-     * @Security("is_granted('ROLE_USER')")
-     * @param User $user
-     * @param EntityManagerInterface $em
-     * @return Response
-     */
-    public function unfollow(User $user, EntityManagerInterface $em): Response
+    #[Route('/unfollow/{username}', name: 'user_unfollow', methods: ['GET'])]
+    #[Security('is_granted("ROLE_USER")')]
+    public function unfollow(User $user, EntityManagerInterface $em, FollowRepository $followRepo): Response
     {
-        $follow = $this->getDoctrine()->getRepository(Follow::class)->findOneBy(['follower' => $user, 'followed' => $this->user()]);
+        $follow = $followRepo->findOneBy(['follower' => $user, 'followed' => $this->user()]);
         $response = ['status' => null];
 
         if ($follow) {
@@ -157,17 +132,12 @@ class FollowController extends CustomAbstractController
         ]);
     }
 
-    /**
-     * @Route("/acceptRequest/{username}", name="accept_request", methods={"POST", "GET"})
-     * @Security("is_granted('ROLE_USER')")
-     * @param User $user
-     * @return Response
-     */
-    public function acceptRequest(User $user): Response
+    #[Route('/acceptRequest/{username}', name: 'accept_request', methods: ['GET'])]
+    #[Security('is_granted("ROLE_USER")')]
+    public function acceptRequest(User $user, EntityManagerInterface $em, FollowRepository $followRepo, NotificationRepository $notificationRepo): Response
     {
-        $follow = $this->getDoctrine()->getRepository(Follow::class)->findOneBy(['follower' => $user, 'followed' => $this->getUser(), 'accepted' => false]);
+        $follow = $followRepo->findOneBy(['follower' => $user, 'followed' => $this->getUser(), 'accepted' => false]);
         if ($follow) {
-            $em = $this->getDoctrine()->getManager();
             $follow->setAccepted(true);
 
             $notification = new Notification();
@@ -182,27 +152,21 @@ class FollowController extends CustomAbstractController
             $notification2->setReceiver($user);
             $notification2->setFollow($follow);
 
-            $em->persist($notification);
-            $em->persist($notification2);
+            $notificationRepo->persist($notification);
+            $notificationRepo->persist($notification2);
             $em->flush();
         }
 
         return $this->json(['response' => ['request' => 'accepted']]);
     }
 
-    /**
-     * @Route("/rejectRequest/{username}", name="reject_request", methods={"POST", "GET"})
-     * @Security("is_granted('ROLE_USER')")
-     * @param User $user
-     * @return Response
-     */
-    public function rejectRequest(User $user): Response
+    #[Route('/rejectRequest/{username}', name: 'reject_request', methods: ['GET'])]
+    #[Security('is_granted("ROLE_USER")')]
+    public function rejectRequest(User $user, FollowRepository $followRepo): Response
     {
-        $follow = $this->getDoctrine()->getRepository(Follow::class)->findOneBy(['follower' => $user, 'followed' => $this->getUser()]);
+        $follow = $followRepo->findOneBy(['follower' => $user, 'followed' => $this->getUser()]);
         if ($follow) {
-            $em = $this->getDoctrine()->getManager();
-            $em->remove($follow);
-            $em->flush();
+            $followRepo->remove($follow);
         }
 
         return $this->json(['response' => ['request' => 'rejected']]);

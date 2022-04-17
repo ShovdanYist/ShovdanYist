@@ -12,18 +12,10 @@ use App\Service\Paginator;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route(name="search_")
- * @package App\Controller
- */
+#[Route(name: 'search_',  methods: ['GET', 'POST'])]
 class SearchController extends CustomAbstractController
 {
-    /**
-     * @Route("/search/{keyword}", name="index", methods={"POST","GET"})
-     * @param $keyword
-     * @param Searcher $searcher
-     * @return Response
-     */
+    #[Route('/search/{keyword}', name: 'index')]
     public function index($keyword, Searcher $searcher): Response
     {
         $searcher->setKeyword($keyword);
@@ -43,15 +35,7 @@ class SearchController extends CustomAbstractController
         ]);
     }
 
-    /**
-     * @Route("/search/songs/{keyword}/{page<\d+>?1}", name="songs", methods={"POST","GET"})
-     * @param $keyword
-     * @param $page
-     * @param Paginator $paginator
-     * @param Searcher $searcher
-     * @param Compiler $compiler
-     * @return Response
-     */
+    #[Route('/search/songs/{keyword}/{page<\d+>?1}', name: 'songs')]
     public function songs($keyword, $page, Paginator $paginator, Searcher $searcher, Compiler $compiler): Response
     {
         $searcher->setKeyword($keyword);
@@ -94,14 +78,7 @@ class SearchController extends CustomAbstractController
         ]);
     }
 
-    /**
-     * @Route("/search/posts/{keyword}/{page<\d+>?1}", name="posts", methods={"POST","GET"})
-     * @param $keyword
-     * @param $page
-     * @param Paginator $paginator
-     * @param Searcher $searcher
-     * @return Response
-     */
+    #[Route('/search/posts/{keyword}/{page<\d+>?1}', name: 'posts')]
     public function posts($keyword, $page, Paginator $paginator, Searcher $searcher): Response
     {
         $searcher->setKeyword($keyword);
@@ -132,14 +109,7 @@ class SearchController extends CustomAbstractController
         ]);
     }
 
-    /**
-     * @Route("/search/users/{keyword}/{page<\d+>?1}", name="users", methods={"POST","GET"})
-     * @param $keyword
-     * @param $page
-     * @param Paginator $paginator
-     * @param Searcher $searcher
-     * @return Response
-     */
+    #[Route('/search/users/{keyword}/{page<\d+>?1}', name: 'users')]
     public function users($keyword, $page, Paginator $paginator, Searcher $searcher): Response
     {
         $form = $searcher->searchForm($keyword);

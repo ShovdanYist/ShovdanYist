@@ -5,59 +5,39 @@ namespace App\Entity;
 use App\Repository\ReportRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass=ReportRepository::class)
- * @ORM\HasLifecycleCallbacks()
- */
+#[ORM\Entity(repositoryClass: ReportRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 class Report
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
-    /**
-     * @ORM\OneToOne(targetEntity=Message::class, cascade={"persist", "remove"})
-     */
+    #[ORM\OneToOne(targetEntity: Message::class, cascade: ['persist', 'remove'])]
     private $message;
 
-    /**
-     * @ORM\OneToOne(targetEntity=User::class, cascade={"persist", "remove"})
-     */
+    #[ORM\OneToOne(targetEntity: User::class, cascade: ['persist', 'remove'])]
     private $profile;
 
-    /**
-     * @ORM\OneToOne(targetEntity=Comment::class, inversedBy="report", cascade={"persist", "remove"})
-     */
+    #[ORM\OneToOne(inversedBy: 'report', targetEntity: Comment::class, cascade: ['persist', 'remove'])]
     private $comment;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $content;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="reports")
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'reports')]
+    #[ORM\JoinColumn(nullable: false)]
     private $sender;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="accusations")
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'accusations')]
+    #[ORM\JoinColumn(nullable: false)]
     private $accused;
 
-    /**
-     * @ORM\Column(type="boolean")
-     */
+    #[ORM\Column(type: 'boolean')]
     private $seen;
 
-    /**
-     * @ORM\PrePersist()
-     */
+    #[ORM\PrePersist]
     public function initialize()
     {
         $this->seen = false;

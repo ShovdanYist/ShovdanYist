@@ -4,7 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Song;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\Query\Expr;
 
 /**
@@ -18,6 +18,32 @@ class SongRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Song::class);
+    }
+
+    public function flush(): void
+    {
+        $this->_em->flush();
+    }
+
+    public function persist(Song $entity): void
+    {
+        $this->_em->persist($entity);
+    }
+
+    public function add(Song $entity, bool $flush = true): void
+    {
+        $this->_em->persist($entity);
+        if ($flush) {
+            $this->_em->flush();
+        }
+    }
+
+    public function remove(Song $entity, bool $flush = true): void
+    {
+        $this->_em->remove($entity);
+        if ($flush) {
+            $this->_em->flush();
+        }
     }
 
     public function findPendingSongs($criteria, $orderBy = ['id' => 'DESC'], $limit = null, $offset = 0)
@@ -94,7 +120,7 @@ class SongRepository extends ServiceEntityRepository
         return $qb->getQuery()->getResult();
     }
 
-    public function getSongViews(Song $song): float
+    public function getSongViews(Song $song)
     {
         $qb = $this->createQueryBuilder('s');
 
@@ -106,7 +132,13 @@ class SongRepository extends ServiceEntityRepository
 
         $qb ->setMaxResults(1);
 
-        return round($qb->getQuery()->getResult()[0]['1']);
+        $result = $qb->getQuery()->getResult()[0]['1'];
+
+        if ($result === null) {
+            $result = 0;
+        }
+
+        return round($result);
     }
 
     public function findByViews($criteria, $orderBy = null, $limit = null, $offset = 0)

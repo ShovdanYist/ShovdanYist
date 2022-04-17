@@ -8,92 +8,59 @@ use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Validator\Constraints as Assert;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
-/**
- * @ORM\Entity(repositoryClass=MessageRepository::class)
- * @Vich\Uploadable
- */
+#[ORM\Entity(repositoryClass: MessageRepository::class)]
+#[Vich\Uploadable]
 class Message
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="sentMessages")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $sender;
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'sentMessages')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $sender;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="receivedMessages")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $receiver;
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'receivedMessages')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $receiver;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private $content;
+    #[ORM\Column(type: 'text', nullable: true)]
+    private ?string $content;
 
-    /**
-     * @ORM\Column(type="datetime")
-     */
-    private $sentAt;
+    #[ORM\Column(type: 'datetime')]
+    private ?\DateTimeInterface $sentAt;
 
-    /**
-     * @ORM\Column(type="boolean")
-     */
-    private $seen;
+    #[ORM\Column(type: 'boolean')]
+    private ?bool $seen;
 
-    /**
-     * @ORM\Column(type="boolean")
-     */
-    private $sender_deleted;
+    #[ORM\Column(type: 'boolean')]
+    private ?bool $sender_deleted;
 
-    /**
-     * @ORM\Column(type="boolean")
-     */
-    private $receiver_deleted;
+    #[ORM\Column(type: 'boolean')]
+    private ?bool $receiver_deleted;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Song::class, inversedBy="messages")
-     */
-    private $song;
+    #[ORM\ManyToOne(targetEntity: Song::class, inversedBy: 'messages')]
+    private ?Song $song;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Post::class, inversedBy="messages")
-     */
-    private $post;
+    #[ORM\ManyToOne(targetEntity: Post::class, inversedBy: 'messages')]
+    private ?Post $post;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Profile::class, inversedBy="messages")
-     */
-    private $profile;
+    #[ORM\ManyToOne(targetEntity: Profile::class, inversedBy: 'messages')]
+    private ?Profile $profile;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Message::class)
-     */
-    private $replyTo;
+    #[ORM\ManyToOne(targetEntity: Message::class)]
+    private ?Message $replyTo;
 
-    /**
-     * @Vich\UploadableField(mapping="message_images", fileNameProperty="image")
-     * @Assert\File(mimeTypes={"image/jpeg","image/png","image/gif"}, mimeTypesMessage="image.have.to.be.jpg.or.png")
-     * @var File|null
-     */
+    #[Vich\UploadableField(mapping: 'message_images', fileNameProperty: 'image')]
+    #[Assert\File(mimeTypes: ['image/jpeg','image/png','image/gif'], mimeTypesMessage: 'image.have.to.be.jpg.or.png')]
     private $imageFile;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $image;
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $image;
 
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
-    private $updatedAt;
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    private ?\DateTimeInterface $updatedAt;
 
     public function getId(): ?int
     {

@@ -19,6 +19,32 @@ class EmailAddressRepository extends ServiceEntityRepository
         parent::__construct($registry, EmailAddress::class);
     }
 
+    public function flush(): void
+    {
+        $this->_em->flush();
+    }
+
+    public function persist(EmailAddress $entity): void
+    {
+        $this->_em->persist($entity);
+    }
+
+    public function add(EmailAddress $entity, bool $flush = true): void
+    {
+        $this->_em->persist($entity);
+        if ($flush) {
+            $this->_em->flush();
+        }
+    }
+
+    public function remove(EmailAddress $entity, bool $flush = true): void
+    {
+        $this->_em->remove($entity);
+        if ($flush) {
+            $this->_em->flush();
+        }
+    }
+
     // /**
     //  * @return EmailAddress[] Returns an array of EmailAddress objects
     //  */

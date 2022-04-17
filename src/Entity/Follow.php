@@ -6,42 +6,31 @@ use App\Repository\FollowRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use JetBrains\PhpStorm\Pure;
 
-/**
- * @ORM\Entity(repositoryClass=FollowRepository::class)
- */
+#[ORM\Entity(repositoryClass: FollowRepository::class)]
 class Follow
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="following")
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'following')]
+    #[ORM\JoinColumn(nullable: false)]
     private $follower;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="followers")
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'followers')]
+    #[ORM\JoinColumn(nullable: false)]
     private $followed;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Notification::class, mappedBy="follow", orphanRemoval=true)
-     */
+    #[ORM\OneToMany(mappedBy: 'follow', targetEntity: Notification::class, orphanRemoval: true)]
     private $notifications;
 
-    /**
-     * @ORM\Column(type="boolean")
-     */
+    #[ORM\Column(type: 'boolean')]
     private $accepted;
 
-    public function __construct()
+    #[Pure] public function __construct()
     {
         $this->notifications = new ArrayCollection();
     }
@@ -97,7 +86,6 @@ class Follow
     {
         if ($this->notifications->contains($notification)) {
             $this->notifications->removeElement($notification);
-            // set the owning side to null (unless already changed)
             if ($notification->getFollow() === $this) {
                 $notification->setFollow(null);
             }

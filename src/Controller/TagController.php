@@ -13,12 +13,8 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class TagController extends AbstractController
 {
-    /**
-     * @Route("/tags", name="tags_index", methods={"GET"})
-     * @Security("is_granted('ROLE_OWNER')")
-     * @param TagRepository $tagRepository
-     * @return Response
-     */
+    #[Route('/tags', name: 'tags_index',  methods: ['GET'])]
+    #[Security('is_granted("ROLE_OWNER")')]
     public function index(TagRepository $tagRepository): Response
     {
         return $this->render('interface/tag/index.html.twig', [
@@ -26,13 +22,9 @@ class TagController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/tag/new", name="tag_new", methods={"GET","POST"})
-     * @Security("is_granted('ROLE_OWNER')")
-     * @param Request $request
-     * @return Response
-     */
-    public function new(Request $request): Response
+    #[Route('/tag/new', name: 'tag_new',  methods: ['GET','POST'])]
+    #[Security('is_granted("ROLE_OWNER")')]
+    public function new(Request $request, TagRepository $tagRepo): Response
     {
         $tag = new Tag();
         $form = $this->createForm(TagType::class, $tag);
@@ -40,10 +32,7 @@ class TagController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $tag->setUpdatedAt(new \DateTime('now'));
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($tag);
-            $em->flush();
-
+            $tagRepo->add($tag);
             return $this->redirectToRoute('tags_index');
         }
 
@@ -53,21 +42,15 @@ class TagController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/tag/{id}/edit", name="tag_edit", methods={"GET","POST"})
-     * @Security("is_granted('ROLE_OWNER')")
-     * @param Request $request
-     * @param Tag $tag
-     * @return Response
-     */
-    public function edit(Request $request, Tag $tag): Response
+    #[Route('/tag/{id}/edit', name: 'tag_edit',  methods: ['GET','POST'])]
+    #[Security('is_granted("ROLE_OWNER")')]
+    public function edit(Request $request, Tag $tag, TagRepository $tagRepo): Response
     {
         $form = $this->createForm(TagType::class, $tag);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
-
+            $tagRepo->flush();
             return $this->redirectToRoute('tags_index');
         }
 
@@ -77,19 +60,12 @@ class TagController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/tag/{id}", name="tag_delete", methods={"DELETE"})
-     * @Security("is_granted('ROLE_OWNER')")
-     * @param Request $request
-     * @param Tag $tag
-     * @return Response
-     */
-    public function delete(Request $request, Tag $tag): Response
+    #[Route('/tag/{id}', name: 'tag_delete',  methods: ['POST'])]
+    #[Security('is_granted("ROLE_OWNER")')]
+    public function delete(Request $request, Tag $tag, TagRepository $tagRepo): Response
     {
         if ($this->isCsrfTokenValid('delete'.$tag->getId(), $request->request->get('_token'))) {
-            $em = $this->getDoctrine()->getManager();
-            $em->remove($tag);
-            $em->flush();
+            $tagRepo->remove($tag);
         }
 
         return $this->redirectToRoute('tags_index');

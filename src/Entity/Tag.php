@@ -6,64 +6,47 @@ use App\Repository\TagRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use JetBrains\PhpStorm\Pure;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Entity(repositoryClass=TagRepository::class)
- * @UniqueEntity("title")
- * @UniqueEntity("slug")
- * @Vich\Uploadable
- */
+#[ORM\Entity(repositoryClass: TagRepository::class)]
+#[UniqueEntity('title')]
+#[UniqueEntity('slug')]
+#[Vich\Uploadable]
 class Tag
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank()
-     * @Assert\Type("string")
-     */
+    #[ORM\Column(type: 'string', length: 255)]
+    #[Assert\NotBlank]
+    #[Assert\Type('string')]
     private $title;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     * @Assert\Type("string")
-     */
+    #[ORM\Column(type: 'string', length: 255)]
+    #[Assert\Type('string')]
     private $slug;
 
-    /**
-     * @ORM\ManyToMany(targetEntity=Song::class, mappedBy="tags")
-     */
+    #[ORM\ManyToMany(targetEntity: Song::class, mappedBy: 'tags')]
     private $songs;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
+    #[ORM\Column(type: 'text', nullable: true)]
     private $description;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+    #[ORM\Column(type: 'string', length: 255)]
     private $type;
 
-    /**
-     * @ORM\ManyToMany(targetEntity=Post::class, mappedBy="tags")
-     */
+    #[ORM\ManyToMany(targetEntity: Post::class, mappedBy: 'tags')]
     private $posts;
 
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
+    #[ORM\Column(type: 'datetime', nullable: true)]
     private $updatedAt;
 
-    public function __construct()
+    #[Pure] public function __construct()
     {
         $this->songs = new ArrayCollection();
         $this->posts = new ArrayCollection();

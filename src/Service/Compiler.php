@@ -4,7 +4,7 @@ namespace App\Service;
 
 class Compiler
 {
-    private $symbols = [
+    private array $symbols = [
         '<br>' => ' ',
         '<p>' => ' ',
         '</p>' => ' ',
@@ -69,7 +69,7 @@ class Compiler
         return mb_substr($text, $keywordPositionA, $keywordPositionB);
     }
 
-    public function tagsSearchToArray($tags)
+    public function tagsSearchToArray($tags): array
     {
         return explode(',',str_replace('tags=','',$tags));
     }

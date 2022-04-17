@@ -19,6 +19,32 @@ class BookmarkRepository extends ServiceEntityRepository
         parent::__construct($registry, Bookmark::class);
     }
 
+    public function flush(): void
+    {
+        $this->_em->flush();
+    }
+
+    public function persist(Bookmark $entity): void
+    {
+        $this->_em->persist($entity);
+    }
+
+    public function add(Bookmark $entity, bool $flush = true): void
+    {
+        $this->_em->persist($entity);
+        if ($flush) {
+            $this->_em->flush();
+        }
+    }
+
+    public function remove(Bookmark $entity, bool $flush = true): void
+    {
+        $this->_em->remove($entity);
+        if ($flush) {
+            $this->_em->flush();
+        }
+    }
+
     // /**
     //  * @return Bookmark[] Returns an array of Bookmark objects
     //  */

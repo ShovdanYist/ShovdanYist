@@ -4,9 +4,10 @@ namespace App\Controller;
 
 use App\CustomAbstracts\CustomAbstractController;
 use App\Entity\Song;
-use App\Entity\Person;
-use App\Entity\User;
 use App\Form\SongType;
+use App\Repository\PeopleRepository;
+use App\Repository\SongRepository;
+use App\Repository\UserRepository;
 use App\Service\Defender;
 use App\Service\Initializer;
 use App\Service\Paginator;
@@ -18,23 +19,14 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class SongController extends CustomAbstractController
 {
-    /**
-     * @Route("/music", name="song_index", methods={"GET"})
-     * @return Response
-     */
+    #[Route('/music', name: 'song_index',  methods: ['GET'])]
     public function index(): Response
     {
         $this->updateLastActivity();
         return $this->render('interface/song/index.html.twig');
     }
 
-    /**
-     * @Route("/chart/{chart}/{page<\d+>?1}", name="song_chart", methods={"GET"})
-     * @param $chart
-     * @param $page
-     * @param Paginator $paginator
-     * @return Response
-     */
+    #[Route('/chart/{chart}/{page<\d+>?1}', name: 'song_chart',  methods: ['GET'])]
     public function chart($chart, $page, Paginator $paginator): Response
     {
         $paginator->setClass(Song::class)->setParameters(['chart' => $chart])->setLimit(20)->setPage($page);
@@ -74,20 +66,14 @@ class SongController extends CustomAbstractController
         ]);
     }
 
-    /**
-     * @Route("/song/new/{person}", name="song_new", methods={"GET","POST"})
-     * @Security("is_granted('ROLE_SONG_MODERATOR')")
-     * @param Request $request
-     * @param Initializer $initializer
-     * @param null $person
-     * @return Response
-     */
-    public function new(Request $request, Initializer $initializer, $person = null): Response
+    #[Route('/song/new/{person}', name: 'song_new',  methods: ['GET','POST'])]
+    #[Security('is_granted("ROLE_SONG_MODERATOR")')]
+    public function new(Request $request, Initializer $initializer, PeopleRepository $peopleRepo, $person = null): Response
     {
         $song = new Song();
 
         if ($person) {
-            $person = $this->getDoctrine()->getRepository(Person::class)->findOneBy(['id' => $person]);
+            $person = $peopleRepo->findOneBy(['id' => $person]);
             $song->setVocalist($person);
         }
 
@@ -98,6 +84,7 @@ class SongController extends CustomAbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $initializer->initializeSongNew($song, $form);
+            $this->addFlash('success', $this->trans('song.sent.for.moderation'));
 
             if ($form->get('save')->isClicked()) {
                 return $this->redirectToRoute('song_edit', [
@@ -120,13 +107,7 @@ class SongController extends CustomAbstractController
         ]);
     }
 
-    /**
-     * @Route("/song/{slug}/{page<\d+>?1}", name="song_show", methods={"GET", "POST"})
-     * @param Song $song
-     * @param $page
-     * @param Initializer $initializer
-     * @return Response
-     */
+    #[Route('/song/{slug}/{page<\d+>?1}', name: 'song_show',  methods: ['GET'])]
     public function show(Song $song, $page, Initializer $initializer): Response
     {
         $this->updateLastActivity();
@@ -136,29 +117,15 @@ class SongController extends CustomAbstractController
             ]);
         }
 
-        if ($this->isGranted('ROLE_USER')) {
-            $shareUsers = $this->getDoctrine()->getRepository(User::class)->findShareUsers(['user' => $this->user(), 'type' => 'following']);
-        } else {
-            $shareUsers = null;
-        }
-
         $initializer->initializeSongShow($song);
 
         return $this->render('interface/song/show.html.twig', [
             'song' => $song,
-            'page' => $page,
-            'shareUsers' => $shareUsers
+            'page' => $page
         ]);
     }
 
-    /**
-     * @Route("/song/edit/{slug}", name="song_edit", methods={"GET","POST"})
-     * @param Request $request
-     * @param Song $song
-     * @param Initializer $initializer
-     * @param Defender $defender
-     * @return Response
-     */
+    #[Route('/song/edit/{slug}', name: 'song_edit',  methods: ['GET','POST'])]
     public function edit(Request $request, Song $song, Initializer $initializer, Defender $defender): Response
     {
         if (!$defender->rightToEditSong($song)) {
@@ -196,21 +163,14 @@ class SongController extends CustomAbstractController
         ]);
     }
 
-    /**
-     * @Route("/song/{id}", name="song_delete", methods={"DELETE"})
-     * @param Request $request
-     * @param Song $song
-     * @return Response
-     */
-    public function delete(Request $request, Song $song): Response
+    #[Route('/song/{id}', name: 'song_delete',  methods: ['POST'])]
+    public function delete(Request $request, Song $song, SongRepository $songRepo): Response
     {
         $status = $song->getStatus();
         $author = $song->getAuthor()->getUsername();
         if ($this->isGranted('ROLE_SONG_MODERATOR') && !$song->getStatus() || $this->isGranted('ROLE_OWNER')) {
             if ($this->isCsrfTokenValid('delete'.$song->getId(), $request->request->get('_token'))) {
-                $em = $this->getDoctrine()->getManager();
-                $em->remove($song);
-                $em->flush();
+                $songRepo->remove($song);
             }
         }
 

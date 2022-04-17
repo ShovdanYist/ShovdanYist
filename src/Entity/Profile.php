@@ -2,100 +2,82 @@
 
 namespace App\Entity;
 
+use App\Repository\ProfileRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Exception;
 use Doctrine\ORM\Mapping as ORM;
+use JetBrains\PhpStorm\Pure;
 use Symfony\Component\HttpFoundation\File\File;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints as Assert;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\ProfileRepository")
- * @Vich\Uploadable
- */
-class Profile implements \Serializable
+#[ORM\Entity(repositoryClass: ProfileRepository::class)]
+#[Vich\Uploadable]
+class Profile
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
-    /**
-     * @Vich\UploadableField(mapping="user_avatars", fileNameProperty="avatar")
-     * @Assert\File(mimeTypes={"image/jpeg","image/png","image/gif"}, mimeTypesMessage="image.have.to.be.jpg.or.png")
-     * @var File|null
-     */
-    private $avatarFile;
+    #[Vich\UploadableField(mapping: 'user_avatars', fileNameProperty: 'avatar')]
+    #[Assert\File(mimeTypes: ['image/jpeg','image/png','image/gif'], mimeTypesMessage: 'image.have.to.be.jpg.or.png')]
+    private $avatarFile = null;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $avatar;
 
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     * @Assert\DateTime()
-     */
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    #[Assert\Type(\DateTimeInterface::class)]
     private $updatedAt;
 
-    /**
-     * @ORM\OneToOne(targetEntity="App\Entity\User", mappedBy="profile", cascade={"persist", "remove"})
-     */
+    #[ORM\OneToOne(mappedBy: 'profile', targetEntity: User::class, cascade: ['persist','remove'])]
     private $user;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $fullname;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
+    #[ORM\Column(type: 'text', nullable: true)]
     private $about;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $url;
 
-    /**
-     * @ORM\Column(type="boolean")
-     */
+    #[ORM\Column(type: 'boolean')]
     private $gender;
 
-    /**
-     * @ORM\Column(type="boolean", nullable=true)
-     */
+    #[ORM\Column(type: 'boolean', nullable: true)]
     private $verified;
 
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     * @Assert\NotBlank()
-     */
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    #[Assert\NotBlank]
     private $birthday;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Message::class, mappedBy="profile")
-     */
+    #[ORM\OneToMany(mappedBy: 'profile', targetEntity: Message::class)]
     private $messages;
 
-    public function __construct()
+    #[Pure] public function __construct()
     {
         $this->messages = new ArrayCollection();
     }
 
-    public function getUsername(): string
+    public function __serialize()
     {
-        return $this->getUser()->getUsername();
+        return [$this];
+    }
+
+    public function __unserialize($serialized)
+    {
+        return [$this];
+    }
+
+    public function getId(): ?int
+    {
+        return $this->id;
     }
 
     /**
-     * @param File|UploadedFile|null $avatarFile
-     * @throws Exception
+     * @param File|null $avatarFile
      */
     public function setAvatarFile(?File $avatarFile = null): void
     {
@@ -123,6 +105,11 @@ class Profile implements \Serializable
         return $this;
     }
 
+    public function getUsername(): string
+    {
+        return $this->getUser()->getUsername();
+    }
+
     public function getUpdatedAt(): ?\DateTimeInterface
     {
         return $this->updatedAt;
@@ -133,11 +120,6 @@ class Profile implements \Serializable
         $this->updatedAt = $updatedAt;
 
         return $this;
-    }
-
-    public function getId(): ?int
-    {
-        return $this->id;
     }
 
     public function getUser(): ?User
@@ -155,28 +137,6 @@ class Profile implements \Serializable
         }
 
         return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function serialize()
-    {
-        return serialize(array(
-            $this->id,
-            $this->avatar,
-        ));
-    }
-
-    /**
-     * @param string $serialized
-     */
-    public function unserialize($serialized)
-    {
-        list (
-            $this->id,
-            $this->avatar,
-            ) = unserialize($serialized, array('allowed_classes' => false));
     }
 
     public function getFullname(): ?string
@@ -273,7 +233,6 @@ class Profile implements \Serializable
     {
         if ($this->messages->contains($message)) {
             $this->messages->removeElement($message);
-            // set the owning side to null (unless already changed)
             if ($message->getProfile() === $this) {
                 $message->setProfile(null);
             }

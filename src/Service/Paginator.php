@@ -11,24 +11,19 @@ use Twig\Error\SyntaxError;
 
 class Paginator
 {
-    private $manager;
-    private $twig;
-    private $request;
-    private $class;
-    private $page = 1;
-    private $limit = 10;
-    private $criteria = [];
-    private $parameters = [null => null];
-    private $order = ['id' => 'ASC'];
-    private $type = 'crud';
-    private $method = 'findBy';
-
-    public function __construct(EntityManagerInterface $manager, Environment $twig, RequestStack $request)
-    {
-        $this->manager  = $manager;
-        $this->twig     = $twig;
-        $this->request  = $request;
-    }
+    public function __construct(
+        private EntityManagerInterface $manager,
+        private Environment $twig,
+        private RequestStack $request,
+        private $class = null,
+        private $page = 1,
+        private $limit = 10,
+        private $criteria = [],
+        private $parameters = [null => null],
+        private $order = ['id' => 'ASC'],
+        private $type = 'crud',
+        private $method = 'findBy'
+    ){}
 
     /**
      * @throws SyntaxError

@@ -19,6 +19,32 @@ class MessageRepository extends ServiceEntityRepository
         parent::__construct($registry, Message::class);
     }
 
+    public function flush(): void
+    {
+        $this->_em->flush();
+    }
+
+    public function persist(Message $entity): void
+    {
+        $this->_em->persist($entity);
+    }
+
+    public function add(Message $entity, bool $flush = true): void
+    {
+        $this->_em->persist($entity);
+        if ($flush) {
+            $this->_em->flush();
+        }
+    }
+
+    public function remove(Message $entity, bool $flush = true): void
+    {
+        $this->_em->remove($entity);
+        if ($flush) {
+            $this->_em->flush();
+        }
+    }
+
     public function findConversations($criteria, $orderBy = ['sentAt' => 'ASC'], $limit = null, $offset = 0)
     {
         $qb = $this->createQueryBuilder('m');

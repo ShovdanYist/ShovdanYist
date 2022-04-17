@@ -2,158 +2,106 @@
 
 namespace App\Entity;
 
-use Exception;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use App\Repository\SongRepository;
 use Doctrine\ORM\Mapping as ORM;
 use App\Validator\Constraints as MyAssert;
+use JetBrains\PhpStorm\Pure;
 use Symfony\Component\Validator\Constraints as Assert;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Symfony\Component\HttpFoundation\File\File;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 
-/**
- * @ORM\Entity(repositoryClass=SongRepository::class)
- * @MyAssert\UniqueSong()
- * @Vich\Uploadable
- */
+#[ORM\Entity(repositoryClass: SongRepository::class)]
+#[MyAssert\UniqueSong]
+#[Vich\Uploadable]
 class Song
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank()
-     * @Assert\Type("string")
-     */
+    #[ORM\Column(type: 'string', length: 255)]
+    #[Assert\NotBlank]
+    #[Assert\Type('string')]
     private $title;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     * @Assert\Type("string")
-     */
+    #[ORM\Column(type: 'string', length: 255)]
+    #[Assert\Type('string')]
     private $slug;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     * @Assert\Type("string")
-     */
+    #[ORM\Column(type: 'text', nullable: true)]
+    #[Assert\Type('string')]
     private $lyrics;
 
-    /**
-     * @Vich\UploadableField(mapping="vocalist_songs", fileNameProperty="audio")
-     * @Assert\File(mimeTypes={"audio/mpeg","audio/mp4","audio/vnd.wav", "audio/x-aiff"}, mimeTypesMessage="audio.have.to.be.mpeg.or.wav")
-     * @var File|null
-     */
+    #[Vich\UploadableField(mapping: 'vocalist_songs', fileNameProperty: 'audio')]
+    #[Assert\File(mimeTypes: ['audio/mpeg','audio/mp4','audio/vnd.wav'], mimeTypesMessage: 'audio.have.to.be.mpeg.or.wav')]
     private $audioFile;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $audio;
 
-    /**
-     * @ORM\Column(type="date", nullable=true)
-     * @Assert\Date()
-     */
+    #[ORM\Column(type: 'date', nullable: true)]
+    #[Assert\Date]
     private $releaseDate;
 
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     * @Assert\DateTime()
-     */
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    #[Assert\Type(\DateTimeInterface::class)]
     private $publicationDate;
 
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     * @Assert\DateTime()
-     */
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    #[Assert\Type(\DateTimeInterface::class)]
     private $editingDate;
 
-    /**
-     * @ORM\Column(type="boolean", nullable=true)
-     * @Assert\Type("bool")
-     */
+    #[ORM\Column(type: 'boolean', nullable: true)]
+    #[Assert\Type('bool')]
     private $featured;
 
-    /**
-     * @ORM\Column(type="boolean", nullable=true)
-     * @Assert\Type("bool")
-     */
+    #[ORM\Column(type: 'boolean', nullable: true)]
+    #[Assert\Type('bool')]
     private $status;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Person::class, inversedBy="songs")
-     */
+    #[ORM\ManyToOne(targetEntity: Person::class, inversedBy: 'songs')]
     private $vocalist;
 
-    /**
-     * @ORM\ManyToMany(targetEntity=Person::class, inversedBy="featuring")
-     */
+    #[ORM\ManyToMany(targetEntity: Person::class, inversedBy: 'featuring')]
     private $featuring;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="songs")
-     */
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'songs')]
     private $author;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Comment", mappedBy="song", orphanRemoval=true)
-     */
+    #[ORM\OneToMany(mappedBy: 'song', targetEntity: Comment::class, orphanRemoval: true)]
     private $comments;
 
-    /**
-     * @ORM\OneToMany(targetEntity=PlaylistSong::class, mappedBy="song", orphanRemoval=true)
-     */
+    #[ORM\OneToMany(mappedBy: 'song', targetEntity: PlaylistSong::class, orphanRemoval: true)]
     private $playlistSongs;
 
-    /**
-     * @ORM\ManyToMany(targetEntity=Post::class, mappedBy="songs")
-     */
+    #[ORM\ManyToMany(targetEntity: Post::class, mappedBy: 'songs')]
     private $posts;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Notification::class, mappedBy="song")
-     */
+    #[ORM\OneToMany(mappedBy: 'song', targetEntity: Notification::class)]
     private $notifications;
 
-    /**
-     * @ORM\ManyToMany(targetEntity=Tag::class, inversedBy="songs")
-     */
+    #[ORM\ManyToMany(targetEntity: Tag::class, inversedBy: 'songs')]
     private $tags;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
+    #[ORM\Column(type: 'text', nullable: true)]
     private $translation;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Action::class, mappedBy="song", orphanRemoval=true)
-     */
+    #[ORM\OneToMany(mappedBy: 'song', targetEntity: Action::class, orphanRemoval: true)]
     private $actions;
 
-    /**
-     * @ORM\OneToMany(targetEntity=View::class, mappedBy="song", orphanRemoval=true)
-     */
+    #[ORM\OneToMany(mappedBy: 'song', targetEntity: View::class, orphanRemoval: true)]
     private $views;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
+    #[ORM\Column(type: 'text', nullable: true)]
     private $search;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Message::class, mappedBy="song")
-     */
+    #[ORM\OneToMany(mappedBy: 'song', targetEntity: Message::class)]
     private $messages;
 
-    public function __construct()
+    #[Pure] public function __construct()
     {
         $this->featuring = new ArrayCollection();
         $this->comments = new ArrayCollection();
@@ -166,10 +114,6 @@ class Song
         $this->messages = new ArrayCollection();
     }
 
-    /**
-     * @param File|UploadedFile|null $audioFile
-     * @throws Exception
-     */
     public function setAudioFile(?File $audioFile = null): void
     {
         $this->audioFile = $audioFile;
@@ -376,7 +320,6 @@ class Song
     {
         if ($this->comments->contains($comment)) {
             $this->comments->removeElement($comment);
-            // set the owning side to null (unless already changed)
             if ($comment->getSong() === $this) {
                 $comment->setSong(null);
             }
@@ -407,7 +350,6 @@ class Song
     {
         if ($this->playlistSongs->contains($playlistSong)) {
             $this->playlistSongs->removeElement($playlistSong);
-            // set the owning side to null (unless already changed)
             if ($playlistSong->getSong() === $this) {
                 $playlistSong->setSong(null);
             }
@@ -466,7 +408,6 @@ class Song
     {
         if ($this->notifications->contains($notification)) {
             $this->notifications->removeElement($notification);
-            // set the owning side to null (unless already changed)
             if ($notification->getSong() === $this) {
                 $notification->setSong(null);
             }
@@ -535,7 +476,6 @@ class Song
     {
         if ($this->actions->contains($action)) {
             $this->actions->removeElement($action);
-            // set the owning side to null (unless already changed)
             if ($action->getSong() === $this) {
                 $action->setSong(null);
             }
@@ -566,7 +506,6 @@ class Song
     {
         if ($this->views->contains($view)) {
             $this->views->removeElement($view);
-            // set the owning side to null (unless already changed)
             if ($view->getSong() === $this) {
                 $view->setSong(null);
             }
@@ -609,7 +548,6 @@ class Song
     {
         if ($this->messages->contains($message)) {
             $this->messages->removeElement($message);
-            // set the owning side to null (unless already changed)
             if ($message->getSong() === $this) {
                 $message->setSong(null);
             }

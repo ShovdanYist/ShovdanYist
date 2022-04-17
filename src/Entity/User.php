@@ -2,214 +2,142 @@
 
 namespace App\Entity;
 
+use App\Repository\UserRepository;
 use App\Validator\Constraints\BlockedEmail;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use JetBrains\PhpStorm\Pure;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
- * @ORM\HasLifecycleCallbacks()
- * @UniqueEntity("username", message="forn.username.already.exists")
- * @BlockedEmail("email")
- * @UniqueEntity("email", message="forn.email.already.exists")
- */
-class User implements UserInterface
+#[ORM\Entity(repositoryClass: UserRepository::class)]
+#[ORM\HasLifecycleCallbacks]
+#[UniqueEntity('username', message: 'form.username.already.exists')]
+#[UniqueEntity('email', message: 'form.email.already.exists"')]
+#[BlockedEmail('email')]
+class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
-    /**
-     * @ORM\Column(type="string", length=180, unique=true)
-     * @Assert\NotBlank(message="username.not_blank")
-     * @Assert\Regex(
-     *     pattern     = "/^[a-z0-9._]+$/i",
-     *     htmlPattern = "^[a-zA-Z0-9._]+$",
-     *     message     = "forn.username.can.consist.symbols"
-     * )
-     */
+    #[ORM\Column(type: 'string', length: 180, unique: true)]
+    #[Assert\NotBlank(message: 'username.not_blank')]
+    #[Assert\Regex(
+        pattern: '/^[a-z0-9._]+$/i',
+        message: 'form.username.can.consist.symbols',
+        htmlPattern: '^[a-zA-Z0-9._]+$'
+    )]
     private $username;
 
-    /**
-     * @ORM\Column(type="json")
-     */
+    #[ORM\Column(type: 'json')]
     private $roles = [];
 
-    /**
-     * @var string The hashed password
-     * @ORM\Column(type="string")
-     */
+    #[ORM\Column(type: 'string')]
     private $password;
 
-    /**
-     * @var DateTime
-     * @ORM\Column(type="datetime", nullable=true)
-     */
+    #[ORM\Column(type: 'datetime', nullable: true)]
     private $passwordRequestedAt;
 
-    /**
-     * @ORM\Column(type="string", length=255, unique=true)
-     * @Assert\Email(message="form.its.not.an.email")
-     * @Assert\NotBlank(message="email.not_blank")
-     */
+    #[ORM\Column(type: 'string', length: 255, unique: true)]
+    #[Assert\Email(message: 'form.its.not.an.email')]
+    #[Assert\NotBlank(message: 'email.not_blank')]
     private $email;
 
-    /**
-     * @var string
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $token;
 
-    /**
-     * @ORM\OneToOne(targetEntity="App\Entity\Profile", inversedBy="user", cascade={"persist", "remove"})
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[ORM\OneToOne(inversedBy: 'user', targetEntity: Profile::class, cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(nullable: false)]
     private $profile;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Song::class, mappedBy="author")
-     */
+    #[ORM\OneToMany(mappedBy: 'author', targetEntity: Song::class)]
     private $songs;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Comment", mappedBy="author", orphanRemoval=true)
-     */
+    #[ORM\OneToMany(mappedBy: 'author', targetEntity: Comment::class, orphanRemoval: true)]
     private $comments;
 
-    /**
-     * @ORM\OneToMany(targetEntity=PlaylistSong::class, mappedBy="user", orphanRemoval=true)
-     */
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: PlaylistSong::class, orphanRemoval: true)]
     private $playlistSongs;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Comment", mappedBy="replyTo", orphanRemoval=true)
-     */
+    #[ORM\OneToMany(mappedBy: 'replyTo', targetEntity: Comment::class, orphanRemoval: true)]
     private $replies;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Notification::class, mappedBy="sender", orphanRemoval=true)
-     */
+    #[ORM\OneToMany(mappedBy: 'sender', targetEntity: Notification::class, orphanRemoval: true)]
     private $sentNotifications;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Notification", mappedBy="receiver", orphanRemoval=true)
-     */
+    #[ORM\OneToMany(mappedBy: 'receiver', targetEntity: Notification::class, orphanRemoval: true)]
     private $receivedNotifications;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Post::class, mappedBy="author", orphanRemoval=true)
-     */
+    #[ORM\OneToMany(mappedBy: 'author', targetEntity: Post::class, orphanRemoval: true)]
     private $posts;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Bookmark::class, mappedBy="user", orphanRemoval=true)
-     */
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Bookmark::class, orphanRemoval: true)]
     private $bookmarks;
 
-    /**
-     * @ORM\Column(type="boolean", nullable=true)
-     */
+    #[ORM\Column(type: 'boolean', nullable: true)]
     private $status;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $confirmedEmail;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="invitees")
-     */
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'invitees')]
     private $invitedBy;
 
-    /**
-     * @ORM\OneToMany(targetEntity=User::class, mappedBy="invitedBy")
-     */
+    #[ORM\OneToMany(mappedBy: 'invitedBy', targetEntity: User::class)]
     private $invitees;
 
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
+    #[ORM\Column(type: 'datetime', nullable: true)]
     private $registeredAt;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Action::class, mappedBy="moderator", orphanRemoval=true)
-     */
+    #[ORM\OneToMany(mappedBy: 'moderator', targetEntity: Action::class, orphanRemoval: true)]
     private $actions;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Action::class, mappedBy="user", orphanRemoval=true)
-     */
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Action::class, orphanRemoval: true)]
     private $remarks;
 
-    /**
-     * @ORM\OneToMany(targetEntity=View::class, mappedBy="user", orphanRemoval=true)
-     */
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: View::class, orphanRemoval: true)]
     private $views;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Follow::class, mappedBy="follower", orphanRemoval=true)
-     */
+    #[ORM\OneToMany(mappedBy: 'follower', targetEntity: Follow::class, orphanRemoval: true)]
     private $following;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Follow::class, mappedBy="followed", orphanRemoval=true)
-     */
+    #[ORM\OneToMany(mappedBy: 'followed', targetEntity: Follow::class, orphanRemoval: true)]
     private $followers;
 
-    /**
-     * @ORM\ManyToMany(targetEntity=Post::class, mappedBy="taggedUsers")
-     */
+    #[ORM\ManyToMany(targetEntity: Post::class, mappedBy: 'taggedUsers')]
     private $taggedPosts;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Like::class, mappedBy="user", orphanRemoval=true)
-     */
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Like::class, orphanRemoval: true)]
     private $likes;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Message::class, mappedBy="sender", orphanRemoval=true)
-     */
+    #[ORM\OneToMany(mappedBy: 'sender', targetEntity: Message::class, orphanRemoval: true)]
     private $sentMessages;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Message::class, mappedBy="receiver", orphanRemoval=true)
-     */
+    #[ORM\OneToMany(mappedBy: 'receiver', targetEntity: Message::class, orphanRemoval: true)]
     private $receivedMessages;
 
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
+    #[ORM\Column(type: 'datetime', nullable: true)]
     private $lastActivityAt;
 
-    /**
-     * @ORM\Column(type="boolean")
-     */
+    #[ORM\Column(type: 'boolean')]
     private $hideOnline;
 
-    /**
-     * @ORM\Column(type="boolean")
-     */
+    #[ORM\Column(type: 'boolean')]
     private $closedAccount;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Report::class, mappedBy="sender", orphanRemoval=true)
-     */
+    #[ORM\OneToMany(mappedBy: 'sender', targetEntity: Report::class, orphanRemoval: true)]
     private $reports;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Report::class, mappedBy="accused", orphanRemoval=true)
-     */
+    #[ORM\OneToMany(mappedBy: 'accused', targetEntity: Report::class, orphanRemoval: true)]
     private $accusations;
 
-    public function __construct()
+    #[Pure] public function __construct()
     {
         $this->songs = new ArrayCollection();
         $this->comments = new ArrayCollection();
@@ -233,9 +161,7 @@ class User implements UserInterface
         $this->accusations = new ArrayCollection();
     }
 
-    /**
-     * @ORM\PrePersist()
-     */
+    #[ORM\PrePersist]
     public function initialize()
     {
         $this->closedAccount = false;
@@ -249,11 +175,6 @@ class User implements UserInterface
         return $this->id;
     }
 
-    /**
-     * A visual identifier that represents this user.
-     *
-     * @see UserInterface
-     */
     public function getUsername(): string
     {
         return (string) $this->username;
@@ -266,15 +187,17 @@ class User implements UserInterface
         return $this;
     }
 
-    /**
-     * @see UserInterface
-     */
+    public function getUserIdentifier(): string
+    {
+        return $this->username;
+    }
+
     public function getRoles(): array
     {
         $roles = $this->roles;
-        // guarantee every user at least has ROLE_USER
-        $roles[] = 'ROLE_USER';
-
+        if (empty($roles)) {
+            $roles[] = 'ROLE_USER';
+        }
         return array_unique($roles);
     }
 
@@ -285,9 +208,6 @@ class User implements UserInterface
         return $this;
     }
 
-    /**
-     * @see UserInterface
-     */
     public function getPassword(): string
     {
         return (string) $this->password;
@@ -300,60 +220,42 @@ class User implements UserInterface
         return $this;
     }
 
-    /**
-     * Get passwordRequestedAt
-     */
     public function getPasswordRequestedAt(): DateTime
     {
         return $this->passwordRequestedAt;
     }
 
-    /**
-     * Set passwordRequestedAt
-     * @param $passwordRequestedAt
-     * @return User
-     */
     public function setPasswordRequestedAt($passwordRequestedAt): User
     {
         $this->passwordRequestedAt = $passwordRequestedAt;
         return $this;
     }
 
-    /**
-     * Get token
-     */
     public function getToken(): string
     {
         return $this->token;
     }
 
-    /**
-     * Set token
-     * @param $token
-     * @return User
-     */
     public function setToken($token): User
     {
         $this->token = $token;
+
         return $this;
     }
 
     /**
-     * @see UserInterface
+     * Returns the salt that was originally used to encode the password.
+     *
+     * {@inheritdoc}
      */
-    public function getSalt()
-    {
-        // not needed when using the "bcrypt" algorithm in security.yaml
-    }
+    public function getSalt(): ?string {return null;}
 
     /**
-     * @see UserInterface
+     * Removes sensitive data from the user.
+     *
+     * {@inheritdoc}
      */
-    public function eraseCredentials()
-    {
-        // If you store any temporary, sensitive data on the user, clear it here
-        // $this->plainPassword = null;
-    }
+    public function eraseCredentials(): void {}
 
     public function getProfile(): ?Profile
     {
@@ -367,9 +269,6 @@ class User implements UserInterface
         return $this;
     }
 
-    /**
-     * @return Collection|Song[]
-     */
     public function getSongs(): Collection
     {
         return $this->songs;
@@ -389,7 +288,6 @@ class User implements UserInterface
     {
         if ($this->songs->contains($song)) {
             $this->songs->removeElement($song);
-            // set the owning side to null (unless already changed)
             if ($song->getAuthor() === $this) {
                 $song->setAuthor(null);
             }
@@ -398,9 +296,6 @@ class User implements UserInterface
         return $this;
     }
 
-    /**
-     * @return Collection|Comment[]
-     */
     public function getComments(): Collection
     {
         return $this->comments;
@@ -420,7 +315,6 @@ class User implements UserInterface
     {
         if ($this->comments->contains($comment)) {
             $this->comments->removeElement($comment);
-            // set the owning side to null (unless already changed)
             if ($comment->getAuthor() === $this) {
                 $comment->setAuthor(null);
             }
@@ -429,9 +323,6 @@ class User implements UserInterface
         return $this;
     }
 
-    /**
-     * @return Collection|PlaylistSong[]
-     */
     public function getPlaylistSongs(): Collection
     {
         return $this->playlistSongs;
@@ -451,7 +342,6 @@ class User implements UserInterface
     {
         if ($this->playlistSongs->contains($playlistSong)) {
             $this->playlistSongs->removeElement($playlistSong);
-            // set the owning side to null (unless already changed)
             if ($playlistSong->getUser() === $this) {
                 $playlistSong->setUser(null);
             }
@@ -472,9 +362,6 @@ class User implements UserInterface
         return $this;
     }
 
-    /**
-     * @return Collection|Comment[]
-     */
     public function getReplies(): Collection
     {
         return $this->replies;
@@ -494,7 +381,6 @@ class User implements UserInterface
     {
         if ($this->replies->contains($reply)) {
             $this->replies->removeElement($reply);
-            // set the owning side to null (unless already changed)
             if ($reply->getReplyTo() === $this) {
                 $reply->setReplyTo(null);
             }
@@ -503,9 +389,6 @@ class User implements UserInterface
         return $this;
     }
 
-    /**
-     * @return Collection|Notification[]
-     */
     public function getSentNotifications(): Collection
     {
         return $this->sentNotifications;
@@ -525,7 +408,6 @@ class User implements UserInterface
     {
         if ($this->sentNotifications->contains($sentNotification)) {
             $this->sentNotifications->removeElement($sentNotification);
-            // set the owning side to null (unless already changed)
             if ($sentNotification->getSender() === $this) {
                 $sentNotification->setSender(null);
             }
@@ -534,9 +416,6 @@ class User implements UserInterface
         return $this;
     }
 
-    /**
-     * @return Collection|Notification[]
-     */
     public function getReceivedNotifications(): Collection
     {
         return $this->receivedNotifications;
@@ -556,7 +435,6 @@ class User implements UserInterface
     {
         if ($this->receivedNotifications->contains($receivedNotification)) {
             $this->receivedNotifications->removeElement($receivedNotification);
-            // set the owning side to null (unless already changed)
             if ($receivedNotification->getReceiver() === $this) {
                 $receivedNotification->setReceiver(null);
             }
@@ -565,9 +443,6 @@ class User implements UserInterface
         return $this;
     }
 
-    /**
-     * @return Collection|Post[]
-     */
     public function getPosts(): Collection
     {
         return $this->posts;
@@ -587,7 +462,6 @@ class User implements UserInterface
     {
         if ($this->posts->contains($post)) {
             $this->posts->removeElement($post);
-            // set the owning side to null (unless already changed)
             if ($post->getAuthor() === $this) {
                 $post->setAuthor(null);
             }
@@ -596,9 +470,6 @@ class User implements UserInterface
         return $this;
     }
 
-    /**
-     * @return Collection|Bookmark[]
-     */
     public function getBookmarks(): Collection
     {
         return $this->bookmarks;
@@ -618,7 +489,6 @@ class User implements UserInterface
     {
         if ($this->bookmarks->contains($bookmark)) {
             $this->bookmarks->removeElement($bookmark);
-            // set the owning side to null (unless already changed)
             if ($bookmark->getUser() === $this) {
                 $bookmark->setUser(null);
             }
@@ -663,9 +533,6 @@ class User implements UserInterface
         return $this;
     }
 
-    /**
-     * @return Collection|self[]
-     */
     public function getInvitees(): Collection
     {
         return $this->invitees;
@@ -685,7 +552,6 @@ class User implements UserInterface
     {
         if ($this->invitees->contains($invitee)) {
             $this->invitees->removeElement($invitee);
-            // set the owning side to null (unless already changed)
             if ($invitee->getInvitedBy() === $this) {
                 $invitee->setInvitedBy(null);
             }
@@ -706,9 +572,6 @@ class User implements UserInterface
         return $this;
     }
 
-    /**
-     * @return Collection|Action[]
-     */
     public function getActions(): Collection
     {
         return $this->actions;
@@ -728,7 +591,6 @@ class User implements UserInterface
     {
         if ($this->actions->contains($action)) {
             $this->actions->removeElement($action);
-            // set the owning side to null (unless already changed)
             if ($action->getModerator() === $this) {
                 $action->setModerator(null);
             }
@@ -737,9 +599,6 @@ class User implements UserInterface
         return $this;
     }
 
-    /**
-     * @return Collection|Action[]
-     */
     public function getRemarks(): Collection
     {
         return $this->remarks;
@@ -759,7 +618,6 @@ class User implements UserInterface
     {
         if ($this->remarks->contains($remark)) {
             $this->remarks->removeElement($remark);
-            // set the owning side to null (unless already changed)
             if ($remark->getUser() === $this) {
                 $remark->setUser(null);
             }
@@ -768,9 +626,6 @@ class User implements UserInterface
         return $this;
     }
 
-    /**
-     * @return Collection|View[]
-     */
     public function getViews(): Collection
     {
         return $this->views;
@@ -790,7 +645,6 @@ class User implements UserInterface
     {
         if ($this->views->contains($view)) {
             $this->views->removeElement($view);
-            // set the owning side to null (unless already changed)
             if ($view->getUser() === $this) {
                 $view->setUser(null);
             }
@@ -799,17 +653,11 @@ class User implements UserInterface
         return $this;
     }
 
-    /**
-     * @return Collection|Follow[]
-     */
     public function getFollowers(): Collection
     {
         return $this->followers;
     }
 
-    /**
-     * @return Collection|Follow[]
-     */
     public function getFollowing(): Collection
     {
         return $this->following;
@@ -833,9 +681,6 @@ class User implements UserInterface
         return $follow;
     }
 
-    /**
-     * @return Collection|Post[]
-     */
     public function getTaggedPosts(): Collection
     {
         return $this->taggedPosts;
@@ -861,9 +706,6 @@ class User implements UserInterface
         return $this;
     }
 
-    /**
-     * @return Collection|Like[]
-     */
     public function getLikes(): Collection
     {
         return $this->likes;
@@ -883,7 +725,6 @@ class User implements UserInterface
     {
         if ($this->likes->contains($like)) {
             $this->likes->removeElement($like);
-            // set the owning side to null (unless already changed)
             if ($like->getUser() === $this) {
                 $like->setUser(null);
             }
@@ -892,9 +733,6 @@ class User implements UserInterface
         return $this;
     }
 
-    /**
-     * @return Collection|Message[]
-     */
     public function getSentMessages(): Collection
     {
         return $this->sentMessages;
@@ -914,7 +752,6 @@ class User implements UserInterface
     {
         if ($this->sentMessages->contains($sentMessage)) {
             $this->sentMessages->removeElement($sentMessage);
-            // set the owning side to null (unless already changed)
             if ($sentMessage->getSender() === $this) {
                 $sentMessage->setSender(null);
             }
@@ -923,9 +760,6 @@ class User implements UserInterface
         return $this;
     }
 
-    /**
-     * @return Collection|Message[]
-     */
     public function getReceivedMessages(): Collection
     {
         return $this->receivedMessages;
@@ -945,7 +779,6 @@ class User implements UserInterface
     {
         if ($this->receivedMessages->contains($receivedMessage)) {
             $this->receivedMessages->removeElement($receivedMessage);
-            // set the owning side to null (unless already changed)
             if ($receivedMessage->getReceiver() === $this) {
                 $receivedMessage->setReceiver(null);
             }
@@ -990,9 +823,6 @@ class User implements UserInterface
         return $this;
     }
 
-    /**
-     * @return Collection|Report[]
-     */
     public function getReports(): Collection
     {
         return $this->reports;
@@ -1012,7 +842,6 @@ class User implements UserInterface
     {
         if ($this->reports->contains($report)) {
             $this->reports->removeElement($report);
-            // set the owning side to null (unless already changed)
             if ($report->getSender() === $this) {
                 $report->setSender(null);
             }
@@ -1021,9 +850,6 @@ class User implements UserInterface
         return $this;
     }
 
-    /**
-     * @return Collection|Report[]
-     */
     public function getAccusations(): Collection
     {
         return $this->accusations;
@@ -1043,7 +869,6 @@ class User implements UserInterface
     {
         if ($this->accusations->contains($accusation)) {
             $this->accusations->removeElement($accusation);
-            // set the owning side to null (unless already changed)
             if ($accusation->getSender() === $this) {
                 $accusation->setSender(null);
             }

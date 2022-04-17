@@ -2,101 +2,72 @@
 
 namespace App\Entity;
 
-use Exception;
+use App\Repository\PeopleRepository;
 use Doctrine\ORM\Mapping as ORM;
 use App\Validator\Constraints as MyAssert;
 use Doctrine\Common\Collections\Collection;
+use JetBrains\PhpStorm\Pure;
 use Symfony\Component\HttpFoundation\File\File;
 use Doctrine\Common\Collections\ArrayCollection;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\PeopleRepository")
- * @MyAssert\UniquePeople()
- * @Vich\Uploadable
- */
+#[ORM\Entity(repositoryClass: PeopleRepository::class)]
+#[MyAssert\UniquePeople]
+#[Vich\Uploadable]
 class Person
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank()
-     * @Assert\Type("string")
-     */
+    #[ORM\Column(type: 'string', length: 255)]
+    #[Assert\NotBlank]
+    #[Assert\Type('string')]
     private $firstName;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     * @Assert\Type("string")
-     */
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[Assert\Type('string')]
     private $lastName;
 
-    /**
-     * @ORM\Column(type="date", nullable=true)
-     * @Assert\Date()
-     */
+    #[ORM\Column(type: 'date', nullable: true)]
+    #[Assert\Date]
     private $birthDay;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     * @Assert\Type("string")
-     */
+    #[ORM\Column(type: 'text', nullable: true)]
+    #[Assert\Type('string')]
     private $biography;
 
-    /**
-     * @Vich\UploadableField(mapping="people_images", fileNameProperty="picture")
-     * @Assert\File(mimeTypes={"image/jpeg","image/png","image/gif"}, mimeTypesMessage="image.have.to.be.jpg.or.png")
-     * @var File|null
-     */
+    #[Vich\UploadableField(mapping: 'people_images', fileNameProperty: 'picture')]
+    #[Assert\File(mimeTypes: ['image/jpeg','image/png','image/gif'], mimeTypesMessage: 'image.have.to.be.jpg.or.png')]
     private $pictureFile;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     * @Assert\Type("string")
-     */
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[Assert\Type('string')]
     private $picture;
 
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     * @Assert\DateTime()
-     */
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    #[Assert\Type(\DateTimeInterface::class)]
     private $updatedAt;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     * @Assert\Type("string")
-     */
+    #[ORM\Column(type: 'string', length: 255)]
+    #[Assert\Type('string')]
     private $slug;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Song::class, mappedBy="vocalist", orphanRemoval=true)
-     */
+    #[ORM\OneToMany(mappedBy: 'vocalist', targetEntity: Song::class, orphanRemoval: true)]
     private $songs;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Activity", inversedBy="people")
-     */
-    private $activity;
-
-    /**
-     * @ORM\ManyToMany(targetEntity=Song::class, mappedBy="featuring")
-     */
+    #[ORM\ManyToMany(targetEntity: Song::class, mappedBy: 'featuring')]
     private $featuring;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Action::class, mappedBy="person", orphanRemoval=true)
-     */
+    #[ORM\ManyToMany(targetEntity: Activity::class, inversedBy: 'people')]
+    private $activity;
+
+    #[ORM\OneToMany(mappedBy: 'person', targetEntity: Action::class, orphanRemoval: true)]
     private $actions;
 
-    public function __construct()
+    #[Pure] public function __construct()
     {
         $this->songs = new ArrayCollection();
         $this->activity = new ArrayCollection();
@@ -104,10 +75,11 @@ class Person
         $this->actions = new ArrayCollection();
     }
 
-    /**
-     * @param File|UploadedFile|null $pictureFile
-     * @throws Exception
-     */
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
     public function setPictureFile(?File $pictureFile = null): void
     {
         $this->pictureFile = $pictureFile;
@@ -120,11 +92,6 @@ class Person
     public function getPictureFile(): ?File
     {
         return $this->pictureFile;
-    }
-
-    public function getId(): ?int
-    {
-        return $this->id;
     }
 
     public function getFullName(): string
@@ -230,7 +197,6 @@ class Person
     {
         if ($this->songs->contains($song)) {
             $this->songs->removeElement($song);
-            // set the owning side to null (unless already changed)
             if ($song->getVocalist() === $this) {
                 $song->setVocalist(null);
             }
@@ -327,7 +293,6 @@ class Person
     {
         if ($this->actions->contains($action)) {
             $this->actions->removeElement($action);
-            // set the owning side to null (unless already changed)
             if ($action->getPerson() === $this) {
                 $action->setPerson(null);
             }

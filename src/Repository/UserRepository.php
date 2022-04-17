@@ -4,12 +4,10 @@ namespace App\Repository;
 
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
-use Doctrine\DBAL\DBALException;
+use Doctrine\DBAL\Exception;
+use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
-use Doctrine\ORM\OptimisticLockException;
-use Doctrine\ORM\ORMException;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -27,27 +25,53 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         parent::__construct($registry, User::class);
     }
 
+    public function flush(): void
+    {
+        $this->_em->flush();
+    }
+
+    public function persist(User $entity): void
+    {
+        $this->_em->persist($entity);
+    }
+
+    public function add(User $entity, bool $flush = true): void
+    {
+        $this->_em->persist($entity);
+        if ($flush) {
+            $this->_em->flush();
+        }
+    }
+
+    public function remove(User $entity, bool $flush = true): void
+    {
+        $this->_em->remove($entity);
+        if ($flush) {
+            $this->_em->flush();
+        }
+    }
+
     /**
-     * @throws DBALException
+     * @throws Exception
      */
     public function findConversations($user): array
     {
-        $em = $this->getEntityManager();
+        $connection = $this->getEntityManager()->getConnection();
 
-        $query = 'SELECT CASE WHEN sender_id = ' . $user . '
+        $query = 'SELECT CASE WHEN sender_id = :user
                     THEN receiver_id
                     ELSE sender_id
                     END AS user
                     FROM message
-                    WHERE ' . $user . ' IN (sender_id, receiver_id) AND sender_id = ' . $user . ' AND sender_deleted = false
-                    OR ' . $user . ' IN (sender_id, receiver_id) AND receiver_id = ' . $user . ' AND receiver_deleted = false
+                    WHERE :user IN (sender_id, receiver_id) AND sender_id = :user AND sender_deleted = false
+                    OR :user IN (sender_id, receiver_id) AND receiver_id = :user AND receiver_deleted = false
                     GROUP BY user
                     ORDER BY MAX(sent_at) DESC;';
 
-        $statement = $em->getConnection()->prepare($query);
-        $statement->execute();
+        $statement = $connection->prepare($query);
+        $result = $statement->executeQuery(['user' => $user]);
 
-        return $statement->fetchAll();
+        return $result->fetchAllAssociative();
     }
 
     public function findLikes($criteria, $orderBy = ['id' => 'DESC'], $limit = null, $offset = null)
@@ -248,17 +272,15 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
     /**
      * Used to upgrade (rehash) the user's password automatically over time.
      * @param UserInterface $user
-     * @param string $newEncodedPassword
-     * @throws ORMException
-     * @throws OptimisticLockException
+     * @param string $newHashedPassword
      */
-    public function upgradePassword(UserInterface $user, string $newEncodedPassword): void
+    public function upgradePassword(UserInterface $user, string $newHashedPassword): void
     {
         if (!$user instanceof User) {
             throw new UnsupportedUserException(sprintf('Instances of "%s" are not supported.', \get_class($user)));
         }
 
-        $user->setPassword($newEncodedPassword);
+        $user->setPassword($newHashedPassword);
         $this->_em->persist($user);
         $this->_em->flush();
     }

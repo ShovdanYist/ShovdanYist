@@ -4,41 +4,37 @@ namespace App\Controller;
 
 use App\CustomAbstracts\CustomAbstractController;
 use App\Entity\Action;
-use App\Entity\Follow;
-use App\Entity\Person;
 use App\Entity\Report;
 use App\Entity\Song;
 use App\Entity\User;
+use App\Repository\ActionRepository;
 use App\Repository\EmailAddressRepository;
+use App\Repository\NotificationRepository;
+use App\Repository\PeopleRepository;
+use App\Repository\PostRepository;
+use App\Repository\ReportRepository;
+use App\Repository\SongRepository;
+use App\Repository\UserRepository;
 use App\Service\Defender;
 use DateTime;
 use App\Entity\Post;
 use App\Entity\Notification;
 use App\Form\NotificationType;
 use App\Service\Paginator;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route("/moderation", name="moderation_")
- */
+#[Route('/moderation', name: 'moderation_')]
 class ModerationController extends CustomAbstractController
 {
-    /**
-     * @Route("/", name="index")
-     * @Security("is_granted('ROLE_OWNER')")
-     * @return Response
-     */
-    public function index(): Response
+    #[Route('/', name: 'index',  methods: ['GET'])]
+    #[Security('is_granted("ROLE_OWNER")')]
+    public function index(PostRepository $posts, SongRepository $songs, UserRepository $users, PeopleRepository $people): Response
     {
-        $posts = $this->getDoctrine()->getRepository(Post::class);
-        $songs = $this->getDoctrine()->getRepository(Song::class);
-        $users = $this->getDoctrine()->getRepository(User::class);
-        $people = $this->getDoctrine()->getRepository(Person::class);
-
         $stats = [
             'users' => [
                 'name' => 'users',
@@ -71,13 +67,8 @@ class ModerationController extends CustomAbstractController
         ]);
     }
 
-    /**
-     * @Route("/music/{page<\d+>?1}", name="music")
-     * @Security("is_granted('ROLE_SONG_AUTHOR') or is_granted('ROLE_SONG_MODERATOR')")
-     * @param $page
-     * @param Paginator $paginator
-     * @return Response
-     */
+    #[Route('/music/{page<\d+>?1}', name: 'music', methods: ['GET'])]
+    #[Security('is_granted("ROLE_SONG_AUTHOR") or is_granted("ROLE_SONG_MODERATOR")')]
     public function music($page, Paginator $paginator): Response
     {
         $paginator
@@ -95,14 +86,9 @@ class ModerationController extends CustomAbstractController
         ]);
     }
 
-    /**
-     * @Security("is_granted('ROLE_REPORT_MODERATOR')")
-     * @Route("/reports/{page<\d+>?1}", name="reports")
-     * @param $page
-     * @param Paginator $paginator
-     * @return Response
-     */
-    public function reports($page, Paginator $paginator): Response
+    #[Route('/reports/{page<\d+>?1}', name: 'reports',  methods: ['GET'])]
+    #[Security('is_granted("ROLE_REPORT_MODERATOR")')]
+    public function reports($page, Paginator $paginator, ReportRepository $reportRepo): Response
     {
         $paginator
             ->setClass(Report::class)
@@ -111,12 +97,11 @@ class ModerationController extends CustomAbstractController
             ->setOrder(['id' => 'DESC'])
         ;
 
-        foreach ($this->getDoctrine()->getRepository(Report::class)->findBy(['seen' => false]) as $report) {
+        foreach ($reportRepo->findBy(['seen' => false]) as $report) {
             $report->setSeen(true);
         }
 
-        $em = $this->getDoctrine()->getManager();
-        $em->flush();
+        $reportRepo->flush();
 
         return $this->render('interface/moderation/reports.html.twig', [
             'reports' => $paginator->getData(),
@@ -124,13 +109,8 @@ class ModerationController extends CustomAbstractController
         ]);
     }
 
-    /**
-     * @Route("/ready/{page<\d+>?1}", name="ready")
-     * @Security("is_granted('ROLE_SONG_MODERATOR')")
-     * @param $page
-     * @param Paginator $paginator
-     * @return Response
-     */
+    #[Route('/ready/{page<\d+>?1}', name: 'ready',  methods: ['GET'])]
+    #[Security('is_granted("ROLE_SONG_MODERATOR")')]
     public function ready($page, Paginator $paginator): Response
     {
         $paginator
@@ -148,13 +128,8 @@ class ModerationController extends CustomAbstractController
         ]);
     }
 
-    /**
-     * @Route("/pending/{page<\d+>?1}", name="pending")
-     * @Security("is_granted('ROLE_SONG_MODERATOR')")
-     * @param $page
-     * @param Paginator $paginator
-     * @return Response
-     */
+    #[Route('/pending/{page<\d+>?1}', name: 'pending',  methods: ['GET'])]
+    #[Security('is_granted("ROLE_SONG_MODERATOR")')]
     public function pending($page, Paginator $paginator): Response
     {
         $paginator
@@ -173,14 +148,8 @@ class ModerationController extends CustomAbstractController
         ]);
     }
 
-    /**
-     * @Route("/actions/{page<\d+>?1}", name="actions")
-     * @Security("is_granted('ROLE_USER_ACTIONS')")
-     * @param $page
-     * @param Paginator $paginator
-     * @param Defender $defender
-     * @return Response
-     */
+    #[Route('/actions/{page<\d+>?1}', name: 'actions',  methods: ['GET'])]
+    #[Security('is_granted("ROLE_USER_ACTIONS")')]
     public function actions($page, Paginator $paginator, Defender $defender): Response
     {
         $paginator
@@ -197,15 +166,8 @@ class ModerationController extends CustomAbstractController
         ]);
     }
 
-    /**
-     * @Route("/actions/user/{username}/{page<\d+>?1}", name="user_actions")
-     * @Security("is_granted('ROLE_USER_ACTIONS')")
-     * @param User $user
-     * @param $page
-     * @param Paginator $paginator
-     * @param Defender $defender
-     * @return Response
-     */
+    #[Route('/actions/user/{username}/{page<\d+>?1}', name: 'user_actions',  methods: ['GET'])]
+    #[Security('is_granted("ROLE_USER_ACTIONS")')]
     public function userActions(User $user,$page, Paginator $paginator, Defender $defender): Response
     {
         $paginator
@@ -225,15 +187,8 @@ class ModerationController extends CustomAbstractController
         ]);
     }
 
-    /**
-     * @Route("/actions/type/{type}/{page<\d+>?1}", name="type_actions")
-     * @Security("is_granted('ROLE_USER_ACTIONS')")
-     * @param $type
-     * @param $page
-     * @param Paginator $paginator
-     * @param Defender $defender
-     * @return Response
-     */
+    #[Route('/actions/type/{type}/{page<\d+>?1}', name: 'type_actions',  methods: ['GET'])]
+    #[Security('is_granted("ROLE_USER_ACTIONS")')]
     public function typeActions($type,$page, Paginator $paginator, Defender $defender): Response
     {
         $paginator
@@ -252,31 +207,19 @@ class ModerationController extends CustomAbstractController
         ]);
     }
 
-    /**
-     * @Route("/action/{id}/delete", name="action_delete", methods={"DELETE"})
-     * @Security("is_granted('ROLE_OWNER')")
-     * @param Request $request
-     * @param Action $action
-     * @return Response
-     */
-    public function deleteAction(Request $request, Action $action): Response
+    #[Route('/action/{id}/delete', name: 'action_delete',  methods: ['POST'])]
+    #[Security('is_granted("ROLE_OWNER")')]
+    public function deleteAction(Request $request, Action $action, ActionRepository $actionRepo): Response
     {
         if ($this->isCsrfTokenValid('delete'.$action->getId(), $request->request->get('_token'))) {
-            $em = $this->getDoctrine()->getManager();
-            $em->remove($action);
-            $em->flush();
+            $actionRepo->remove($action);
         }
 
         return $this->redirectToRoute('moderation_actions');
     }
 
-    /**
-     * @Route("/posts/{page<\d+>?1}", name="posts", methods={"GET"})
-     * @Security("is_granted('ROLE_POST_MODERATOR')")
-     * @param $page
-     * @param Paginator $paginator
-     * @return Response
-     */
+    #[Route('/posts/{page<\d+>?1}', name: 'posts',  methods: ['GET'])]
+    #[Security('is_granted("ROLE_POST_MODERATOR")')]
     public function posts($page, Paginator $paginator): Response
     {
         $paginator
@@ -293,18 +236,19 @@ class ModerationController extends CustomAbstractController
         ]);
     }
 
-    /**
-     * @Route("/validation/post/{id}", name="post_validation")
-     * @Security("is_granted('ROLE_POST_MODERATOR')")
-     * @param Request $request
-     * @param Post $post
-     * @return Response
-     */
-    public function postValidation(Request $request, Post $post): Response
+    #[Route('/validation/post/{id}', name: 'post_validation',  methods: ['POST'])]
+    #[Security('is_granted("ROLE_POST_MODERATOR")')]
+    public function postValidation(
+        Request $request,
+        Post $post,
+        NotificationRepository $notificationRepo,
+        ActionRepository $actionRepo,
+        UserRepository $userRepo,
+        EntityManagerInterface $em
+    ): Response
     {
         if ($post->getStatus() === null) {
-            $em = $this->getDoctrine()->getManager();
-            $sender = $this->getDoctrine()->getRepository(User::class)->findOneBy(['id' => 2]);
+            $sender = $userRepo->findOneBy(['username' => 'shovdanyist']);
 
             $notification = new Notification();
             $notification->setReceiver($post->getAuthor());
@@ -331,7 +275,7 @@ class ModerationController extends CustomAbstractController
                         $notify->setPost($post);
                         $notify->setSender($post->getAuthor());
                         $notify->setType('user_tagged');
-                        $em->persist($notify);
+                        $notificationRepo->persist($notify);
                     }
                 }
 
@@ -356,8 +300,8 @@ class ModerationController extends CustomAbstractController
                 $post->setStatus(false);
             }
 
-            $em->persist($action);
-            $em->persist($notification);
+            $actionRepo->persist($action);
+            $notificationRepo->persist($notification);
             $em->flush();
         } else {
             ($post->getStatus() === true) ? $status = 'approved' : $status = 'rejected';
@@ -367,15 +311,9 @@ class ModerationController extends CustomAbstractController
         return $this->redirectToRoute('moderation_posts');
     }
 
-    /**
-     * @Route("/user/rights/{username}", name="user_rights", methods={"GET", "POST"})
-     * @Security("is_granted('ROLE_SUPER_MODERATOR')")
-     * @param Request $request
-     * @param User $user
-     * @param Defender $defender
-     * @return Response
-     */
-    public function userRights(Request $request, User $user, Defender $defender): Response
+    #[Route('/user/rights/{username}', name: 'user_rights',  methods: ['GET','POST'])]
+    #[Security('is_granted("ROLE_SUPER_MODERATOR")')]
+    public function userRights(Request $request, User $user, Defender $defender, ActionRepository $actionRepo): Response
     {
         if (!$defender->rightToChangeUserRights($this->user(),$user)) {
             return $this->redirectToRoute('user_profile', ['username' => $user->getUsername()]);
@@ -448,18 +386,14 @@ class ModerationController extends CustomAbstractController
                 $message .= '<br> + ' . $this->trans($value);
             }
 
-            $em = $this->getDoctrine()->getManager();
-
             if ($message !== '') {
                 $action = new Action();
                 $action->setModerator($this->user());
                 $action->setUser($user);
                 $action->setType('rights_changed');
                 $action->setContent($message);
-                $em->persist($action);
+                $actionRepo->add($action);
             }
-
-            $em->flush();
 
             return $this->redirectToRoute('user_profile', [
                 'username' => $user->getUsername()
@@ -473,15 +407,9 @@ class ModerationController extends CustomAbstractController
         ]);
     }
 
-    /**
-     * @Route("/banUser/{id}", name="ban_user", methods={"GET","POST"})
-     * @Security("is_granted('ROLE_USER_BAN')")
-     * @param User $user
-     * @param EmailAddressRepository $emails
-     * @param Defender $defender
-     * @return Response
-     */
-    public function banUser(User $user, EmailAddressRepository $emails, Defender $defender): Response
+    #[Route('/banUser/{id}', name: 'ban_user',  methods: ['POST'])]
+    #[Security('is_granted("ROLE_USER_BAN")')]
+    public function banUser(User $user, EmailAddressRepository $emails, Defender $defender, ActionRepository $actionRepo): Response
     {
         if (!$defender->rightToBlockUser($this->user(),$user)) {
             return $this->redirectToRoute('user_profile', ['username' => $user->getUsername()]);
@@ -501,9 +429,7 @@ class ModerationController extends CustomAbstractController
         $action->setUser($user);
         $action->setType('user_blocked');
 
-        $em = $this->getDoctrine()->getManager();
-        $em->persist($action);
-        $em->flush();
+        $actionRepo->add($action);
 
         $this->addFlash('danger', $this->trans('user.is.banned',['username' => $user->getUsername()]));
 
@@ -512,14 +438,9 @@ class ModerationController extends CustomAbstractController
         ]);
     }
 
-    /**
-     * @Route("/unbanUser/{id}", name="unban_user", methods={"GET","POST"})
-     * @Security("is_granted('ROLE_USER_BAN')")
-     * @param User $user
-     * @param EmailAddressRepository $emails
-     * @return Response
-     */
-    public function unbanUser(User $user, EmailAddressRepository $emails): Response
+    #[Route('/unbanUser/{id}', name: 'unban_user',  methods: ['POST'])]
+    #[Security('is_granted("ROLE_USER_BAN")')]
+    public function unbanUser(User $user, EmailAddressRepository $emails, ActionRepository $actionRepo): Response
     {
         $email = $emails->findOneBy(['address' => $user->getConfirmedEmail()]);
 
@@ -534,9 +455,7 @@ class ModerationController extends CustomAbstractController
         $action->setUser($user);
         $action->setType('user_unblocked');
 
-        $em = $this->getDoctrine()->getManager();
-        $em->persist($action);
-        $em->flush();
+        $actionRepo->add($action);
 
         $this->addFlash('success', $this->trans('user.is.unbanned',['username' => $user->getUsername()]));
 

@@ -4,7 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Person;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * @method Person|null find($id, $lockMode = null, $lockVersion = null)
@@ -17,6 +17,32 @@ class PeopleRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Person::class);
+    }
+
+    public function flush(): void
+    {
+        $this->_em->flush();
+    }
+
+    public function persist(Person $entity): void
+    {
+        $this->_em->persist($entity);
+    }
+
+    public function add(Person $entity, bool $flush = true): void
+    {
+        $this->_em->persist($entity);
+        if ($flush) {
+            $this->_em->flush();
+        }
+    }
+
+    public function remove(Person $entity, bool $flush = true): void
+    {
+        $this->_em->remove($entity);
+        if ($flush) {
+            $this->_em->flush();
+        }
     }
 
     public function findPeopleByActivity($activity): array

@@ -2,85 +2,56 @@
 
 namespace App\Entity;
 
+use App\Repository\NotificationRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\NotificationRepository")
- * @ORM\HasLifecycleCallbacks()
- */
+#[ORM\Entity(repositoryClass: NotificationRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 class Notification
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
-    /**
-     * @ORM\Column(type="boolean")
-     */
+    #[ORM\Column(type: 'boolean')]
     private $seen;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="sentNotifications")
-     */
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'sentNotifications')]
     private $sender;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="receivedNotifications")
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'receivedNotifications')]
+    #[ORM\JoinColumn(nullable: false)]
     private $receiver;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Comment", inversedBy="notifications")
-     */
+    #[ORM\ManyToOne(targetEntity: Comment::class, inversedBy: 'notifications')]
     private $comment;
 
-    /**
-     * @ORM\Column(type="datetime")
-     */
+    #[ORM\Column(type: 'datetime')]
     private $publishedAt;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $message;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $type;
 
-    /**
-     * @ORM\Column(type="boolean")
-     */
+    #[ORM\Column(type: 'boolean')]
     private $status;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Post::class, inversedBy="notifications")
-     */
+    #[ORM\ManyToOne(targetEntity: Post::class, inversedBy: 'notifications')]
     private $post;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Song::class, inversedBy="notifications")
-     */
+    #[ORM\ManyToOne(targetEntity: Song::class, inversedBy: 'notifications')]
     private $song;
 
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
+    #[ORM\Column(type: 'integer', nullable: true)]
     private $quantity;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Follow::class, inversedBy="notifications")
-     */
+    #[ORM\ManyToOne(targetEntity: Follow::class, inversedBy: 'notifications')]
     private $follow;
 
-    /**
-     * @ORM\PrePersist()
-     */
+    #[ORM\PrePersist]
     public function initialize()
     {
         $this->seen = false;

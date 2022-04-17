@@ -8,16 +8,21 @@ use Symfony\Component\Validator\Constraint;
 /**
  * @Annotation
  */
-class UniqueTitleSlug extends Constraint
+#[\Attribute] class UniqueTitleSlug extends Constraint
 {
     public $message = 'This {{ field }} already exists';
 
-    public function validatedBy()
+    public function __construct($options = null, array $groups = null, $payload = null, $message = null)
+    {
+        parent::__construct($options, $groups, $payload);
+    }
+
+    public function validatedBy(): string
     {
         return \get_class($this).'Validator';
     }
 
-    public function getTargets()
+    public function getTargets(): array|string
     {
         return self::CLASS_CONSTRAINT;
     }

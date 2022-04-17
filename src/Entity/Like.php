@@ -6,45 +6,31 @@ use App\Repository\LikeRepository;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass=LikeRepository::class)
- * @ORM\Table(name="`like`")
- * @ORM\HasLifecycleCallbacks()
- */
+#[ORM\Entity(repositoryClass: LikeRepository::class)]
+#[ORM\Table(name: '`like`')]
+#[ORM\HasLifecycleCallbacks]
 class Like
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
-    /**
-     * @ORM\Column(type="datetime")
-     */
+    #[ORM\Column(type: 'datetime')]
     private $likedAt;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="likes")
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'likes')]
+    #[ORM\JoinColumn(nullable: false)]
     private $user;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Post::class, inversedBy="likes")
-     */
+    #[ORM\ManyToOne(targetEntity: Post::class, inversedBy: 'likes')]
     private $post;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Comment::class, inversedBy="likes")
-     */
+    #[ORM\ManyToOne(targetEntity: Comment::class, inversedBy: 'likes')]
     private $comment;
 
-    /**
-     * @ORM\PrePersist()
-     */
-    public function initializePrePersist()
+    #[ORM\PrePersist]
+    public function initialize()
     {
         $this->likedAt = new DateTime('now');
     }

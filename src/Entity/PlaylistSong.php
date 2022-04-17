@@ -6,40 +6,28 @@ use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\PlaylistSongRepository;
 
-/**
- * @ORM\Entity(repositoryClass=PlaylistSongRepository::class)
- * @ORM\HasLifecycleCallbacks()
- */
+#[ORM\Entity(repositoryClass: PlaylistSongRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 class PlaylistSong
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="playlistSongs")
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'playlistSongs')]
+    #[ORM\JoinColumn(nullable: false)]
     private $user;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Song::class, inversedBy="playlistSongs")
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[ORM\ManyToOne(targetEntity: Song::class, inversedBy: 'playlistSongs')]
+    #[ORM\JoinColumn(nullable: false)]
     private $song;
 
-    /**
-     * @ORM\Column(type="datetime")
-     */
+    #[ORM\Column(type: 'datetime')]
     private $addedAt;
 
-    /**
-     * @ORM\PrePersist()
-     */
-    public function initializeAddedDate()
+    #[ORM\PrePersist]
+    public function initialize()
     {
         $this->addedAt = new DateTime('now');
     }

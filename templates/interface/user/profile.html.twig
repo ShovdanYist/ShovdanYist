@@ -241,64 +241,49 @@
 
             {% if type == 'profile' or type == 'tagged' %}
 
-                <div class="md-grid-posts">
+                {% if posts %}
 
-                    {% for post in posts %}
+                    <div class="md-grid-posts">
 
-                        <div class="md-grid-post">
+                        {% for post in posts %}
 
-                            <a href="{{ path('post_show', {'id':post.id}) }}">
+                                <div class="md-grid-post">
 
-                                <img src="{% if post.image %}{{ vich_uploader_asset(post) | imagine_filter('avatar') }}{% else %}{{ asset('assets/images/question.jpg') | imagine_filter('avatar') }}{% endif %}" alt="{{ post.slug }}">
+                                    <a href="{{ path('post_show', {'id':post.id}) }}">
 
-                                <div class="md-grid-post-actions">
+                                        <img src="{% if post.image %}{{ vich_uploader_asset(post) | imagine_filter('avatar') }}{% else %}{{ asset('assets/images/question.jpg') | imagine_filter('avatar') }}{% endif %}" alt="{{ post.slug }}">
 
-                                    {% if not post.status %}
+                                        <div class="md-grid-post-actions">
 
-                                        <span class="status-icon" data-toggle="tooltip" title="{% if post.status is null %}{{ 'post.in.moderation' | trans }}{% else %}{{ 'post.is.rejected' | trans }}{% endif %}">
-                                            {% if post.status is null %}
-                                                <i class="fas fa-history"></i>
-                                            {% else %}
-                                                <i class="fas fa-ban"></i>
+                                            {% if not post.status %}
+
+                                                <span class="status-icon" data-toggle="tooltip" title="{% if post.status is null %}{{ 'post.in.moderation' | trans }}{% else %}{{ 'post.is.rejected' | trans }}{% endif %}">
+                                                    {% if post.status is null %}
+                                                        <i class="fas fa-history"></i>
+                                                    {% else %}
+                                                        <i class="fas fa-ban"></i>
+                                                    {% endif %}
+                                                </span>
+
                                             {% endif %}
-                                        </span>
 
-                                    {% endif %}
+                                            {% if '.gif' in post.image %}
+                                                <span class="type-icon" data-toggle="tooltip" title="{{ 'animated.image' | trans }}">
+                                                    <i class="fas fa-magic"></i>
+                                                </span>
+                                            {% endif %}
 
-                                    {% if '.gif' in post.image %}
-                                        <span class="type-icon" data-toggle="tooltip" title="{{ 'animated.image' | trans }}">
-                                            <i class="fas fa-magic"></i>
-                                        </span>
-                                    {% endif %}
+                                        </div>
+
+                                    </a>
 
                                 </div>
 
-                            </a>
+                        {% endfor %}
 
-                        </div>
+                    </div>
 
-                    {% else %}
-
-                        <div class="profile-no-posts not-have-message">
-                            <i class="far fa-clone" style="margin-right: 3px"></i>
-                            {% if type == 'profile' %}
-                                {% if app.user == user %}
-                                    {{ 'you.have.not.posts' | trans }}
-                                {% else %}
-                                    {{ 'user.have.not.posts' | trans({'username':user.username}) }}
-                                {% endif %}
-                            {% else %}
-                                {% if app.user == user %}
-                                    {{ 'you.have.not.tagged.posts' | trans }}
-                                {% else %}
-                                    {{ 'user.have.not.tagged.posts' | trans({'username':user.username}) }}
-                                {% endif %}
-                            {% endif %}
-                        </div>
-
-                    {% endfor %}
-
-                </div>
+                {% endif %}
 
             {% endif %}
 
@@ -315,7 +300,26 @@
 
     </div>
 
-    {% if type == 'list' %}
+    {% if not posts %}
+        <div class="md-box profile-no-posts not-have-message md-list-posts">
+            <i class="far fa-clone" style="margin-right: 3px"></i>
+            {% if type == 'profile' or type == 'list' %}
+                {% if app.user == user %}
+                    {{ 'you.have.not.posts' | trans }}
+                {% else %}
+                    {{ 'user.have.not.posts' | trans({'username':user.username}) }}
+                {% endif %}
+            {% else %}
+                {% if app.user == user %}
+                    {{ 'you.have.not.tagged.posts' | trans }}
+                {% else %}
+                    {{ 'user.have.not.tagged.posts' | trans({'username':user.username}) }}
+                {% endif %}
+            {% endif %}
+        </div>
+    {% endif %}
+
+    {% if type == 'list' and posts %}
         {% include 'interface/post/_share_post.html.twig' %}
 
         <div class="md-list-posts">

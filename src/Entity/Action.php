@@ -6,64 +6,42 @@ use App\Repository\ActionRepository;
 use Doctrine\ORM\Mapping as ORM;
 use DateTime;
 
-/**
- * @ORM\Entity(repositoryClass=ActionRepository::class)
- * @ORM\HasLifecycleCallbacks()
- */
+#[ORM\Entity(repositoryClass: ActionRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 class Action
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+    #[ORM\Column(type: 'string', length: 255)]
     private $type;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
+    #[ORM\Column(type: 'text', nullable: true)]
     private $content;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="actions")
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'actions')]
+    #[ORM\JoinColumn(nullable: false)]
     private $moderator;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Post::class, inversedBy="actions")
-     */
+    #[ORM\ManyToOne(targetEntity: Post::class, inversedBy: 'actions')]
     private $post;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Song::class, inversedBy="actions")
-     */
+    #[ORM\ManyToOne(targetEntity: Song::class, inversedBy: 'actions')]
     private $song;
 
-    /**
-     * @ORM\Column(type="datetime")
-     */
+    #[ORM\Column(type: 'datetime')]
     private $createdAt;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="remarks")
-     */
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'remarks')]
     private $user;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Person::class, inversedBy="actions")
-     */
+    #[ORM\ManyToOne(targetEntity: Person::class, inversedBy: 'actions')]
     private $person;
 
-    /**
-     * @ORM\PrePersist()
-     */
-    public function initializePrePersist()
+    #[ORM\PrePersist]
+    public function initialize()
     {
         $this->createdAt = new DateTime('now');
     }
