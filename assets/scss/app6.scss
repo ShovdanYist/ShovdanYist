@@ -18,22 +18,9 @@ a:focus, a:active, a:hover {
   box-shadow: unset !important;
 }
 
-html, body {
-  height: 100% !important;
-  overflow: hidden !important;
-}
-
-.body-wrapper {
-  overflow: auto !important;
-  height: 100% !important;
-  width: 100% !important;
-  top: 0 !important;
-  padding-bottom: 67px;
-  padding-top: 12px;
-}
-
 .md-container {
   min-height: 500px;
+  margin-top: 12px;
 }
 
 .md-nav {
