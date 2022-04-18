@@ -27,22 +27,20 @@
         {% if app.request.headers.get('User-Agent') == 'SYIOS' %}<link rel="stylesheet" type="text/css" href="{{ asset('assets/css/iphone.css') }}">{% endif %}
         <style>.custom-file-label::after {content: '{{ 'browse' | trans }}' !important}</style>
         {{ encore_entry_link_tags('app6') }}
+        {{ encore_entry_script_tags('app6') }}
     </head>
 
     <body class="front {% block pageclass %}{% endblock %}">
 
         {% block navbar %}
             {% include 'interface/layouts/modules/navbar.html.twig' %}
-{#            {% include 'interface/layouts/modules/mobile_navbar.html.twig' %}#}
         {% endblock %}
 
         {% include 'interface/layouts/modules/mobile_menu.html.twig' %}
 
         <div class="body-wrapper">
 
-            {% block letters %}
-{#                {{ lettersMenu() }}#}
-            {% endblock %}
+            {% block letters %}{% endblock %}
 
             <div class="container md-container">
 
@@ -81,7 +79,6 @@
 
             </div>
 
-            {{ encore_entry_script_tags('app6') }}
             {% block scripts %}{% endblock %}
 
         </div>
