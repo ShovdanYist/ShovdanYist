@@ -24,12 +24,12 @@ html, body {
 }
 
 .body-wrapper {
-  position: absolute !important;
-  padding-top: 67px;
   overflow: auto !important;
   height: 100% !important;
   width: 100% !important;
   top: 0 !important;
+  padding-bottom: 67px;
+  padding-top: 12px;
 }
 
 .md-container {
@@ -1814,7 +1814,6 @@ td {
 
 .md-pagination-box {
   margin-top: 12px;
-  margin-bottom: 62px;
 }
 
 .md-margin-bottom {

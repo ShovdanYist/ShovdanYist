@@ -327,12 +327,10 @@
   }
   .body-wrapper {
     background: #fff;
+    padding-top: 0 !important;
   }
   .md-content-padding {
     padding: unset !important;
-  }
-  .body-wrapper {
-    padding-top: 55px !important;
   }
   .feed-types {
     background: #f2f2f2 !important;
@@ -461,9 +459,6 @@
   }
   body {
     background-color: #282827 !important;
-  }
-  .body-wrapper {
-    background: #fff;
   }
 
   // Messages
