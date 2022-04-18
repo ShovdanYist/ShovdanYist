@@ -40,7 +40,14 @@
 
         {% include 'interface/layouts/modules/mobile_menu.html.twig' %}
 
-        <div class="body-wrapper" style="background-color: white !important">
+        <div class="body-wrapper" style="background-color: white !important;
+                            position: absolute !important;
+                          padding-top: 67px;
+                          overflow: auto !important;
+                          height: 100% !important;
+                          width: 100% !important;
+                          top: 0 !important;
+                        ">
 
             {% block letters %}{% endblock %}
 
