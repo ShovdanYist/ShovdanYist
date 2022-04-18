@@ -142,7 +142,7 @@ function closeNavbarSearch(){
 if (document.getElementById('navbarSearch')) {
     navbarSearchOpener.addEventListener('click', openNavbarSearch);
     navbarSearchCloser.addEventListener('click', closeNavbarSearch);
-    // document.querySelector('.body-wrapper').addEventListener('click', closeNavbarSearch);
+    document.querySelector('.body-wrapper').addEventListener('click', closeNavbarSearch);
 }
 
 searchInputs.forEach((inputBox,key) => {
