@@ -32,6 +32,8 @@
 
     <body class="front {% block pageclass %}{% endblock %}">
 
+        {% include 'interface/layouts/modules/sync.html.twig' %}
+
         {% block navbar %}
             {% include 'interface/layouts/modules/navbar.html.twig' %}
         {% endblock %}
