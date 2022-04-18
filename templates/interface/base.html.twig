@@ -32,22 +32,13 @@
 
     <body class="front {% block pageclass %}{% endblock %}">
 
-        {% include 'interface/layouts/modules/sync.html.twig' %}
-
         {% block navbar %}
             {% include 'interface/layouts/modules/navbar.html.twig' %}
         {% endblock %}
 
         {% include 'interface/layouts/modules/mobile_menu.html.twig' %}
 
-        <div class="body-wrapper" style="background-color: white !important;
-                            position: absolute !important;
-                          padding-top: 67px;
-                          overflow: auto !important;
-                          height: 100% !important;
-                          width: 100% !important;
-                          top: 0 !important;
-                        ">
+        <div class="body-wrapper">
 
             {% block letters %}{% endblock %}
 
