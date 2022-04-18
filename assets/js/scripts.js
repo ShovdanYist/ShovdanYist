@@ -125,9 +125,6 @@ if (commentReply) {
 // Searcher
 
 let searchInputs = document.querySelectorAll('.md-search-all-input');
-
-const navbarSearch = document.getElementById('navbarSearch');
-// const navbarSearchInput = document.getElementById('navbarSearchInput');
 const navbarSearchOpener = document.getElementById('openNavbarSearch');
 const navbarSearchCloser = document.getElementById('closeNavbarSearch');
 
@@ -142,10 +139,10 @@ function closeNavbarSearch(){
     navbarSearchOpener.style.display = 'none';
 }
 
-if (navbarSearch) {
+if (document.getElementById('navbarSearch')) {
     navbarSearchOpener.addEventListener('click', openNavbarSearch);
     navbarSearchCloser.addEventListener('click', closeNavbarSearch);
-    document.querySelector('.body-wrapper').addEventListener('click', closeNavbarSearch);
+    // document.querySelector('.body-wrapper').addEventListener('click', closeNavbarSearch);
 }
 
 searchInputs.forEach((inputBox,key) => {
