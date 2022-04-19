@@ -2,6 +2,10 @@
 
 {% block title %}{{ 'password.resetting' | trans }}{% endblock %}
 
+{% block mobile_navbar %}
+    {% include 'interface/layouts/navbar/edit_profile.html.twig' with {'title': 'password.resetting'} %}
+{% endblock %}
+
 {% block main %}
 
     <div class="md-box">

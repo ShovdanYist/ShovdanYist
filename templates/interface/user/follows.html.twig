@@ -2,6 +2,10 @@
 
 {% block title %}{{ user.username }} | {{ type | trans }}{% endblock %}
 
+{% block mobile_navbar %}
+    {% include 'interface/layouts/navbar/profile.html.twig' %}
+{% endblock %}
+
 {% block main %}
 
     <div class="md-box">

@@ -4,38 +4,28 @@
 
 {% block pageclass %}two-sidebars{% endblock %}
 
-{% block main_top %}
-    {{ breadcrumb({
-        (path('app_home')) : ('home.page' | trans),
-        'active' : ('users.for.keyword' | trans({'keyword': keyword})),
-    }) }}
+{% block mobile_navbar %}
+    {% include 'interface/layouts/navbar/search.html.twig' %}
 {% endblock %}
 
 {% block main %}
 
     <div class="md-search">
 
-        {{ form_start(form) }}
-
-            <div class="md-search-box md-search-input-box md-box">
-
-                <div class="md-search-input">
-                    {{ form_widget(form.keyword) }}
-                    <button class="btn btn-success">
-                        {{ 'search' | trans }}
-                    </button>
-                </div>
-
-                <div class="md-search-pages-menu">
-                    <a href="{{ path('search_index',{'keyword':keyword}) }}">{{ 'all' | trans }}</a>
-                    <a href="{{ path('search_users',{'keyword':keyword}) }}" class="active">{{ 'users' | trans }}</a>
-                    <a href="{{ path('search_songs',{'keyword':keyword}) }}">{{ 'music' | trans }}</a>
-                    <a href="{{ path('search_posts',{'keyword':keyword}) }}">{{ 'posts' | trans }}</a>
-                </div>
-
+        <div class="md-search-box md-search-input-box md-box mobile-only">
+            <div class="md-search-pages-menu">
+                <a href="{{ path('search_index',{'keyword':keyword}) }}">{{ 'all' | trans }}</a>
+                <a href="{{ path('search_users',{'keyword':keyword}) }}" class="active">{{ 'users' | trans }}</a>
+                <a href="{{ path('search_songs',{'keyword':keyword}) }}">{{ 'music' | trans }}</a>
+                <a href="{{ path('search_posts',{'keyword':keyword}) }}">{{ 'posts' | trans }}</a>
             </div>
+        </div>
 
-        {{ form_end(form) }}
+        {% if users %}
+            <div class="md-box md-margin-bottom md-mobile-padding md-form-padding search-title">
+                {{ 'users.for.keyword' | trans({'keyword': keyword}) }}
+            </div>
+        {% endif %}
 
         {% if users %}
 
@@ -51,12 +41,15 @@
 
         {% if not users %}
 
-            <div class="md-search-box-not-found md-search-box md-box md-content-padding md-mobile-padding">
-                {% if page > 1 %}
-                    {{ 'not.found.users.for.keyword' | trans({'keyword':keyword}) }} {{ 'in.page' | trans({'page':page}) }}
-                {% else %}
-                    {{ 'not.found.users.for.keyword' | trans({'keyword':keyword}) }}
-                {% endif %}
+            <div class="md-box md-content-padding text-center">
+                <div class="not-have-message not-have-message-center">
+                    <i class="icon-search"></i>
+                    {% if page > 1 %}
+                        {{ 'not.found.users.for.keyword' | trans({'keyword':keyword}) }} {{ 'in.page' | trans({'page':page}) }}
+                    {% else %}
+                        {{ 'not.found.users.for.keyword' | trans({'keyword':keyword}) }}
+                    {% endif %}
+                </div>
             </div>
 
         {% endif %}

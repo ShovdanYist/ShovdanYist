@@ -2,6 +2,10 @@
 
 {% block title %}{{ 'add.post' | trans }}{% endblock %}
 
+{% block mobile_navbar %}
+    {% include 'interface/layouts/navbar/new_post.html.twig' %}
+{% endblock %}
+
 {% block main %}
 
 {#    <h1>{{ 'add.post' | trans }}</h1>#}

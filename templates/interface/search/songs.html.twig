@@ -4,65 +4,30 @@
 
 {% block pageclass %}two-sidebars{% endblock %}
 
-{% block main_top %}
-    {% if tags %}
-        {{ breadcrumb({
-            (path('app_home')) : ('home.page' | trans),
-            'active' : (('songs.for.' ~ tags.plural) | trans({'keyword': keyword})) ~ ' : ' ~ tags.string,
-        }) }}
-    {% else %}
-        {{ breadcrumb({
-            (path('app_home')) : ('home.page' | trans),
-            'active' : ('songs.for.keyword' | trans({'keyword': keyword})),
-        }) }}
-    {% endif %}
+{% block mobile_navbar %}
+    {% include 'interface/layouts/navbar/search.html.twig' %}
 {% endblock %}
 
 {% block main %}
 
     <div class="md-search">
 
-        <div class="md-search-box md-search-input-box md-box">
-
-            {{ form_start(form) }}
-
-                <div class="md-search-input">
-                    {{ form_widget(form.keyword) }}
-                    <button class="btn btn-success">
-                        {{ 'search' | trans }}
-                    </button>
-                </div>
-
-            {{ form_end(form) }}
-
-            <div class="form-spoiler tag-search-spoiler m-0 mt-2">
-
-                <div style="text-align: right">
-                    <a style="margin-right: 2px;position: relative;top: 1px" class="collapsed message" data-toggle="collapse" data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false">
-                        {{ 'search.by.tags' | trans }} <i></i>
-                    </a>
-                </div>
-
-                <div class="collapse" id="navbarToggleExternalContent">
-
-                    {{ form_start(tagsForm) }}
-                    <div class="md-search-input">
-                        {{ form_widget(tagsForm.tags) }}
-                        {{ form_widget(tagsForm.tagSearch) }}
-                    </div>
-                    {{ form_end(tagsForm) }}
-
-                </div>
-
-            </div>
-
+        <div class="md-search-box md-search-input-box md-box mobile-only">
             <div class="md-search-pages-menu">
                 <a href="{{ path('search_index',{'keyword':(tags) ? tags.string : keyword}) }}">{{ 'all' | trans }}</a>
                 <a href="{{ path('search_users',{'keyword':(tags) ? tags.string : keyword}) }}">{{ 'users' | trans }}</a>
                 <a href="{{ path('search_songs',{'keyword':keyword}) }}" class="active">{{ 'music' | trans }}</a>
                 <a href="{{ path('search_posts',{'keyword':(tags) ? tags.string : keyword}) }}">{{ 'posts' | trans }}</a>
             </div>
+        </div>
 
+        <div class="md-box md-tags-search md-margin-bottom md-form-padding">
+            {{ form_start(tagsForm) }}
+                <div class="md-search-input">
+                    {{ form_widget(tagsForm.tags) }}
+                    {{ form_widget(tagsForm.tagSearch) }}
+                </div>
+            {{ form_end(tagsForm) }}
         </div>
 
         {% if songs %}
@@ -91,6 +56,10 @@
 
                     </div>
 
+                {% elseif songs %}
+                    <div class="md-box md-margin-bottom md-mobile-padding md-form-padding search-title mb-2">
+                        {{ 'songs.for.keyword' | trans({'keyword': keyword}) }}
+                    </div>
                 {% endif %}
 
                 {% for song in songs %}
@@ -109,20 +78,23 @@
 
         {% else %}
 
-            <div class="md-search-box-not-found md-search-box md-box md-content-padding md-mobile-padding">
-                {% if tags %}
-                    {% if page > 1 %}
-                        {{ ('not.found.songs.for.' ~ tags.plural) | trans({'tags':tags.string}) }} {{ 'in.page' | trans({'page':page}) }}
+            <div class="md-box md-content-padding text-center">
+                <div class="not-have-message not-have-message-center">
+                    <i class="icon-search"></i>
+                    {% if tags %}
+                        {% if page > 1 %}
+                            {{ ('not.found.songs.for.' ~ tags.plural) | trans({'tags':tags.string}) }} {{ 'in.page' | trans({'page':page}) }}
+                        {% else %}
+                            {{ ('not.found.songs.for.' ~ tags.plural) | trans({'tags':tags.string}) }}
+                        {% endif %}
                     {% else %}
-                        {{ ('not.found.songs.for.' ~ tags.plural) | trans({'tags':tags.string}) }}
+                        {% if page > 1 %}
+                            {{ 'not.found.songs.for.keyword' | trans({'keyword':keyword}) }} {{ 'in.page' | trans({'page':page}) }}
+                        {% else %}
+                            {{ 'not.found.songs.for.keyword' | trans({'keyword':keyword}) }}
+                        {% endif %}
                     {% endif %}
-                {% else %}
-                    {% if page > 1 %}
-                        {{ 'not.found.songs.for.keyword' | trans({'keyword':keyword}) }} {{ 'in.page' | trans({'page':page}) }}
-                    {% else %}
-                        {{ 'not.found.songs.for.keyword' | trans({'keyword':keyword}) }}
-                    {% endif %}
-                {% endif %}
+                </div>
             </div>
 
         {% endif %}

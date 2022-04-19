@@ -16,6 +16,10 @@
 
 {% block keywords %}профиль {{ user.username }}, тексты чеченских песен, чеченские песни, под гитару, переводы чеченских песен, музыка{% endblock %}
 
+{% block mobile_navbar %}
+    {% include 'interface/layouts/navbar/profile.html.twig' %}
+{% endblock %}
+
 {% block main %}
 
     <div class="md-box">
@@ -140,10 +144,6 @@
 
                 <span class="md-fullname">{{ profile.fullname }}</span>
 
-{#                {% if is_role(profile.user,'ROLE_MODERATOR') %}#}
-{#                    <span class="text-muted">Администрация ShovdanYist</span>#}
-{#                {% endif %}#}
-
                 <div class="md-bio">
                     {{ profile.about | raw }}
                 </div>
@@ -156,34 +156,34 @@
 
         </div>
 
-        {% if is_granted('ROLE_USER_ANALYST') %}
+{#        {% if is_granted('ROLE_USER_ANALYST') %}#}
 
-            <hr class="m-0" style="border-color: #eef1f5">
+{#            <hr class="m-0" style="border-color: #eef1f5">#}
 
-            <div class="form-spoiler" style="margin: 10px 12px">
+{#            <div class="form-spoiler" style="margin: 10px 12px">#}
 
-                <a class="collapsed message" data-toggle="collapse" data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false">
-                    {{ 'statistics' | trans }} <i></i>
-                </a>
+{#                <a class="collapsed message" data-toggle="collapse" data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false">#}
+{#                    {{ 'statistics' | trans }} <i></i>#}
+{#                </a>#}
 
-                {% set statistics = {
-                    'Количество приглашенных': invitees,
-                    'Комментариев': user.comments.count,
-                    'Количество статей': user.posts.count,
-                    'Песен в плейлисте': user.playlistSongs.count,
-                    'Закладок': user.bookmarks.count
-                } %}
+{#                {% set statistics = {#}
+{#                    'Количество приглашенных': invitees,#}
+{#                    'Комментариев': user.comments.count,#}
+{#                    'Количество статей': user.posts.count,#}
+{#                    'Песен в плейлисте': user.playlistSongs.count,#}
+{#                    'Закладок': user.bookmarks.count#}
+{#                } %}#}
 
-                <div class="collapse" id="navbarToggleExternalContent" style="margin: 4px 0 0;">
-                    {% for name,count in statistics %}
-                        {% if not loop.first %}<br>{% endif %}
-                        <b>{{ name }}:</b> {{ count }}
-                    {% endfor %}
-                </div>
+{#                <div class="collapse" id="navbarToggleExternalContent" style="margin: 4px 0 0;">#}
+{#                    {% for name,count in statistics %}#}
+{#                        {% if not loop.first %}<br>{% endif %}#}
+{#                        <b>{{ name }}:</b> {{ count }}#}
+{#                    {% endfor %}#}
+{#                </div>#}
 
-            </div>
+{#            </div>#}
 
-        {% endif %}
+{#        {% endif %}#}
 
         {% if userIsFollowed(user) == 'followed' or app.user == user or user.closedAccount == false or is_granted('ROLE_OWNER') %}
 
@@ -247,37 +247,37 @@
 
                         {% for post in posts %}
 
-                                <div class="md-grid-post">
+                            <div class="md-grid-post">
 
-                                    <a href="{{ path('post_show', {'id':post.id}) }}">
+                                <a href="{{ path('post_show', {'id':post.id}) }}">
 
-                                        <img src="{% if post.image %}{{ vich_uploader_asset(post) | imagine_filter('avatar') }}{% else %}{{ asset('assets/images/question.jpg') | imagine_filter('avatar') }}{% endif %}" alt="{{ post.slug }}">
+                                    <img src="{% if post.image %}{{ vich_uploader_asset(post) | imagine_filter('avatar') }}{% else %}{{ asset('assets/images/question.jpg') | imagine_filter('avatar') }}{% endif %}" alt="{{ post.slug }}">
 
-                                        <div class="md-grid-post-actions">
+                                    <div class="md-grid-post-actions">
 
-                                            {% if not post.status %}
+                                        {% if not post.status %}
 
-                                                <span class="status-icon" data-toggle="tooltip" title="{% if post.status is null %}{{ 'post.in.moderation' | trans }}{% else %}{{ 'post.is.rejected' | trans }}{% endif %}">
-                                                    {% if post.status is null %}
-                                                        <i class="fas fa-history"></i>
-                                                    {% else %}
-                                                        <i class="fas fa-ban"></i>
-                                                    {% endif %}
-                                                </span>
+                                            <span class="status-icon" data-toggle="tooltip" title="{% if post.status is null %}{{ 'post.in.moderation' | trans }}{% else %}{{ 'post.is.rejected' | trans }}{% endif %}">
+                                                {% if post.status is null %}
+                                                    <i class="fas fa-history"></i>
+                                                {% else %}
+                                                    <i class="fas fa-ban"></i>
+                                                {% endif %}
+                                            </span>
 
-                                            {% endif %}
+                                        {% endif %}
 
-                                            {% if '.gif' in post.image %}
-                                                <span class="type-icon" data-toggle="tooltip" title="{{ 'animated.image' | trans }}">
-                                                    <i class="fas fa-magic"></i>
-                                                </span>
-                                            {% endif %}
+                                        {% if '.gif' in post.image %}
+                                            <span class="type-icon" data-toggle="tooltip" title="{{ 'animated.image' | trans }}">
+                                                <i class="fas fa-magic"></i>
+                                            </span>
+                                        {% endif %}
 
-                                        </div>
+                                    </div>
 
-                                    </a>
+                                </a>
 
-                                </div>
+                            </div>
 
                         {% endfor %}
 

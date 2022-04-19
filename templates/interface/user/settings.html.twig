@@ -2,6 +2,10 @@
 
 {% block title %}{{ 'settings' | trans }}{% endblock %}
 
+{% block mobile_navbar %}
+    {% include 'interface/layouts/navbar/edit_profile.html.twig' with {'title': 'settings'} %}
+{% endblock %}
+
 {% block main %}
 
     <div class="md-box">

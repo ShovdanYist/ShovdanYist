@@ -1,4 +1,10 @@
 @media only screen and (max-width: 992px) {
+  .tablet-only {
+    display: block !important;
+  }
+  .desktop-only {
+    display: none !important;
+  }
   .cke_button__emojipanel {
     display: none !important;
   }
@@ -44,13 +50,10 @@
     margin: 0 auto;
     float: unset !important;
   }
-  #sideNavOpener {
-    display: block !important;
-  }
   .navbar-login-mobile {
     display: unset !important;
   }
-  .navbar-search-opener, .navbar-search {
+  .navbar-search {
     display: unset !important;
   }
   .md-search-pages-menu {
@@ -81,6 +84,9 @@
   }
   .mobile-menu {
     display: flex !important;
+  }
+  .user-title-block {
+    display: none;
   }
 }
 
@@ -227,6 +233,9 @@
 }
 
 @media only screen and (max-width: 576px) {
+  .md-container {
+    overflow: hidden;
+  }
   .md-person-cards .md-person-card {
     margin-bottom: 16px !important;
   }
@@ -309,7 +318,7 @@
     margin-bottom: 2px !important;
   }
   .md-search-pages-menu {
-    margin-left: 2px !important;
+    margin-left: 0 !important;
     margin-right: 0 !important;
   }
   .profile-buttons {
@@ -409,9 +418,6 @@
   .md-post .btn.md-dot-btn {
     right: 16px !important;
     top: 10px !important;
-  }
-  .container {
-    overflow: hidden;
   }
   .settings-footer {
     border-top: 0.5px solid #dbdcdb;
@@ -521,6 +527,18 @@
   }
   .messages-length-alert {
     margin-top: -12px;
+  }
+  .md-tags-search {
+    padding: 3px 12px 1px !important;
+    margin: unset !important;
+  }
+  .mobile-only {
+    display: inherit !important;
+  }
+  .search-title {
+    margin: unset !important;
+    padding: 0 13px !important;
+    color: #999;
   }
 }
 

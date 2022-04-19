@@ -125,24 +125,6 @@ if (commentReply) {
 // Searcher
 
 let searchInputs = document.querySelectorAll('.md-search-all-input');
-const navbarSearchOpener = document.getElementById('openNavbarSearch');
-const navbarSearchCloser = document.getElementById('closeNavbarSearch');
-
-function openNavbarSearch(){
-    navbarSearchOpener.style.cssText = 'display:none !important';
-    document.querySelector('.navbar-search-mobile').style.display = 'unset';
-    document.querySelector('.navbar-search-mobile input').focus();
-}
-
-function closeNavbarSearch(){
-    document.querySelector('.navbar-search-mobile').style.display = 'none';
-    navbarSearchOpener.style.display = 'none';
-}
-
-if (document.getElementById('navbarSearch')) {
-    navbarSearchOpener.addEventListener('click', openNavbarSearch);
-    navbarSearchCloser.addEventListener('click', closeNavbarSearch);
-}
 
 searchInputs.forEach((inputBox,key) => {
     inputBox.querySelector('.search_input').addEventListener('input',(input) => {

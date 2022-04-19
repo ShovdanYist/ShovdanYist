@@ -4,38 +4,28 @@
 
 {% block pageclass %}two-sidebars{% endblock %}
 
-{% block main_top %}
-    {{ breadcrumb({
-        (path('app_home')) : ('home.page' | trans),
-        'active' : 'search.for.keyword' | trans({'keyword':keyword})
-    }) }}
+{% block mobile_navbar %}
+    {% include 'interface/layouts/navbar/search.html.twig' %}
 {% endblock %}
 
 {% block main %}
 
     <div class="md-search">
 
-        {{ form_start(form) }}
-
-            <div class="md-search-box md-search-input-box md-box">
-
-                <div class="md-search-input">
-                    {{ form_widget(form.keyword) }}
-                    <button class="btn btn-success">
-                        {{ 'search' | trans }}
-                    </button>
-                </div>
-
-                <div class="md-search-pages-menu">
-                    <a href="{{ path('search_index',{'keyword':keyword}) }}" class="active">{{ 'all' | trans }}</a>
-                    <a href="{{ path('search_users',{'keyword':keyword}) }}">{{ 'users' | trans }}</a>
-                    <a href="{{ path('search_songs',{'keyword':keyword}) }}">{{ 'music' | trans }}</a>
-                    <a href="{{ path('search_posts',{'keyword':keyword}) }}">{{ 'posts' | trans }}</a>
-                </div>
-
+        <div class="md-search-box md-search-input-box md-box mobile-only">
+            <div class="md-search-pages-menu">
+                <a href="{{ path('search_index',{'keyword':keyword}) }}" class="active">{{ 'all' | trans }}</a>
+                <a href="{{ path('search_users',{'keyword':keyword}) }}">{{ 'users' | trans }}</a>
+                <a href="{{ path('search_songs',{'keyword':keyword}) }}">{{ 'music' | trans }}</a>
+                <a href="{{ path('search_posts',{'keyword':keyword}) }}">{{ 'posts' | trans }}</a>
             </div>
+        </div>
 
-        {{ form_end(form) }}
+        {% if (posts + songs + users) %}
+            <div class="md-box md-margin-bottom md-mobile-padding md-form-padding search-title">
+                {{ 'search.for.keyword' | trans({'keyword':keyword}) }}
+            </div>
+        {% endif %}
 
         {% if users %}
 
@@ -141,25 +131,34 @@
 
         {% endif %}
 
-        {% if not posts or not songs or not users %}
-
-            <div class="md-search-box-not-found md-search-box md-box md-content-padding md-mobile-padding">
-                {% if not posts and songs and users %}
-                    {{ 'not.found.posts.for.keyword' | trans({'keyword':keyword}) }}
-                {% elseif not songs and posts and users %}
-                    {{ 'not.found.songs.for.keyword' | trans({'keyword':keyword}) }}
-                {% elseif not users and posts and songs %}
-                    {{ 'not.found.users.for.keyword' | trans({'keyword':keyword}) }}
-                {% elseif not users and not posts and songs %}
-                    {{ 'not.found.users.posts.for.keyword' | trans({'keyword':keyword}) }}
-                {% elseif not users and not songs and posts %}
-                    {{ 'not.found.users.songs.for.keyword' | trans({'keyword':keyword}) }}
-                {% elseif not songs and not posts and users %}
-                    {{ 'not.found.songs.posts.for.keyword' | trans({'keyword':keyword}) }}
-                {% else %}
+        {% if not (posts + songs + users) %}
+            <div class="md-box md-content-padding text-center">
+                <div class="not-have-message not-have-message-center">
+                    <i class="icon-search"></i>
                     {{ 'not.found.for.keyword' | trans({'keyword':keyword}) }}
-                {% endif %}
+                </div>
             </div>
+        {% else %}
+
+            {% if not posts or not songs or not users %}
+
+                <div class="md-search-box-not-found md-search-box md-box md-content-padding md-mobile-padding">
+                    {% if not posts and songs and users %}
+                        {{ 'not.found.posts.for.keyword' | trans({'keyword':keyword}) }}
+                    {% elseif not songs and posts and users %}
+                        {{ 'not.found.songs.for.keyword' | trans({'keyword':keyword}) }}
+                    {% elseif not users and posts and songs %}
+                        {{ 'not.found.users.for.keyword' | trans({'keyword':keyword}) }}
+                    {% elseif not users and not posts and songs %}
+                        {{ 'not.found.users.posts.for.keyword' | trans({'keyword':keyword}) }}
+                    {% elseif not users and not songs and posts %}
+                        {{ 'not.found.users.songs.for.keyword' | trans({'keyword':keyword}) }}
+                    {% elseif not songs and not posts and users %}
+                        {{ 'not.found.songs.posts.for.keyword' | trans({'keyword':keyword}) }}
+                    {% endif %}
+                </div>
+
+            {% endif %}
 
         {% endif %}
 

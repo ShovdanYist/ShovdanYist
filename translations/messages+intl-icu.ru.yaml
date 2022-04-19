@@ -26,6 +26,7 @@ post.editing: "Изменение публикации"
 person.editing: "Изменение человека"
 activity.editing: "Изменение деятельности"
 profile.editing: "Редактирование страницы"
+editing: "Редактирование"
 
 publication.date: "Дата публикации"
 editing.date: "Дата изменения"
@@ -258,7 +259,7 @@ already.have.song.with.same.slug: "Уже существует произвед�
 people: Люди
 biography: Биография
 people.for.letter.not.found: "Исполнителей на букву «{ letter }» не найдено"
-people.for.letter: "Исполнители на букву «{ letter }»"
+people.for.letter: "Исполнители на «{ letter }»"
 no.records.found: "Записей не найдено"
 
 # POSTS

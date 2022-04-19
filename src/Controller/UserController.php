@@ -439,7 +439,7 @@ class UserController extends CustomAbstractController
             ->setCriteria(['user' => $user])
             ->setClass(Post::class)
             ->setType('bookmark')
-            ->setLimit(10)
+            ->setLimit(51)
             ->setPage($page)
         ;
 

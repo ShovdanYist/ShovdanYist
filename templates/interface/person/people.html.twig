@@ -15,6 +15,10 @@
     }, null,'people') }}
 {% endblock %}
 
+{% block mobile_navbar %}
+    {% include 'interface/layouts/navbar/music.html.twig' with {'title': ('people.for.letter' | trans({'%letter%': letter | capitalize})) } %}
+{% endblock %}
+
 {% block body %}
 
     <div class="md-cards-group md-person-cards">

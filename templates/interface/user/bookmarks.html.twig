@@ -2,23 +2,68 @@
 
 {% block title %}{{ 'bookmarks' | trans }}{% endblock %}
 
-{% block main_top %}
-    {{ breadcrumb({
-        (path('user_profile', {'username': app.user.username} )) : (app.user.username),
-        'active' : ('bookmarks' | trans),
-    }) }}
+{% block mobile_navbar %}
+    {% include 'interface/layouts/navbar/edit_profile.html.twig' with {'title': 'bookmarks'} %}
 {% endblock %}
 
 {% block main %}
 
-    {% for post in posts %}
-        {{ postView(post) }}
-    {% else %}
-        <div class="md-box md-content-padding text-center">
-            <i class="far fa-bookmark" style="margin-right: 3px"></i>
-            {{ 'you.have.not.bookmarks' | trans }}
+    {% if posts %}
+
+        <div class="md-box">
+
+            <div class="md-grid-posts mb-2">
+
+                {% for post in posts %}
+
+                    <div class="md-grid-post">
+
+                        <a href="{{ path('post_show', {'id':post.id}) }}">
+
+                            <img src="{% if post.image %}{{ vich_uploader_asset(post) | imagine_filter('avatar') }}{% else %}{{ asset('assets/images/question.jpg') | imagine_filter('avatar') }}{% endif %}" alt="{{ post.slug }}">
+
+                            <div class="md-grid-post-actions">
+
+                                {% if not post.status %}
+
+                                    <span class="status-icon" data-toggle="tooltip" title="{% if post.status is null %}{{ 'post.in.moderation' | trans }}{% else %}{{ 'post.is.rejected' | trans }}{% endif %}">
+                                        {% if post.status is null %}
+                                            <i class="fas fa-history"></i>
+                                        {% else %}
+                                            <i class="fas fa-ban"></i>
+                                        {% endif %}
+                                    </span>
+
+                                {% endif %}
+
+                                {% if '.gif' in post.image %}
+                                    <span class="type-icon" data-toggle="tooltip" title="{{ 'animated.image' | trans }}">
+                                        <i class="fas fa-magic"></i>
+                                    </span>
+                                {% endif %}
+
+                            </div>
+
+                        </a>
+
+                    </div>
+
+                {% endfor %}
+
+            </div>
+
         </div>
-    {% endfor %}
+
+    {% else %}
+
+        <div class="md-box md-content-padding text-center">
+            <div class="not-have-message not-have-message-center">
+                <i class="far fa-bookmark" style="margin-right: 3px"></i>
+                {{ 'you.have.not.bookmarks' | trans }}
+            </div>
+        </div>
+
+    {% endif %}
 
     {% include 'interface/post/_share_post.html.twig' %}
 

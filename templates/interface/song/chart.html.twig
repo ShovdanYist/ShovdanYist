@@ -17,6 +17,10 @@
     }) }}
 {% endblock %}
 
+{% block mobile_navbar %}
+    {% include 'interface/layouts/navbar/music.html.twig' with {'title':info.h1} %}
+{% endblock %}
+
 {% block body %}
 
     <h1>{{ info.h1 }}</h1>

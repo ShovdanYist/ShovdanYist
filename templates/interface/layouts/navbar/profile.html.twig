@@ -1,0 +1,29 @@
+<a class="navbar-menu-item hover left" href="{{ path('post_new') }}">
+    <img class="navbar-logotype-icon" src="{{ asset('/assets/images/logotype-icon.png') }}" alt="Logotype Icon">
+</a>
+
+<div class="navbar-menu-title">
+    <h1>
+        {% if user.closedAccount %}
+            <span class="profile-lock">
+                <i class="fas fa-lock"></i>
+            </span>
+        {% endif %}
+
+        {% if 'user_follow' in app.request.get('_route') %}
+            <a href="{{ path('user_profile', {'username':user.username}) }}">{{ user.username }}</a>
+        {% else %}
+            <span class="user-select-none">{{ user.username }}</span>
+        {% endif %}
+
+        {% if profile.verified == true %}
+            <span class="verified">
+                <i class="icon-check text-info"></i>
+            </span>
+        {% endif %}
+    </h1>
+</div>
+
+<div class="navbar-menu-item right actions">
+    {% include 'interface/user/_actions.html.twig' %}
+</div>

@@ -17,6 +17,10 @@
     </div>
 {% endblock %}
 
+{% block mobile_navbar %}
+    {% include 'interface/layouts/navbar/music.html.twig' with {'title':'playlist'} %}
+{% endblock %}
+
 {% block body %}
 
     {% for key,song in playlist %}

@@ -37,6 +37,12 @@
             {% include 'interface/layouts/modules/navbar.html.twig' %}
         {% endblock %}
 
+        <nav class="md-nav sticky-top tablet-only">
+            <div class="container">
+                {% block mobile_navbar %}{% endblock %}
+            </div>
+        </nav>
+
         {% include 'interface/layouts/modules/mobile_menu.html.twig' %}
 
         <div class="body-wrapper">
