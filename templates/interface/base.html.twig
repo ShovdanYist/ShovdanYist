@@ -36,7 +36,9 @@
             {% include 'interface/layouts/modules/navbar.html.twig' %}
         {% endblock %}
 
-            {% include 'interface/layouts/modules/mobile_menu.html.twig' %}
+        {% include 'interface/layouts/modules/mobile_menu.html.twig' %}
+
+        <div class="body-wrapper">
 
             {% block letters %}{% endblock %}
 
@@ -78,6 +80,8 @@
             </div>
 
             {% block scripts %}{% endblock %}
+
+        </div>
 
     </body>
 
