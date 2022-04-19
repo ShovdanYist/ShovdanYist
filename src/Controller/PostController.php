@@ -20,27 +20,6 @@ use Symfony\Component\Routing\Annotation\Route;
 class PostController extends CustomAbstractController
 {
     #[Route('/{page<\d+>?1}', name: 'app_home',  methods: ['GET'])]
-    public function index($page, Paginator $paginator): Response
-    {
-        $this->updateLastActivity();
-        $gender = ($this->getUser()) ? $this->user()->getProfile()->getGender() : null;
-
-        $paginator
-            ->setClass(Post::class)
-            ->setMethod('findRecommendations')
-            ->setOrder(['publishedAt' => 'DESC'])
-            ->setCriteria(['gender' => $gender, 'status' => true, 'featured' => true])
-            ->setLimit(10)
-            ->setPage($page)
-        ;
-
-        return $this->render('interface/post/recommendations.html.twig', [
-            'posts' => $paginator->getData(),
-            'paginator' => $paginator
-        ]);
-    }
-
-    #[Route('/feed/{page<\d+>?1}', name: 'post_feed',  methods: ['GET'])]
     #[Security('is_granted("ROLE_USER")')]
     public function feed($page, Paginator $paginator): Response
     {
@@ -53,6 +32,27 @@ class PostController extends CustomAbstractController
             ->setPage($page);
 
         return $this->render('interface/post/feed.html.twig', [
+            'posts' => $paginator->getData(),
+            'paginator' => $paginator
+        ]);
+    }
+
+    #[Route('/recommendations/{page<\d+>?1}', name: 'post_recommendations',  methods: ['GET'])]
+    public function recommendations($page, Paginator $paginator): Response
+    {
+        $this->updateLastActivity();
+        $gender = ($this->getUser()) ? $this->user()->getProfile()->getGender() : null;
+
+        $paginator
+            ->setClass(Post::class)
+            ->setMethod('findRecommendations')
+            ->setOrder(['publishedAt' => 'DESC'])
+            ->setCriteria(['gender' => $gender, 'status' => true, 'featured' => true])
+            ->setLimit(51)
+            ->setPage($page)
+        ;
+
+        return $this->render('interface/post/recommendations.html.twig', [
             'posts' => $paginator->getData(),
             'paginator' => $paginator
         ]);

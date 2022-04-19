@@ -23,6 +23,7 @@
         <link rel="apple-touch-icon-precomposed" href="{{ asset('/assets/images/apple-touch-icon-precomposed.png') }}"/>
         <link rel="apple-touch-icon" href="{{ asset('/assets/images/apple-touch-icon.png') }}">
         <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/chosen.css') }}">
+        <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/fonts.css') }}">
         <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/player.css') }}">
         {% if app.request.headers.get('User-Agent') == 'SYIOS' %}<link rel="stylesheet" type="text/css" href="{{ asset('assets/css/iphone.css') }}">{% endif %}
         <style>.custom-file-label::after {content: '{{ 'browse' | trans }}' !important}</style>
@@ -37,6 +38,8 @@
         {% endblock %}
 
         {% include 'interface/layouts/modules/mobile_menu.html.twig' %}
+
+        <div class="body-wrapper">
 
             {% block letters %}{% endblock %}
 
@@ -79,6 +82,8 @@
 
             {% block scripts %}{% endblock %}
             {{ encore_entry_script_tags('custom6') }}
+
+        </div>
 
     </body>
 

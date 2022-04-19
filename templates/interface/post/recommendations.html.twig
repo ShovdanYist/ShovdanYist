@@ -1,23 +1,61 @@
 {% extends 'interface/base.html.twig' %}
 
-{% block main_top %}
+{#{% block main_top %}#}
 
-    {% if app.user %}
-        <div class="feed-types">
-            <a href="{{ path('app_home') }}" class="active">{{ 'recommendations' | trans }}</a>
-            <a href="{{ path('post_feed') }}">{{ 'following' | trans }}</a>
-        </div>
-    {% endif %}
+{#    {% if app.user %}#}
+{#        <div class="feed-types">#}
+{#            <a href="{{ path('app_home') }}" class="active">{{ 'recommendations' | trans }}</a>#}
+{#            <a href="{{ path('post_feed') }}">{{ 'following' | trans }}</a>#}
+{#        </div>#}
+{#    {% endif %}#}
 
-{% endblock %}
+{#{% endblock %}#}
 
 {% block main %}
 
-    {% for post in posts %}
-        {{ postView(post) }}
-    {% endfor %}
+    <div class="md-box">
 
-    {% include 'interface/post/_share_post.html.twig' %}
+        <div class="md-grid-posts mb-2">
+
+            {% for post in posts %}
+
+                <div class="md-grid-post">
+
+                    <a href="{{ path('post_show', {'id':post.id}) }}">
+
+                        <img src="{% if post.image %}{{ vich_uploader_asset(post) | imagine_filter('avatar') }}{% else %}{{ asset('assets/images/question.jpg') | imagine_filter('avatar') }}{% endif %}" alt="{{ post.slug }}">
+
+                        <div class="md-grid-post-actions">
+
+                            {% if not post.status %}
+
+                                <span class="status-icon" data-toggle="tooltip" title="{% if post.status is null %}{{ 'post.in.moderation' | trans }}{% else %}{{ 'post.is.rejected' | trans }}{% endif %}">
+                                    {% if post.status is null %}
+                                        <i class="fas fa-history"></i>
+                                    {% else %}
+                                        <i class="fas fa-ban"></i>
+                                    {% endif %}
+                                </span>
+
+                            {% endif %}
+
+                            {% if '.gif' in post.image %}
+                                <span class="type-icon" data-toggle="tooltip" title="{{ 'animated.image' | trans }}">
+                                    <i class="fas fa-magic"></i>
+                                </span>
+                            {% endif %}
+
+                        </div>
+
+                    </a>
+
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+    </div>
 
     {{ paginator.display() }}
 

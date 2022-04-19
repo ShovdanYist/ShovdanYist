@@ -325,6 +325,10 @@
     box-shadow: unset !important;
     background: unset !important;
   }
+  .body-wrapper {
+    background: #fff;
+    padding-top: 55px !important;
+  }
   .md-content-padding {
     padding: unset !important;
   }
@@ -454,7 +458,7 @@
     left: 12px;
   }
   body {
-    background-color: #fff !important;
+    background-color: rgba(30, 30, 30, 0.95) !important;
   }
 
   // Messages
@@ -517,9 +521,6 @@
   }
   .messages-length-alert {
     margin-top: -12px;
-  }
-  .md-container {
-    margin-top: 0 !important;
   }
 }
 
