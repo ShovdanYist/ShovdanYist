@@ -27,7 +27,6 @@
         {% if app.request.headers.get('User-Agent') == 'SYIOS' %}<link rel="stylesheet" type="text/css" href="{{ asset('assets/css/iphone.css') }}">{% endif %}
         <style>.custom-file-label::after {content: '{{ 'browse' | trans }}' !important}</style>
         {{ encore_entry_link_tags('app6') }}
-        {{ encore_entry_script_tags('app6') }}
     </head>
 
     <body class="front {% block pageclass %}{% endblock %}">
@@ -80,6 +79,7 @@
             </div>
 
             {% block scripts %}{% endblock %}
+            {{ encore_entry_script_tags('app6') }}
 
         </div>
 
