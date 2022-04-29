@@ -2,6 +2,10 @@
 
 {% block title %}Права пользователя {{ user.username }}{% endblock %}
 
+{% block mobile_navbar %}
+    {% include 'interface/layouts/navbar/title.html.twig' with {'title':'rights'} %}
+{% endblock %}
+
 {% block main %}
 
     <div class="md-box">

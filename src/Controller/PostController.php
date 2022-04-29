@@ -20,16 +20,26 @@ use Symfony\Component\Routing\Annotation\Route;
 class PostController extends CustomAbstractController
 {
     #[Route('/{page<\d+>?1}', name: 'app_home',  methods: ['GET'])]
-    #[Security('is_granted("ROLE_USER")')]
-    public function feed($page, Paginator $paginator): Response
+    public function feed($page, Paginator $paginator, Defender $defender): Response
     {
         $paginator
             ->setClass(Post::class)
-            ->setMethod('findFeedPosts')
             ->setOrder(['publishedAt' => 'DESC'])
-            ->setCriteria(['status' => true,'user' => $this->user()])
             ->setLimit(10)
-            ->setPage($page);
+            ->setPage($page)
+        ;
+
+        if ($defender->isGranted($this->getUser(),'ROLE_GUEST')) {
+            $paginator
+                ->setMethod('findRecommendations')
+                ->setCriteria(['status' => true, 'featured' => true])
+            ;
+        } else {
+            $paginator
+                ->setMethod('findFeedPosts')
+                ->setCriteria(['status' => true,'user' => $this->user()])
+            ;
+        }
 
         return $this->render('interface/post/feed.html.twig', [
             'posts' => $paginator->getData(),
@@ -48,7 +58,7 @@ class PostController extends CustomAbstractController
             ->setMethod('findRecommendations')
             ->setOrder(['publishedAt' => 'DESC'])
             ->setCriteria(['gender' => $gender, 'status' => true, 'featured' => true])
-            ->setLimit(51)
+            ->setLimit(45)
             ->setPage($page)
         ;
 

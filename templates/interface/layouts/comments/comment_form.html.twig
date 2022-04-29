@@ -38,7 +38,7 @@
     {% elseif app.user.status is null %}
 
         <div class="md-comment-guest md-alert md-alert-warning m-0">
-            <i class="fas fa-exclamation-triangle"></i> <a href="{{ path('user_settings', {'username' : app.user.username}) }}">{{ 'confirm.your.email' | trans }}</a>, {{ 'to.write.comments' | trans }}
+            <i class="icon-alert-triangle"></i> <a href="{{ path('user_settings', {'username' : app.user.username}) }}">{{ 'confirm.your.email' | trans }}</a>, {{ 'to.write.comments' | trans }}
         </div>
 
     {% else %}

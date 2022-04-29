@@ -1,6 +1,10 @@
 {% extends 'interface/base.html.twig' %}
 
-{% block title %}{{ 'notifications' | trans }}{% endblock %}
+{% block title %}{{ 'follow.requests' | trans }}{% endblock %}
+
+{% block mobile_navbar %}
+    {% include 'interface/layouts/navbar/requests.html.twig' with {'title':'follow.requests'} %}
+{% endblock %}
 
 {% block main %}
 

@@ -14,6 +14,11 @@
             <div class="username-container">
 
                 <span class="username">
+                    {% if user.closedAccount %}
+                        <span class="profile-lock">
+                            <i class="fas fa-lock"></i>
+                        </span>
+                    {% endif %}
                     <a href="{{ path('user_profile', {'username':user.username}) }}">
                         {{ user.username }}
                     </a>

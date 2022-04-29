@@ -32,11 +32,9 @@
 
         {% if songs %}
 
-            <div class="md-search-box md-box md-content-padding md-mobile-padding">
+            {% if tags %}
 
-                {% if tags %}
-
-                    <div class="mb-3">
+                <div class="mb-3">
 
                         <span class="text-muted pb-3">
                             {% if tags.plural == 'tags' %}
@@ -46,21 +44,23 @@
                             {% endif %}
                         </span>
 
-                        {% for tag in tags.data %}
-                            <span class="badge badge-info badge-a">
+                    {% for tag in tags.data %}
+                        <span class="badge badge-info badge-a">
                                 <a class="md-feat-stat" href="{{ path('search_songs', {'keyword': 'tags=' ~ tag.slug}) }}">
                                     {{ tag.title }}
                                 </a>
                             </span>
-                        {% endfor %}
+                    {% endfor %}
 
-                    </div>
+                </div>
 
-                {% elseif songs %}
-                    <div class="md-box md-margin-bottom md-mobile-padding md-form-padding search-title mb-2">
-                        {{ 'songs.for.keyword' | trans({'keyword': keyword}) }}
-                    </div>
-                {% endif %}
+            {% elseif songs %}
+                <div class="md-box md-margin-bottom md-mobile-padding md-form-padding search-title md-margin-bottom">
+                    {{ 'songs.for.keyword' | trans({'keyword': keyword}) }}
+                </div>
+            {% endif %}
+
+            <div class="md-search-box md-box md-content-padding md-mobile-padding">
 
                 {% for song in songs %}
 

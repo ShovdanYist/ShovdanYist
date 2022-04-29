@@ -6,6 +6,8 @@
     {% include 'interface/layouts/navbar/search.html.twig' %}
 {% endblock %}
 
+{% block pageclass %}dark-background{% endblock %}
+
 {% block main %}
 
     <div class="md-box">
@@ -21,6 +23,12 @@
                         <img src="{% if post.image %}{{ vich_uploader_asset(post) | imagine_filter('avatar') }}{% else %}{{ asset('assets/images/question.jpg') | imagine_filter('avatar') }}{% endif %}" alt="{{ post.slug }}">
 
                         <div class="md-grid-post-actions">
+
+                            {% if is_granted('ROLE_OWNER') and app.user.closedAccount %}
+                                <a class="btn featured-toggle{% if post.featured == true %} added{% endif %}" href="{{ path('post_featured', {'id': post.id}) }}">
+                                    <span class="featured-icon"></span>
+                                </a>
+                            {% endif %}
 
                             {% if not post.status %}
 

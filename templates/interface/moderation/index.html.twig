@@ -9,60 +9,19 @@
     }) }}
 {% endblock %}
 
+{% block mobile_navbar %}
+    {% include 'interface/layouts/navbar/title.html.twig' with {'title':'moderation'} %}
+{% endblock %}
+
 {% block main %}
 
-    <div class="md-box md-content-padding md-mobile-padding">
-        <h3 class="text-center">{{ 'statistics' | trans }}</h3>
-        <div class="scrollable-table">
-            <table class="table table-center">
-                <tbody>
-
-                {% for stat in stats %}
-                    <tr>
-                        <th scope="row" style="text-align: left;">{{ stat.name | trans }}</th>
-
-                        <td>
-                            {% if stat.moderation != 0 %}
-                                <a href="{% if stat.name == 'songs' %}{{ path('moderation_ready' ) }}{% elseif stat.name == 'posts' %}{{ path('moderation_posts' ) }}{% endif %}">
-                                        <span class="badge badge-pill badge-danger">
-                                            {{ stat.moderation }}
-                                        </span>
-                                </a>
-                            {% else %}
-                                -
-                            {% endif %}
-                        </td>
-
-                        <td>
-                            {% if stat.published != 0 %}
-                                <span class="badge badge-pill badge-success">
-                                    {{ stat.published }}
-                                </span>
-                            {% else %}
-                                -
-                            {% endif %}
-                        </td>
-
-                        <td>
-                                <span class="badge badge-pill badge-primary">
-                                    {{ stat.total }}
-                                </span>
-                        </td>
-
-                    </tr>
-                {% endfor %}
-
-                </tbody>
-            </table>
-        </div>
-    </div>
-
     <div class="md-box md-margin-bottom">
+
         <div class="md-vertical-menu m-0">
 
             <a href="{{ path('moderation_posts') }}">
                 <span class="icon">
-                    <i class="fas fa-sticky-note"></i>
+                    <i class="icon-feather"></i>
                 </span>
                 <span>
                     {{ 'posts' | trans }}
@@ -71,7 +30,7 @@
 
             <a href="{{ path('moderation_music') }}">
                 <span class="icon">
-                    <i class="fas fa-play-circle"></i>
+                    <i class="icon-headphones"></i>
                 </span>
                 <span>
                     {{ 'music' | trans }}
@@ -80,7 +39,7 @@
 
             <a href="{{ path('moderation_actions') }}">
                 <span class="icon">
-                    <i class="fas fa-hand-point-up"></i>
+                    <i class="icon-book"></i>
                 </span>
                 <span>
                     {{ 'actions' | trans }}
@@ -89,20 +48,16 @@
 
             <a href="{{ path('moderation_reports') }}">
                 <span class="icon">
-                    <i class="fas fa-exclamation-triangle"></i>
+                    <i class="icon-alert-triangle"></i>
                 </span>
                 <span>
                     {{ 'reports' | trans }}
                 </span>
             </a>
 
-        </div>
-
-        <div class="md-vertical-menu">
-
             <a href="{{ path('users_index') }}">
                 <span class="icon">
-                    <i class="fas fa-users"></i>
+                    <i class="icon-users"></i>
                 </span>
                 <span>
                     {{ 'users' | trans }}
@@ -111,7 +66,7 @@
 
             <a href="{{ path('activities_index') }}">
                 <span class="icon">
-                    <i class="fas fa-running"></i>
+                    <i class="icon-coffee"></i>
                 </span>
                 <span>
                     {{ 'activities' | trans }}
@@ -120,7 +75,7 @@
 
             <a href="{{ path('tags_index') }}">
                 <span class="icon">
-                    <i class="fas fa-hashtag"></i>
+                    <i class="icon-hash"></i>
                 </span>
                 <span>
                     {{ 'tags' | trans }}
@@ -128,6 +83,52 @@
             </a>
 
         </div>
+
+        <div class="md-content-padding md-mobile-padding">
+            <div class="scrollable-table">
+                <table class="table table-center">
+                    <tbody>
+
+                    {% for stat in stats %}
+                        <tr>
+                            <th scope="row" style="text-align: left;">{{ stat.name | trans }}</th>
+
+                            <td>
+                                {% if stat.moderation != 0 %}
+                                    <a href="{% if stat.name == 'songs' %}{{ path('moderation_ready' ) }}{% elseif stat.name == 'posts' %}{{ path('moderation_posts' ) }}{% endif %}">
+                                        <span class="badge badge-pill badge-danger">
+                                            {{ stat.moderation }}
+                                        </span>
+                                    </a>
+                                {% else %}
+                                    -
+                                {% endif %}
+                            </td>
+
+                            <td>
+                                {% if stat.published != 0 %}
+                                    <span class="badge badge-pill badge-success">
+                                    {{ stat.published }}
+                                </span>
+                                {% else %}
+                                    -
+                                {% endif %}
+                            </td>
+
+                            <td>
+                                <span class="badge badge-pill badge-primary">
+                                    {{ stat.total }}
+                                </span>
+                            </td>
+
+                        </tr>
+                    {% endfor %}
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
     </div>
 
 {% endblock %}

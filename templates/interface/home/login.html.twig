@@ -6,6 +6,10 @@
 
 {% block sidebar_a %}{% endblock %}
 
+{% block mobile_navbar %}
+    {% include 'interface/layouts/navbar/title.html.twig' with {'title':'login'} %}
+{% endblock %}
+
 {% block main %}
 
     <form class="md-form md-autofill md-box" method="post" action="{{ path('app_login') }}">

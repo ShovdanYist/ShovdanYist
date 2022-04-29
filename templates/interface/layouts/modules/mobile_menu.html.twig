@@ -7,6 +7,9 @@
         <div>
             <a href="{{ path('app_home') }}"{% if pathname == 'app_home' %} style="color: #ccc" {% endif %}>
                 <i class="icon-home"></i>
+                {% if messagesCount(app.user) %}
+                    <span class="mobile-menu-indicator"></span>
+                {% endif %}
             </a>
         </div>
 
@@ -28,32 +31,17 @@
             {% endif %}
         </div>
 
-{#        <div>#}
-{#            <a href="{{ path('message_conversations')}}"{% if pathname == 'message_conversations' %} style="color: #ccc" {% endif %}>#}
-{#                <i class="far fa-comment"></i>#}
-{#                {% if messagesCount(app.user) != 0 %}#}
-{#                    <span class="mobile-menu-badge">#}
-{#                    {% if messagesCount(app.user) > 99 %}#}
-{#                        99+#}
-{#                    {% else %}#}
-{#                        {{ messagesCount(app.user) }}#}
-{#                    {% endif %}#}
-{#                </span>#}
-{#                {% endif %}#}
-{#            </a>#}
-{#        </div>#}
-
         <div>
             <a href="{{ path('user_notifications') }}"{% if pathname == 'user_notifications' %} style="color: #ccc" {% endif %}>
                 <i class="icon-heart"></i>
                 {% if notifyCount(app.user) != 0 %}
                     <span class="mobile-menu-badge">
-                    {% if notifyCount(app.user) > 99 %}
-                        99+
-                    {% else %}
-                        {{ notifyCount(app.user) }}
-                    {% endif %}
-                </span>
+                        {% if notifyCount(app.user) > 99 %}
+                            99+
+                        {% else %}
+                            {{ notifyCount(app.user) }}
+                        {% endif %}
+                    </span>
                 {% endif %}
             </a>
         </div>
@@ -83,13 +71,19 @@
 
         <div>
             <a href="{{ path('app_home') }}"{% if pathname == 'app_home' %} style="color: #ccc" {% endif %}>
-                <i class="fas fa-home"></i>
+                <i class="icon-home"></i>
             </a>
         </div>
 
         <div>
-            <a href="{{ path('song_index') }}"{% if pathname == 'song_index' %} style="color: #ccc" {% endif %}>
-                <i class="fas fa-headphones-alt"></i>
+            <a href="{{ path('post_recommendations') }}"{% if pathname == 'post_recommendations' %} style="color: #ccc" {% endif %}>
+                <i class="icon-search"></i>
+            </a>
+        </div>
+
+        <div>
+            <a href="{{ path('song_index') }}"{% if pathname == 'user_playlist' or pathname == 'song_index' %} style="color: #ccc" {% endif %}>
+                <i class="icon-music"></i>
             </a>
         </div>
 

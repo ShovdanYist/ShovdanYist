@@ -2,6 +2,10 @@
 
 {% block title %}{{ 'song.adding' | trans }}{% endblock %}
 
+{% block mobile_navbar %}
+    {% include 'interface/layouts/navbar/title.html.twig' with {'title':'song.adding'} %}
+{% endblock %}
+
 {% block main %}
 
     <div class="md-box">

@@ -6,15 +6,17 @@
 
     <div class="dropdown-menu dropdown-menu-right">
 
-        <button id="shareProfile" type="button" class="dropdown-item" data-toggle="modal" data-target="#shareProfileModal">
-            <i class="fas fa-paper-plane"></i>
+        <button id="{{ shareProfileId }}" type="button" class="dropdown-item" data-toggle="modal" data-target="#shareProfileModal">
+            <span class="icon">
+                <i class="icon-send"></i>
+            </span>
             {{ 'share' | trans }}
         </button>
 
         {% if app.user != user %}
             <a href="javascript:void(0)" class="dropdown-item" data-toggle="modal" data-target="#reportProfileModal{{ user.id }}">
                 <span class="icon">
-                    <i class="fas fa-exclamation-triangle"></i>
+                    <i class="icon-alert-triangle"></i>
                 </span>
                 {{ 'report' | trans }}
             </a>
@@ -22,17 +24,26 @@
 
         {% if user != app.user and is_granted('ROLE_OWNER') %}
             <a href="{{ path('user_edit', {'username' : user.username}) }}" class="dropdown-item">
-                <i class="fas fa-user-edit"></i> {{ 'edit' | trans }}
+                <span class="icon">
+                    <i class="icon-edit-2"></i>
+                </span>
+                {{ 'edit' | trans }}
             </a>
 
             <a href="{{ path('user_settings', {'username' : user.username}) }}" class="dropdown-item">
-                <i class="fas fa-cog"></i> {{ 'settings' | trans }}
+                <span class="icon">
+                    <i class="icon-settings"></i>
+                </span>
+                {{ 'settings' | trans }}
             </a>
         {% endif %}
 
         {% if rightToChangeUserRights(app.user,user) %}
             <a href="{{ path('moderation_user_rights', {'username': user.username}) }}" class="dropdown-item">
-                <i class="fas fa-shield-alt"></i> {{ 'rights' | trans }}
+                <span class="icon">
+                    <i class="icon-shield"></i>
+                </span>
+                {{ 'rights' | trans }}
             </a>
         {% endif %}
 
@@ -41,13 +52,19 @@
             {% if user.status is null or user.status == true %}
 
                 <button type="button" class="dropdown-item" data-toggle="modal" data-target="#banUser">
-                    <i class="fas fa-user-times"></i> {{ 'ban' | trans }}
+                    <span class="icon">
+                        <i class="icon-user-x"></i>
+                    </span>
+                    {{ 'ban' | trans }}
                 </button>
 
             {% else %}
 
                 <button type="button" class="dropdown-item" data-toggle="modal" data-target="#unbanUser">
-                    <i class="fas fa-user-times"></i> {{ 'unban' | trans }}
+                    <span class="icon">
+                        <i class="icon-user-check"></i>
+                    </span>
+                    {{ 'unban' | trans }}
                 </button>
 
             {% endif %}
@@ -57,14 +74,20 @@
         {% if is_granted('ROLE_OWNER') and app.user != user %}
 
             <button type="button" class="dropdown-item" data-toggle="modal" data-target="#deleteUser">
-                <i class="fas fa-trash-alt"></i> {{ 'delete' | trans }}
+                <span class="icon">
+                    <i class="icon-trash-2"></i>
+                </span>
+                {{ 'delete' | trans }}
             </button>
 
         {% endif %}
 
         {% if app.user == user %}
             <a href="javascript:void(0)" id="sideNavLogoutCloser" class="dropdown-item" data-toggle="modal" data-target="#navbarLogout">
-                <i class="fas fa-power-off"></i> {{ 'log.out' | trans }}
+                <span class="icon">
+                    <i class="icon-power"></i>
+                </span>
+                {{ 'log.out' | trans }}
             </a>
         {% endif %}
 

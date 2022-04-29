@@ -140,6 +140,7 @@ email.help: "Если не подтверждена, то проверьте с�
 email.recovery.help: "Введите электронную почту которая привязана к вашему аккаунту"
 email.not.verified: "Электронная почта не подтверждена"
 email.confirmation: "Подтверждение электронной почты"
+confirmation: "Подтверждение"
 
 password: Пароль
 enter.password: "Введите пароль"
@@ -322,13 +323,13 @@ song.results.for.tags: "Результаты музыки по тегам"
 not.found.songs.for.tag: "По тегу «{ tags }» песен не найдено"
 not.found.songs.for.tags: "По тегам «{ tags }» песен не найдено"
 
-not.found.posts.for.keyword: "По запросу «{ keyword }» статей не найдено"
+not.found.posts.for.keyword: "По запросу «{ keyword }» публикаций не найдено"
 not.found.songs.for.keyword: "По запросу «{ keyword }» песен не найдено"
 not.found.users.for.keyword: "По запросу «{ keyword }» пользователей не найдено"
 
-not.found.users.posts.for.keyword: "По запросу «{ keyword }» пользователей и статей не найдено"
+not.found.users.posts.for.keyword: "По запросу «{ keyword }» пользователей и публикаций не найдено"
 not.found.users.songs.for.keyword: "По запросу «{ keyword }» пользователей и песен не найдено"
-not.found.songs.posts.for.keyword: "По запросу «{ keyword }» песен и статей не найдено"
+not.found.songs.posts.for.keyword: "По запросу «{ keyword }» песен и публикаций не найдено"
 
 search.for.keyword: "Поиск по запросу «{ keyword }»"
 songs.for.keyword: "Песни по запросу «{ keyword }»"
@@ -496,7 +497,7 @@ user.have.not.following: "У пользователя { username } еще нет
 no.songs.in.moderation: "У вас пока нет песен в процессе"
 no.ready.songs.in.moderation: "Пока нет песен на модерации"
 no.pending.songs.in.moderation: "Пока нет песен в ожидании"
-no.posts.in.moderation: "Пока нет статей на модерации"
+no.posts.in.moderation: "Пока нет публикаций на модерации"
 
 nothing.found.for: "Ничего не найдено по запросу:"
 

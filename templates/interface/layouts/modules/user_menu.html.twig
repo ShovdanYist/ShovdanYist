@@ -34,16 +34,25 @@
                     <li class="md-menu-item">
                         <a href="{{ path('app_home') }}">
                             <span>
-                                <i class="fas fa-pager"></i>
+                                <i class="icon-home"></i>
                             </span>
                             {{ 'feed' | trans }}
                         </a>
                     </li>
 
                     <li class="md-menu-item">
+                        <a href="{{ path('post_recommendations') }}">
+                            <span>
+                                <i class="icon-search"></i>
+                            </span>
+                            {{ 'recommendations' | trans }}
+                        </a>
+                    </li>
+
+                    <li class="md-menu-item">
                         <a href="{{ path('message_conversations') }}">
                             <span>
-                                <i class="fas fa-comment"></i>
+                                <i class="icon-message-circle"></i>
                             </span>
                             {{ 'messages' | trans }}
                             {% if messagesCount(app.user) != 0 %}
@@ -61,7 +70,7 @@
                     <li class="md-menu-item">
                         <a href="{{ path('user_notifications') }}">
                             <span>
-                                <i class="fas fa-bell"></i>
+                                <i class="icon-heart"></i>
                             </span>
                             {{ 'notifications' | trans }}
                             {% if notifyCount(app.user) != 0 %}
@@ -80,14 +89,14 @@
                         {% if app.user.playlistSongs.count %}
                             <a href="{{ path('user_playlist') }}">
                                 <span>
-                                    <i class="fas fa-headphones"></i>
+                                    <i class="icon-music"></i>
                                 </span>
                                 {{ 'music' | trans }}
                             </a>
                         {% else %}
                             <a href="{{ path('song_index') }}">
                                 <span>
-                                    <i class="fas fa-headphones"></i>
+                                    <i class="icon-music"></i>
                                 </span>
                                 {{ 'music' | trans }}
                             </a>
@@ -106,7 +115,7 @@
 
     <div class="md-box sidebar sticky-top">
 
-        <div class="md-box sidebar-box">
+        <div class="sidebar-box">
 
             <div class="md-menu">
 
@@ -115,36 +124,27 @@
                     <li class="md-menu-item">
                         <a href="{{ path('app_home') }}">
                             <span>
-                                <i class="fas fa-pager"></i>
+                                <i class="icon-home"></i>
                             </span>
-                            {{ 'feed' | trans }}
+                            {{ 'home.page' | trans }}
+                        </a>
+                    </li>
+
+                    <li class="md-menu-item">
+                        <a href="{{ path('post_recommendations') }}">
+                            <span>
+                                <i class="icon-search"></i>
+                            </span>
+                            {{ 'recommendations' | trans }}
                         </a>
                     </li>
 
                     <li class="md-menu-item">
                         <a href="{{ path('song_index') }}">
                             <span>
-                                <i class="fas fa-music"></i>
+                                <i class="icon-music"></i>
                             </span>
                             {{ 'music' | trans }}
-                        </a>
-                    </li>
-
-                    <li class="md-menu-item">
-                        <a href="{{ path('song_chart', {'chart':'trends'}) }}">
-                            <span>
-                                <i class="fas fa-fire-alt"></i>
-                            </span>
-                            {{ 'trends' | trans }}
-                        </a>
-                    </li>
-
-                    <li class="md-menu-item">
-                        <a href="{{ path('song_chart', {'chart':'novelty'}) }}">
-                            <span>
-                                <i class="fas fa-certificate"></i>
-                            </span>
-                            {{ 'novelty' | trans }}
                         </a>
                     </li>
 

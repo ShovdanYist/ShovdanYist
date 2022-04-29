@@ -2,6 +2,10 @@
 
 {% block title %}{{ song.fullTitle }} | {{ 'song.editing' | trans }}{% endblock %}
 
+{% block mobile_navbar %}
+    {% include 'interface/layouts/navbar/title.html.twig' with {'title':'song.editing'} %}
+{% endblock %}
+
 {% block main %}
 
     <div class="md-box">

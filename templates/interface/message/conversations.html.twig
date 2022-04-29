@@ -3,7 +3,7 @@
 {% block title %}{{ 'messages' | trans }}{% endblock %}
 
 {% block mobile_navbar %}
-    {% include 'interface/layouts/navbar/conversations.html.twig' %}
+    {% include 'interface/layouts/navbar/back_home.html.twig' with {'title':'messages'} %}
 {% endblock %}
 
 {% block main %}
@@ -59,7 +59,7 @@
                                         {% endif %}
 
                                         {% if lastMessage.song %}
-                                            <i class="fas fa-play-circle"></i>
+                                            <i class="icon-headphones"></i>
                                             {{ lastMessage.song.vocalist.fullName ~ ' - ' ~ lastMessage.song.title }}
                                         {% elseif lastMessage.post %}
                                             <div class="back-picture bp-24" style="background-image: url('{% if lastMessage.post.image %}{{ vich_uploader_asset(lastMessage.post) | imagine_filter('thumbnail') }}{% else %}{{ asset('assets/images/question.jpg') }}{% endif %}'); border-radius: 3px; {% if lastMessage.sender != app.user %}margin-left: unset !important;{% endif %}">

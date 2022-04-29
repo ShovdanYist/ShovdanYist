@@ -8,10 +8,8 @@
     {% endif %}
 {% endblock %}
 
-{% block main_top %}
-        {{ breadcrumb({
-            'active' : 'like.marks' | trans ~ ' ',
-        }, post, 'post') }}
+{% block mobile_navbar %}
+    {% include 'interface/layouts/navbar/title.html.twig' with {'title':'like.marks'} %}
 {% endblock %}
 
 {% block body %}

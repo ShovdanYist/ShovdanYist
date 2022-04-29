@@ -5,6 +5,10 @@
 {% block footer %}{% endblock %}
 {% block pageclass %}conversation-page{% endblock %}
 
+{% block mobile_navbar %}
+    {% include 'interface/layouts/navbar/conversation.html.twig' %}
+{% endblock %}
+
 {% block main %}
 
     <div class="md-conversation md-box">
@@ -125,7 +129,7 @@
                                     {% if message.replyTo.song %}
                                         <a href="#message{{ message.replyTo.id }}">
                                             <div class="replied-message">
-                                                <i class="fas fa-play-circle"></i> {{ message.replyTo.song.fullTitle }}
+                                                <i class="icon-headphones"></i> {{ message.replyTo.song.fullTitle }}
                                             </div>
                                         </a>
                                     {% elseif message.replyTo.post %}
@@ -266,7 +270,7 @@
 
             <div class="pr-3 pl-3 pb-3">
                 <div class="md-alert md-alert-warning">
-                    <i class="fas fa-exclamation-triangle"></i> <a href="{{ path('user_settings', {'username' : app.user.username}) }}">{{ 'confirm.your.email' | trans }}</a>, {{ 'to.write.messages' | trans }}
+                    <i class="icon-alert-triangle"></i> <a href="{{ path('user_settings', {'username' : app.user.username}) }}">{{ 'confirm.your.email' | trans }}</a>, {{ 'to.write.messages' | trans }}
                 </div>
             </div>
 
@@ -361,7 +365,7 @@
                     }
                 } else if (songMessage) {
                     replyMessageBox.className = 'song';
-                    replyMessage.innerHTML = '<div class="info"><i class="fas fa-play-circle"></i> ' + songMessage.querySelector('.song-full-title').innerHTML + '</div>';
+                    replyMessage.innerHTML = '<div class="info"><i class="icon-headphones"></i> ' + songMessage.querySelector('.song-full-title').innerHTML + '</div>';
                 } else if (postMessage) {
                     replyMessageBox.className = 'post';
                     replyMessage.innerHTML = postMessage.querySelector('.back-picture').outerHTML + '<div class="info">' + '{{ 'post' | trans }}' + '</div>';

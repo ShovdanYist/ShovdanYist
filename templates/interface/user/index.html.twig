@@ -9,6 +9,10 @@
     }, null, 'user_add') }}
 {% endblock %}
 
+{% block mobile_navbar %}
+    {% include 'interface/layouts/navbar/title.html.twig' with {'title':'users'} %}
+{% endblock %}
+
 {% block body %}
 
     <div class="md-search-box">

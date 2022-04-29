@@ -4,6 +4,10 @@
 
 {% block pageclass %}{% if is_granted('ROLE_SONG_MODERATOR') %}two-sidebars{% endif %}{% endblock %}
 
+{% block mobile_navbar %}
+    {% include 'interface/layouts/navbar/edit_profile.html.twig' with {'title':'music.moderation', 'user': app.user} %}
+{% endblock %}
+
 {% block main_top %}
 
     {{ breadcrumb({
@@ -68,12 +72,17 @@
 
                 <div class="dropdown-menu dropdown-menu-right">
                     <a href="{{ path('song_edit', {'slug':song.slug}) }}" class="dropdown-item">
-                        <i class="fa fa-edit"></i> {{ 'edit' | trans }}
+                        <span class="icon">
+                            <i class="icon-edit-2"></i>
+                        </span>
+                        {{ 'edit' | trans }}
                     </a>
 
                     {% if is_granted('ROLE_SONG_MODERATOR') %}
                         <button type="button" class="dropdown-item" data-toggle="modal" data-target="#deleteSong{{ song.id }}">
-                            <i class="fas fa-trash-alt"></i>
+                            <span class="icon">
+                                <i class="icon-trash-2"></i>
+                            </span>
                             {{ 'delete' | trans }}
                         </button>
                     {% endif %}

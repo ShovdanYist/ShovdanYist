@@ -3,7 +3,7 @@
 {% block title %}{{ 'add.post' | trans }}{% endblock %}
 
 {% block mobile_navbar %}
-    {% include 'interface/layouts/navbar/new_post.html.twig' %}
+    {% include 'interface/layouts/navbar/back_home.html.twig' with {'title':'add.post'} %}
 {% endblock %}
 
 {% block main %}
@@ -23,7 +23,7 @@
             {% elseif app.user.status is null %}
 
                 <div class="md-alert md-alert-warning m-0">
-                    <i class="fas fa-exclamation-triangle"></i> <a href="{{ path('user_settings', {'username' : app.user.username}) }}">{{ 'confirm.your.email' | trans }}</a>, {{ 'to.add.post' | trans }}
+                    <i class="icon-alert-triangle"></i> <a href="{{ path('user_settings', {'username' : app.user.username}) }}">{{ 'confirm.your.email' | trans }}</a>, {{ 'to.add.post' | trans }}
                 </div>
 
             {% else %}

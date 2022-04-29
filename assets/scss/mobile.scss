@@ -443,7 +443,6 @@
     margin-top: -8px !important;
   }
   .not-have-message {
-    background: #f2f2f2;
     border-radius: 5px;
     padding: 20px;
   }
@@ -476,11 +475,11 @@
     width: 100%;
     position: absolute;
     max-height: unset !important;
-    top: 106px;
+    top: 0;
     bottom: 108px;
   }
   .md-conversation .messages-box {
-    padding-top: 12px;
+    padding-top: 55px;
   }
   .message-form {
     border-radius: unset !important;
@@ -539,6 +538,13 @@
     margin: unset !important;
     padding: 0 13px !important;
     color: #999;
+  }
+  .dark-background .body-wrapper {
+    background-color: rgba(30, 30, 30, 0.95);
+  }
+
+  .dark-background .md-grid-posts {
+    border-top: 1px solid rgba(30, 30, 30, 0.95);
   }
 }
 

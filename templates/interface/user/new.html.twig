@@ -2,6 +2,10 @@
 
 {% block title %}{{ 'user.adding' | trans }}{% endblock %}
 
+{% block mobile_navbar %}
+    {% include 'interface/layouts/navbar/title.html.twig' with {'title':'user.adding'} %}
+{% endblock %}
+
 {% block main %}
 
     <div class="md-box">

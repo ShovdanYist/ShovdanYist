@@ -1,12 +1,16 @@
 {% extends 'interface/base.html.twig' %}
 
-{% block title %}Регистрация{% endblock %}
+{% block title %}{{ 'sign.up' | trans }}{% endblock %}
 
 {% block pageclass %}login-pages register-page{% endblock %}
 
 {% block sidebar_a %}{% endblock %}
 
 {% form_theme registrationForm _self %}
+
+{% block mobile_navbar %}
+    {% include 'interface/layouts/navbar/title.html.twig' with {'title':'sign.up'} %}
+{% endblock %}
 
 {% block main %}
 

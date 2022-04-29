@@ -1,9 +1,9 @@
 {% extends 'interface/base.html.twig' %}
 
-{% block title %}{{ 'notifications' | trans }}{% endblock %}
+{% block title %}{{ 'actions' | trans }}{% endblock %}
 
 {% block mobile_navbar %}
-    {% include 'interface/layouts/navbar/notifications.html.twig' %}
+    {% include 'interface/layouts/navbar/title.html.twig' with {'title':'actions'} %}
 {% endblock %}
 
 {% block main %}

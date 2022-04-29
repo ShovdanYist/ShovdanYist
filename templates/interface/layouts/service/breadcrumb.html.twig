@@ -1,12 +1,5 @@
 <div class="md-box md-breadcrumb">
 
-    {% if name == 'post' %}
-        <a href="{{ path('post_show', {'id':entity.id}) }}">
-            <div class="back-picture bp-24 mr-2" style="background-image: url('{% if entity.image %}{{ vich_uploader_asset(entity) | imagine_filter('thumbnail') }}{% else %}{{ asset('assets/images/question.jpg') }}{% endif %}'); border-radius: 3px;">
-            </div>
-        </a>
-    {% endif %}
-
     <div class="md-breadcrumb-nav">
 
         <ol>
@@ -37,7 +30,7 @@
 
                     <button id="shareSong" type="button" class="dropdown-item" data-toggle="modal" data-target="#shareSongModal">
                         <span class="icon">
-                            <i class="fas fa-paper-plane"></i>
+                            <i class="icon-send"></i>
                         </span>
                         {{ 'share' | trans }}
                     </button>
@@ -45,7 +38,7 @@
                     {% if is_granted('ROLE_SONG_EDITOR') %}
                         <a href="{{ path('song_edit', {'slug':entity.slug}) }}" class="dropdown-item">
                             <span class="icon">
-                                <i class="fas fa-pencil-alt"></i>
+                                <i class="icon-edit-2"></i>
                             </span>
                             {{ 'edit' | trans }}
                         </a>
@@ -54,7 +47,7 @@
                     {% if is_granted('ROLE_OWNER') %}
                         <button type="button" class="dropdown-item" data-toggle="modal" data-target="#deleteSong">
                             <span class="icon">
-                                <i class="fas fa-trash-alt"></i>
+                                <i class="icon-trash-2"></i>
                             </span>
                             {{ 'delete' | trans }}
                         </button>
@@ -95,12 +88,12 @@
                 <div class="dropdown-menu dropdown-menu-right">
 
                     <a href="{{ path('person_edit', {'slug':entity.slug}) }}" class="dropdown-item">
-                        <i class="fa fa-edit"></i> {{ 'edit' | trans }}
+                        <i class="icon-edit-2"></i> {{ 'edit' | trans }}
                     </a>
 
                     {% if is_granted('ROLE_OWNER') %}
                         <button type="button" class="dropdown-item" data-toggle="modal" data-target="#deletePerson">
-                            <i class="fas fa-trash-alt"></i>
+                            <i class="icon-trash-2"></i>
                             {{ 'delete' | trans }}
                         </button>
                     {% endif %}

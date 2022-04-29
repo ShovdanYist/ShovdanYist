@@ -45,7 +45,7 @@
 
             </div>
 
-            {% include 'interface/user/_actions.html.twig' %}
+            {% include 'interface/user/_actions.html.twig' with {'shareProfileId':'shareProfile'} %}
 
         </header>
 
@@ -191,20 +191,20 @@
 
             <div class="md-profile-posts-menu">
                 <a href="{{ path('user_profile', {'username':user.username}) }}" {% if pathname == 'user_profile' %}class="active"{% endif %}>
-                    <i class="fas fa-th"></i>
+                    <i class="icon-grid"></i>
                 </a>
                 <a href="{{ path('user_list', {'username':user.username}) }}" {% if pathname == 'user_list' %}class="active"{% endif %}>
-                    <i class="fas fa-th-list"></i>
+                    <i class="icon-menu"></i>
                 </a>
                 <a href="{{ path('user_tagged', {'username':user.username}) }}" {% if pathname == 'user_tagged' %}class="active"{% endif %}>
-                    <i class="fas fa-user-tag"></i>
+                    <i class="icon-users"></i>
                 </a>
 
                 {% if app.user == user and not is_granted('ROLE_OWNER') %}
 
                     {% if is_granted('ROLE_POST_MODERATOR') %}
                         <a href="{{ path('moderation_posts') }}">
-                            <i class="fas fa-sticky-note"></i>
+                            <i class="icon-feather"></i>
                             {% if postModerationCount() != 0 %}
                                 <span class="md-profile-menu-indicator">
                                     {% if postModerationCount() > 99 %}
@@ -219,20 +219,20 @@
 
                     {% if is_granted('ROLE_SONG_MODERATOR') or hasOnlyAuthorRightsInSongs(app.user) %}
                         <a href="{{ path('moderation_music') }}">
-                            <i class="fas fa-play-circle"></i>
+                            <i class="icon-headphones"></i>
                         </a>
                     {% endif %}
 
                     {% if is_granted('ROLE_USER_ACTIONS') %}
                         <a href="{{ path('moderation_actions') }}">
-                            <i class="fas fa-hand-point-up"></i>
+                            <i class="icon-book"></i>
                         </a>
                     {% endif %}
 
                 {% elseif app.user == user and is_granted('ROLE_OWNER')%}
 
                     <a href="{{ path('moderation_index') }}">
-                        <i class="fas fa-toolbox"></i>
+                        <i class="icon-tool"></i>
                     </a>
 
                 {% endif %}

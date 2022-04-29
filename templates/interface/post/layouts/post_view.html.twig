@@ -13,7 +13,7 @@
                 {% if app.user %}
                     <button id="sharePostId{{ post.id }}" type="button" class="dropdown-item share-post-button" data-toggle="modal" data-target="#sharePostModal">
                         <span class="icon">
-                            <i class="fas fa-paper-plane"></i>
+                            <i class="icon-send"></i>
                         </span>
                         {{ 'share' | trans }}
                     </button>
@@ -22,7 +22,7 @@
                 {% if is_granted('ROLE_POST_MODERATOR') or post.author == app.user %}
                     <a href="{{ path('post_edit', {'id':post.id}) }}" class="dropdown-item">
                         <span class="icon">
-                            <i class="fas fa-pencil-alt"></i>
+                            <i class="icon-edit-2"></i>
                         </span>
                         {{ 'edit' | trans }}
                     </a>
@@ -32,7 +32,7 @@
                     <span class="dropdown-divider"></span>
                     <button type="button" class="dropdown-item" data-toggle="modal" data-target="#deletePostModal">
                         <span class="icon">
-                            <i class="far fa-trash-alt"></i>
+                            <i class="icon-trash-2"></i>
                         </span>
                         {{ 'delete' | trans }}
                     </button>

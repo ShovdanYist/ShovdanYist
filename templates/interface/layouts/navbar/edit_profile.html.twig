@@ -1,13 +1,13 @@
 {% if title == 'account.deleting' or title == 'password.resetting' %}
-    <a class="navbar-menu-item hover left" href="{{ path('user_settings', {'username':app.user.username}) }}">
+    <a class="navbar-menu-item left" href="{{ path('user_settings', {'username':app.user.username}) }}">
         <i class="fa-solid fa-angle-left"></i>
     </a>
 {% elseif title == 'bookmarks' %}
-    <a class="navbar-menu-item hover left" href="{{ path('user_profile', {'username':app.user.username}) }}">
+    <a class="navbar-menu-item left" href="{{ path('user_profile', {'username':app.user.username}) }}">
         <i class="fa-solid fa-angle-left"></i>
     </a>
 {% else %}
-    <a class="navbar-menu-item hover left" href="{{ path('user_profile', {'username':user.username}) }}">
+    <a class="navbar-menu-item left" href="{{ path('user_profile', {'username':user.username}) }}">
         <i class="fa-solid fa-angle-left"></i>
     </a>
 {% endif %}

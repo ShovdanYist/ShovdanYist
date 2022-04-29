@@ -1,0 +1,15 @@
+<a class="navbar-menu-item left" href="{{ path('message_conversations') }}">
+    <i class="fa-solid fa-angle-left"></i>
+</a>
+
+<div class="navbar-menu-title">
+    <h1>
+        <a href="{{ path('user_profile', {'username':user.username}) }}">{{ user.username }}</a>
+
+        {% if user.profile.verified == true %}
+            <span class="verified">
+                <i class="fas fa-check-circle text-info"></i>
+            </span>
+        {% endif %}
+    </h1>
+</div>

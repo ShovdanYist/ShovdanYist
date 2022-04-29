@@ -2,6 +2,10 @@
 
 {% block title %}{{ 'activity.editing' | trans }}{% endblock %}
 
+{% block mobile_navbar %}
+    {% include 'interface/layouts/navbar/title.html.twig' with {'title':'activity.editing'} %}
+{% endblock %}
+
 {% block main %}
 
     <div class="md-box">

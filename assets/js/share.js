@@ -56,6 +56,10 @@ function shareUsers(shareButton, type) {
             let url = '/shareUsers';
 
             axios.get(url).then((response) => {
+                if (!response.data.users.length) {
+                    document.querySelector('.no-followers').style.display = 'unset';
+                }
+
                 shareContent.innerHTML = '';
                 response.data.users.forEach((user) => {
                     let userLine = document.createElement('div');
@@ -156,6 +160,10 @@ if (sharePostCancel) {
 
 if (document.getElementById('shareProfile')) {
     shareUsers(document.getElementById('shareProfile'),'Profile');
+}
+
+if (document.getElementById('shareProfileMobile')) {
+    shareUsers(document.getElementById('shareProfileMobile'),'Profile');
 }
 
 // If profile share confirm

@@ -16,7 +16,7 @@
 {% endblock %}
 
 {% block mobile_navbar %}
-    {% include 'interface/layouts/navbar/music.html.twig' with {'title': ('people.for.letter' | trans({'%letter%': letter | capitalize})) } %}
+    {% include 'interface/layouts/navbar/title.html.twig' with {'title': ('people.for.letter' | trans({'%letter%': letter | capitalize})) } %}
 {% endblock %}
 
 {% block body %}

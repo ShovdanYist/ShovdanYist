@@ -9,6 +9,10 @@
     }) }}
 {% endblock %}
 
+{% block mobile_navbar %}
+    {% include 'interface/layouts/navbar/edit_profile.html.twig' with {'title':'post.moderation', 'user': app.user} %}
+{% endblock %}
+
 {% block main %}
 
     {% for post in posts %}
@@ -16,7 +20,7 @@
     {% else%}
         <div class="md-box md-content-padding">
             <div class="not-have-message not-have-message-center">
-                <i class="far fa-sticky-note" style="margin-right: 5px"></i>{{ 'no.posts.in.moderation' | trans }}
+                <i class="icon-feather" style="margin-right: 5px"></i>{{ 'no.posts.in.moderation' | trans }}
             </div>
         </div>
     {% endfor %}
