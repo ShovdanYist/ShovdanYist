@@ -825,7 +825,8 @@ blockquote, .ck.ck-content blockquote {
 }
 
 .md-mobile-nav .md-nav-logo {
-  margin: 0 0 0 -21px;
+  margin: 0;
+  transform: translateX(-21px);
 }
 
 .md-nav-logo, .md-nav-item {
