@@ -771,7 +771,7 @@ Reference: http://blog.rrwd.nl/2015/04/04/the-screen-reader-text-class-why-and-h
     transition: 0.01s !important;
 }
 .audio-player-title a {
-    color: #1f5887;
+    color: #000;
 }
 .audio-player:last-child {
     margin-bottom: unset;

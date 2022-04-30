@@ -326,8 +326,8 @@
   }
   .profile-button .btn {
     font-size: 13px !important;
-    padding: 3px 6px !important;
-    width: 100px !important;
+    padding: 3px 10px 4px !important;
+    width: 112px !important;
   }
   .md-box {
     border-radius: 0 !important;
@@ -342,7 +342,7 @@
     padding: unset !important;
   }
   .feed-types {
-    background: #f2f2f2 !important;
+    background: $grey-background !important;
     margin: 12px 12px 3px !important;
     box-shadow: unset !important;
   }
@@ -405,12 +405,12 @@
     padding: 0 15px 24px !important;
   }
   .md-breadcrumb {
-    background: #f2f2f2 !important;
+    background: $grey-background !important;
     margin: 12px 12px 4px !important;
     border-radius: 5px !important;
   }
   .md-breadcrumb-nav::after {
-    background: linear-gradient(90deg, rgba(255, 255, 255, 0), #f2f2f2) !important;
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0), $grey-background) !important;
   }
   article h1 {
     margin-top: 0 !important;
@@ -420,8 +420,8 @@
     top: 10px !important;
   }
   .settings-footer {
-    border-top: 0.5px solid #dbdcdb;
-    border-bottom: 0.5px solid #dbdcdb;
+    border-top: $border;
+    border-bottom: $border;
   }
   .md-alert {
     border-radius: unset !important;
@@ -433,13 +433,13 @@
   }
   .md-search .md-search-box-not-found {
     margin: 4px 12px 72px !important;
-    background: #f2f2f2 !important;
+    background: $grey-background !important;
     border-radius: 5px !important;
     padding: 8px 12px !important;
     color: #555;
   }
   .form-signin-info {
-    background: #f2f2f2 !important;
+    background: $grey-background !important;
     margin-top: -8px !important;
   }
   .not-have-message {

@@ -27,11 +27,17 @@
 
             </div>
 
+        </div>
+
+        <div class="md-box">
+
             <div class="md-menu">
+
+                {% set pathname = app.request.get('_route') %}
 
                 <ul>
 
-                    <li class="md-menu-item">
+                    <li class="md-menu-item{% if pathname == 'app_home' %} active{% endif %}">
                         <a href="{{ path('app_home') }}">
                             <span>
                                 <i class="icon-home"></i>
@@ -40,7 +46,7 @@
                         </a>
                     </li>
 
-                    <li class="md-menu-item">
+                    <li class="md-menu-item{% if pathname == 'post_recommendations' %} active{% endif %}">
                         <a href="{{ path('post_recommendations') }}">
                             <span>
                                 <i class="icon-search"></i>
@@ -49,7 +55,7 @@
                         </a>
                     </li>
 
-                    <li class="md-menu-item">
+                    <li class="md-menu-item{% if pathname == 'message_conversations' or pathname == 'message_conversation' %} active{% endif %}">
                         <a href="{{ path('message_conversations') }}">
                             <span>
                                 <i class="icon-message-circle"></i>
@@ -67,7 +73,7 @@
                         </a>
                     </li>
 
-                    <li class="md-menu-item">
+                    <li class="md-menu-item{% if pathname == 'user_notifications' or pathname == 'user_requests' %} active{% endif %}">
                         <a href="{{ path('user_notifications') }}">
                             <span>
                                 <i class="icon-heart"></i>
@@ -85,7 +91,7 @@
                         </a>
                     </li>
 
-                    <li class="md-menu-item">
+                    <li class="md-menu-item{% if pathname == 'user_playlist' or pathname == 'song_index' %} active{% endif %}">
                         {% if app.user.playlistSongs.count %}
                             <a href="{{ path('user_playlist') }}">
                                 <span>
