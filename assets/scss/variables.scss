@@ -1,7 +1,7 @@
 // Global
 
-$border-radius: 12px;
-$btn-border-radius: 30px;
+$border-radius: 6px;
+$btn-border-radius: 6px;
 $border: 1px solid #eef1f5;
 $form-border-color: #dde2e8;
 $grey-background: #f4f6f7;
@@ -120,22 +120,22 @@ $post-colors: (
 // Buttons
 
 .btn-primary {
-  background-color: #333 !important;
-  border-color: #333 !important;
+  background-color: #000 !important;
+  border-color: #000 !important;
 }
 
 .btn-primary:hover {
-  background-color: #444 !important;
-  border-color: #444 !important;
+  background-color: #222 !important;
+  border-color: #222 !important;
 }
 
 .btn-link {
-  color: #555 !important;
+  color: #000 !important;
 }
 
 .btn-link:hover {
-  color: #555 !important;
-  background-color: #eee !important;
+  color: #000 !important;
+  background-color: $grey-background !important;
 }
 
 .btn-success {

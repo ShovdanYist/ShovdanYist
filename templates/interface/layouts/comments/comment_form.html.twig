@@ -53,14 +53,16 @@
 
     <div class="md-comment-guest">
 
-        <a class="btn btn-info mr-1" href="{{ path('app_login') }}">
-            {{ 'log.in' | trans }}
+        {{ 'need' | trans | capitalize }}
+
+        <a class="font-weight-bold" href="{{ path('app_login') }}">
+            {{ 'to.log.in' | trans | lower }}
         </a>
 
-        {{ 'or' | trans }}
+        {{ 'or.two' | trans }}
 
-        <a class="btn btn-success ml-1 mr-1" href="{{ path('app_register') }}">
-            {{ 'sign.up' | trans }}
+        <a class="font-weight-bold" href="{{ path('app_register') }}">
+            {{ 'to.sign.up' | trans | lower }}
         </a>
 
         {{ 'to.leave.a.comment' | trans }}

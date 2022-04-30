@@ -333,6 +333,7 @@
     border-radius: 0 !important;
     box-shadow: unset !important;
     background: unset !important;
+    border: unset !important;
   }
   .body-wrapper {
     background: #fff;
@@ -402,12 +403,12 @@
     padding: 0 13px 15px !important;
   }
   .md-main-box-col-2 .md-song-stats, .md-main-box-col-2 .md-post-info {
-    padding: 0 15px 24px !important;
+    padding: 0 15px 15px !important;
   }
   .md-breadcrumb {
     background: $grey-background !important;
     margin: 12px 12px 4px !important;
-    border-radius: 5px !important;
+    border-radius: 6px !important;
   }
   .md-breadcrumb-nav::after {
     background: linear-gradient(90deg, rgba(255, 255, 255, 0), $grey-background) !important;
@@ -476,7 +477,7 @@
     bottom: 108px;
   }
   .md-conversation .messages-box {
-    padding-top: 55px;
+    padding-top: 67px;
   }
   .message-form {
     border-radius: unset !important;

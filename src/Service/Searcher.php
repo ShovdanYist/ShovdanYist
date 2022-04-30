@@ -67,7 +67,10 @@ class Searcher
                 'data' => ($this->isTagsSearch()) ? $this->getSearchedTags() : null
             ])
             ->add('tagSearch', SubmitType::class, [
-                'label' => 'search'
+                'label' => 'search',
+                'attr' => [
+                    'class' => 'btn-info'
+                ]
             ])
             ->getForm();
 

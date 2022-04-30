@@ -169,9 +169,11 @@ delete.account: "Удалить аккаунт"
 
 login: Вход
 log.in: Войти
+to.log.in: Авторизироваться
 remember.me: "Запомнить меня"
 not.registered.yet: "Еще не зарегистрированы?"
 sign.up: Регистрация
+to.sign.up: Зарегистрироваться
 already.registered: "Вы уже зарегистрированны?"
 agree.terms: "Пользовательское соглашение"
 invited.by: "По приглашению"
@@ -528,6 +530,8 @@ tagged: Отмеченные
 all: Всё
 all.two: Все
 or: или
+or.two: либо
+need: необходимо
 feat: с
 at: в
 

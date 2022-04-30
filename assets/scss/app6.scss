@@ -73,7 +73,7 @@ body {
   font-family: -apple-system,BlinkMacSystemFont,Roboto,Open Sans,Helvetica Neue,"Noto Sans Armenian","Noto Sans Bengali","Noto Sans Cherokee","Noto Sans Devanagari","Noto Sans Ethiopic","Noto Sans Georgian","Noto Sans Hebrew","Noto Sans Kannada","Noto Sans Khmer","Noto Sans Lao","Noto Sans Osmanya","Noto Sans Tamil","Noto Sans Telugu","Noto Sans Thai",sans-serif;
   font-size: 15px;
   color: #000;
-  background-color: #f9fafb;
+  background-color: #f6f8fb;
   font-smoothing: antialiased;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -155,18 +155,18 @@ textarea, input, .form-control {
 .breadcrumb-btn {
   position: absolute;
   right: 12px;
-  background: #3a5571;
+  background: #000;
   height: 22px;
   width: 22px;
   text-align: center;
   line-height: 22px;
-  border-radius: 3px;
+  border-radius: 5px;
   font-size: 12px;
   color: white !important;
 }
 
 .breadcrumb-btn:hover {
-  background: #426384;
+  background: #333;
 }
 
 ul {
@@ -230,7 +230,7 @@ li {
 // Search
 
 .found-keyword {
-  background: #d5eee9;
+  background: #dcf4fb;
 }
 
 .md-search .md-search-box {
@@ -254,7 +254,7 @@ li {
 }
 
 .md-search-input .btn, .md-search-all-input .btn{
-  margin-left: 12px;
+  margin-left: 6px;
 }
 
 #form_tagSearch {
@@ -603,7 +603,7 @@ blockquote, .ck.ck-content blockquote {
 }
 
 .md-form-padding {
-  padding: 20px 24px 24px;
+  padding: 24px;
 }
 
 .md-form-unmargin .form-group {
@@ -628,10 +628,10 @@ blockquote, .ck.ck-content blockquote {
 
 .md-modal-container {
   padding: 18px;
-  background-color: rgba(30,30,30,0.9);
+  background-color: rgba(30, 30, 30, 0.95);
   display: flex;
   flex-direction: column;
-  border-radius: $border-radius;
+  border-radius: 20px;
 }
 
 .md-modal-container .md-modal-item {
@@ -647,11 +647,11 @@ blockquote, .ck.ck-content blockquote {
 }
 
 .md-modal-container .btn-modal-danger {
-  background: #c43d3d;
+  background: $red;
 }
 
 .md-modal-container .btn-modal-danger:hover {
-  background: #d54b4b;
+  background: lighten($red, 5%);
 }
 
 .md-modal-container .btn-modal-default {
@@ -663,7 +663,7 @@ blockquote, .ck.ck-content blockquote {
 }
 
 .md-modal-container .btn {
-  color: rgba(255,255,255,0.8);
+  color: #fff;
   border-radius: 6px;
   border: unset;
   width: 100%;
@@ -688,6 +688,10 @@ blockquote, .ck.ck-content blockquote {
 
 .md-empty-modal .modal-content img {
   border-radius: 8px;
+}
+
+.modal-backdrop {
+  background-color: #fff;
 }
 
 // Form spoiler
@@ -847,7 +851,7 @@ blockquote, .ck.ck-content blockquote {
 }
 
 .md-nav-logo:hover {
-  background: rgba(0, 0, 0, 0.20);
+  opacity: 0.6;
 }
 
 .md-user-navbar-username {
@@ -1111,13 +1115,12 @@ td {
 // Alert
 
 .content-alert-warning {
-  border-left: 10px solid #ee8a8a;
   background-color: #ffe7e6;
   color: #ee8a8a;
 }
 .content-alert {
   text-align: center;
-  border-radius: 3px;
+  border-radius: 12px;
   padding: 12px 10px;
 }
 
@@ -1130,6 +1133,10 @@ td {
 
 .badge-a a {
   padding: 5px 8px;
+}
+
+.badge {
+  margin-bottom: 3px;
 }
 
 // Label forms icons
@@ -1344,6 +1351,8 @@ td {
 .md-comments-header {
   font-size: 16px;
   margin-bottom: 8px;
+  font-weight: 500;
+  color: #777;
 }
 
 .md-comment-username {
@@ -1416,8 +1425,9 @@ td {
 .md-comment-guest {
   margin-top: 12px;
   background-color: #f7f7f7;
-  padding: 10px;
+  padding: 10px 14px;
   border-radius: radius(full);
+  text-align: center;
 }
 
 .md-comment-input {
@@ -1569,10 +1579,6 @@ td {
 
 // Custom menu
 
-.md-menu {
-  padding: 10px 0;
-}
-
 .md-menu .user-menu-separator {
   width: 100%;
   display: block;
@@ -1594,6 +1600,22 @@ td {
   display: table;
   padding: 11px 7px;
   font-weight: 500;
+}
+
+.md-menu ul li:first-child a {
+  border-radius: $border-radius $border-radius 0 0;
+}
+
+.md-menu ul li.active:first-child a {
+  border-radius: 0 $border-radius 0 0;
+}
+
+.md-menu ul li:last-child a {
+  border-radius: 0 0 $border-radius $border-radius;
+}
+
+.md-menu ul li.active:last-child a {
+  border-radius: 0 0 $border-radius 0;
 }
 
 .md-menu-item a:hover, .md-menu-item a.active {
@@ -1874,18 +1896,6 @@ td {
   margin-bottom: 62px;
 }
 
-.page-item.active .page-link {
-  background-color: $info !important;
-}
-
-.pagination-sm .page-link {
-  padding: 0 7px 1px;
-}
-
-.page-link {
-  border-radius: 20px !important;
-}
-
 .md-margin-bottom {
   margin-bottom: $box-space;
 }
@@ -1934,8 +1944,8 @@ td {
 
 .md-box {
   background-color: $box-background;
-  box-shadow: $box-shadow;
   border-radius: $border-radius;
+  border: 1px solid #eef1f5;
 }
 
 .md-box.sticky-top, .sidebar.sticky-top {
@@ -2574,7 +2584,7 @@ td {
   background: $form-border-color;
   color: black;
   font-weight: 500;
-  border-radius: 0 10px 10px 0;
+  border-radius: 0;
 }
 
 .form-signin-info {
@@ -2891,7 +2901,7 @@ select {
   text-align: center;
   line-height: 54px;
   font-size: 23px;
-  color: #777;
+  color: #000;
   z-index: 1050;
   height: 54px;
   width: 54px;
@@ -2899,7 +2909,7 @@ select {
 }
 
 .navbar-menu-item:hover {
-  color: #ccc;
+  color: #777;
 }
 
 .navbar-menu-item.right {
@@ -3023,7 +3033,7 @@ select {
   background: unset !important;
   border: unset !important;
   border-radius: 100px;
-  color: #ccc;
+  color: #000;
   font-size: 18px;
   padding: 3px;
   min-width: 36px;
@@ -3033,7 +3043,7 @@ select {
 
 .navbar-search a:hover, .navbar-search-mobile a:hover {
   background: unset !important;
-  color: #888;
+  color: #777;
 }
 
 .navbar-search input:focus, .navbar-search-mobile input:focus {
@@ -3070,7 +3080,7 @@ select {
 }
 
 .navbar-search input::placeholder, .navbar-search-mobile input::placeholder {
-  color: #888;
+  color: #8e8e92;
 }
 
 .navbar-search-closer {
@@ -3096,14 +3106,14 @@ select {
 
 .md-search-pages-menu a {
   text-align: center;
-  color: #adb5bd;
+  color: #888;
   text-decoration: unset;
   font-size: 14px;
   font-weight: 500;
 }
 
 .md-search-pages-menu a:hover {
-  color: #97a1aa;
+  color: #555;
 }
 
 .md-search-pages-menu a:first-child {
@@ -3116,7 +3126,7 @@ select {
 
 .md-search-pages-menu a.active, .md-search-pages-menu a.active:hover {
   color: #333;
-  border-bottom: 2px solid #3498db;
+  border-bottom: 2px solid $info;
 }
 
 // Avatar
@@ -3213,10 +3223,10 @@ select {
 
 .page-link {
   margin: 3px;
-  border-radius: 3px;
   background-color: transparent;
   color: #aaaaaa;
   font-size: 18px;
+  border-radius: 8px !important;
   padding: 3px 10px;
 }
 
@@ -3224,14 +3234,19 @@ select {
   background-color: #3c3c3c;
 }
 
-.page-item.active .page-link {
-  background-color: #3c3c3c;
-}
-
 .page-item.disabled .page-link {
   background-color: transparent;
   color: #ccc;
   cursor: not-allowed;
+}
+
+.page-item.active .page-link {
+  background-color: #000;
+}
+
+.pagination-sm .page-link {
+  padding: 2px 10px 3px 9px;
+  font-weight: 500;
 }
 
 .pagination .dots {
@@ -3379,7 +3394,7 @@ select {
 }
 
 .tagged-user {
-  background: #eee;
+  background: $grey-background;
   border-radius: 100px;
   display: table;
   padding: 5px 12px 5px 6px;
@@ -3640,6 +3655,10 @@ select {
   padding: 6px;
   top: 8px;
   position: relative;
+}
+
+.mobile-menu a:hover {
+  color: #777;
 }
 
 .mobile-navbar-badge {
