@@ -786,7 +786,7 @@ blockquote, .ck.ck-content blockquote {
 // Navbar
 
 .md-nav {
-  background: rgba(255, 255, 255, 1);
+  background: linear-gradient(180deg, #fff 0%, rgba(255, 255, 255, 0.95) 100%);
   margin-bottom: 12px;
   z-index: 1000;
   height: 55px;
@@ -834,11 +834,6 @@ blockquote, .ck.ck-content blockquote {
 .md-nav-logo {
   z-index: 2;
   position: relative;
-}
-
-.md-mobile-nav .md-nav-logo {
-  margin: 0;
-  transform: translateX(-21px);
 }
 
 .md-nav-logo, .md-nav-item {
@@ -1134,7 +1129,7 @@ td {
 }
 
 .badge-a a {
-  padding: 3px 8px 5px;
+  padding: 5px 8px;
 }
 
 // Label forms icons
@@ -2911,10 +2906,6 @@ select {
    right: 0;
  }
 
-.navbar-menu-item.right-second {
-  right: 54px;
-}
-
 .navbar-menu-item.left {
    left: 0;
 }
@@ -3024,9 +3015,8 @@ select {
   top: 0;
   z-index: 3;
   height: 54px;
-  width: calc(100% - 54px);
+  width: 100%;
   padding: 9px 9px 0;
-  border-left: $border;
 }
 
 .navbar-search input, .navbar-search-mobile input {
