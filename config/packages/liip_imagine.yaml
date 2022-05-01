@@ -12,6 +12,8 @@ liip_imagine:
         mode: lazy
 
     filter_sets:
+        cache: ~
+
         avatar:
             quality: 80
             filters:
