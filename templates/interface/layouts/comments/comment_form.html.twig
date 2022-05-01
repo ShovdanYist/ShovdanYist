@@ -16,7 +16,7 @@
                     <small class="md-comment-reply-area">
                         <span class="float-left mr-1">{{ 'reply.for' | trans }}</span>
                         <span class="md-comment-reply-user font-weight-bold"></span>{{ 'reply.for.two' | trans }}
-                        <span class="md-replying-delete"><i class="fas fa-times"></i></span>
+                        <span class="md-replying-delete"><i class="icon-x"></i></span>
                     </small>
                     {{ form_errors(commentForm.message) }}
                     {{ form_widget(commentForm.message) }}
@@ -26,7 +26,7 @@
                 <div class="md-comment-send">
 
                     <button class="btn">
-                        <i class="fas fa-paper-plane"></i>
+                        <i class="icon-arrow-up"></i>
                     </button>
 
                 </div>
@@ -44,7 +44,7 @@
     {% else %}
 
         <div class="md-comment-guest md-alert md-alert-danger md-box-mb">
-            <i class="fas fa-ban"></i> {{ 'you.are.blocked.and.you.cant.write.comments' | trans }}
+            <i class="icon-x-octagon"></i> {{ 'you.are.blocked.and.you.cant.write.comments' | trans }}
         </div>
 
     {% endif %}
@@ -53,14 +53,16 @@
 
     <div class="md-comment-guest">
 
-        <a class="btn btn-info mr-1" href="{{ path('app_login') }}">
-            {{ 'log.in' | trans }}
+        {{ 'need' | trans | capitalize }}
+
+        <a class="font-weight-bold" href="{{ path('app_login') }}">
+            {{ 'to.log.in' | trans | lower }}
         </a>
 
-        {{ 'or' | trans }}
+        {{ 'or.two' | trans }}
 
-        <a class="btn btn-success ml-1 mr-1" href="{{ path('app_register') }}">
-            {{ 'sign.up' | trans }}
+        <a class="font-weight-bold" href="{{ path('app_register') }}">
+            {{ 'to.sign.up' | trans | lower }}
         </a>
 
         {{ 'to.leave.a.comment' | trans }}

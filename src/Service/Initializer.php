@@ -3,11 +3,14 @@
 namespace App\Service;
 
 use App\Entity\Action;
+use App\Entity\Like;
+use App\Entity\Notification;
 use App\Entity\Post;
 use App\Entity\Person;
 use App\Entity\Song;
 use App\Entity\User;
 use App\Entity\View;
+use App\Repository\LikeRepository;
 use App\Repository\NotificationRepository;
 use App\Repository\UserRepository;
 use Cocur\Slugify\SlugifyInterface;
@@ -25,6 +28,7 @@ class Initializer
         private Compiler $compiler,
         private SlugifyInterface $slugify,
         private UserRepository $users,
+        private LikeRepository $likes,
         private EntityManagerInterface $em
     ){}
 
@@ -189,6 +193,40 @@ class Initializer
         $this->setSlug($person);
 
         $this->em->flush();
+    }
+
+    public function initializeLike(Post $post)
+    {
+        $like = new Like();
+        $like->setUser($this->getUser());
+        $like->setPost($post);
+        $this->likes->persist($like);
+        $response = ['status' => 'added'];
+
+        if ($post->getAuthor() !== $this->getUser()) {
+            $existNotify = $this->notifications->findOneBy(['post' => $post, 'type' => 'post_like']);
+
+            if ($existNotify) {
+                if ($existNotify->getSeen()) {
+                    $existNotify->setSeen(false);
+                    $existNotify->setQuantity(1);
+                } elseif ($existNotify->getSender() !== $this->getUser() || $existNotify->getQuantity() > 1) {
+                    $existNotify->setQuantity($existNotify->getQuantity() + 1);
+                }
+                $existNotify->setPublishedAt(new \DateTime('now'));
+                $existNotify->setSender($this->getUser());
+            } else {
+                $notification = new Notification();
+                $notification->setType('post_like');
+                $notification->setReceiver($post->getAuthor());
+                $notification->setPost($post);
+                $notification->setQuantity(1);
+                $notification->setSender($this->getUser());
+                $this->notifications->persist($notification);
+            }
+        }
+
+        return $response;
     }
 
     private function createAction($entity, $type)

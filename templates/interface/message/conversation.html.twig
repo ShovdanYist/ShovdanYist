@@ -15,7 +15,7 @@
 
         <header class="user-title-block user-conversation-header">
             <a class="btn header-back-button" href="{{ path('message_conversations') }}">
-                <i class="fas fa-chevron-left"></i>
+                <i class="icon-chevron-left" style="font-size: 22px"></i>
             </a>
 
             <div class="username-container">
@@ -27,7 +27,7 @@
 
                 {% if user.profile.verified == true %}
                     <span class="verified">
-                        <i class="fas fa-check-circle text-info"></i>
+                        <i class="icon-check-circle-two text-info"></i>
                     </span>
                 {% endif %}
             </div>
@@ -47,7 +47,7 @@
                     <div id="message{{ message.id }}" class="message{% if app.user == message.sender %} me{% endif %}{% if message.song %} audio-message{% endif %}{% if message.post %} post-message{% endif %}{% if message.profile %} profile-message{% endif %}{% if message.image %} image-message{% endif %}">
                         <div class="message-actions">
                             <button type="button" class="btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fas fa-ellipsis-h"></i>
+                                <i class="icon-more-horizontal"></i>
                             </button>
 
                             <div class="dropdown-menu dropdown-menu-right">
@@ -108,8 +108,8 @@
                                             <div class="back-picture bp-130" style="background-image: url('{% if message.post.image %}{{ vich_uploader_asset(message.post) | imagine_filter('avatar') }}{% else %}{{ asset('assets/images/question.jpg') }}{% endif %}')">
                                             </div>
                                             <div class="info">
-                                                <span><i class="fas fa-heart"></i> {{ message.post.likes.count }}</span>
-                                                <span><i class="fas fa-comment"></i> {{ message.post.comments.count }}</span>
+                                                <span><i class="icon-heart"></i> {{ message.post.likes.count }}</span>
+                                                <span><i class="icon-message-circle"></i> {{ message.post.comments.count }}</span>
                                             </div>
                                         </div>
                                     </a>
@@ -214,9 +214,9 @@
                                 {% endif %}
                                 {% if message.sender == app.user %}
                                     {% if message.seen and not message.receiver.hideOnline %}
-                                        <i style="font-size: 8px" class="fas fa-check-double"></i>
+                                        <i style="font-size: 12px" class="icon-message-double-check"></i>
                                     {% else %}
-                                        <i style="font-size: 8px" class="fas fa-check"></i>
+                                        <i style="font-size: 12px" class="icon-message-check"></i>
                                     {% endif %}
                                 {% endif %}
                             </small>
@@ -225,7 +225,7 @@
 
                 {% else %}
                     <div class="py-3 not-have-message not-have-message-center">
-                        <i class="far fa-comment" style="margin-right: 3px"></i>
+                        <i class="icon-send" style="margin-right: 3px"></i>
                         {{ 'you.have.not.messages.with.user' | trans({'username' : user.username}) }}
                     </div>
                 {% endfor %}
@@ -238,18 +238,18 @@
             {{ form_start(form, {'attr': {'class': 'message-form'}}) }}
                 <div id="replyMessageBox">
                     <span id="replyMessage"></span>
-                    <span id="replyMessageClose"><i class="fas fa-times"></i></span>
+                    <span id="replyMessageClose"><i class="icon-x"></i></span>
                 </div>
 
                 <div class="message-write">
                     <div class="attach">
                         <div id="attachedImage">
                             <span id="attachedImageClose">
-                                <i class="fas fa-times"></i>
+                                <i class="icon-x"></i>
                             </span>
                         </div>
                         <a class="btn">
-                            <i class="fas fa-plus"></i>
+                            <i class="icon-paperclip"></i>
                             <span style="display: none">
                                 {{ form_widget(form.imageFile) }}
                             </span>
@@ -260,7 +260,7 @@
                     </div>
                     <div class="send">
                         <button type="submit" class="btn">
-                            <i class="fas fa-paper-plane"></i>
+                            <i class="icon-arrow-up"></i>
                         </button>
                     </div>
                 </div>
@@ -292,6 +292,7 @@
         let messageTextArea = document.querySelector('.message-write textarea');
         let messageSendButton = document.querySelector('.send button');
         let messagesBox = document.querySelector('.messages-box');
+        let messagesBoxParent = document.getElementById('messagesBox');
         let attachedImage = document.getElementById('attachedImage');
 
         fileInput.onchange = () => {
@@ -314,7 +315,7 @@
         function messageSender(){
             if (messageInput.value || messageSendButton.id === 'imageLoaded') {
                 if (document.querySelector('.sending-message') == null) {
-                    messageBoxBlock.insertAdjacentHTML('afterbegin','<div class="text">' + '<span class="text-message">' + messageTextArea.value + '</span>' + '<small style="margin-left: 5px"><i class="fas fa-spinner fa-spin"></i></small></div>');
+                    messageBoxBlock.insertAdjacentHTML('afterbegin','<div class="text">' + '<span class="text-message">' + messageTextArea.value + '</span>' + '<small style="margin-left: 5px"><i class="icon-refresh-cw md-spin"></i></small></div>');
                     messagesBox.insertAdjacentElement('beforeend',messageBoxBlock);
                     messageSendButton.insertAdjacentHTML('beforebegin','<div class="message-send-disabler"></div>');
                     messageSendButton.style.opacity = '0.8';
@@ -356,6 +357,8 @@
                 let postMessage = message.querySelector('.post-message');
                 let profileMessage = message.querySelector('.profile-message');
 
+                messagesBoxParent.style.marginBottom = '54px';
+
                 if (imageMessage) {
                     replyMessageBox.className = 'post';
                     if (message.querySelector('.text-message').innerHTML) {
@@ -373,7 +376,6 @@
                     replyMessageBox.className = 'profile';
                     replyMessage.innerHTML = profileMessage.querySelector('.back-picture').outerHTML + '<div class="info">' + profileMessage.querySelector('.user-line-info').innerHTML + '</div>';
                 } else {
-                    console.log('lost');
                     replyMessage.innerHTML = textMessage.innerHTML;
                 }
             })
@@ -381,6 +383,7 @@
 
         document.getElementById('replyMessageClose').addEventListener('click', () => {
             document.getElementById('message_replyTo').removeAttribute('value');
+            messagesBoxParent.removeAttribute('style');
             replyMessageBox.style.display = 'none';
         })
     </script>

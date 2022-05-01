@@ -18,6 +18,10 @@ a:focus, a:active, a:hover {
   box-shadow: unset !important;
 }
 
+hr {
+  border-top: $border;
+}
+
 html, body {
   height: 100% !important;
   overflow: hidden !important;
@@ -69,7 +73,10 @@ body {
   font-family: -apple-system,BlinkMacSystemFont,Roboto,Open Sans,Helvetica Neue,"Noto Sans Armenian","Noto Sans Bengali","Noto Sans Cherokee","Noto Sans Devanagari","Noto Sans Ethiopic","Noto Sans Georgian","Noto Sans Hebrew","Noto Sans Kannada","Noto Sans Khmer","Noto Sans Lao","Noto Sans Osmanya","Noto Sans Tamil","Noto Sans Telugu","Noto Sans Thai",sans-serif;
   font-size: 15px;
   color: #000;
-  background-color: #edeef0;
+  background-color: #f6f8fb;
+  font-smoothing: antialiased;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   .dropdown-menu {
     z-index: 900;
   }
@@ -83,9 +90,6 @@ body {
   color: inherit;
   font-family: 'FiraSans', sans-serif;
   font-weight: 500;
-  font-smoothing: antialiased;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
 }
 
 h1 a, h2 a, h3 a {
@@ -132,7 +136,7 @@ textarea, input, .form-control {
 
 .custom-file-label {
   border-radius: 3px;
-  border: 1px solid #dde2e8;
+  border: 1px solid $form-border-color;
 }
 
 .custom-switch .custom-control-input:disabled:checked ~ .custom-control-label::before {
@@ -141,7 +145,7 @@ textarea, input, .form-control {
 
 .btn-link:hover {
   background-color: #edf1f4;
-  color: #1f5887;
+  color: $info;
 }
 
 .btn {
@@ -151,18 +155,18 @@ textarea, input, .form-control {
 .breadcrumb-btn {
   position: absolute;
   right: 12px;
-  background: #3a5571;
+  background: #000;
   height: 22px;
   width: 22px;
   text-align: center;
   line-height: 22px;
-  border-radius: 3px;
-  font-size: 12px;
+  border-radius: 5px;
+  font-size: 15px;
   color: white !important;
 }
 
 .breadcrumb-btn:hover {
-  background: #426384;
+  background: #333;
 }
 
 ul {
@@ -226,7 +230,7 @@ li {
 // Search
 
 .found-keyword {
-  background: #d5eee9;
+  background: #dcf4fb;
 }
 
 .md-search .md-search-box {
@@ -250,7 +254,7 @@ li {
 }
 
 .md-search-input .btn, .md-search-all-input .btn{
-  margin-left: 12px;
+  margin-left: 6px;
 }
 
 #form_tagSearch {
@@ -284,7 +288,7 @@ li {
 }
 
 .user-line-username .md-verified {
-  top: unset;
+  top: 1px;
 }
 
 .user-line-follow, .notification-follow, .follow-request {
@@ -294,10 +298,11 @@ li {
 }
 
 .user-line-follow .btn-follow, .notification-follow, .follow-request .btn {
-  font-weight: 500;
+  font-weight: 600;
   font-size: 13px;
-  padding: 2px 6px 3px 5px;
-  width: 100px;
+  padding: 4px 6px 5px 5px;
+  width: 112px;
+  border-radius: 20px;
 }
 
 .profile-buttons {
@@ -307,13 +312,14 @@ li {
 }
 
 .profile-button .btn {
-  font-weight: 500;
+  font-weight: 600;
   font-size: 14px;
-  padding: 4px 8px 6px 8px;
+  border-radius: 30px;
+  padding: 4px 12px 5px 12px;
 }
 
 .profile-follow a {
-  width: 109px;
+  width: 120px;
 }
 
 .profile-button.un-width .btn {
@@ -323,7 +329,7 @@ li {
 .unfollow {
   color: #adb5bd;
   right: 3px;
-  top: 1px;
+  top: 2px;
   position: relative;
   cursor: pointer;
 }
@@ -390,12 +396,12 @@ blockquote, .ck.ck-content blockquote {
 // CK Editor
 
 .cke.cke_chrome {
-  border: 1px solid #dde2e8 !important;
+  border: 1px solid $form-border-color !important;
   border-radius: 3px !important;
 }
 
 .cke .cke_top {
-  border-bottom: 1px solid #dde2e8 !important;
+  border-bottom: 1px solid $form-border-color !important;
   border-radius: 3px 3px 0 0;
 }
 
@@ -426,15 +432,15 @@ blockquote, .ck.ck-content blockquote {
 }
 
 .ck.ck-toolbar {
-  border-top: 1px solid #dde2e8 !important;
-  border-right: 1px solid #dde2e8 !important;
-  border-left: 1px solid #dde2e8 !important;
-  border-radius: 3px 3px 0 0 !important;
+  border-top: 1px solid $form-border-color !important;
+  border-right: 1px solid $form-border-color !important;
+  border-left: 1px solid $form-border-color !important;
+  border-radius: $border-radius $border-radius 0 0 !important;
 }
 
 .ck-rounded-corners .ck.ck-editor__main > .ck-editor__editable, .ck.ck-editor__main > .ck-editor__editable.ck-rounded-corners {
-  border-radius: 0 0 3px 3px !important;
-  border: 1px solid #dde2e8 !important;
+  border-radius: 0 0 $border-radius $border-radius !important;
+  border: 1px solid $form-border-color !important;
   box-shadow: unset !important;
 }
 
@@ -465,7 +471,7 @@ blockquote, .ck.ck-content blockquote {
 }
 
 .ck.ck-button.ck-off, .ck.ck-button.ck-on {
-  border-radius: 3px !important;
+  border-radius: $border-radius-box !important;
   cursor: pointer !important;
 }
 
@@ -479,7 +485,7 @@ blockquote, .ck.ck-content blockquote {
 
 .ck.ck-dropdown__button.ck-on {
   background: #eff0f5 !important;
-  border-radius: 3px !important;
+  border-radius: $border-radius-box !important;
   cursor: pointer !important;
 }
 
@@ -487,14 +493,14 @@ blockquote, .ck.ck-content blockquote {
   top: auto !important;
   bottom: 136% !important;
   left: -5px !important;
-  border-radius: 3px !important;
+  border-radius: $border-radius !important;
 }
 
 .ck.ck-dropdown .ck-dropdown__panel {
   padding: 6px;
-  border-radius: 3px !important;
+  border-radius: $border-radius-box !important;
   box-shadow: 0 1px 8px rgba(0, 0, 0, 0.05) !important;
-  border: 1px solid #dde2e8;
+  border: 1px solid $form-border-color;
 }
 
 .ck.ck-list__item .ck-button.ck-on {
@@ -598,7 +604,7 @@ blockquote, .ck.ck-content blockquote {
 }
 
 .md-form-padding {
-  padding: 20px 24px 24px;
+  padding: 24px;
 }
 
 .md-form-unmargin .form-group {
@@ -609,7 +615,7 @@ blockquote, .ck.ck-content blockquote {
   display: block;
   width: 300px;
   margin: 0 auto 10px;
-  border-radius: 3px !important;
+  border-radius: $border-radius !important;
 }
 
 // MODAL
@@ -622,11 +628,13 @@ blockquote, .ck.ck-content blockquote {
 }
 
 .md-modal-container {
-  padding: 18px;
-  background-color: rgba(30,30,30,0.9);
-  display: flex;
+  box-shadow: 0 0 30px 0 rgba(0, 0, 0, 0.05);
   flex-direction: column;
-  border-radius: 12px;
+  background-color: #fff;
+  border-radius: 20px;
+  border: $border;
+  padding: 18px;
+  display: flex;
 }
 
 .md-modal-container .md-modal-item {
@@ -634,34 +642,37 @@ blockquote, .ck.ck-content blockquote {
 }
 
 .md-modal-container .btn-modal-primary {
-  background: #376691;
+  background: $info;
 }
 
 .md-modal-container .btn-modal-primary:hover {
-  background: #4072a1;
+  background: lighten($info, 5%);
 }
 
 .md-modal-container .btn-modal-danger {
-  background: #c43d3d;
+  background: $red;
 }
 
 .md-modal-container .btn-modal-danger:hover {
-  background: #d54b4b;
+  background: lighten($red, 3%);
 }
 
 .md-modal-container .btn-modal-default {
-  background: #595959;
+  background: #e3e3e3;
+  color: #000 !important;
 }
 
 .md-modal-container .btn-modal-default:hover {
-  background: #646464;
+  background: lighten(#e3e3e3, 3%);
 }
 
 .md-modal-container .btn {
-  color: rgba(255,255,255,0.8);
-  border-radius: 6px;
+  border-radius: $border-radius;
+  font-weight: 500;
+  padding: 10px;
   border: unset;
   width: 100%;
+  color: #fff;
 }
 
 .md-modal-container .md-modal-item:last-child {
@@ -669,7 +680,7 @@ blockquote, .ck.ck-content blockquote {
 }
 
 .md-modal-message {
-  color: #aaa;
+  color: #000;
   text-align: center;
   margin-bottom: 20px;
   font-size: 15px;
@@ -683,6 +694,10 @@ blockquote, .ck.ck-content blockquote {
 
 .md-empty-modal .modal-content img {
   border-radius: 8px;
+}
+
+.modal-backdrop {
+  background-color: #fff;
 }
 
 // Form spoiler
@@ -716,16 +731,18 @@ blockquote, .ck.ck-content blockquote {
   color: #7e8c8c;
 }
 
-.form-spoiler i:before {
-  font-family: "Font Awesome 5 Free", sans-serif;
-  content: "\f077";
-  font-size: 12px;
+.form-spoiler i::before {
+  font-family: 'icomoon';
+  content: "\e932";
+  font-size: 14px;
   font-style: normal;
   font-weight: 900;
+  top: 2px;
+  position: relative;
 }
 
 .form-spoiler .collapsed i:before {
-  content: "\f078";
+  content: "\e92f";
 }
 
 // Overflow long usernames
@@ -781,11 +798,12 @@ blockquote, .ck.ck-content blockquote {
 // Navbar
 
 .md-nav {
-  background: rgba(30, 30, 30, 0.95);
+  background: linear-gradient(180deg, #fff 0%, rgba(255, 255, 255, 0.95) 100%);
   margin-bottom: 12px;
   z-index: 1000;
   height: 55px;
   width: 100%;
+  border-bottom: $border;
 }
 
 .md-nav .container {
@@ -798,7 +816,13 @@ blockquote, .ck.ck-content blockquote {
   padding: 0 10px;
   height: 54px;
   display: block;
-  color: #fff;
+  color: #000;
+  font-weight: 600;
+}
+
+.md-nav-link:hover {
+  background: $grey-background;
+  text-decoration: unset;
 }
 
 .md-nav-menu ul {
@@ -824,11 +848,6 @@ blockquote, .ck.ck-content blockquote {
   position: relative;
 }
 
-.md-mobile-nav .md-nav-logo {
-  margin: 0;
-  transform: translateX(-21px);
-}
-
 .md-nav-logo, .md-nav-item {
   float: left;
   height: 54px;
@@ -839,14 +858,8 @@ blockquote, .ck.ck-content blockquote {
   margin: 5px 10px;
 }
 
-.md-nav-link:hover {
-  background: rgba(0, 0, 0, 0.20);
-  color: #fff;
-  text-decoration: unset;
-}
-
 .md-nav-logo:hover {
-  background: rgba(0, 0, 0, 0.20);
+  opacity: 0.6;
 }
 
 .md-user-navbar-username {
@@ -854,18 +867,18 @@ blockquote, .ck.ck-content blockquote {
 }
 
 .md-navbar-arrow {
-  font-size: 10px;
+  font-size: 14px;
   opacity: 0.5;
 }
 
 .dropdown-menu {
-  margin-top: 8px;
-  padding: 5px;
-  z-index: 1060;
-  box-shadow: unset;
-  background: rgba(30, 30, 30, 0.9);
+  box-shadow: 0 0 30px 0 rgba(0, 0, 0, 0.05);
   border-radius: 10px;
-  border: unset;
+  background: #fff;
+  border: $border;
+  margin-top: 8px;
+  z-index: 1060;
+  padding: 5px;
 }
 
 .dropdown-menu .icon {
@@ -877,12 +890,12 @@ blockquote, .ck.ck-content blockquote {
 }
 
 .dropdown-menu a, .dropdown-menu button {
-  color: #aaa !important;
+  color: #000 !important;
   border-radius: 6px !important;
 }
 
 .dropdown-menu a:hover, .dropdown-menu button:hover {
-  background: rgba(255, 255, 255, 0.05);
+  background: $grey-background;
 }
 
 .dropdown-item {
@@ -893,7 +906,7 @@ blockquote, .ck.ck-content blockquote {
 }
 
 .dropdown-item:hover, .dropdown-item:focus {
-  background-color: #f2f2f2;
+  background-color: $grey-background;
   color: #586471;
   border-radius: 3px;
 }
@@ -909,7 +922,7 @@ blockquote, .ck.ck-content blockquote {
 .dropdown-divider {
   display: block;
   margin: 5px 0;
-  border-top: 1px solid rgba(0,0,0,0.1);
+  border-top: $border;
 }
 
 .navbar-login-mobile {
@@ -996,12 +1009,12 @@ blockquote, .ck.ck-content blockquote {
 
 .form-control, .form-control:focus, .form-control:focus-within, .form-control:active {
   box-shadow: unset !important;
-  border: 1px solid #dde2e8;
+  border: 1px solid $form-border-color;
   font-family: Lato,Helvetica Neue,Helvetica,Arial,sans-serif;
   font-size: 15px;
   font-weight: normal;
   color: $primary;
-  border-radius: 3px;
+  border-radius: $border-radius;
 }
 
 // Body
@@ -1055,7 +1068,12 @@ main {
   position: absolute;
   line-height: 28px;
   margin-left: 10px;
-  color: #505050;
+  color: #000;
+  font-size: 22px;
+}
+
+table .md-dot-btn, .player-box .md-dot-btn{
+  font-size: 18px;
 }
 
 .md-profile .md-dot-btn {
@@ -1066,15 +1084,6 @@ main {
 
 .dropdown-menu a, .dropdown-menu button {
   line-height: 1.5;
-}
-
-.md-profile .md-dot-btn svg {
-  font-size: 20px;
-  color: #a0a0a0;
-}
-
-.md-dot-btn svg {
-  color: #a0a0a0;
 }
 
 tr:hover .md-dot-btn {
@@ -1110,13 +1119,12 @@ td {
 // Alert
 
 .content-alert-warning {
-  border-left: 10px solid #ee8a8a;
   background-color: #ffe7e6;
   color: #ee8a8a;
 }
 .content-alert {
   text-align: center;
-  border-radius: 3px;
+  border-radius: 12px;
   padding: 12px 10px;
 }
 
@@ -1125,6 +1133,14 @@ td {
 .badge-lower {
   padding: 2px 4px 4px;
   text-transform: lowercase;
+}
+
+.badge-a a {
+  padding: 5px 8px;
+}
+
+.badge {
+  margin-bottom: 3px;
 }
 
 // Label forms icons
@@ -1229,9 +1245,10 @@ td {
 .md-song-menu a {
   display: inline-block;
   padding: 1px 1px 0 0;
-  background: $success;
-  text-align: center;
   border-radius: 3px;
+  text-align: center;
+  background: $info;
+  font-weight: 500;
   margin: 0 0 5px;
   height: 25px;
   color: #fff;
@@ -1239,8 +1256,8 @@ td {
 }
 
 .md-song-menu a:hover {
+  background-color: lighten($info, 10%);
   color: #fff;
-  background-color: darken($success, 5%);
 }
 
 .md-song-menu {
@@ -1309,12 +1326,12 @@ td {
   position: absolute;
   line-height: 22px;
   margin-left: 10px;
-  color: #a0a0a0;
-  right: 0;
+  color: #000;
+  right: -1px;
 }
 
 .md-comment-dot-btn:hover {
-  color: #a0a0a0;
+  color: #333;
 }
 
 .md-comment:hover .md-comment-dot-btn {
@@ -1338,6 +1355,8 @@ td {
 .md-comments-header {
   font-size: 16px;
   margin-bottom: 8px;
+  font-weight: 500;
+  color: #777;
 }
 
 .md-comment-username {
@@ -1410,8 +1429,9 @@ td {
 .md-comment-guest {
   margin-top: 12px;
   background-color: #f7f7f7;
-  padding: 10px;
+  padding: 10px 14px;
   border-radius: radius(full);
+  text-align: center;
 }
 
 .md-comment-input {
@@ -1429,14 +1449,16 @@ td {
   height: 36px;
   width: 36px;
   padding: unset;
-  font-size: 17px;
-  border-radius:  100px;
-  color: #a7acb7;
+  font-size: 24px;
+  border-radius: 100px;
+  background-color: $info;
+  color: white;
   border: unset;
+  line-height: 16px;
 }
 
 .md-comment-send button:hover {
-  background-color: $info;
+  background-color: lighten($info, 5%);
   color: white;
 }
 
@@ -1455,22 +1477,22 @@ td {
 }
 
 .md-comment-reply-area {
-  border-radius: 3px 3px 0 0;
+  border-radius: $border-radius $border-radius 0 0;
   color: #444;
-  background-color: #eee;
+  background-color: $grey-background;
   padding: 5px 10px;
-  border: 1px solid #dde2e8;
+  border: 1px solid $form-border-color;
   border-bottom: unset;
   display: none;
 }
 
-.md-replying .md-comment-reply-area {
-  display: block;
-}
-
 .md-replying textarea {
   top: unset;
-  border-radius: 0 0 3px 3px !important;
+  border-radius: 0 0 $border-radius $border-radius !important;
+}
+
+.md-replying .md-comment-reply-area {
+  display: block;
 }
 
 .md-replying .md-comment-input {
@@ -1519,8 +1541,8 @@ td {
 // Sidebar
 
 .sidebar-box {
-  padding: 12px;
-  margin-bottom: 12px;
+  padding: 10px;
+  margin-bottom: $box-space;
 }
 
 // User pages
@@ -1537,12 +1559,12 @@ td {
 .md-verified {
   margin-left: 4px;
   font-size: 16px;
-  top: 1px;
+  top: 2px;
   position: relative;
 }
 
 .md-user-sidebar-profile {
-  padding: 3px 0 12px 4px;
+  padding: 3px 0 3px 4px;
 }
 
 .md-user-sidebar-username {
@@ -1575,24 +1597,65 @@ td {
   display: table;
   float: left;
   text-align: center;
-  margin-right: 4px;
+  margin-right: 6px;
 }
 
 .md-menu-item a {
-  color: #586471;
+  color: #333;
   width: 100%;
   display: table;
-  border-radius: radius(full);
-  padding: 5px;
+  padding: 11px 7px;
+  font-weight: 500;
+}
+
+.md-menu ul li:first-child a {
+  border-radius: $border-radius $border-radius 0 0;
+}
+
+.md-menu ul li.active:first-child a {
+  border-radius: 0 $border-radius 0 0;
+}
+
+.md-menu ul li:last-child a {
+  border-radius: 0 0 $border-radius $border-radius;
+}
+
+.md-menu ul li.active:last-child a {
+  border-radius: 0 0 $border-radius 0;
 }
 
 .md-menu-item a:hover, .md-menu-item a.active {
-  background-color: rgba(0,0,0,0.05);
+  background-color: #fbfbfc;
   color: inherit;
 }
 
 .songs-moderation-mobile-menu {
   display: none;
+}
+
+.md-menu-item span i {
+  font-size: 22px;
+}
+
+.md-menu-item.active a {
+  color: $info;
+  background: #fbfbfc;
+}
+
+.md-menu-item.active::before {
+  content: "";
+  height: 100%;
+  width: 2px;
+  background: $info;
+  display: block;
+  position: absolute;
+  top: 0;
+  left: -2px;
+  border-radius: 5px;
+}
+
+.md-menu-item {
+  position: relative;
 }
 
 // Lined menu
@@ -1670,7 +1733,7 @@ td {
  display: flex;
  flex-wrap: wrap;
  padding: 15px 15px 0;
- border-top: 1px solid #eef1f5;
+ border-top: $border;
 }
 
 .md-grid-post {
@@ -1724,6 +1787,7 @@ td {
 }
 
 .profile-no-posts {
+  border-top: $border !important;
   padding: 24px;
   margin-bottom: 15px;
   width: 100%;
@@ -1732,7 +1796,7 @@ td {
 
 .md-profile-posts-menu {
   justify-content: space-around;
-  border-top: 1px solid #eef1f5;
+  border-top: $border;
   display: flex;
   padding: 10px;
 }
@@ -1770,6 +1834,10 @@ td {
 }
 
 // Breadcrumbs
+
+.breadcrumb-item + .breadcrumb-item::before {
+  color: $info !important;
+}
 
 .md-breadcrumb {
   display: -webkit-box;
@@ -1863,12 +1931,13 @@ td {
 
 .user-title-block .verified {
   font-size: 18px;
+  position: relative;
+  top: 1px;
 }
 
 .user-title-block .md-dot-btn {
-  font-size: 18px;
   right: 20px;
-  top: 14px;
+  top: 15px;
 }
 
 .header-back-button:hover {
@@ -1883,8 +1952,8 @@ td {
 
 .md-box {
   background-color: $box-background;
-  box-shadow: $box-shadow;
-  border-radius: 3px;
+  border-radius: $border-radius;
+  border: 1px solid #eef1f5;
 }
 
 .md-box.sticky-top, .sidebar.sticky-top {
@@ -1913,10 +1982,10 @@ td {
 }
 
 .md-box.md-main-box-col-2 .md-post-info {
-  max-width: 60%;
+  max-width: 50%;
 }
 .md-box.md-main-box-col-2 .md-song-stats {
-  max-width: 40%;
+  max-width: 50%;
 }
 
 .md-box.md-main-box-col-2 {
@@ -1926,7 +1995,7 @@ td {
 .md-post-info {
   padding: 14px;
   div {
-    background-color: #f2f2f2;
+    background-color: $grey-background;
     padding: 8px 12px;
     border-radius: radius(full);
   }
@@ -2016,18 +2085,25 @@ td {
   width: 30px;
   padding: unset;
   margin: unset;
+  font-size: 16px;
 }
 
 .conversation-unseen-counter {
-  position: absolute;
-  left: 48px;
-  top: 7px;
-  font-size: 12px;
-  color: #fff;
-  background: #3498db;
-  padding: 0 6px;
+  border: 2px solid #fff;
   border-radius: 100px;
-  font-weight: 500;
+  position: absolute;
+  background: $info;
+  font-weight: 600;
+  font-size: 12px;
+  padding: 0 6px;
+  color: #fff;
+  left: 48px;
+  top: 6px;
+}
+
+.md-conversation-line:hover .conversation-unseen-counter {
+  border: 2px solid #f2f2f2;
+  color: #f2f2f2;
 }
 
 .conversation-page {
@@ -2040,9 +2116,9 @@ td {
 
 .md-conversation {
   max-height: calc(100vh - 130px);
+  flex-direction: column;
   position: relative;
   display: flex;
-  flex-direction: column;
 }
 
 .md-conversation .messages {
@@ -2054,10 +2130,10 @@ td {
 }
 
 .md-conversation .message {
-  margin-bottom: 8px;
-  display: flex;
   flex-direction: row-reverse;
   justify-content: flex-end;
+  margin-bottom: 8px;
+  display: flex;
 }
 
 .md-conversation .message.me {
@@ -2069,7 +2145,7 @@ td {
 }
 
 .md-conversation .message.me .text {
-  background: #3498db;
+  background: $info;
   color: white;
 }
 
@@ -2081,11 +2157,15 @@ td {
 }
 
 .md-conversation .message.me:hover .text {
-  background: #3ca7f0 !important;
+  background: lighten($info, 5%) !important;
 }
 
 .md-conversation .message.me:hover .replied-message::after {
-  background: -moz-linear-gradient(right, #3ca7f0 0%, rgba(255, 255, 255, 0) 100%);
+  background: -moz-linear-gradient(right, lighten($info, 5%) 0%, rgba(255, 255, 255, 0) 100%);
+}
+
+.message.me .replied-message::after {
+  background: -moz-linear-gradient(right, $info 0%, rgba(255,255,255,0) 100%);
 }
 
 .md-conversation .message:hover .text {
@@ -2101,12 +2181,13 @@ td {
 }
 
 .message-actions .btn {
-  width: 30px;
-  height: 30px;
   line-height: 16px;
-  padding: 0;
-  color: #a0a0a0;
+  color: #000;
   display: none;
+  height: 30px;
+  width: 30px;
+  padding: 0;
+  font-size: 16px;
 }
 
 .message:hover .message-actions .btn {
@@ -2122,10 +2203,10 @@ td {
 }
 
 .message-write {
-  display: flex;
-  padding: 10px;
-  border-top: 1px solid #eef1f5;
+  border-top: $border;
   position: relative;
+  padding: 10px;
+  display: flex;
 }
 
 .message-write .input {
@@ -2138,22 +2219,26 @@ td {
 }
 
 .message-write .attach .btn {
-  border: 2px solid #a7acb7;
   border-radius: 100%;
+  line-height: 22px;
+  font-size: 25px;
   padding: unset;
-  width: 24px;
-  height: 24px;
-  line-height: 20px;
-  font-size: 12px;
   color: #a7acb7;
+  height: 28px;
+  width: 28px;
+}
+
+.message-write .attach .btn:hover {
+  color: #93959b;
 }
 
 .message-write .attach {
-  width: 34px;
-  line-height: 32px;
   text-align: center;
-  margin-right: 8px;
   position: relative;
+  margin-right: 8px;
+  line-height: 32px;
+  width: 36px;
+  height: 36px;
 }
 
 .message-write .send {
@@ -2161,31 +2246,36 @@ td {
 }
 
 .message-write .send .btn {
+  border-radius: 100px;
+  padding: 0;
   position: relative;
+  background: $info;
+  margin-left: 8px;
+  font-size: 24px;
+  border: unset;
   height: 36px;
   width: 36px;
-  font-size: 16px;
-  border-radius: 100px;
   color: #fff;
-  border: unset;
-  background: #3498DB;
-  padding: 0 3px 0 0;
-  margin-left: 8px;
+  line-height: 16px;
+}
+
+.message-write .send .btn:hover {
+  background: lighten($info, 5%);
 }
 
 .message-send-disabler {
-  width: 100%;
-  height: 100%;
   position: absolute;
   z-index: 100;
+  height: 100%;
+  width: 100%;
 }
 
 .message-form {
+  border-radius: 3px;
+  background: #fff;
+  z-index: 99;
   width: 100%;
   bottom: 0;
-  background: #fff;
-  border-radius: 3px;
-  z-index: 99;
 }
 
 .online-users-title {
@@ -2199,24 +2289,24 @@ td {
 }
 
 .online-users-list .back-picture {
+  min-height: 50px;
+  min-width: 50px;
   display: table;
   float: left;
-  min-width: 50px;
-  min-height: 50px;
 }
 
 .online-users-block {
+  border-bottom: $border;
   padding: 0 12px 12px;
   position: relative;
-  border-bottom: 1px solid #eef1f5;
 }
 
 .online-users-block::before, .online-users-block::after {
-  content: "";
-  width: 15px;
   position: absolute;
-  height: 50px;
   display: block;
+  height: 50px;
+  width: 15px;
+  content: "";
   top: 0;
 }
 
@@ -2252,26 +2342,26 @@ td {
 }
 
 #replyMessageBox {
-  border-top: 1px solid #eef1f5;
-  position: relative;
   padding: 12px 18px 12px;
   white-space: nowrap;
+  border-top: $border;
+  position: relative;
   overflow: hidden;
   display: none;
 }
 
 #replyMessage {
+  margin-right: 28px;
   line-height: 29px;
   overflow: hidden;
   display: block;
-  margin-right: 28px;
 }
 
 #replyMessageBox.post .back-picture {
-  width: 29px;
-  height: 29px;
   border-radius: 8px;
   margin-right: 8px;
+  height: 29px;
+  width: 29px;
 }
 
 #replyMessageBox.profile .back-picture {
@@ -2307,9 +2397,8 @@ td {
   background: rgba(255,255,255,0.5);
   color: rgba(255,255,255,0.9);
   padding: 4px 6px;
-  border-radius: 0 8px 8px 0;
+  border-radius: 6px;
   margin: 4px 0 3px;
-  border-left: 2px solid rgba(0,0,0,0.3);
   white-space: nowrap;
   overflow: hidden;
   position: relative;
@@ -2319,7 +2408,6 @@ td {
 .message.me .replied-message {
   color: #fff;
   background: rgba(255,255,255,0.15);
-  border-left: 2px solid rgba(0,0,0,0.25);
 }
 
 .message .replied-message::after {
@@ -2333,12 +2421,8 @@ td {
   top: 0;
 }
 
-.message.me .replied-message::after {
-  background: -moz-linear-gradient(right, rgb(82, 167, 224) 0%, rgba(255,255,255,0) 100%);
-}
-
 .messages-length-alert {
-  background: #f2f2f2;
+  background: $grey-background;
   text-align: center;
   padding: 20px 20px;
   margin-bottom: 8px;
@@ -2494,7 +2578,7 @@ td {
 
 #attachedImageClose {
   position: absolute;
-  left: 12px;
+  left: 11px;
   bottom: 2px;
   color: #fff;
   cursor: pointer;
@@ -2509,13 +2593,28 @@ td {
   margin: 4px 0 2px;
 }
 
-// Login & Register forms
+// Forms
+
+.custom-file-label {
+  border-radius: $border-radius;
+}
+
+.custom-file-label {
+  border: 1px solid $form-border-color;
+}
+
+.custom-file-label::after {
+  background: $form-border-color;
+  color: black;
+  font-weight: 500;
+  border-radius: 0;
+}
 
 .form-signin-info {
-  color: #5d666d;
+  color: #000;
   padding: 22px 14px;
   text-align: center;
-  border-radius: 3px;
+  margin-top: $box-space;
 }
 
 .md-form .alert {
@@ -2644,15 +2743,14 @@ select {
 }
 
 .see-all a:hover {
-  color: #1f5887;
+  color: $info;
 }
 
 .see-all span {
   position: relative;
   top: 2px;
   color: #aaa;
-  font-size: 16px;
-  margin-left: 3px;
+  font-size: 15px;
 }
 
 .md-gt-box {
@@ -2772,18 +2870,15 @@ select {
 .navbar-menu-title h1 {
   line-height: 55px !important;
   margin: unset !important;
-  color: #ccc;
+  color: #000;
   text-align: center;
   font-size: 20px !important;
 }
 
-.navbar-menu-title a, .navbar-menu-title a:hover {
-  color: #fff;
-}
-
 .navbar-menu-title .verified {
   position: relative;
-  font-size: 16px;
+  font-size: 18px;
+  top: 2px;
 }
 
 .navbar-menu-title .profile-lock {
@@ -2796,7 +2891,7 @@ select {
   height: 55px;
   width: 54px;
   right: 0;
-  color: #888;
+  color: #000;
   padding: unset;
   margin: unset;
   font-size: 20px;
@@ -2829,7 +2924,7 @@ select {
   text-align: center;
   line-height: 54px;
   font-size: 23px;
-  color: #777;
+  color: #000;
   z-index: 1050;
   height: 54px;
   width: 54px;
@@ -2837,27 +2932,15 @@ select {
 }
 
 .navbar-menu-item:hover {
-  color: #ccc;
+  color: #777;
 }
 
 .navbar-menu-item.right {
    right: 0;
  }
 
-.navbar-menu-item.right-second {
-  right: 54px;
-}
-
 .navbar-menu-item.left {
-   border-right: 1px solid #373737;
    left: 0;
-}
-
-.navbar-logotype-icon {
-  height: 32px;
-  top: -3px;
-  position: relative;
-  left: -1px;
 }
 
 .navbar-menu-item.right .dropdown-menu {
@@ -2958,16 +3041,38 @@ select {
   top: 0;
   z-index: 3;
   height: 54px;
-  width: calc(100% - 54px);
+  width: 100%;
   padding: 9px 9px 0;
 }
 
 .navbar-search input, .navbar-search-mobile input {
-  background: #333;
-  border: 1px solid #333;
-  border-radius: 6px;
-  transition: ease 600ms;
-  color: #aaa !important;
+  background: $grey-background;
+  border: 1px solid $grey-background;
+  border-radius: $border-radius;
+  color: #000 !important;
+}
+
+.navbar-search a, .navbar-search-mobile a {
+  background: unset !important;
+  border: unset !important;
+  border-radius: 100px;
+  color: #000;
+  font-size: 22px;
+  padding: 3px;
+  min-width: 36px;
+  min-height: 36px;
+  max-height: 36px;
+  line-height: 31px;
+}
+
+.navbar-search a:hover, .navbar-search-mobile a:hover {
+  background: unset !important;
+  color: #777;
+}
+
+.navbar-search input:focus, .navbar-search-mobile input:focus {
+  background: $grey-background;
+  border: 1px solid $grey-background;
 }
 
 .navbar-search-mobile input {
@@ -2987,26 +3092,25 @@ select {
   min-width: 240px;
 }
 
+.chosen-container-single .chosen-single, .chosen-container-multi .chosen-choices{
+  border-radius: $border-radius;
+}
+
+.chosen-container .chosen-drop {
+  border-radius: 0 0 $border-radius $border-radius;
+}
+
+.chosen-container .chosen-results li.highlighted {
+  border-radius: radius(full);
+}
+
+.chosen-with-drop .chosen-choices {
+  border-radius: $border-radius $border-radius 0 0;
+}
+
 .navbar-search .md-search-input, .navbar-search .md-search-all-input {
   justify-content: right;
   float: right;
-}
-
-.navbar-search a, .navbar-search-mobile a {
-  background: #333 !important;
-  border: unset !important;
-  border-radius: 100px;
-  color: #b0b0b0;
-  font-size: 18px;
-  padding: 3px;
-  min-width: 36px;
-  min-height: 36px;
-  max-height: 36px;
-}
-
-.navbar-search a:hover, .navbar-search-mobile a:hover {
-  background: #3b3b3b !important;
-  color: #ccc;
 }
 
 .navbar-search a svg, .navbar-search-mobile a svg {
@@ -3016,32 +3120,7 @@ select {
 }
 
 .navbar-search input::placeholder, .navbar-search-mobile input::placeholder {
-  color: #888;
-}
-
-.navbar-search input:hover, .navbar-search-mobile input:hover {
-  background: #373737;
-  border: 1px solid #373737;
-}
-
-.navbar-search input:focus, .navbar-search-mobile input:focus {
-  background: #3b3b3b;
-  border: 1px solid #3b3b3b;
-  border-radius: 6px;
-}
-
-.navbar-search-closer {
-  position: absolute;
-  right: 70px;
-  color: #686868;
-  top: 15px;
-  font-size: 16px;
-  cursor: pointer;
-  transition: ease 300ms;
-}
-
-#closeNavbarSearch {
-  display: none;
+  color: #8e8e92;
 }
 
 .md-search-pages-menu {
@@ -3053,14 +3132,14 @@ select {
 
 .md-search-pages-menu a {
   text-align: center;
-  color: #adb5bd;
+  color: #888;
   text-decoration: unset;
   font-size: 14px;
   font-weight: 500;
 }
 
 .md-search-pages-menu a:hover {
-  color: #97a1aa;
+  color: #555;
 }
 
 .md-search-pages-menu a:first-child {
@@ -3073,7 +3152,7 @@ select {
 
 .md-search-pages-menu a.active, .md-search-pages-menu a.active:hover {
   color: #333;
-  border-bottom: 2px solid #3498db;
+  border-bottom: 2px solid $info;
 }
 
 // Avatar
@@ -3136,7 +3215,7 @@ select {
 }
 
 .user-follow-notification .notify-message {
-  width: calc(100% - 92px);
+  width: calc(100% - 100px);
 }
 
 .notification-delete {
@@ -3152,35 +3231,32 @@ select {
 .requests-notification {
   text-align: center;
   font-weight: 500;
-  border-bottom: 1px solid #eef1f5;
+  border-bottom: $border;
   color: #000;
   position: relative;
 }
 
 .requests-notification .indicator {
-  background: #f03434;
+  background: $red;
   padding: 2px 6px;
   border-radius: 100px;
   color: #fff;
   font-size: 12px;
+  font-weight: 600;
 }
 
 // Pagination
 
 .page-link {
   margin: 3px;
-  border-radius: 3px;
   background-color: transparent;
   color: #aaaaaa;
   font-size: 18px;
+  border-radius: 8px !important;
   padding: 3px 10px;
 }
 
 .page-link:hover {
-  background-color: #3c3c3c;
-}
-
-.page-item.active .page-link {
   background-color: #3c3c3c;
 }
 
@@ -3190,6 +3266,19 @@ select {
   cursor: not-allowed;
 }
 
+.page-item.active .page-link {
+  background-color: #000;
+}
+
+.pagination-sm .page-link {
+  font-weight: 600;
+  width: 26px;
+  height: 26px;
+  line-height: 25px;
+  padding: 0 1px 0 0;
+  text-align: center;
+}
+
 .pagination .dots {
   display: block;
   margin: 3px;
@@ -3197,10 +3286,15 @@ select {
   color: #aaa;
 }
 
+.pagination .icon-chevron-right, .pagination .icon-chevron-left {
+  position: relative;
+  top: 1px;
+}
+
 // Post
 
 .md-post {
-  margin-bottom: 12px;
+  margin-bottom: $box-space;
   position: relative;
 }
 
@@ -3270,21 +3364,23 @@ select {
   font-size: 14px;
   float: left;
   margin-right: 10px;
+  max-width: 25px;
 }
 
 .post-actions .count {
   margin-left: 6px;
+  line-height: 25px;
   color: #000;
 }
 
 .post-actions a {
   height: 22px;
-  color: #333;
+  color: #000;
   display: inline-flex;
 }
 
 .post-actions a:hover {
-  color: #000;
+  color: #333;
 }
 
 .md-post-status {
@@ -3309,7 +3405,7 @@ select {
 }
 
 .post-songs-more a:hover {
-  color: #1f5887;
+  color: $info;
 }
 
 .post-collapse.closed {
@@ -3335,7 +3431,7 @@ select {
 }
 
 .tagged-user {
-  background: #eee;
+  background: $grey-background;
   border-radius: 100px;
   display: table;
   padding: 5px 12px 5px 6px;
@@ -3352,6 +3448,23 @@ select {
 
 .likes-count a {
   color: #000;
+}
+
+.md-spin {
+  display: inline-block;
+  animation-name: spin;
+  animation-duration: 1000ms;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+}
+
+@keyframes spin {
+  from {
+    transform:rotate(0deg);
+  }
+  to {
+    transform:rotate(360deg);
+  }
 }
 
 @keyframes like-heart-animation {
@@ -3377,6 +3490,7 @@ select {
 .post-liker {
   cursor: pointer;
   margin-bottom: 12px;
+  display: block;
 }
 
 .post-liker .post-image {
@@ -3384,8 +3498,8 @@ select {
 }
 
 .post-liker.like::before {
-  content: "\f004";
-  font-family: "Font Awesome 5 Free", sans-serif;
+  content: "\ea1b";
+  font-family: "icomoon";
   font-weight: 900;
   position: absolute;
   left: calc(50% - 30px);
@@ -3400,23 +3514,6 @@ select {
   position: relative;
 }
 
-.post-liker.dislike::before {
-  content: "\f7a9";
-  font-family: "Font Awesome 5 Free", sans-serif;
-  font-weight: 900;
-  position: absolute;
-  left: calc(50% - 30px);
-  top: calc(50% - 45px);
-  transform: translateY(-50%);
-  font-size: 60px;
-  color: #fff;
-  animation: 1s like-heart-animation ease-in-out forwards;
-}
-
-.post-liker.dislike {
-  position: relative;
-}
-
 .comment-like {
   position: absolute;
   right: 7px;
@@ -3428,7 +3525,7 @@ select {
 }
 
 .comment-like .like-toggle.added .like-icon::before {
-  color: #e63b31;
+  color: $red;
 }
 
 .comment-like .like-toggle .like-icon::before {
@@ -3446,7 +3543,7 @@ select {
   justify-content: space-evenly;
   margin-bottom: 12px;
   border-radius: 3px;
-  box-shadow: 0 1px 0 0 #d7d8db, 0 0 0 1px #e3e4e8;
+  box-shadow: $box-shadow;
   background: #fff;
   padding: 8px;
 }
@@ -3478,9 +3575,9 @@ select {
 // Like toggle
 
 .like-toggle .like-icon::before, .guest-like-toggle .like-icon::before {
-  content: "\f004";
-  font-family: "Font Awesome 5 Free", sans-serif;
-  font-size: 24px;
+  content: "\e97e";
+  font-family: "icomoon";
+  font-size: 25px;
   position: relative;
   font-weight: 400;
   -moz-osx-font-smoothing: grayscale;
@@ -3488,24 +3585,24 @@ select {
   font-variant: normal;
   text-rendering: auto;
   line-height: 1;
-  top: -2px;
 }
 
 .like-toggle.added .like-icon::before {
+  content: "\ea1b";
   font-weight: 800;
-  color: #e63b31;
+  color: $red;
 }
 
 .like-toggle.added .like-icon:hover:before {
-  color: #e85249;
+  color: lighten($red, 3%);
 }
 
 // Bookmark toggle
 
 .bookmark-toggle .bookmark-icon::before, .guest-bookmark-toggle .bookmark-icon::before {
-  content: "\f02e";
-  font-family: "Font Awesome 5 Free", sans-serif;
-  font-size: 22px;
+  content: "\e925";
+  font-family: "icomoon";
+  font-size: 25px;
   position: relative;
   font-weight: 400;
   -moz-osx-font-smoothing: grayscale;
@@ -3516,15 +3613,16 @@ select {
 }
 
 .bookmark-toggle.added .bookmark-icon::before {
+  content: "\e900";
   font-weight: 800;
 }
 
 // Featured post toggle
 
 .featured-toggle .featured-icon::before {
-  content: "\f005";
-  font-family: "Font Awesome 5 Free", sans-serif;
-  font-size: 15px;
+  content: "\e9e2";
+  font-family: "icomoon";
+  font-size: 17px;
   position: relative;
   font-weight: 400;
   -moz-osx-font-smoothing: grayscale;
@@ -3532,11 +3630,11 @@ select {
   font-variant: normal;
   text-rendering: auto;
   line-height: 1;
-  top: -1px;
+  top: 1px;
 }
 
 .featured-toggle.added .featured-icon::before {
-  font-weight: 900;
+  content: "\ea20";
   color: #ffbb50;
 }
 
@@ -3562,7 +3660,7 @@ select {
 .user-share-media {
   max-height: 50vh;
   overflow: scroll;
-  color: #ccc;
+  color: #000;
 }
 
 .user-share-media a {
@@ -3583,47 +3681,56 @@ select {
   width: 100%;
   bottom: 0;
   z-index: 999;
-  background: rgba(30, 30, 30, 0.95);
+  background: linear-gradient(0deg, #fff 0%, rgba(255, 255, 255, 0.95) 100%);
   height: 50px;
   display: none;
   justify-content: space-around;
+  border-top: 0.5px solid rgba(0, 0, 0, 0.1);
 }
 
 .mobile-menu a {
-  color: #777;
+  color: #000;
   font-size: 22px;
   padding: 6px;
   top: 8px;
   position: relative;
 }
 
+.mobile-menu a:hover {
+  color: #777;
+}
+
 .mobile-navbar-badge {
-  position: absolute;
-  background-color: #e74c3c;
+  background-color: #e85454;
+  border: 2px solid #fff;
   border-radius: 10px;
-  font-size: 12px;
-  color: #fff;
-  padding: 0 5px;
+  position: absolute;
   line-height: 16px;
-  bottom: 5px;
-  right: 5px;
+  font-weight: 600;
+  font-size: 12px;
+  padding: 0 5px;
+  color: #fff;
+  right: 3px;
+  top: 30px;
 }
 
 .mobile-menu-badge {
-  position: absolute;
-  background-color: #e74c3c;
-  font-size: 10px;
-  color: #fff;
+  border: 2px solid #fff;
+  background-color: $red;
   border-radius: 30px;
+  position: absolute;
+  font-weight: 600;
+  font-size: 10px;
   padding: 0 6px;
-  bottom: 0;
-  right: -12px;
+  color: #fff;
+  right: -3px;
+  top: 12px;
 }
 
 .mobile-menu-indicator {
   width: 5px;
   height: 5px;
-  background: #e74c3c;
+  background: $red;
   display: table;
   margin: auto;
   position: relative;
@@ -3632,6 +3739,16 @@ select {
 }
 
 // Other
+
+.section-title {
+  font-family: 'FiraSans', sans-serif;
+  margin-bottom: 14px;
+  display: block;
+  font-size: 15px;
+  font-weight: 500;
+  color: #93999d;
+  padding-top: 3px;
+}
 
 .manager-menu {
   display: none;

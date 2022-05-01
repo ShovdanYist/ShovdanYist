@@ -13,14 +13,14 @@
 
         {% if comment.author.profile.verified == true %}
             <span class="md-comment-verified">
-                <i class="fas fa-check-circle text-info"></i>
+                <i class="icon-check-circle-two text-info"></i>
             </span>
         {% endif %}
 
         {% if app.user %}
 
             <button type="button" class="btn md-comment-dot-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <i class="fas fa-ellipsis-h"></i>
+                <i class="icon-more-horizontal"></i>
             </button>
 
             <div class="dropdown-menu dropdown-menu-right">
@@ -40,7 +40,7 @@
 
                         <button type="button" class="dropdown-item" data-toggle="modal" data-target="#banUser{{ comment.author.id }}">
                             <span class="icon">
-                                <i class="fas fa-user-times"></i>
+                                <i class="icon-user-x"></i>
                             </span>
                             {{ 'ban' | trans }}
                         </button>
@@ -49,7 +49,7 @@
 
                         <button type="button" class="dropdown-item" data-toggle="modal" data-target="#unbanUser{{ comment.author.id }}">
                             <span class="icon">
-                                <i class="fas fa-user-times"></i>
+                                <i class="icon-user-check"></i>
                             </span>
                             {{ 'unban' | trans }}
                         </button>

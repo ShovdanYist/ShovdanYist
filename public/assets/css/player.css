@@ -771,7 +771,7 @@ Reference: http://blog.rrwd.nl/2015/04/04/the-screen-reader-text-class-why-and-h
     transition: 0.01s !important;
 }
 .audio-player-title a {
-    color: #1f5887;
+    color: #000;
 }
 .audio-player:last-child {
     margin-bottom: unset;
@@ -863,14 +863,21 @@ Reference: http://blog.rrwd.nl/2015/04/04/the-screen-reader-text-class-why-and-h
     float: left;
 }
 .audio-player-actions a {
-    margin-right: 5px;
+    margin-right: 4px;
 }
-.playlist-toggle svg {
-    transform: rotate(45deg);
+.playlist-toggle i {
+    display: inline-block;
     transition: 0.3s !important;
-}
-.playlist-toggle.added svg {
     transform: unset;
+    height: 15px;
+    line-height: 12px;
+    font-size: 18px;
+}
+
+.playlist-toggle.added i {
+    transform: rotate(45deg);
+    position: relative;
+    line-height: 14px;
 }
 
 /* Seek bar more stronger */

@@ -5,7 +5,7 @@
     <div class="mobile-menu">
 
         <div>
-            <a href="{{ path('app_home') }}"{% if pathname == 'app_home' %} style="color: #ccc" {% endif %}>
+            <a href="{{ path('app_home') }}"{% if pathname == 'app_home' %} style="color: #33bef4" {% endif %}>
                 <i class="icon-home"></i>
                 {% if messagesCount(app.user) %}
                     <span class="mobile-menu-indicator"></span>
@@ -14,25 +14,25 @@
         </div>
 
         <div>
-            <a href="{{ path('post_recommendations') }}"{% if pathname == 'post_recommendations' %} style="color: #ccc" {% endif %}>
+            <a href="{{ path('post_recommendations') }}"{% if pathname == 'post_recommendations' %} style="color: #33bef4" {% endif %}>
                 <i class="icon-search"></i>
             </a>
         </div>
 
         <div>
             {% if app.user.playlistSongs.count %}
-                <a href="{{ path('user_playlist') }}"{% if pathname == 'user_playlist' or pathname == 'song_index' %} style="color: #ccc" {% endif %}>
+                <a href="{{ path('user_playlist') }}"{% if pathname == 'user_playlist' or pathname == 'song_index' %} style="color: #33bef4" {% endif %}>
                     <i class="icon-music"></i>
                 </a>
             {% else %}
-                <a href="{{ path('song_index') }}"{% if pathname == 'user_playlist' or pathname == 'song_index' %} style="color: #ccc" {% endif %}>
+                <a href="{{ path('song_index') }}"{% if pathname == 'user_playlist' or pathname == 'song_index' %} style="color: #33bef4" {% endif %}>
                     <i class="icon-music"></i>
                 </a>
             {% endif %}
         </div>
 
         <div>
-            <a href="{{ path('user_notifications') }}"{% if pathname == 'user_notifications' %} style="color: #ccc" {% endif %}>
+            <a href="{{ path('user_notifications') }}"{% if pathname == 'user_notifications' %} style="color: #33bef4" {% endif %}>
                 <i class="icon-heart"></i>
                 {% if notifyCount(app.user) != 0 %}
                     <span class="mobile-menu-badge">
@@ -47,7 +47,7 @@
         </div>
 
         <div>
-            <a href="{{ path('user_profile', {'username':app.user.username}) }}"{% if pathname == 'user_profile' and user == app.user or pathname == 'user_tagged' and user == app.user %} style="color: #ccc" {% endif %}>
+            <a href="{{ path('user_profile', {'username':app.user.username}) }}"{% if pathname == 'user_profile' and user == app.user or pathname == 'user_tagged' and user == app.user %} style="color: #33bef4" {% endif %}>
                 <i class="icon-user"></i>
                 {% if is_granted('ROLE_POST_MODERATOR') %}
                     {% if postModerationCount() != 0 %}
@@ -70,19 +70,19 @@
     <div class="mobile-menu">
 
         <div>
-            <a href="{{ path('app_home') }}"{% if pathname == 'app_home' %} style="color: #ccc" {% endif %}>
+            <a href="{{ path('app_home') }}"{% if pathname == 'app_home' %} style="color: #33bef4" {% endif %}>
                 <i class="icon-home"></i>
             </a>
         </div>
 
         <div>
-            <a href="{{ path('post_recommendations') }}"{% if pathname == 'post_recommendations' %} style="color: #ccc" {% endif %}>
+            <a href="{{ path('post_recommendations') }}"{% if pathname == 'post_recommendations' %} style="color: #33bef4" {% endif %}>
                 <i class="icon-search"></i>
             </a>
         </div>
 
         <div>
-            <a href="{{ path('song_index') }}"{% if pathname == 'user_playlist' or pathname == 'song_index' %} style="color: #ccc" {% endif %}>
+            <a href="{{ path('song_index') }}"{% if pathname == 'user_playlist' or pathname == 'song_index' %} style="color: #33bef4" {% endif %}>
                 <i class="icon-music"></i>
             </a>
         </div>

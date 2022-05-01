@@ -31,7 +31,7 @@
 {% endblock %}
 
 {% block mobile_navbar %}
-    {% include 'interface/layouts/navbar/title.html.twig' with {'title':'vocalist', 'back':true} %}
+    {% include 'interface/layouts/navbar/title.html.twig' with {'title':'vocalist'} %}
 {% endblock %}
 
 {% block body %}
@@ -52,7 +52,7 @@
                 {% endif %}
 
                 {% for profession in person.activity %}
-                    <span class="badge badge-success badge-lower">{{ profession.title }}</span>
+                    <span class="badge badge-dark badge-lower">{{ profession.title }}</span>
                 {% endfor %}
 
             </p>
@@ -65,9 +65,9 @@
 
         <thead class="thead-dark">
         <tr>
-            <th scope="col"><i class="fas fa-closed-captioning"></i> {{ 'title' | trans }}</th>
-            <th scope="col"><i class="fa fa-calendar"></i> {{ 'year' | trans }}</th>
-            {% if is_granted('ROLE_OWNER') %}<th scope="col"><i class="fas fa-eye"></i> {{ 'views' | trans }}</th>{% endif %}
+            <th scope="col">{{ 'title' | trans }}</th>
+            <th scope="col" class="text-center"><i class="icon-calendar"></i></th>
+            {% if is_granted('ROLE_OWNER') %}<th scope="col" class="text-center"><i class="icon-eye"></i></th>{% endif %}
         </tr>
         </thead>
 
@@ -82,8 +82,8 @@
                         <br>{{ featuring( song, ',<br>' ) }}
                     </span>
                 </td>
-                <td>{{ song.releaseDate ? song.releaseDate | date("Y") }}</td>
-                {% if is_granted('ROLE_OWNER') %}<td>{{ songViewsCount(song) }}</td>{% endif %}
+                <td class="text-center">{{ song.releaseDate ? song.releaseDate | date("Y") }}</td>
+                {% if is_granted('ROLE_OWNER') %}<td class="text-center">{{ songViewsCount(song) }}</td>{% endif %}
             </tr>
 
         {% endfor %}

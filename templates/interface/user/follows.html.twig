@@ -16,7 +16,7 @@
                 <span class="username">
                     {% if user.closedAccount %}
                         <span class="profile-lock">
-                            <i class="fas fa-lock"></i>
+                            <i class="icon-lock"></i>
                         </span>
                     {% endif %}
                     <a href="{{ path('user_profile', {'username':user.username}) }}">
@@ -25,7 +25,7 @@
                 </span>
                 {% if profile.verified == true %}
                     <span class="verified">
-                        <i class="fas fa-check-circle text-info"></i>
+                        <i class="icon-check-circle-two text-info"></i>
                     </span>
                 {% endif %}
 
@@ -51,7 +51,7 @@
                 {% endif %}
             {% else %}
                 <div class="text-center">
-                    <i class="far fa-user" style="margin-right: 3px"></i>
+                    <i class="icon-user" style="margin-right: 3px"></i>
                     {% if app.user == user %}
                         {{ ('you.have.not.' ~ type) | trans }}
                     {% else %}

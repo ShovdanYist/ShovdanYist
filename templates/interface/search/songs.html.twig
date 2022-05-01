@@ -21,7 +21,7 @@
             </div>
         </div>
 
-        <div class="md-box md-tags-search md-margin-bottom md-form-padding">
+        <div class="md-box md-tags-search md-margin-bottom md-form-padding" style="margin-bottom: 14px !important;">
             {{ form_start(tagsForm) }}
                 <div class="md-search-input">
                     {{ form_widget(tagsForm.tags) }}
@@ -34,15 +34,14 @@
 
             {% if tags %}
 
-                <div class="mb-3">
-
-                        <span class="text-muted pb-3">
-                            {% if tags.plural == 'tags' %}
-                                {{ 'song.results.for.tags' | trans }}
-                            {% else %}
-                                {{ 'song.results.for.tag' | trans }}
-                            {% endif %}
-                        </span>
+                <div class="md-box md-margin-bottom md-mobile-padding md-form-padding search-title">
+                    <span class="text-muted pb-3">
+                        {% if tags.plural == 'tags' %}
+                            {{ 'song.results.for.tags' | trans }}
+                        {% else %}
+                            {{ 'song.results.for.tag' | trans }}
+                        {% endif %}
+                    </span>
 
                     {% for tag in tags.data %}
                         <span class="badge badge-info badge-a">
@@ -51,8 +50,27 @@
                                 </a>
                             </span>
                     {% endfor %}
-
                 </div>
+
+{#                <div class="mb-3">#}
+
+{#                        <span class="text-muted pb-3">#}
+{#                            {% if tags.plural == 'tags' %}#}
+{#                                {{ 'song.results.for.tags' | trans }}#}
+{#                            {% else %}#}
+{#                                {{ 'song.results.for.tag' | trans }}#}
+{#                            {% endif %}#}
+{#                        </span>#}
+
+{#                    {% for tag in tags.data %}#}
+{#                        <span class="badge badge-info badge-a">#}
+{#                                <a class="md-feat-stat" href="{{ path('search_songs', {'keyword': 'tags=' ~ tag.slug}) }}">#}
+{#                                    {{ tag.title }}#}
+{#                                </a>#}
+{#                            </span>#}
+{#                    {% endfor %}#}
+
+{#                </div>#}
 
             {% elseif songs %}
                 <div class="md-box md-margin-bottom md-mobile-padding md-form-padding search-title md-margin-bottom">

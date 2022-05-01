@@ -1,12 +1,8 @@
-<a class="navbar-menu-item left" href="{{ path('app_home') }}">
-    <img class="navbar-logotype-icon" src="{{ asset('/assets/images/logotype-icon.png') }}" alt="Logotype Icon">
-</a>
-
 <div class="navbar-menu-title">
     <h1>
         {% if user.closedAccount %}
             <span class="profile-lock">
-                <i class="fas fa-lock"></i>
+                <i class="icon-lock"></i>
             </span>
         {% endif %}
 
@@ -18,7 +14,7 @@
 
         {% if profile.verified == true %}
             <span class="verified">
-                <i class="fas fa-check-circle text-info"></i>
+                <i class="icon-check-circle-two text-info"></i>
             </span>
         {% endif %}
     </h1>

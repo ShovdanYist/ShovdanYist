@@ -52,7 +52,7 @@ function shareUsers(shareButton, type) {
     shareButton.addEventListener('click', (event) => {
         let shareContent = document.querySelector('.user-share-media.' + type.toLowerCase());
         if (shareContent.innerHTML === '') {
-            shareContent.innerHTML = '<div class="text-center"><i class="fas fa-spinner fa-spin"></i></div>';
+            shareContent.innerHTML = '<div class="text-center"><i class="icon-refresh-cw md-spin"></i></div>';
             let url = '/shareUsers';
 
             axios.get(url).then((response) => {

@@ -31,7 +31,7 @@
                 <span class="username">
                     {% if user.closedAccount %}
                         <span class="profile-lock">
-                            <i class="fas fa-lock"></i>
+                            <i class="icon-lock"></i>
                         </span>
                     {% endif %}
                     {{ user.username }}
@@ -39,7 +39,7 @@
 
                 {% if profile.verified == true %}
                     <span class="verified">
-                        <i class="fas fa-check-circle text-info"></i>
+                        <i class="icon-check-circle-two text-info"></i>
                     </span>
                 {% endif %}
 
@@ -117,12 +117,12 @@
                         </div>
                         <div class="profile-button un-width">
                             <a class="btn btn-light" href="{{ path('user_bookmarks') }}">
-                                <i class="fas fa-bookmark"></i>
+                                <i class="icon-bookmark-fill"></i>
                             </a>
                         </div>
                         <div class="profile-button un-width">
                             <a class="btn btn-light" href="{{ path('user_settings',{'username':app.user.username}) }}">
-                                <i class="fas fa-cog"></i>
+                                <i class="icon-settings-fill"></i>
                             </a>
                         </div>
                     {% else %}
@@ -259,9 +259,9 @@
 
                                             <span class="status-icon" data-toggle="tooltip" title="{% if post.status is null %}{{ 'post.in.moderation' | trans }}{% else %}{{ 'post.is.rejected' | trans }}{% endif %}">
                                                 {% if post.status is null %}
-                                                    <i class="fas fa-history"></i>
+                                                    <i class="icon-clock"></i>
                                                 {% else %}
-                                                    <i class="fas fa-ban"></i>
+                                                    <i class="icon-x-octagon"></i>
                                                 {% endif %}
                                             </span>
 
@@ -269,7 +269,7 @@
 
                                         {% if '.gif' in post.image %}
                                             <span class="type-icon" data-toggle="tooltip" title="{{ 'animated.image' | trans }}">
-                                                <i class="fas fa-magic"></i>
+                                                <i class="icon-loader"></i>
                                             </span>
                                         {% endif %}
 
@@ -289,8 +289,8 @@
 
         {% else %}
 
-            <div class="profile-no-posts not-have-message" style="border-top: 1px solid #eef1f5">
-                <i class="fas fa-lock"></i>
+            <div class="profile-no-posts not-have-message m-0" style="border-top: 1px solid #eef1f5">
+                <i class="icon-lock"></i>
                 {{ 'user.account.is.closed' | trans({'username':user.username}) }}
             </div>
 
@@ -300,9 +300,9 @@
 
     </div>
 
-    {% if not posts %}
+    {% if not posts and not user.closedAccount %}
         <div class="md-box profile-no-posts not-have-message md-list-posts">
-            <i class="far fa-clone" style="margin-right: 3px"></i>
+            <i class="icon-image" style="margin-right: 3px"></i>
             {% if type == 'profile' or type == 'list' %}
                 {% if app.user == user %}
                     {{ 'you.have.not.posts' | trans }}

@@ -28,9 +28,9 @@
 
                                     <span class="status-icon" data-toggle="tooltip" title="{% if post.status is null %}{{ 'post.in.moderation' | trans }}{% else %}{{ 'post.is.rejected' | trans }}{% endif %}">
                                         {% if post.status is null %}
-                                            <i class="fas fa-history"></i>
+                                            <i class="icon-clock"></i>
                                         {% else %}
-                                            <i class="fas fa-ban"></i>
+                                            <i class="icon-x-octagon"></i>
                                         {% endif %}
                                     </span>
 
@@ -38,7 +38,7 @@
 
                                 {% if '.gif' in post.image %}
                                     <span class="type-icon" data-toggle="tooltip" title="{{ 'animated.image' | trans }}">
-                                        <i class="fas fa-magic"></i>
+                                        <i class="icon-loader"></i>
                                     </span>
                                 {% endif %}
 
@@ -58,7 +58,7 @@
 
         <div class="md-box md-content-padding text-center">
             <div class="not-have-message not-have-message-center">
-                <i class="far fa-bookmark" style="margin-right: 3px"></i>
+                <i class="icon-bookmark" style="margin-right: 3px"></i>
                 {{ 'you.have.not.bookmarks' | trans }}
             </div>
         </div>

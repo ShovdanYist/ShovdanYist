@@ -23,7 +23,7 @@
             {% if app.user %}
 
                 <button type="button" class="btn md-dot-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="right: 12px;top: 8px">
-                    <i class="fas fa-ellipsis-h"></i>
+                    <i class="icon-more-horizontal"></i>
                 </button>
 
                 <div class="dropdown-menu dropdown-menu-right">
@@ -82,7 +82,7 @@
             {% if is_granted('ROLE_PEOPLE_MODERATOR') %}
 
                 <button type="button" class="btn md-dot-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="right: 12px;top: 8px">
-                    <i class="fas fa-ellipsis-h"></i>
+                    <i class="icon-more-horizontal"></i>
                 </button>
 
                 <div class="dropdown-menu dropdown-menu-right">
@@ -126,7 +126,7 @@
 
             {% if is_granted('ROLE_PEOPLE_MODERATOR') %}
                 <a class="breadcrumb-btn" href="{{ path('person_new') }}">
-                    <i class="fas fa-plus"></i>
+                    <i class="icon-plus"></i>
                 </a>
             {% endif %}
 
@@ -134,26 +134,26 @@
 
             {% if is_granted('ROLE_SONG_MODERATOR') %}
                 <a class="breadcrumb-btn" href="{{ path('song_new') }}">
-                    <i class="fas fa-plus"></i>
+                    <i class="icon-plus"></i>
                 </a>
             {% endif %}
 
         {% elseif name == 'user_add' %}
 
             <a class="breadcrumb-btn" href="{{ path('user_new') }}">
-                <i class="fas fa-plus"></i>
+                <i class="icon-plus"></i>
             </a>
 
         {% elseif name == 'tag_add' %}
 
             <a class="breadcrumb-btn" href="{{ path('tag_new') }}">
-                <i class="fas fa-plus"></i>
+                <i class="icon-plus"></i>
             </a>
 
         {% elseif name == 'activity_add' %}
 
             <a class="breadcrumb-btn" href="{{ path('activity_new') }}">
-                <i class="fas fa-plus"></i>
+                <i class="icon-plus"></i>
             </a>
 
         {% endif %}

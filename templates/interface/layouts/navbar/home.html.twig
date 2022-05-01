@@ -1,18 +1,15 @@
-{#<a class="navbar-menu-item left" href="{{ path('app_home') }}">#}
-{#    <img class="navbar-logotype-icon" src="{{ asset('/assets/images/logotype-icon.png') }}" alt="Logotype Icon">#}
-{#</a>#}
 <a class="md-nav-logo" href="{{ path('app_home') }}">
     <img src="{{ asset('/assets/images/logotype.png') }}" alt="Shovdan Yist">
 </a>
 
 {% if app.user %}
     {% if app.user %}
-        <a class="navbar-menu-item right-second" href="{{ path('post_new') }}">
+        <a class="navbar-menu-item left" href="{{ path('post_new') }}">
             <i class="icon-plus-circle"></i>
         </a>
     {% endif %}
     <a class="navbar-menu-item right" href="{{ path('message_conversations') }}">
-        <i class="icon-message-circle"></i>
+        <i class="icon-send"></i>
         {% if messagesCount(app.user) != 0 %}
             <span class="mobile-navbar-badge">
                 {% if messagesCount(app.user) > 99 %}

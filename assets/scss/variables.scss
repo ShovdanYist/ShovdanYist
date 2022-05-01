@@ -1,15 +1,20 @@
 // Global
 
-$border-radius: 3px;
+$border-radius: 10px;
+$border-radius-box: 8px;
+$btn-border-radius: 10px;
+$border: 1px solid #eef1f5;
+$form-border-color: #dde2e8;
+$grey-background: #f4f6f7;
 
 // Radius
 
 $radius: (
-        'full': 3px,
-        'bottom': 0 0 3px 3px,
-        'top': 3px 3px 0 0,
-        'right': 0 3px 3px 0,
-        'left': 3px 0 0 3px
+        'full': 6px,
+        'bottom': 0 0 6px 6px,
+        'top': 6px 6px 0 0,
+        'right': 0 6px 6px 0,
+        'left': 6px 0 0 6px
 );
 
 @function radius($key) {
@@ -21,7 +26,7 @@ $radius: (
 // Box
 
 $box-background: #fff;
-$box-shadow: 0 1px 0 0 #d7d8db, 0 0 0 1px #e3e4e8;
+$box-shadow: 0 0 25px 10px rgba(0, 0, 0, 0.02);
 $box-space: 12px;
 
 // Colors
@@ -42,13 +47,13 @@ $blue   : #000 !default;
 $indigo : #6610f2 !default;
 $purple : #6f42c1 !default;
 $pink   : #e83e8c !default;
-$red    : #E74C3C !default;
+$red    : #e85454 !default;
 $orange : #fd7e14 !default;
 $yellow : #F39C12 !default;
 $brown  : #b88b58 !default;
 $green  : #18BC9C !default;
 $teal   : #20c997 !default;
-$cyan   : #3498DB !default;
+$cyan   : #33bef4 !default;
 
 $primary   : $blue      !default;
 $secondary : $brown  !default;
@@ -72,6 +77,15 @@ $color-types: (
         'light'     : $light,
         'dark'      : $dark
 );
+
+// Buttons
+
+@each $section, $color in $color-types {
+  .btn-#{$section}:focus {
+    background-color: $color !important;
+    border-color: $color !important;
+  }
+}
 
 // Alerts
 
@@ -100,29 +114,25 @@ $post-colors: (
   }
 }
 
-.md-lined-menu:hover, .md-lined-menu.active {
-  border-left: 3px solid lighten($primary, 25%) !important;
-}
-
 // Buttons
 
 .btn-primary {
-  background-color: #333 !important;
-  border-color: #333 !important;
+  background-color: #000 !important;
+  border-color: #000 !important;
 }
 
 .btn-primary:hover {
-  background-color: #444 !important;
-  border-color: #444 !important;
+  background-color: #222 !important;
+  border-color: #222 !important;
 }
 
 .btn-link {
-  color: #555 !important;
+  color: #000 !important;
 }
 
 .btn-link:hover {
-  color: #555 !important;
-  background-color: #eee !important;
+  color: #000 !important;
+  background-color: $grey-background !important;
 }
 
 .btn-success {
@@ -148,7 +158,7 @@ $btn-transition: 0 !default;
 
 // Badges
 
-$badge-border-radius: 3px;
+$badge-border-radius: 12px;
 
 .badge-a {
   padding: unset !important;

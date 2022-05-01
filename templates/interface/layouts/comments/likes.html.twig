@@ -6,16 +6,21 @@
 
 {% block main_top %}
         {{ breadcrumb({
-            'active' : 'like.marks' | trans ~ ' - ' ~ comment.message | slice(0, 30),
+            'active' : comment.message | slice(0, 30),
         }) }}
 {% endblock %}
 
+{% block mobile_navbar %}
+    {% include 'interface/layouts/navbar/back.html.twig' with {'title':'like.marks'} %}
+{% endblock %}
+
 {% block body %}
+
     {% for user in users %}
         {{ userLine(user) }}
     {% else %}
         <div class="text-center">
-            <i class="far fa-heart" style="margin-right: 3px"></i>
+            <i class="icon-heart" style="margin-right: 3px"></i>
             {{ 'comment.have.not.likes' | trans }}
         </div>
     {% endfor %}

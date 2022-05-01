@@ -67,7 +67,7 @@
                 {% endif %}
 
                 <button type="button" class="btn md-dot-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <i class="fas fa-ellipsis-h"></i>
+                    <i class="icon-more-horizontal"></i>
                 </button>
 
                 <div class="dropdown-menu dropdown-menu-right">
@@ -114,7 +114,7 @@
 
             <div class="text-center">
                 <div class="not-have-message not-have-message-center">
-                    <i class="far fa-play-circle" style="margin-right: 2px"></i>
+                    <i class="icon-headphones" style="margin-right: 2px"></i>
                     {% if app.request.attributes.get('_route') == 'moderation_music' %}
                         {{ 'no.songs.in.moderation' | trans }}
                     {% elseif app.request.attributes.get('_route') == 'moderation_ready' %}
