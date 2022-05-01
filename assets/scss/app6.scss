@@ -471,7 +471,7 @@ blockquote, .ck.ck-content blockquote {
 }
 
 .ck.ck-button.ck-off, .ck.ck-button.ck-on {
-  border-radius: 3px !important;
+  border-radius: $border-radius-box !important;
   cursor: pointer !important;
 }
 
@@ -485,7 +485,7 @@ blockquote, .ck.ck-content blockquote {
 
 .ck.ck-dropdown__button.ck-on {
   background: #eff0f5 !important;
-  border-radius: 3px !important;
+  border-radius: $border-radius-box !important;
   cursor: pointer !important;
 }
 
@@ -493,12 +493,12 @@ blockquote, .ck.ck-content blockquote {
   top: auto !important;
   bottom: 136% !important;
   left: -5px !important;
-  border-radius: 3px !important;
+  border-radius: $border-radius !important;
 }
 
 .ck.ck-dropdown .ck-dropdown__panel {
   padding: 6px;
-  border-radius: 3px !important;
+  border-radius: $border-radius-box !important;
   box-shadow: 0 1px 8px rgba(0, 0, 0, 0.05) !important;
   border: 1px solid $form-border-color;
 }
@@ -615,7 +615,7 @@ blockquote, .ck.ck-content blockquote {
   display: block;
   width: 300px;
   margin: 0 auto 10px;
-  border-radius: 3px !important;
+  border-radius: $border-radius !important;
 }
 
 // MODAL
@@ -628,11 +628,13 @@ blockquote, .ck.ck-content blockquote {
 }
 
 .md-modal-container {
-  padding: 18px;
-  background-color: rgba(30, 30, 30, 0.95);
-  display: flex;
+  box-shadow: 0 0 30px 0 rgba(0, 0, 0, 0.05);
   flex-direction: column;
+  background-color: #fff;
   border-radius: 20px;
+  border: $border;
+  padding: 18px;
+  display: flex;
 }
 
 .md-modal-container .md-modal-item {
@@ -640,11 +642,11 @@ blockquote, .ck.ck-content blockquote {
 }
 
 .md-modal-container .btn-modal-primary {
-  background: #376691;
+  background: $info;
 }
 
 .md-modal-container .btn-modal-primary:hover {
-  background: #4072a1;
+  background: lighten($info, 5%);
 }
 
 .md-modal-container .btn-modal-danger {
@@ -652,22 +654,25 @@ blockquote, .ck.ck-content blockquote {
 }
 
 .md-modal-container .btn-modal-danger:hover {
-  background: lighten($red, 5%);
+  background: lighten($red, 3%);
 }
 
 .md-modal-container .btn-modal-default {
-  background: #595959;
+  background: #e3e3e3;
+  color: #000 !important;
 }
 
 .md-modal-container .btn-modal-default:hover {
-  background: #646464;
+  background: lighten(#e3e3e3, 3%);
 }
 
 .md-modal-container .btn {
-  color: #fff;
-  border-radius: 6px;
+  border-radius: $border-radius;
+  font-weight: 500;
+  padding: 10px;
   border: unset;
   width: 100%;
+  color: #fff;
 }
 
 .md-modal-container .md-modal-item:last-child {
@@ -675,7 +680,7 @@ blockquote, .ck.ck-content blockquote {
 }
 
 .md-modal-message {
-  color: #aaa;
+  color: #000;
   text-align: center;
   margin-bottom: 20px;
   font-size: 15px;
@@ -867,13 +872,13 @@ blockquote, .ck.ck-content blockquote {
 }
 
 .dropdown-menu {
-  margin-top: 8px;
-  padding: 5px;
-  z-index: 1060;
-  box-shadow: unset;
-  background: rgba(30, 30, 30, 0.9);
+  box-shadow: 0 0 30px 0 rgba(0, 0, 0, 0.05);
   border-radius: 10px;
-  border: unset;
+  background: #fff;
+  border: $border;
+  margin-top: 8px;
+  z-index: 1060;
+  padding: 5px;
 }
 
 .dropdown-menu .icon {
@@ -885,12 +890,12 @@ blockquote, .ck.ck-content blockquote {
 }
 
 .dropdown-menu a, .dropdown-menu button {
-  color: #aaa !important;
+  color: #000 !important;
   border-radius: 6px !important;
 }
 
 .dropdown-menu a:hover, .dropdown-menu button:hover {
-  background: rgba(255, 255, 255, 0.05);
+  background: $grey-background;
 }
 
 .dropdown-item {
@@ -917,7 +922,7 @@ blockquote, .ck.ck-content blockquote {
 .dropdown-divider {
   display: block;
   margin: 5px 0;
-  border-top: 1px solid rgba(0,0,0,0.1);
+  border-top: $border;
 }
 
 .navbar-login-mobile {
@@ -1080,15 +1085,6 @@ table .md-dot-btn, .player-box .md-dot-btn{
 .dropdown-menu a, .dropdown-menu button {
   line-height: 1.5;
 }
-
-//.md-profile .md-dot-btn svg {
-//  font-size: 20px;
-//  color: #a0a0a0;
-//}
-//
-//.md-dot-btn svg {
-//  color: #a0a0a0;
-//}
 
 tr:hover .md-dot-btn {
   display: unset;
@@ -2223,14 +2219,17 @@ td {
 }
 
 .message-write .attach .btn {
-  border: 2px solid #a7acb7;
   border-radius: 100%;
   line-height: 22px;
-  font-size: 18px;
+  font-size: 25px;
   padding: unset;
   color: #a7acb7;
-  height: 24px;
-  width: 24px;
+  height: 28px;
+  width: 28px;
+}
+
+.message-write .attach .btn:hover {
+  color: #93959b;
 }
 
 .message-write .attach {
@@ -2612,10 +2611,10 @@ td {
 }
 
 .form-signin-info {
-  color: #5d666d;
+  color: #000;
   padding: 22px 14px;
   text-align: center;
-  border-radius: 3px;
+  margin-top: $box-space;
 }
 
 .md-form .alert {
@@ -3740,6 +3739,16 @@ select {
 }
 
 // Other
+
+.section-title {
+  font-family: 'FiraSans', sans-serif;
+  margin-bottom: 14px;
+  display: block;
+  font-size: 15px;
+  font-weight: 500;
+  color: #93999d;
+  padding-top: 3px;
+}
 
 .manager-menu {
   display: none;
