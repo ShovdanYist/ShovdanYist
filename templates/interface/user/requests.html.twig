@@ -11,7 +11,7 @@
     <div class="md-box">
         <header class="user-title-block">
             <a class="btn header-back-button" href="{{ path('user_notifications') }}">
-                <i class="fas fa-chevron-left"></i>
+                <i class="icon-chevron-left" style="font-size: 22px"></i>
             </a>
             {{ 'follow.requests' | trans }}
         </header>
@@ -21,7 +21,7 @@
                 {{ userLine(request.follower, false, true) }}
             {% else %}
                 <div class="not-have-message not-have-message-center">
-                    <i class="far fa-user" style="margin-right: 3px"></i>
+                    <i class="icon-user" style="margin-right: 3px"></i>
                     {{ 'you.have.not.follow.requests' | trans }}
                 </div>
             {% endfor %}
@@ -29,7 +29,7 @@
 
         <div id="requestsIsEmpty" class="md-content-padding md-mobile-padding" style="display:none">
             <div class="not-have-message not-have-message-center">
-                <i class="far fa-user" style="margin-right: 3px"></i>
+                <i class="icon-user" style="margin-right: 3px"></i>
                 {{ 'you.have.not.follow.requests' | trans }}
             </div>
         </div>

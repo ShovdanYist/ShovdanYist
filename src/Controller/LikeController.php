@@ -10,6 +10,7 @@ use App\Entity\Post;
 use App\Entity\User;
 use App\Repository\LikeRepository;
 use App\Repository\NotificationRepository;
+use App\Service\Initializer;
 use App\Service\Paginator;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -61,7 +62,7 @@ class LikeController extends CustomAbstractController
 
     #[Route('/postLike/{id}', name: 'post_like')]
     #[Security('is_granted("ROLE_USER")')]
-    public function postLike(Post $post, LikeRepository $likeRepo, NotificationRepository $notificationRepo, EntityManagerInterface $em): Response
+    public function postLike(Post $post, LikeRepository $likeRepo, NotificationRepository $notificationRepo, EntityManagerInterface $em, Initializer $initializer): Response
     {
         $like = $likeRepo->findOneBy(['user' => $this->user(), 'post' => $post]);
 
@@ -70,38 +71,29 @@ class LikeController extends CustomAbstractController
             if ($notification) {
                 $notificationRepo->remove($notification);
             }
-
             $this->user()->removeLike($like);
             $response = ['status' => 'removed'];
         } else {
-            $like = new Like();
-            $like->setUser($this->user());
-            $like->setPost($post);
-            $likeRepo->persist($like);
-            $response = ['status' => 'added'];
+            $response = $initializer->initializeLike($post);
+        }
 
-            if ($post->getAuthor() !== $this->user()) {
-                $existNotify = $notificationRepo->findOneBy(['post' => $post, 'type' => 'post_like']);
+        $em->flush();
 
-                if ($existNotify) {
-                    if ($existNotify->getSeen()) {
-                        $existNotify->setSeen(false);
-                        $existNotify->setQuantity(1);
-                    } elseif ($existNotify->getSender() !== $this->user() || $existNotify->getQuantity() > 1) {
-                        $existNotify->setQuantity($existNotify->getQuantity() + 1);
-                    }
-                    $existNotify->setPublishedAt(new \DateTime('now'));
-                    $existNotify->setSender($this->user());
-                } else {
-                    $notification = new Notification();
-                    $notification->setType('post_like');
-                    $notification->setReceiver($post->getAuthor());
-                    $notification->setPost($post);
-                    $notification->setQuantity(1);
-                    $notification->setSender($this->user());
-                    $notificationRepo->persist($notification);
-                }
-            }
+        return $this->json([
+            'response' => $response
+        ]);
+    }
+
+    #[Route('/postDoubleLike/{id}', name: 'post_double_like')]
+    #[Security('is_granted("ROLE_USER")')]
+    public function postDoubleLike(Post $post, LikeRepository $likeRepo, EntityManagerInterface $em, Initializer $initializer): Response
+    {
+        $like = $likeRepo->findOneBy(['user' => $this->user(), 'post' => $post]);
+
+        if ($like) {
+            $response = ['status' => 'already'];
+        } else {
+            $response = $initializer->initializeLike($post);
         }
 
         $em->flush();

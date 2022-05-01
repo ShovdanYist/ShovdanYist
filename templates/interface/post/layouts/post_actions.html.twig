@@ -21,8 +21,10 @@
     {% if comments %}
         <span class="stat">
             <a href="{{ path( 'post_show', {'id': post.id}) }}#comments">
-                <i class="far fa-comment-alt" style="font-size: 22px;"></i>
-                <span class="count">{{ post.comments.count }}</span>
+                <i class="icon-message-circle" style="font-size: 25px;"></i>
+                {% if post.comments.count %}
+                    <span class="count">{{ post.comments.count }}</span>
+                {% endif %}
             </a>
         </span>
     {% endif %}

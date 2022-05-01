@@ -1,7 +1,7 @@
 // Global
 
-$border-radius: 6px;
-$btn-border-radius: 6px;
+$border-radius: 10px;
+$btn-border-radius: 10px;
 $border: 1px solid #eef1f5;
 $form-border-color: #dde2e8;
 $grey-background: #f4f6f7;
@@ -9,11 +9,11 @@ $grey-background: #f4f6f7;
 // Radius
 
 $radius: (
-        'full': 12px,
-        'bottom': 0 0 12px 12px,
-        'top': 12px 12px 0 0,
-        'right': 0 12px 12px 0,
-        'left': 12px 0 0 12px
+        'full': 6px,
+        'bottom': 0 0 6px 6px,
+        'top': 6px 6px 0 0,
+        'right': 0 6px 6px 0,
+        'left': 6px 0 0 6px
 );
 
 @function radius($key) {
@@ -111,10 +111,6 @@ $post-colors: (
   .#{$section}-color:hover {
     color: lighten($primary, 20%);
   }
-}
-
-.md-lined-menu:hover, .md-lined-menu.active {
-  border-left: 3px solid lighten($primary, 25%) !important;
 }
 
 // Buttons

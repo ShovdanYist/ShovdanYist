@@ -16,7 +16,7 @@
                     <small class="md-comment-reply-area">
                         <span class="float-left mr-1">{{ 'reply.for' | trans }}</span>
                         <span class="md-comment-reply-user font-weight-bold"></span>{{ 'reply.for.two' | trans }}
-                        <span class="md-replying-delete"><i class="fas fa-times"></i></span>
+                        <span class="md-replying-delete"><i class="icon-x"></i></span>
                     </small>
                     {{ form_errors(commentForm.message) }}
                     {{ form_widget(commentForm.message) }}
@@ -26,7 +26,7 @@
                 <div class="md-comment-send">
 
                     <button class="btn">
-                        <i class="fas fa-paper-plane"></i>
+                        <i class="icon-arrow-up"></i>
                     </button>
 
                 </div>
@@ -44,7 +44,7 @@
     {% else %}
 
         <div class="md-comment-guest md-alert md-alert-danger md-box-mb">
-            <i class="fas fa-ban"></i> {{ 'you.are.blocked.and.you.cant.write.comments' | trans }}
+            <i class="icon-x-octagon"></i> {{ 'you.are.blocked.and.you.cant.write.comments' | trans }}
         </div>
 
     {% endif %}

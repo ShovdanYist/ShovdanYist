@@ -245,30 +245,27 @@ like.forEach((like) => {
 // Post double-click like
 
 document.querySelectorAll('.md-post').forEach((post) => {
-    let postId = post.id.replace('postId', '');
-    post.querySelector('.post-image').addEventListener('dblclick',(event) => {
+    post.querySelector('.post-liker').addEventListener('dblclick',(event) => {
         let postLiker = post.querySelector('.like-toggle');
-        let url = postLiker.href;
+        let url = post.querySelector('.post-liker').href;
 
         axios.get(url).then((response) => {
             let status = String(response.data.response.status);
-            (status === 'added') ? postLiker.classList.add('added') : postLiker.classList.remove('added');
+
+            if (status === 'added') {
+                postLiker.classList.add('added')
+            }
 
             let postLikeCounter = 'post-like-counter-' + postLiker.id.replace('post-like-','');
             let currentLikes = parseInt(document.getElementById(postLikeCounter).innerHTML);
 
+            post.querySelector('.post-liker').classList.add('like');
+            setTimeout(() => {
+                post.querySelector('.post-liker').classList.remove('like');
+            }, 1000);
+
             if (status === 'added') {
-                post.querySelector('.post-liker').classList.add('like');
-                setTimeout(() => {
-                    post.querySelector('.post-liker').classList.remove('like');
-                }, 1000);
                 document.getElementById(postLikeCounter).innerHTML = currentLikes + 1;
-            } else  {
-                post.querySelector('.post-liker').classList.add('dislike');
-                setTimeout(() => {
-                    post.querySelector('.post-liker').classList.remove('dislike');
-                }, 1000);
-                document.getElementById(postLikeCounter).innerHTML = currentLikes - 1;
             }
 
             setTimeout(() => {

@@ -6,7 +6,7 @@
 
             <li class="page-item {% if page == 1 %}disabled{% endif %}">
                 <a class="page-link" href="{{ path( route, parameters | merge({'page': page - 1}) ) }}{% if type == 'comments' %}#comments{% endif %}">
-                    <i class="fas fa-angle-left"></i>
+                    <i class="icon-chevron-left"></i>
                 </a>
             </li>
 
@@ -30,7 +30,7 @@
 
             <li class="page-item {% if page == pages %}disabled{% endif %}">
                 <a class="page-link" href="{{ path( route, parameters | merge({'page': page + 1}) ) }}{% if type == 'comments' %}#comments{% endif %}">
-                    <i class="fas fa-angle-right"></i>
+                    <i class="icon-chevron-right"></i>
                 </a>
             </li>
 

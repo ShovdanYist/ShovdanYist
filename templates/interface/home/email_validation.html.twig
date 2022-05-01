@@ -22,11 +22,11 @@
 				</div>
 			{% elseif status == false %}
 				<div class="md-alert md-alert-danger md-box-mb mb-0">
-					<i class="fas fa-ban"></i> Вы забанены и не можете подтвердить свою почту
+					<i class="icon-x-octagon"></i> Вы забанены и не можете подтвердить свою почту
 				</div>
 			{% elseif status == true %}
 				<div class="md-alert md-alert-success md-box-mb mb-0">
-					<i class="fas fa-check"></i> Ваша электронная почта <b>{{ user.email | first }}****@{{ user.email | split('@',3)[1] }}</b> успешно подтверждена!
+					<i class="icon-check-circle"></i> Ваша электронная почта <b>{{ user.email | first }}****@{{ user.email | split('@',3)[1] }}</b> успешно подтверждена!
 				</div>
 			{% endif %}
 

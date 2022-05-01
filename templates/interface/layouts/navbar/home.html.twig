@@ -9,7 +9,7 @@
         </a>
     {% endif %}
     <a class="navbar-menu-item right" href="{{ path('message_conversations') }}">
-        <i class="icon-message-circle"></i>
+        <i class="icon-send"></i>
         {% if messagesCount(app.user) != 0 %}
             <span class="mobile-navbar-badge">
                 {% if messagesCount(app.user) > 99 %}

@@ -4,8 +4,8 @@
 
         {% if app.user %}
 
-            <button type="button" class="btn md-dot-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="right: 16px;top: 14px">
-                <i class="fas fa-ellipsis-h"></i>
+            <button type="button" class="btn md-dot-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="right: 25px;top: 23px">
+                <i class="icon-more-horizontal"></i>
             </button>
 
             <div class="dropdown-menu dropdown-menu-right">
@@ -101,7 +101,7 @@
                                 {{ 'some.songs' | trans | lower }}
                             {% endif %}
                         </a>
-                        <i class="fas fa-angle-right" style="top: 2px; position: relative;color: #aaa"></i>
+                        <i class="icon-chevron-right" style="top: 2px; position: relative;color: #aaa"></i>
                     </div>
                 {% endif %}
             {% endif %}
@@ -120,7 +120,7 @@
                         </div>
                     </div>
                     <div class="post-collapse-more" id="postCollapseButton{{ post.id }}">
-                        <span>{{ 'more' | trans }} <i class="fas fa-angle-down"></i></span>
+                        <span>{{ 'more' | trans }} <i class="icon-chevron-down" style="font-size: 16px;position: relative;top: 3px"></i></span>
                     </div>
                 {% endif %}
             {% endif %}

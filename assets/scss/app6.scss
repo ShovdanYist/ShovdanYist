@@ -161,7 +161,7 @@ textarea, input, .form-control {
   text-align: center;
   line-height: 22px;
   border-radius: 5px;
-  font-size: 12px;
+  font-size: 15px;
   color: white !important;
 }
 
@@ -288,7 +288,7 @@ li {
 }
 
 .user-line-username .md-verified {
-  top: unset;
+  top: 1px;
 }
 
 .user-line-follow, .notification-follow, .follow-request {
@@ -314,6 +314,7 @@ li {
 .profile-button .btn {
   font-weight: 600;
   font-size: 14px;
+  border-radius: 30px;
   padding: 4px 12px 5px 12px;
 }
 
@@ -328,7 +329,7 @@ li {
 .unfollow {
   color: #adb5bd;
   right: 3px;
-  top: 1px;
+  top: 2px;
   position: relative;
   cursor: pointer;
 }
@@ -725,16 +726,18 @@ blockquote, .ck.ck-content blockquote {
   color: #7e8c8c;
 }
 
-.form-spoiler i:before {
-  font-family: "Font Awesome 5 Free", sans-serif;
-  content: "\f077";
-  font-size: 12px;
+.form-spoiler i::before {
+  font-family: 'icomoon';
+  content: "\e932";
+  font-size: 14px;
   font-style: normal;
   font-weight: 900;
+  top: 2px;
+  position: relative;
 }
 
 .form-spoiler .collapsed i:before {
-  content: "\f078";
+  content: "\e92f";
 }
 
 // Overflow long usernames
@@ -859,7 +862,7 @@ blockquote, .ck.ck-content blockquote {
 }
 
 .md-navbar-arrow {
-  font-size: 10px;
+  font-size: 14px;
   opacity: 0.5;
 }
 
@@ -1061,6 +1064,11 @@ main {
   line-height: 28px;
   margin-left: 10px;
   color: #000;
+  font-size: 22px;
+}
+
+table .md-dot-btn, .player-box .md-dot-btn{
+  font-size: 18px;
 }
 
 .md-profile .md-dot-btn {
@@ -1322,12 +1330,12 @@ td {
   position: absolute;
   line-height: 22px;
   margin-left: 10px;
-  color: #a0a0a0;
-  right: 0;
+  color: #000;
+  right: -1px;
 }
 
 .md-comment-dot-btn:hover {
-  color: #a0a0a0;
+  color: #333;
 }
 
 .md-comment:hover .md-comment-dot-btn {
@@ -1445,14 +1453,16 @@ td {
   height: 36px;
   width: 36px;
   padding: unset;
-  font-size: 17px;
-  border-radius:  100px;
-  color: #a7acb7;
+  font-size: 24px;
+  border-radius: 100px;
+  background-color: $info;
+  color: white;
   border: unset;
+  line-height: 16px;
 }
 
 .md-comment-send button:hover {
-  background-color: $info;
+  background-color: lighten($info, 5%);
   color: white;
 }
 
@@ -1471,22 +1481,22 @@ td {
 }
 
 .md-comment-reply-area {
-  border-radius: 3px 3px 0 0;
+  border-radius: $border-radius $border-radius 0 0;
   color: #444;
-  background-color: #eee;
+  background-color: $grey-background;
   padding: 5px 10px;
   border: 1px solid $form-border-color;
   border-bottom: unset;
   display: none;
 }
 
-.md-replying .md-comment-reply-area {
-  display: block;
-}
-
 .md-replying textarea {
   top: unset;
-  border-radius: 0 0 3px 3px !important;
+  border-radius: 0 0 $border-radius $border-radius !important;
+}
+
+.md-replying .md-comment-reply-area {
+  display: block;
 }
 
 .md-replying .md-comment-input {
@@ -1553,7 +1563,7 @@ td {
 .md-verified {
   margin-left: 4px;
   font-size: 16px;
-  top: 1px;
+  top: 2px;
   position: relative;
 }
 
@@ -1781,6 +1791,7 @@ td {
 }
 
 .profile-no-posts {
+  border-top: $border !important;
   padding: 24px;
   margin-bottom: 15px;
   width: 100%;
@@ -1924,12 +1935,13 @@ td {
 
 .user-title-block .verified {
   font-size: 18px;
+  position: relative;
+  top: 1px;
 }
 
 .user-title-block .md-dot-btn {
-  font-size: 18px;
   right: 20px;
-  top: 14px;
+  top: 15px;
 }
 
 .header-back-button:hover {
@@ -2077,18 +2089,25 @@ td {
   width: 30px;
   padding: unset;
   margin: unset;
+  font-size: 16px;
 }
 
 .conversation-unseen-counter {
-  position: absolute;
-  left: 48px;
-  top: 7px;
-  font-size: 12px;
-  color: #fff;
-  background: #3498db;
-  padding: 0 6px;
+  border: 2px solid #fff;
   border-radius: 100px;
-  font-weight: 500;
+  position: absolute;
+  background: $info;
+  font-weight: 600;
+  font-size: 12px;
+  padding: 0 6px;
+  color: #fff;
+  left: 48px;
+  top: 6px;
+}
+
+.md-conversation-line:hover .conversation-unseen-counter {
+  border: 2px solid #f2f2f2;
+  color: #f2f2f2;
 }
 
 .conversation-page {
@@ -2101,9 +2120,9 @@ td {
 
 .md-conversation {
   max-height: calc(100vh - 130px);
+  flex-direction: column;
   position: relative;
   display: flex;
-  flex-direction: column;
 }
 
 .md-conversation .messages {
@@ -2115,10 +2134,10 @@ td {
 }
 
 .md-conversation .message {
-  margin-bottom: 8px;
-  display: flex;
   flex-direction: row-reverse;
   justify-content: flex-end;
+  margin-bottom: 8px;
+  display: flex;
 }
 
 .md-conversation .message.me {
@@ -2130,7 +2149,7 @@ td {
 }
 
 .md-conversation .message.me .text {
-  background: #3498db;
+  background: $info;
   color: white;
 }
 
@@ -2142,11 +2161,15 @@ td {
 }
 
 .md-conversation .message.me:hover .text {
-  background: #3ca7f0 !important;
+  background: lighten($info, 5%) !important;
 }
 
 .md-conversation .message.me:hover .replied-message::after {
-  background: -moz-linear-gradient(right, #3ca7f0 0%, rgba(255, 255, 255, 0) 100%);
+  background: -moz-linear-gradient(right, lighten($info, 5%) 0%, rgba(255, 255, 255, 0) 100%);
+}
+
+.message.me .replied-message::after {
+  background: -moz-linear-gradient(right, $info 0%, rgba(255,255,255,0) 100%);
 }
 
 .md-conversation .message:hover .text {
@@ -2162,12 +2185,13 @@ td {
 }
 
 .message-actions .btn {
-  width: 30px;
-  height: 30px;
   line-height: 16px;
-  padding: 0;
-  color: #a0a0a0;
+  color: #000;
   display: none;
+  height: 30px;
+  width: 30px;
+  padding: 0;
+  font-size: 16px;
 }
 
 .message:hover .message-actions .btn {
@@ -2183,10 +2207,10 @@ td {
 }
 
 .message-write {
-  display: flex;
-  padding: 10px;
   border-top: $border;
   position: relative;
+  padding: 10px;
+  display: flex;
 }
 
 .message-write .input {
@@ -2201,20 +2225,21 @@ td {
 .message-write .attach .btn {
   border: 2px solid #a7acb7;
   border-radius: 100%;
+  line-height: 22px;
+  font-size: 18px;
   padding: unset;
-  width: 24px;
-  height: 24px;
-  line-height: 20px;
-  font-size: 12px;
   color: #a7acb7;
+  height: 24px;
+  width: 24px;
 }
 
 .message-write .attach {
-  width: 34px;
-  line-height: 32px;
   text-align: center;
-  margin-right: 8px;
   position: relative;
+  margin-right: 8px;
+  line-height: 32px;
+  width: 36px;
+  height: 36px;
 }
 
 .message-write .send {
@@ -2222,31 +2247,36 @@ td {
 }
 
 .message-write .send .btn {
+  border-radius: 100px;
+  padding: 0;
   position: relative;
+  background: $info;
+  margin-left: 8px;
+  font-size: 24px;
+  border: unset;
   height: 36px;
   width: 36px;
-  font-size: 16px;
-  border-radius: 100px;
   color: #fff;
-  border: unset;
-  background: #3498DB;
-  padding: 0 3px 0 0;
-  margin-left: 8px;
+  line-height: 16px;
+}
+
+.message-write .send .btn:hover {
+  background: lighten($info, 5%);
 }
 
 .message-send-disabler {
-  width: 100%;
-  height: 100%;
   position: absolute;
   z-index: 100;
+  height: 100%;
+  width: 100%;
 }
 
 .message-form {
+  border-radius: 3px;
+  background: #fff;
+  z-index: 99;
   width: 100%;
   bottom: 0;
-  background: #fff;
-  border-radius: 3px;
-  z-index: 99;
 }
 
 .online-users-title {
@@ -2260,24 +2290,24 @@ td {
 }
 
 .online-users-list .back-picture {
+  min-height: 50px;
+  min-width: 50px;
   display: table;
   float: left;
-  min-width: 50px;
-  min-height: 50px;
 }
 
 .online-users-block {
+  border-bottom: $border;
   padding: 0 12px 12px;
   position: relative;
-  border-bottom: $border;
 }
 
 .online-users-block::before, .online-users-block::after {
-  content: "";
-  width: 15px;
   position: absolute;
-  height: 50px;
   display: block;
+  height: 50px;
+  width: 15px;
+  content: "";
   top: 0;
 }
 
@@ -2313,26 +2343,26 @@ td {
 }
 
 #replyMessageBox {
-  border-top: $border;
-  position: relative;
   padding: 12px 18px 12px;
   white-space: nowrap;
+  border-top: $border;
+  position: relative;
   overflow: hidden;
   display: none;
 }
 
 #replyMessage {
+  margin-right: 28px;
   line-height: 29px;
   overflow: hidden;
   display: block;
-  margin-right: 28px;
 }
 
 #replyMessageBox.post .back-picture {
-  width: 29px;
-  height: 29px;
   border-radius: 8px;
   margin-right: 8px;
+  height: 29px;
+  width: 29px;
 }
 
 #replyMessageBox.profile .back-picture {
@@ -2368,9 +2398,8 @@ td {
   background: rgba(255,255,255,0.5);
   color: rgba(255,255,255,0.9);
   padding: 4px 6px;
-  border-radius: 0 8px 8px 0;
+  border-radius: 6px;
   margin: 4px 0 3px;
-  border-left: 2px solid rgba(0,0,0,0.3);
   white-space: nowrap;
   overflow: hidden;
   position: relative;
@@ -2380,7 +2409,6 @@ td {
 .message.me .replied-message {
   color: #fff;
   background: rgba(255,255,255,0.15);
-  border-left: 2px solid rgba(0,0,0,0.25);
 }
 
 .message .replied-message::after {
@@ -2392,10 +2420,6 @@ td {
   position: absolute;
   right: 0;
   top: 0;
-}
-
-.message.me .replied-message::after {
-  background: -moz-linear-gradient(right, rgb(82, 167, 224) 0%, rgba(255,255,255,0) 100%);
 }
 
 .messages-length-alert {
@@ -2555,7 +2579,7 @@ td {
 
 #attachedImageClose {
   position: absolute;
-  left: 12px;
+  left: 11px;
   bottom: 2px;
   color: #fff;
   cursor: pointer;
@@ -2727,8 +2751,7 @@ select {
   position: relative;
   top: 2px;
   color: #aaa;
-  font-size: 16px;
-  margin-left: 3px;
+  font-size: 15px;
 }
 
 .md-gt-box {
@@ -2855,7 +2878,8 @@ select {
 
 .navbar-menu-title .verified {
   position: relative;
-  font-size: 16px;
+  font-size: 18px;
+  top: 2px;
 }
 
 .navbar-menu-title .profile-lock {
@@ -3034,11 +3058,12 @@ select {
   border: unset !important;
   border-radius: 100px;
   color: #000;
-  font-size: 18px;
+  font-size: 22px;
   padding: 3px;
   min-width: 36px;
   min-height: 36px;
   max-height: 36px;
+  line-height: 31px;
 }
 
 .navbar-search a:hover, .navbar-search-mobile a:hover {
@@ -3068,6 +3093,22 @@ select {
   min-width: 240px;
 }
 
+.chosen-container-single .chosen-single, .chosen-container-multi .chosen-choices{
+  border-radius: $border-radius;
+}
+
+.chosen-container .chosen-drop {
+  border-radius: 0 0 $border-radius $border-radius;
+}
+
+.chosen-container .chosen-results li.highlighted {
+  border-radius: radius(full);
+}
+
+.chosen-with-drop .chosen-choices {
+  border-radius: $border-radius $border-radius 0 0;
+}
+
 .navbar-search .md-search-input, .navbar-search .md-search-all-input {
   justify-content: right;
   float: right;
@@ -3081,20 +3122,6 @@ select {
 
 .navbar-search input::placeholder, .navbar-search-mobile input::placeholder {
   color: #8e8e92;
-}
-
-.navbar-search-closer {
-  position: absolute;
-  right: 70px;
-  color: #686868;
-  top: 15px;
-  font-size: 16px;
-  cursor: pointer;
-  transition: ease 300ms;
-}
-
-#closeNavbarSearch {
-  display: none;
 }
 
 .md-search-pages-menu {
@@ -3245,8 +3272,12 @@ select {
 }
 
 .pagination-sm .page-link {
-  padding: 2px 10px 3px 9px;
-  font-weight: 500;
+  font-weight: 600;
+  width: 26px;
+  height: 26px;
+  line-height: 25px;
+  padding: 0 1px 0 0;
+  text-align: center;
 }
 
 .pagination .dots {
@@ -3254,6 +3285,11 @@ select {
   margin: 3px;
   line-height: 28px;
   color: #aaa;
+}
+
+.pagination .icon-chevron-right, .pagination .icon-chevron-left {
+  position: relative;
+  top: 1px;
 }
 
 // Post
@@ -3329,21 +3365,23 @@ select {
   font-size: 14px;
   float: left;
   margin-right: 10px;
+  max-width: 25px;
 }
 
 .post-actions .count {
   margin-left: 6px;
+  line-height: 25px;
   color: #000;
 }
 
 .post-actions a {
   height: 22px;
-  color: #333;
+  color: #000;
   display: inline-flex;
 }
 
 .post-actions a:hover {
-  color: #000;
+  color: #333;
 }
 
 .md-post-status {
@@ -3413,6 +3451,23 @@ select {
   color: #000;
 }
 
+.md-spin {
+  display: inline-block;
+  animation-name: spin;
+  animation-duration: 1000ms;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+}
+
+@keyframes spin {
+  from {
+    transform:rotate(0deg);
+  }
+  to {
+    transform:rotate(360deg);
+  }
+}
+
 @keyframes like-heart-animation {
   0%,
   to {
@@ -3436,6 +3491,7 @@ select {
 .post-liker {
   cursor: pointer;
   margin-bottom: 12px;
+  display: block;
 }
 
 .post-liker .post-image {
@@ -3443,8 +3499,8 @@ select {
 }
 
 .post-liker.like::before {
-  content: "\f004";
-  font-family: "Font Awesome 5 Free", sans-serif;
+  content: "\ea1b";
+  font-family: "icomoon";
   font-weight: 900;
   position: absolute;
   left: calc(50% - 30px);
@@ -3456,23 +3512,6 @@ select {
 }
 
 .post-liker.like {
-  position: relative;
-}
-
-.post-liker.dislike::before {
-  content: "\f7a9";
-  font-family: "Font Awesome 5 Free", sans-serif;
-  font-weight: 900;
-  position: absolute;
-  left: calc(50% - 30px);
-  top: calc(50% - 45px);
-  transform: translateY(-50%);
-  font-size: 60px;
-  color: #fff;
-  animation: 1s like-heart-animation ease-in-out forwards;
-}
-
-.post-liker.dislike {
   position: relative;
 }
 
@@ -3537,9 +3576,9 @@ select {
 // Like toggle
 
 .like-toggle .like-icon::before, .guest-like-toggle .like-icon::before {
-  content: "\f004";
-  font-family: "Font Awesome 5 Free", sans-serif;
-  font-size: 24px;
+  content: "\e97e";
+  font-family: "icomoon";
+  font-size: 25px;
   position: relative;
   font-weight: 400;
   -moz-osx-font-smoothing: grayscale;
@@ -3547,10 +3586,10 @@ select {
   font-variant: normal;
   text-rendering: auto;
   line-height: 1;
-  top: -2px;
 }
 
 .like-toggle.added .like-icon::before {
+  content: "\ea1b";
   font-weight: 800;
   color: $red;
 }
@@ -3562,9 +3601,9 @@ select {
 // Bookmark toggle
 
 .bookmark-toggle .bookmark-icon::before, .guest-bookmark-toggle .bookmark-icon::before {
-  content: "\f02e";
-  font-family: "Font Awesome 5 Free", sans-serif;
-  font-size: 22px;
+  content: "\e925";
+  font-family: "icomoon";
+  font-size: 25px;
   position: relative;
   font-weight: 400;
   -moz-osx-font-smoothing: grayscale;
@@ -3575,15 +3614,16 @@ select {
 }
 
 .bookmark-toggle.added .bookmark-icon::before {
+  content: "\e900";
   font-weight: 800;
 }
 
 // Featured post toggle
 
 .featured-toggle .featured-icon::before {
-  content: "\f005";
-  font-family: "Font Awesome 5 Free", sans-serif;
-  font-size: 15px;
+  content: "\e9e2";
+  font-family: "icomoon";
+  font-size: 17px;
   position: relative;
   font-weight: 400;
   -moz-osx-font-smoothing: grayscale;
@@ -3591,11 +3631,11 @@ select {
   font-variant: normal;
   text-rendering: auto;
   line-height: 1;
-  top: -1px;
+  top: 1px;
 }
 
 .featured-toggle.added .featured-icon::before {
-  font-weight: 900;
+  content: "\ea20";
   color: #ffbb50;
 }
 
@@ -3642,7 +3682,7 @@ select {
   width: 100%;
   bottom: 0;
   z-index: 999;
-  background: white;
+  background: linear-gradient(0deg, #fff 0%, rgba(255, 255, 255, 0.95) 100%);
   height: 50px;
   display: none;
   justify-content: space-around;
@@ -3671,8 +3711,8 @@ select {
   font-size: 12px;
   padding: 0 5px;
   color: #fff;
-  right: 5px;
-  top: 25px;
+  right: 3px;
+  top: 30px;
 }
 
 .mobile-menu-badge {

@@ -13,7 +13,7 @@
 
             {% if follower.profile.verified %}
                 <span class="md-verified">
-                    <i class="fas fa-check-circle text-info"></i>
+                    <i class="icon-check-circle-two text-info"></i>
                 </span>
             {% endif %}
         </div>
@@ -26,7 +26,7 @@
     {% if request %}
 
         <div class="user-line-follow">
-            <a class="unfollow" data-toggle="modal" data-target="#rejectRequest{{ (follower.id * 14 / 3 + 91) | round }}"><i class="fas fa-times"></i></a>
+            <a class="unfollow" data-toggle="modal" data-target="#rejectRequest{{ (follower.id * 14 / 3 + 91) | round }}"><i class="icon-x"></i></a>
 
             <div class="modal fade md-confirm-modal" id="rejectRequest{{ (follower.id * 14 / 3 + 91) | round }}" tabindex="-1" role="dialog" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered" role="document">
@@ -63,7 +63,7 @@
             <div class="user-line-follow">
                 {% if app.user and unfollow == app.user %}
                     <a class="unfollow" data-toggle="modal" data-target="#userUnfollow{{ (follower.id * 14 / 3 + 91) | round }}">
-                        <i class="fas fa-times"></i>
+                        <i class="icon-x"></i>
                     </a>
                     <div class="modal fade md-confirm-modal" id="userUnfollow{{ (follower.id * 14 / 3 + 91) | round }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered" role="document">

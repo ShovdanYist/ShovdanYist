@@ -20,7 +20,7 @@
 
                     {% if user.profile.verified %}
                         <span class="md-verified">
-                            <i class="fas fa-check-circle text-info"></i>
+                            <i class="icon-check-circle-two text-info"></i>
                         </span>
                     {% endif %}
                 </div>
@@ -58,7 +58,7 @@
                     <li class="md-menu-item{% if pathname == 'message_conversations' or pathname == 'message_conversation' %} active{% endif %}">
                         <a href="{{ path('message_conversations') }}">
                             <span>
-                                <i class="icon-message-circle"></i>
+                                <i class="icon-send"></i>
                             </span>
                             {{ 'messages' | trans }}
                             {% if messagesCount(app.user) != 0 %}

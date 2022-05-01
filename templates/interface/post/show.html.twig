@@ -31,12 +31,12 @@
 
     {% if post.status is null %}
         <div class="md-alert md-alert-info md-box-mb">
-            <i class="fas fa-history"></i>
+            <i class="icon-clock"></i>
             {{ 'post.in.moderation' | trans }}
         </div>
     {% elseif post.status == false %}
         <div class="md-alert md-alert-danger md-box-mb">
-            <i class="fas fa-ban"></i>
+            <i class="icon-x-octagon"></i>
             {{ 'post.is.rejected' | trans }}
         </div>
     {% endif %}

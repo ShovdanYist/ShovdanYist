@@ -22,7 +22,7 @@
 
             {% if download == true %}
                 <a class="playlist-download muted-link-info" download="{{ song.vocalist.fullName }} - {{ song.title }} {{ featuring( song, ', ' ) }}.mp3" href="{{ vich_uploader_asset(song) }}" data-toggle="tooltip" title="{{ 'download.song' | trans }}">
-                    <i class="far fa-arrow-alt-circle-down"></i>
+                    <i class="icon-arrow-down-circle" style="font-size: 18px;"></i>
                 </a>
             {% endif %}
 
@@ -34,7 +34,7 @@
                 {% endif %}
 
                 <a class="muted-link-info playlist-toggle{% if userContainSong(app.user, song) %} added{% endif %}" href="{{ path('song_playlist', {slug: song.slug}) }}" data-toggle="tooltip" title="{{ playlist_title }}" onclick="event.preventDefault()">
-                    <i class="far fa-times-circle"></i>
+                    <i class="icon-plus-circle"></i>
                 </a>
             {% endif %}
 

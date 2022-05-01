@@ -65,12 +65,12 @@
     {% if form.saveAndNew is defined %}
         {{ form_widget(form.saveAndNew, {label: 'ㅤ', attr: {class: 'btn btn-info save-new-btn px-3'}}) }}
         <script>
-            document.querySelector('.save-new-btn').innerHTML = '<i class="fas fa-file-medical"></i>';
+            document.querySelector('.save-new-btn').innerHTML = '<i class="icon-file-plus"></i>';
         </script>
     {% endif %}
 
     <button class="btn btn-secondary">
-        <i class="fas fa-file-export"></i>
+        <i class="icon-log-out"></i>
     </button>
 
     {% if song.status == true %}
