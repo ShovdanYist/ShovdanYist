@@ -6,7 +6,7 @@
  */
 
 // any CSS you import will output into a single scss file (appFile.scss in this case)
-import '../scss/app6.scss';
+import '../scss/app10.scss';
 
 // Need jQuery? Install it with "yarn add jquery", then uncomment to import it.
 const $ = require('jquery');
